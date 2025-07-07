@@ -1,0 +1,28 @@
+# LaTeX intermediate and output files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.backup
+*.dvi
+
+# PDF output
+# *.pdf # sync in LFS
+
+# Directory for auxiliary files created by latexmk
+latexmk/
+
+*.run.xml
+*.bcf

@@ -1,0 +1,145 @@
+\documentclass{report}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{url}
+\usepackage{dirtytalk}
+\usepackage{color}
+\usepackage{calc}
+\usepackage{float}
+\usepackage{epsfig}
+\usepackage{dsfont}
+\usepackage{lipsum}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{MnSymbol}%\sumint
+\usepackage{wrapfig}
+\usepackage{textpos}
+\usepackage{biblatex}
+\usepackage[integrals]{wasysym}
+\addbibresource{bibliography/bibliography.bib}
+\usepackage{fancyhdr}
+%custom page style for report class
+\fancypagestyle{mystyle}{
+\pagestyle{fancy}
+\fancyhf{} % clear all headers      
+\fancyhead[R]{\rmfamily \small \nouppercase \rightmark}
+\fancyhead[L]{\rmfamily \small \nouppercase \leftmark}  
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+\newcommand{\alert}[1]{{\color{red} #1}}
+
+
+% macros for fast scaling parentheses
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lsb}{\left[}
+\newcommand{\rsb}{\right]}
+
+\newcommand{\lcb}{\left\{}
+\newcommand{\rcb}{\right\}}
+
+\newcommand{\la}{\left\langle}
+\newcommand{\ra}{\right\rangle}
+\definecolor{red}{rgb}{0.631, 0.094, 0.094}
+\begin{document}
+
+%%% TITLE PAGE %%%
+
+\thispagestyle{empty}
+\begin{textblock*}{\textwidth}(-2cm,-2.5cm)
+\includegraphics[height=0.1\paperheight]{logos/Bicocca_transparent.png}	
+\end{textblock*}
+\begin{textblock*}{\textwidth}(1.9cm,-2.6cm)
+\begin{flushleft}
+{\color{red}\Large{SCUOLA DI DOTTORATO}}\\[2mm]
+{\color{red}\large{UNIVERSIT\`A DEGLI STUDI DI MILANO-BICOCCA}}
+\end{flushleft}
+\end{textblock*}
+\vspace{2cm}
+\centerline{\Large{Department of \textbf{\alert{your department}}}}
+\vspace{0.5cm}
+\centerline{\Large{Ph. D. program in \textbf{\alert{your subject}}, \alert{\textbf{XYZ}} cycle}}
+\vspace{2mm}
+\centerline{\Large{Curriculum of \alert{\textbf{your curriculum (if applicable)}}}}
+\vspace{2cm}
+\centerline{\huge{Your thesis' title}}
+\vspace{2cm}
+\centerline{\LARGE{Your Name}}
+\vspace{2mm}
+\centerline{\Large{Registration number: 110100100}}
+\vspace{2cm}
+\begin{flushleft}
+\LARGE{Tutor: \alert{\textbf{your tutor}}}\\[1.5mm]
+\LARGE{Supervisor: \alert{\textbf{your supervisor(s)}}}\\[2cm]
+\LARGE{Coordinator: \alert{\textbf{the coordinator of your PhD program}}}
+\end{flushleft}
+\vfill
+
+\begin{flushright}
+\LARGE{Academic Year \alert{\textbf{x/y}}}
+\end{flushright}
+%%%%%%%%%%%%%%%%%
+%%% ABSTRACT (Techincal)%%%%
+\begin{abstract}
+   A one-page \say{technical} abstract that summarizes
+   your research work	
+\end{abstract}
+%%% PUBLICATIONS %%%
+\pagenumbering{roman}
+
+% Name & headline
+
+%\switchcolumn
+\section*{List of publications}
+$\bullet$ Paper 1 \cite{yourpaper1}
+
+$\bullet$ Paper 2
+
+\section*{Contributions to conferences}
+As a \textbf{speaker:}
+\begin{itemize}
+	\item Talk 1 
+	\item Talk 2 
+\end{itemize}
+As an \textbf{author:}
+\begin{itemize}
+    \item Proceedings 1 
+    \item Proceedings 2
+\end{itemize}
+%%%%%%%%
+\tableofcontents
+\pagestyle{mystyle}
+
+\addcontentsline{toc}{chapter}{Introduction}
+\include{preface/preface}
+
+\pagenumbering{arabic}
+
+\include{chapter1/chapter1}
+
+\include{chapter2/chapter2}
+
+\addcontentsline{toc}{chapter}{Conclusions and Outlook}
+\include{conclusions/conclusions}
+
+\appendix
+\include{appendices/conventions}
+
+%%%% BIBLIOGRAPHY %%%%%
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\include{thankyou/thankyou}
+\end{document}
+
