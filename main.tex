@@ -101,9 +101,22 @@ in Knowledge-Intensive Domains}}
 % In my research, I worked first on knowledge extraction...
 % Then on knowledge access and integration...
 
-In knowledge-intensive domains, such as the legal and investigative sectors, users face difficulties interacting with high volumes of data. Indeed, documents such as legal judgements or instant-messaging data seized from suspects can be time-consuming to explore and are especially dense in entities.\todo{dimostra}\todo{dire cosa usavano prima?} 
+In \textbf{knowledge-intensive domains}, such as the legal and investigative sectors, users face difficulties interacting with high volumes of data. Indeed, documents such as legal judgements or instant-messaging data seized from suspects can be time-consuming to explore.
+These documents contain several mentions of \textbf{named entities}, such as people, locations, or organizations, making their extraction and organization (for example in a knowledge graph) particularly useful to simplify the exploration and interpretation of these documents by the end users (judges, lawyers, or investigators).
+% \todo{dimostra}\todo{dire cosa usavano prima?}
 
-In several cases, semantic knowledge can simplify their exploration, interpretation, and information retrieval activities. In my research, I worked first on knowledge extraction, focusing on named entity recognition and linking, addressing the challenges posed by NIL entities\todo{dire che erano poco studiate nel SOA}---those not present in existing knowledge bases, especially important for domain-specific scenarios--- developing techniques for identifying and clustering them\todo{improve}.\todo{add domain-specific studies and KG organization} Then on knowledge access and integration, I designed infrastructures and user interfaces that support entity-centric exploration, including faceted search and question answering. I also contributed\todo{more weight. I'm first author} to the development of ReFactX, a scalable and efficient method for answering questions using external knowledge bases through constrained generation. This work supports users in accessing structured knowledge with minimal computational resources, especially in privacy-sensitive contexts where reliance on public APIs is not feasible.
+My research has been directed towards \textbf{knowledge extraction and knowledge access} of the information present in domain-specific documents. While extracting and accessing knowledge imply different technical tasks, these topics are equally critical to simplify the \textbf{knowledge discovery process by end users}, that is the main topic of my research. 
+
+With respect to \textbf{knowledge extraction}, I focused on \textbf{named entity recognition and linking}, addressing the challenges posed by \textbf{NIL entities}, those not present in existing knowledge bases. These entities are particularly important for domain-specific scenarios and have been often ignored in entity linking studies.
+In my co-authored papers we tackled this problem by publishing NIL-aware datasets, one for generain-domain textual documents and tabular data, developing baseline techniques for identifying and clustering NIL mentions.
+
+Subsequently, I focused on extracting and organizing entities from \textbf{domain-specific documents}, considering both the law and investigative domains, \textbf{manually labeling} them with mentions of entities and highlighting the \textbf{challenges} due to the peculiarities of the domain-specific language.
+Additionally, I studied \textbf{adaptation methods} for named entity recognition on Italian judgements, concluding that task.specific fine-tuning is a good compromise between performance and computational costs.
+
+Regarding \textbf{knowledge access and its integration with user interfaces}, I designed infrastructures that support entity-centric exploration, including faceted search and question answering, using knowledge graphs for representing the network of relations in the investigative domain and including \textbf{human-in-the-loop} functionalities that allow users to verify and correct machine errors.
+
+I also developed \textbf{ReFactX}, a scalable and efficient method for answering questions using external knowledge bases through constrained generation. This work supports users in accessing structured knowledge with minimal computational resources, especially in privacy-sensitive contexts where reliance on public APIs is not feasible.
+
 
 % ok ma alla fine quali sono le RQ? qual'è la mia tesi? dovrei lavorare con utenti? NOOOOO
 
