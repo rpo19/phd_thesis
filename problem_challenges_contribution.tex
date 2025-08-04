@@ -1,0 +1,52 @@
+\section{Extraction}
+
+\subsection{incremental entity extraction}
+\textbf{problem:} no established procedures or dataset to evaluate IEE.
+\textbf{challenges:} nil prediction, novel entity representation
+\textbf{contributions:} incremental dataset, procedure to make a nel dataset incremental, evaluation procedure, IEE baseline.
+
+\subsubsection{mammotab}
+\textbf{problem} Need of a big dataset for sti with NIL prediction,\dots
+\textbf{challenges} size,\dots
+\textbf{contributions} dataset
+
+\subsection{Legal}
+
+\subsubsection{journal}
+\textbf{problem} feasibility of entity centric data enrichment on judgements. EE on legal judgements
+\textbf{challenges} legal domain, NIL entities, amount of data (for the architecture), scarcity of labeled/annotated data
+\textbf{contribution} performance analysis on court judgements. architecture for extraction and consolidation, HITL. first time we spoke about dave
+
+\subsubsection{aixia}
+\textbf{problem} EE on legal judgements
+\textbf{challenges} scarcity of labeled/annotated data (true also with chatgpt?)
+\textbf{contribution} evaluation. different adaptation strategies
+
+\subsubsection{wise}
+\textbf{problem} EE on chats from criminal investigations. organizing relational information from chats, audio integration (risky?)
+\textbf{challenges} scarcity of labeled/annotated data
+\textbf{contribution} integration, evaluation, performance analysis
+
+\subsection{Access}
+
+\subsubsection{DAVE}
+\textbf{problem} document exploration
+\textbf{challenges}
+\textbf{contribution} oss, entity-centric, search filter, explore, conversational QA, kg refinement/hitl
+
+\subsubsection{ReFactX}
+\textbf{problem} QA on external kg
+\textbf{challenges} scaling to big kb, avoiding pipelines with IR systems or other models that affects the answer
+\textbf{contribution} ReFactX
+
+\section{Conclusion}
+\textbf{problem} solve information need of the user in kg-intensive domains
+\textbf{challenges and contributions}
+\begin{itemize}
+    \item NIL/incremental -> (ijckg,mammotab) datasets, baseline,...
+    \item scarsity of labeled data -> hitl annotation tools (DAVE, journal, wise), adaptation (aixia)
+    \item different language -> journal, wise, aixia
+    \item privacy -> no openai,api,\dots
+    \item efficient qa -> ReFactX
+\end{itemize}
+ 
