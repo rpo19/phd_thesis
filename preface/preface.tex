@@ -12,14 +12,38 @@
 % extraction and access
 
 \todo{leggere i paper che cito}
+
+\subsection{Context}
+
 In Knowledge-intensive domains, such as law and criminal investigations, noticeable attention is given to the people, locations, or organizations mentioned in judgements, or investigative data.
-Judges, layers, or investigators, indeed, often seek information around particular entities, but the vastness, variety, and ambiguity of the examied documents represent a challenge for a prompt and complete understanding~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}, often resulting in time-consuming manual work.\todo{citare altro?}\todo{leggi il paper batini. find additional citations}
+\todo{entity/named entity definition}
+Judges, layers, or investigators, indeed, often seek information around particular entities, but the vastness, variety, and ambiguity of the examined documents represent a challenge for a prompt and complete understanding~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}, often resulting in time-consuming manual work.\todo{citare altro?}\todo{leggi il paper batini. find additional citations}
 \todo{there is interest in using technology to help extract, organize and access information. we can see this by looking at the recent interesting in applying AI/ML techniques to...}
 Recent interest, indeed, has been driven towards extracting and organizing knowledge for supporting the exploration and interpretation activities by the end users~\cite{kejriwal2018,szekely2015building,kejriwal2017investigative}.\todo{aggiungere altro: sono tutti dello stesso gruppo}
 
-Futhermore, the specific language used in these domains additionally hardens the task of extracting knowledge from domain-specific data~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}.\todo{miei paper. ma sarebbe meglio aggiungere altre citazioni. forse anche kejriwal e sevgili possono essere citati}
-In a criminal investigation, analyzing chat data is often necessary, for instance, to reconstruct people whereabouts, but this data usually contains typographic errors, slang, aliases, or abbreviations~\cite{}. This often leads to poor extraction performance when using \say{general domain} models trained on a different data distribution, generally on web-based data~\cite{}.
-% similar conclusions for legal judgements  
+\subsection{Extraction}
+
+Extracting entity-based knowledge from textual documents has been the focus of several studies, dating back to \todo{}. Researchers have been focusing on different aspects of the extraction process, from the identification of which words refer to a named entity---named entity recognition (NER)---to the curation of knowledge bases to maintain and serve information about knwon entities~\cite{}. And then the connection of the identified mentions of entities to the correct record in the knowledge base---named entity linking (NEL)~\cite{}.
+\todo{in this work we relax the definition of named entity to entity in general}  
+
+\subsubsection{Specific language}
+
+However, the specific language used in these domains additionally hardens the task of extracting knowledge from domain-specific data~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}.\todo{miei paper. ma sarebbe meglio aggiungere altre citazioni. forse anche kejriwal e sevgili possono essere citati}
+In a criminal investigation, analyzing chat data is often necessary, for instance, to reconstruct people whereabouts, but this data usually contains typographic errors, slang, aliases, or abbreviations~\cite{}. This often leads to poor extraction performance when using \say{general domain} models trained on a different data distribution, often web-based data~\cite{}.
+\todo{similar conclusions for legal judgements}
+\todo{find evidence that this is a challenge from the literature. someone who had low performance.}
+
+\subsubsection{Incremental}
+
+Futhermore---while benchmark data often refer to publicly known entities---investigative data and legal judgements often mention people who are not described in any public knowledge base~\cite{}, such as Wikipedia~\cite{} or Wikidata~\cite{}. \todo{attento a wikidata vs wikipedia, KB vs KG}
+As a consequence, these documents require to detect which mentions refer to unknown entities and to represent and add the new entities, incrementally, to the knowledge base for using them when linking future documents.
+\todo{also here show why this is a challenge and what was/is missing in the literature}
+
+\todo{summarize the challenges}
+
+\subsection{Access}
+\subsubsection{UIs}
+\subsubsection{QA}
 
 
 
