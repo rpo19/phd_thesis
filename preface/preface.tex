@@ -37,15 +37,35 @@ In a criminal investigation, analyzing chat data is often necessary, for instanc
 
 Futhermore---while benchmark data often refer to publicly known entities---investigative data and legal judgements often mention people who are not described in any public knowledge base~\cite{}, such as Wikipedia~\cite{} or Wikidata~\cite{}. \todo{attento a wikidata vs wikipedia, KB vs KG}
 As a consequence, these documents require to detect which mentions refer to unknown entities and to represent and add the new entities, incrementally, to the knowledge base for using them when linking future documents.
+Recent interest has been driven towards addressing this problem~\cite{Heist2023nastylinker,kassner-etal-2022-edin}
+\todo{cita lavory su NIL: nasty edin, iowa}
 \todo{also here show why this is a challenge and what was/is missing in the literature}
 
-\todo{summarize the challenges}
+\todo{mancanza di dataset}
+
+\todo{summarize the challenges? nil pred, clustering? non ci ho lavorato molto}
 
 \subsection{Access}
+Alongside extracting knowledge from domain-specific documents, users require frameworks to access and explore the extracted knowledge to fulfill their information needs.
+
 \subsubsection{UIs}
+Recent work demonstrate the imporance of user interfaces for this objective~\cite{}, for instance\dots
+\todo{citare kejriwal, sevgili e altri}
 \subsubsection{QA}
 
 
 
 
 \section{Objectives and Motivation}
+\todo{prima di qui parlare bene dei problemi: cosa manca(va)????}
+The main objective is fulfilling the information need of users in knowledge-intensive domains.
+\todo{assicurati di disctere che questa cosa non era già possibile e di mostrarne i problemi che esistevano}
+The main objective can be divided in different sub-objectives that correspond to the contributions of my Ph.D. research.
+\begin{itemize}
+    \item create a dataset and a baseline for incremental EE
+    \item analyze existing EE algorithms on domain-pecific domains, evaluating different adaptation techniques
+    \item build prototypes to allow users to explore domain-specific documents with the extracted knowledge
+    \item build an efficient QA system for asking question on external knowledge in low-resource scenarios.
+\end{itemize}
+\todo{probabilmente si possono espandere}
+\todo{esiste una piattaforma come dave? cosa esiste che va in conflitto con i miei contributi?}

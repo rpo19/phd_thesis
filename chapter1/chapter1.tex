@@ -1,6 +1,85 @@
 \chapter{Background and State of the Art}
 
-% \section{Definitions}
+This section aims to describe to the reader the context necessary for the understanding of this \phd thesis, starting with a detailed description of the two knowledge-intensive domains considered by the presented work---in Section ~\ref{sec:domains}, followed by the description of state-of-the-art information extraction and access techniques---respectively explored in Sections~\ref{} and \ref{}.
+
+\section{Domains}
+\label{sec:domains}
+
+\subsection{Criminal Investigations}
+Data in criminal investigations comes from a heterogeneity of sources such as documents, e.g., reports by consultants, (semi-)structured files, e.g., phone call records, bank transfers, and digitalized papers, e.g., seized in the investigation.
+\todo{add example}
+
+\todo{focus on IMA}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.92\linewidth}
+\ttfamily
+\small
+\textbf{Chat Transcript (Extract)}\\
+Participants: Mario Rossi (M), Luca Bianchi (L)\\
+Date Range: 2025-07-28 to 2025-07-30\\[0.5em]
+\textbf{[2025-07-28 -- 14:12]} M: Hey, are we still meeting on Friday?\\
+\textbf{[2025-07-28 -- 14:13]} L: Yeah, that's August 1st, right?\\
+\textbf{[2025-07-28 -- 14:14]} M: Correct.\\
+\textbf{[2025-07-28 -- 14:15]} L: Where though? The place near Piazza Vittorio Veneto in Turin or the one by the river?\\
+\textbf{[2025-07-28 -- 14:17]} M: Let's do the bar at Via Roma 210, easier to park.\\
+\textbf{[2025-07-28 -- 14:18]} L: Fine. Anyone else coming?\\
+\textbf{[2025-07-28 -- 14:19]} M: Maybe Gianni, but he's in Milan until Thursday.\\[0.5em]
+\textbf{[2025-07-29 -- 08:45]} M: \textit{[Voice message -- 2 min 14 sec]}\\
+\quad \textit{Transcription:}\\
+\quad So listen, I was thinking\dots it might be better if we meet a bit earlier, like around 6:30 PM, because I have to talk to you about something before Gianni gets there. It's about that thing we discussed last time at Marco's place — you know, the one near Porta Susa station. I also want to avoid too many people seeing us together at the main bar during the busy hour. If we meet earlier, we can grab a table at the back, order something small, and then, when Gianni arrives, we just act like we've been casually catching up. Also, there's a parking spot I found behind the cinema on Via Po, usually empty at that time. Oh, and bring the envelope I gave you last month, I'll need to check something inside. Don't text me too much about this, we'll talk in person.\\[0.5em]
+\textbf{[2025-07-29 -- 09:02]} L: Got it. 6:30 PM, Via Roma 210, Friday. I'll bring the envelope.\\
+\textbf{[2025-07-30 -- 16:47]} M: Perfect.
+\end{minipage}
+\caption{Simulated chat exchange containing dates, locations, persons, and a long voice message transcription.}
+\label{fig:chat-investigation-example}
+\end{figure}
+
+
+\subsection{Judgments}
+Legal documents, and especially court judgments and orders, contain information that is valuable in multiple applications (from legal case retrieval to legal process analysis), for different purposes (from the comparison with similar cases for uniform judgments to discovering trends for specific legal subjects, e.g., counting the average maintenance in relation to economical conditions of the partners in divorces), and stakeholders (from judges to law administrators, lawmakers, lawyers, scholars, and the general public).
+\todo{add example in english}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.9\linewidth}
+\ttfamily
+\small
+ORDINARY COURT OF TURIN\\
+Civil Division\\
+Judgment No. 1234/2025\\
+Published on March 15, 2025\\[1em]
+ITALIAN REPUBLIC\\
+IN THE NAME OF THE ITALIAN PEOPLE\\[1em]
+The Court, sitting as a single judge, in the person of Judge Andrea Bianchi, has delivered the following:\\[1em]
+JUDGMENT\\[0.5em]
+in the civil case registered under No. 4567/2024\\
+between\\[0.5em]
+Tizio Rossi, residing in Turin, represented and defended by Attorney Lucia Verdi, with elected domicile at her office in Turin -- plaintiff\\[0.5em]
+and\\[0.5em]
+Caio Neri, residing in Milan, represented and defended by Attorney Marco Blu, with elected domicile at his office in Milan -- defendant\\[1em]
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on January 10, 2023, he lent him the sum of EUR 15,000, as evidenced by a private written agreement signed by both parties, with the obligation to repay by June 30, 2023, pursuant to Article 1813 of the Italian Civil Code (loan contract). Despite repeated requests, the defendant allegedly failed to repay the sum. The defendant, appearing in court at the Court Building in Turin, contested the existence of the debt, claiming that the sum received was a gift under Article 769 of the Italian Civil Code.\\[1em]
+REASONS FOR THE DECISION\\
+The evidence confirmed the existence of a loan contract under Article 1813 of the Italian Civil Code, as established by the private written agreement submitted in evidence and by the testimony of two independent witnesses (pursuant to Articles 2721--2725 of the Italian Civil Code on testimonial evidence). The claim of a gift is unfounded, as no donative intent on the part of the plaintiff was proven, as required by Article 769 of the Italian Civil Code. Pursuant to Article 2697 of the Italian Civil Code, the burden of proof lies with the party asserting release from an obligation, and in this case the defendant failed to provide adequate proof. Therefore, the plaintiff's credit must be recognized in the amount of EUR 15,000, plus statutory interest from July 1, 2023, in accordance with Article 1282 of the Italian Civil Code.\\[1em]
+RULING\\
+The Court, definitively ruling, dismissing any other claims or objections,\\
+orders Mr. Caio Neri to pay Mr. Tizio Rossi the sum of EUR 15,000, plus statutory interest from July 1, 2023 until payment in full (Articles 1282 and 1284 of the Italian Civil Code);\\
+orders the defendant to reimburse the plaintiff's legal costs, set at EUR 2,500 for legal fees, plus statutory surcharges, pursuant to Articles 91 and 92 of the Italian Code of Civil Procedure.\\[1em]
+Turin, March 10, 2025\\
+The Judge\\
+Andrea Bianchi
+\end{minipage}
+\caption{Example of an abbreviated Italian civil judgment with references to legal articles and location entities.}
+\label{fig:civil-judgment-legal-articles}
+\end{figure}
+
+
+\todo{controlla che le sezioni hanno senso rispetto a la banca dati online}
+
+\todo{maybe annotate the entities}
+\todo{literature on what they are doing to help user in these domains.}
 
 \section{Knowledge Extraction}
 \todo{definitions here}
@@ -15,7 +94,59 @@ different ways for accessing external knowledge
 
 maybe move SOTA in the respective chapters
 \subsection{Named Entity Recognition}
+
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Judgment Extract:}\\[0.5em]
+The plaintiff \PERSON{Tizio Rossi}, residing in \LOCATION{Turin}, represented by Attorney \PERSON{Lucia Verdi}, alleged that on \DATE{January 10, 2023} he lent the defendant \PERSON{Caio Neri} the sum of EUR 15,000, repayable by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \LOCATION{Court Building in Turin}.\\[0.5em]
+The Court finds the loan contract valid and orders \PERSON{Caio Neri} to pay \PERSON{Tizio Rossi} EUR 15,000 plus interest from \DATE{July 1, 2023}, pursuant to \LAW{Articles 1282 and 1284}.\\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Chat Extract:}\\[0.5em]
+\DATE{2025-07-28 -- 14:15} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?\\[0.3em]
+\DATE{2025-07-29 -- 08:45} \PERSON{Mario Rossi} [voice message]: \\
+"...better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month."\\
+\end{minipage}
+\caption{Extracts of the judgment and chat logs side-by-side with entity highlights and inline entity type labels.}
+\label{fig:extracts-ner}
+\end{figure}
+
+
+
+
 \subsection{Named Entity Linking}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Judgment Extract (NEL):}\\[0.5em]
+The plaintiff \NELPerson{Tizio Rossi}{}, residing in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino}{\WikiIcon Turin}, represented by Attorney \NELPerson{Lucia Verdi}{}, alleged that on \NELDate{January 10, 2023} he lent the defendant \NELPerson{Caio Neri}{} the sum of EUR 15,000, repayable by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \NELLocation{Court Building in Turin}{https://it.wikipedia.org/wiki/Palazzo\_di\_Giustizia\_(Torino)}.\\[0.5em]
+The Court finds the loan contract valid and orders \NELPerson{Caio Neri}{} to pay \NELPerson{Tizio Rossi}{} EUR 15,000 plus interest from \NELDate{July 1, 2023}, pursuant to \NELLaw{Articles 1282 and 1284}.\\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Chat Extract (NEL):}\\[0.5em]
+\NELDate{2025-07-28 -- 14:15} \NELPerson{Luca Bianchi}{}: Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://it.wikipedia.org/wiki/Piazza\_Vittorio\_Veneto\_(Torino)} in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino} or the one by the river?\\[0.3em]
+\NELDate{2025-07-29 -- 08:45} \NELPerson{Mario Rossi}{} [voice message]: \\
+"...better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{https://it.wikipedia.org/wiki/Gianni} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via\_Roma\_(Torino)} near \NELLocation{Porta Susa station}{https://it.wikipedia.org/wiki/Porta\_Susa\_station}. Also, bring the envelope I gave you last month."\\
+\end{minipage}
+\caption{Judgment and chat extracts side-by-side with entity linking (NEL) highlighting and canonical links.}
+\label{fig:extracts-nel-new}
+\end{figure}
+\todo{migliora. potrei usare logowikipedia/Torino,... e magari link a leggi per articoli. vedi paper con statale}
+
+
 \subsection{NIL Prediction}
 \subsection{NIL Clustering}
 \subsection{coreference resolution}

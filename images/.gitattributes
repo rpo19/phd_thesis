@@ -1,0 +1,2 @@
+Wikipedia-globe.png filter=lfs diff=lfs merge=lfs -text
+Wikipedia-W.png filter=lfs diff=lfs merge=lfs -text
