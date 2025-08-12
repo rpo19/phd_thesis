@@ -23,14 +23,27 @@
 \usepackage{wrapfig}
 \usepackage{textpos}
 \usepackage{todonotes}
-\usepackage{biblatex}
 \usepackage[integrals]{wasysym}
-\addbibresource{bibliography/bibliography.bib}
 \usepackage{fancyhdr}
 \usepackage{xcolor}
 \usepackage{tcolorbox} % optional, for nicer boxes (not required)
 \usepackage{relsize}
 \usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{acro}
+\usepackage[round,authoryear]{natbib}
+\let\cite\citep
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\DeclareAcronym{IE}{
+  short = IE,
+  long = information extraction,
+  short-indefinite = an,
+%   long-plural = administrations,
+%   foreign = true
+}
 
 % Define colors for entity types
 \newcommand{\PERSON}[1]{\colorbox{magenta!30}{#1\textsuperscript{\smaller\texttt{[PER]}}}}
@@ -173,6 +186,12 @@ As an \textbf{author:}
 \end{itemize}
 %%%%%%%%
 \tableofcontents
+
+\listoffigures
+\listoftables
+
+\printacronyms
+
 \pagestyle{mystyle}
 
 % \addcontentsline{toc}{chapter}{Introduction}
@@ -194,7 +213,8 @@ As an \textbf{author:}
 
 %%%% BIBLIOGRAPHY %%%%%
 \addcontentsline{toc}{chapter}{Bibliography}
-\printbibliography
+\bibliographystyle{plainnat} % bibliography style
+\bibliography{bibliography/bibliography.bib} 
 
 \addcontentsline{toc}{chapter}{Acknowledgements}
 \include{thankyou/thankyou}
