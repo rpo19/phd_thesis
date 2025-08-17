@@ -1,10 +1,42 @@
-\chapter{Background and State of the Art}
+\chapter{Context: Domain and Literature}
 
-This section aims to describe to the reader the context necessary for the understanding of this \phd thesis, starting with a detailed description of the two knowledge-intensive domains considered by the presented work---in Section ~\ref{sec:domains}, followed by the description of state-of-the-art information extraction and access techniques---respectively explored in Sections~\ref{} and \ref{}.
-\todo{guide the reader through info extraction/text annotation/ner, coref,... add image of the taxonomy?}
+
+
+% title: Fulfilling Information Needs in Knowledge-Intensive Domains: Entity-Oriented Strategies for Information Extraction and Access
+
+% concepts of information need and information object
+% information extraction and access
+% bit of context of nlp, ir, semantic web and databases
+% description of the domain and subdomains (law judgements and data from criminal investigations)
+% literature of most relevant tasks (NER, NEL, coreference resolution, QA) 
+
+In this chapter, we lay the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing the fundamental notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We then turn to the broader themes of information extraction and access, situating the discussion within several relevant branches of computer science---including \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}. Once this broader context is established, we narrdescribe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
 Although part of this \phd work has been applied to \dots{general-domain} benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
 For this reason, concepts and tasks definitions from the literature are paired with examples referring to the focused domains with the twofold aim of facilitating the reader comprehension of the concepts and familiarization with the domains.  
+
+\todo{guide the reader through info extraction/text annotation/ner, coref,... add image of the taxonomy?}
+\todo{rethink the "in this section part"}
+
+\section{Information Access}
+On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \textit{information needs} by proving the relevant \textit{information objects}. The former aim to find web pages that contain our information need, often represented as a \textit{query}, the latter allow us to browse web pages to finally find the required information.
+We will refer to the users' capability of accessing the required information as \textit{\acl{ia}} to generalize over \acl{ir} and search engines by including also technologies that does not retrieve information but still allows users to access the needed information; consider web browsers as an example.
+\todo{improve last sentence. the idea is that IA is not only IR, but also browsing documents or entity-based stuff. e.g. accessing information abut entities}
+\todo{continue with something about the types of information objects, trying to reach entities.}
+\todo{then speak about the intersection of the fields nlp,ir,db,sw}
+
+There are different types of information objects...
+
+\section{Information Retrieval}
+
+
+Indeed, \acl{ir} focuses on matching the user's information need--- which can be expressed as a keyword-based query or a question in natura language---with one or more information objects---such as a document containing relevant information or an answer in natural language~\cite{entityorientedsearch2018}.
+
+% Several international conferences, such as TREC~\cite{} or SIGIR~\cite{}, are held periodically since 1992~\cite{} to advance the state-of-the-art in \acl{ir}, and 
+
+
+
+% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \textit{information need}
 
 \section{Domains}
 \label{sec:domains}
@@ -88,7 +120,7 @@ Andrea Bianchi
 \section{Information Extraction}
 \paragraph{definitions}
 \begin{definition}[Information Extraction]
-\Ac{IE} ``refers to
+\Ac{ie} ``refers to
 the automatic extraction of structured information such as entities, relationships
 between entities, and attributes describing entities from unstructured sources''~\cite{infoextraction2008}.
 \end{definition}
