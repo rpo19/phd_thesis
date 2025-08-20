@@ -32,10 +32,29 @@
 \usepackage{amsthm}
 \usepackage{acro}
 \usepackage[round,authoryear]{natbib}
+\usepackage{mfirstuc}
+\usepackage{mdframed} % in the preamble
+
+\newmdenv[
+  backgroundcolor=gray!10, % light gray background
+  linecolor=gray!10,       % border color
+  skipabove=5pt,
+  skipbelow=5pt,
+  innertopmargin=0pt,
+  innerbottommargin=8pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  roundcorner=5pt
+]{graybox}
+
 \let\cite\citep
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
+
+\BeforeBeginEnvironment{definition}{\begin{graybox}}
+\AfterEndEnvironment{definition}{\end{graybox}}
+
 
 \DeclareAcronym{ie}{
   short = IE,
@@ -49,8 +68,6 @@
   short = IA,
   long = information access,
 }
-
-
 
 \DeclareAcronym{ir}{
   short = IR,
@@ -110,6 +127,13 @@
 \DeclareAcronym{cs}{
   short = CS,
   long = computer science,
+}
+
+\DeclareAcronym{llm}{
+  short = LLM,
+  long = large language model,
+  plural = s,
+  long-plural = s
 }
 
 \newcommand{\PERSON}[1]{\colorbox{magenta!30}{#1\textsuperscript{\smaller\texttt{[PER]}}}}

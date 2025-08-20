@@ -10,7 +10,7 @@
 % description of the domain and subdomains (law judgements and data from criminal investigations)
 % literature of most relevant tasks (NER, NEL, coreference resolution, QA) 
 
-In this chapter, we lay the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing the fundamental notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We then turn to the broader themes of information extraction and access, situating the discussion within several relevant branches of computer science---including \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}. Once this broader context is established, we narrdescribe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
+This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
 Although part of this \phd work has been applied to \dots{general-domain} benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
 For this reason, concepts and tasks definitions from the literature are paired with examples referring to the focused domains with the twofold aim of facilitating the reader comprehension of the concepts and familiarization with the domains.  
@@ -19,14 +19,51 @@ For this reason, concepts and tasks definitions from the literature are paired w
 \todo{rethink the "in this section part"}
 
 \section{Information Access}
-On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \textit{information needs} by proving the relevant \textit{information objects}. The former aim to find web pages that contain our information need, often represented as a \textit{query}, the latter allow us to browse web pages to finally find the required information.
-We will refer to the users' capability of accessing the required information as \textit{\acl{ia}} to generalize over \acl{ir} and search engines by including also technologies that does not retrieve information but still allows users to access the needed information; consider web browsers as an example.
-\todo{improve last sentence. the idea is that IA is not only IR, but also browsing documents or entity-based stuff. e.g. accessing information abut entities}
+On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \textit{information needs} by proving the relevant \textit{information objects}~\cite{entityorientedsearch2018}. The former aim to find web pages that contain our information need, often represented as a \textit{query}, the latter allow us to browse web pages to finally find the required information.
+We will refer to the users' capability of accessing the required information as \textit{\acl{ia}} to generalize over \acl{ir} and search engines by also including technologies that do not retrieve information but still allow users to access it; for example, web browsers or tools for visualizing and exploring documents.
 \todo{continue with something about the types of information objects, trying to reach entities.}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\linewidth]{images/Screenshot Rome - Google Search.png}
+    \caption{Example of a modern search engine result page (screenshot from Google Search).}
+    \label{fig:rome-search}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\linewidth]{images/Screenshot Barack Obama - Google Search.png}
+    \caption{Example of factual question answered via knowledge graph (screenshot from Google Search).}
+    \label{fig:barack-search}
+\end{figure}
+
+While traditionally the information objects were documents, search engines have, over the past decades, gradually transitioned toward providing richer answers. As visible in Figures~\ref{fig:rome-search} and \ref{fig:barack-search}, results now often display entities and facts directly, enriched with pictures, maps, or other structured information depending on the answer type. A key enabler of these developments has been the emergence of large-scale knowledge bases and knowledge repositories, which organize information around entities~\cite{entityorientedsearch2018}, such as the Google Knowledge Graph~\cite{google-kg2020,wikipedia:kggoogle}.
+%
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\linewidth]{images/Screenshot Better Actor - Google Search.png}
+    \caption{Example of question answered with a \acl{llm} (screenshot from Google Search).}
+    \label{fig:actor-search}
+\end{figure}
+%
+More recently, \acp{llm} have further extended these capabilities by enabling natural language questions to be answered directly with fluent natural language responses, as depicted in Figure~\ref{fig:actor-search}.
+
+\todo{collegare a entities e continuare}
+
+\section{What Is an Entity?}
+
+\begin{definition}[Entity]
+``An entity is an object or concept in the real world that can be distinctly
+identified''~\cite{entityorientedsearch2018}.
+\end{definition}
+Examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which respectively refer to a person, an organization, and a geopolitical entity. All of these correspond to \textit{named entities}. but also concepts...
+
+
+
+
+
+
 \todo{then speak about the intersection of the fields nlp,ir,db,sw}
-
-There are different types of information objects...
-
 \section{Information Retrieval}
 
 
