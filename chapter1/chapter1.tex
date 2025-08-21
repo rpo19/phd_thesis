@@ -52,11 +52,13 @@ More recently, \acp{llm} have further extended these capabilities by enabling na
 
 \section{What Is an Entity?}
 
+``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
+Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \textit{named entities}, i.e., entities that can be identified by a proper noun. In practise, however, \acl{nlp} tools recognize also more general \textit{concepts}, such as dates, monetary values, quantities, or other abstract objects. This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \textit{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
 \begin{definition}[Entity]
-``An entity is an object or concept in the real world that can be distinctly
-identified''~\cite{entityorientedsearch2018}.
-\end{definition}
-Examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which respectively refer to a person, an organization, and a geopolitical entity. All of these correspond to \textit{named entities}. but also concepts...
+    An entity is a uniquely identifiable object, thing, or concept, characterized by its identifiers or names, type(s), attributes, and relationships to other entities or concepts.
+\end{definition} 
+
+
 
 
 
