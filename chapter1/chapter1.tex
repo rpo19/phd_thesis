@@ -9,7 +9,8 @@
 % bit of context of nlp, ir, semantic web and databases
 % description of the domain and subdomains (law judgements and data from criminal investigations)
 % literature of most relevant tasks (NER, NEL, coreference resolution, QA) 
-
+\todo{info access or discovery?}
+\todo{who access the information? humans, llms, humans through llms accessing}
 This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
 Although part of this \phd work has been applied to general-domain benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
@@ -19,9 +20,11 @@ For this reason, concepts and tasks definitions from the literature are paired w
 \todo{rethink the "in this section part"}
 
 \section{Information Access}
+\todo{list the possible ways for accessing information and how documents need to be processed for the different ways}
 On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \textit{information needs} by proving the relevant \textit{information objects}~\cite{entityorientedsearch2018}. The former aim to find web pages that contain our information need, often represented as a \textit{query}, the latter allow us to browse web pages to finally find the required information.
 We will refer to the users' capability of accessing the required information as \textit{\acl{ia}} to generalize over \acl{ir} and search engines by also including technologies that do not retrieve information but still allow users to access it; for example, web browsers or tools for visualizing and exploring documents.
 \todo{continue with something about the types of information objects, trying to reach entities.}
+\todo{read https://www.encyclopedia.com/computing/news-wires-white-papers-and-books/information-access, add definition, and cite}
 
 \begin{figure}[ht!]
     \centering
