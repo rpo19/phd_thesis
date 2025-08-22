@@ -12,7 +12,7 @@
 
 This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
-Although part of this \phd work has been applied to \dots{general-domain} benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
+Although part of this \phd work has been applied to general-domain benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
 For this reason, concepts and tasks definitions from the literature are paired with examples referring to the focused domains with the twofold aim of facilitating the reader comprehension of the concepts and familiarization with the domains.  
 
 \todo{guide the reader through info extraction/text annotation/ner, coref,... add image of the taxonomy?}
@@ -53,14 +53,17 @@ More recently, \acp{llm} have further extended these capabilities by enabling na
 \section{What Is an Entity?}
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
-Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \textit{named entities}, i.e., entities that can be identified by a proper noun. In practise, however, \acl{nlp} tools recognize also more general \textit{concepts}, such as dates, monetary values, quantities, or other abstract objects. This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \textit{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
+Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \textit{named entities}, i.e., entities that can be identified by a proper noun.
+In practise, however, \acl{nlp} tools also recognize more general \textit{concepts}, such as dates (e.g., ``June 20''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion).
+This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \textit{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
 \begin{definition}[Entity]
     An entity is a uniquely identifiable object, thing, or concept, characterized by its identifiers or names, type(s), attributes, and relationships to other entities or concepts.
 \end{definition} 
 
 
 
-
+\todo{now kg repository and kb}
+\todo{info extraction together with nlp,ir,db,..}
 
 
 
