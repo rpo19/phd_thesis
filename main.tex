@@ -52,8 +52,8 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 
-\BeforeBeginEnvironment{definition}{\begin{graybox}}
-\AfterEndEnvironment{definition}{\end{graybox}}
+\BeforeBeginEnvironment{definition}{\begin{samepage}\begin{graybox}}
+\AfterEndEnvironment{definition}{\end{graybox}\end{samepage}}
 
 
 \DeclareAcronym{ie}{
@@ -285,10 +285,11 @@ As an \textbf{author:}
 
 \pagestyle{mystyle}
 
+\pagenumbering{arabic}
+
 % \addcontentsline{toc}{chapter}{Introduction}
 \include{preface/preface}
 
-\pagenumbering{arabic}
 
 \include{chapter1/chapter1}
 

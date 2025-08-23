@@ -11,7 +11,7 @@
 % literature of most relevant tasks (NER, NEL, coreference resolution, QA) 
 \todo{info access or discovery?}
 \todo{who access the information? humans, llms, humans through llms accessing}
-This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \textit{information needs} and \textit{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
+This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \emph{information needs} and \emph{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
 Although part of this \phd work has been applied to general-domain benchmark data, the motivaton behind still resides in the peculiarities of specific domains and their properties.\todo{fix and enumerate the properties!}
 For this reason, concepts and tasks definitions from the literature are paired with examples referring to the focused domains with the twofold aim of facilitating the reader comprehension of the concepts and familiarization with the domains.  
@@ -20,13 +20,12 @@ For this reason, concepts and tasks definitions from the literature are paired w
 \todo{rethink the "in this section part"}
 
 \section{Information Access}
-\todo{list the possible ways for accessing information and how documents need to be processed for the different ways}
-On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \textit{information needs} by proving the relevant \textit{information objects}~\cite{entityorientedsearch2018}. The former aim to find web pages that contain our information need, often represented as a \textit{query}, the latter allow us to browse web pages to finally find the required information. Web browsers and search engines are indeed two methods for pursuing \textit{information access}.
-Throughout this thesis we will refer to the following definition of information access, which solely refers to the digital activities performed by a user to fulfill her/his information need. Any meaning related to issue of social, economical, or political nature issues that limits people freedom to access information is not relevant for this work.\todo{improve}
+On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \emph{information needs} by proving the relevant \emph{information objects}~\cite{entityorientedsearch2018}. The former aim to find web pages that contain our information need, often represented as a \emph{query}, the latter allow us to browse web pages to finally find the required information. Web browsers and search engines are two primary tools for facilitating \emph{information access}.
+In this thesis, we adopt the following definition of information access---based on \citet{encyclopedia_information_access}---which is limited to the digital activities a user undertakes to satisfy an information need. Broader considerations related to social, economic, or political factors that may restrict individuals’ freedom to access information are beyond the scope of this work.
 \begin{definition}[Information Access]
-    
+    Information access is the ability to effectively identify, retrieve, and utilize information.
 \end{definition}
-We will refer to the users' capability of accessing the required information as \textit{\acl{ia}} to generalize over \acl{ir} and search engines by also including technologies that do not retrieve information but still allow users to access it; for example, web browsers or tools for visualizing and exploring documents.
+\todo{list the possible ways for accessing information and how documents need to be processed for the different ways}
 \todo{continue with something about the types of information objects, trying to reach entities.}
 \todo{read https://www.encyclopedia.com/computing/news-wires-white-papers-and-books/information-access, add definition, and cite}
 % information access: you know what you want
@@ -49,7 +48,7 @@ We will refer to the users' capability of accessing the required information as 
     \label{fig:barack-search}
 \end{figure}
 
-While traditionally the information objects were documents, search engines have, over the past decades, gradually transitioned toward providing richer answers. As visible in Figures~\ref{fig:rome-search} and \ref{fig:barack-search}, results now often display entities and facts directly, enriched with pictures, maps, or other structured information depending on the answer type. A key enabler of these developments has been the emergence of large-scale knowledge bases and knowledge repositories, which organize information around entities~\cite{entityorientedsearch2018}, such as the Google Knowledge Graph~\cite{google-kg2020,wikipedia:kggoogle}.
+While traditionally the information objects were documents, search engines have, over the past decades, gradually transitioned toward providing richer answers. As visible in Figures~\ref{fig:rome-search} and \ref{fig:barack-search}, results now often display entities and facts directly, enriched with pictures, maps, or other structured information depending on the answer type. A key enabler of these developments has been the emergence of large-scale knowledge bases and knowledge repositories, which organize information around entities~\cite{entityorientedsearch2018}, such as the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}.
 %
 \begin{figure}[ht!]
     \centering
@@ -60,14 +59,22 @@ While traditionally the information objects were documents, search engines have,
 %
 More recently, \acp{llm} have further extended these capabilities by enabling natural language questions to be answered directly with fluent natural language responses, as depicted in Figure~\ref{fig:actor-search}.
 
+Applications for information access include, but are not limited to:
+\begin{itemize}
+    \item search engines that retrieve documents or items based on a query;
+    \item web browsers that allow users to explore documents and follow hyperlinks;
+    \item recommendation systems that suggest relevant or similar documents;
+    \item question-answering systems that provide direct answers to users' questions based on information from structured or unstructured data.
+\end{itemize} 
+
 \todo{collegare a entities e continuare}
 
 \section{What Is an Entity?}
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
-Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \textit{named entities}, i.e., entities that can be identified by a proper noun.
-In practise, however, \acl{nlp} tools also recognize more general \textit{concepts}, such as dates (e.g., ``June 20''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion).
-This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \textit{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
+Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
+In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion).
+This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
 \begin{definition}[Entity]
     An entity is a uniquely identifiable object, thing, or concept, characterized by its identifiers or names, type(s), attributes, and relationships to other entities or concepts.
 \end{definition} 
@@ -90,7 +97,7 @@ Indeed, \acl{ir} focuses on matching the user's information need--- which can be
 
 
 
-% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \textit{information need}
+% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \emph{information need}
 
 \section{Domains}
 \label{sec:domains}
