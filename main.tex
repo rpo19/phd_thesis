@@ -33,7 +33,17 @@
 \usepackage{acro}
 \usepackage[round,authoryear]{natbib}
 \usepackage{mfirstuc}
-\usepackage{mdframed} % in the preamble
+\usepackage{mdframed}
+\usepackage{listings}
+
+% Optional: customize style for RDF-like snippets
+\lstdefinestyle{rdfstyle}{
+  basicstyle=\ttfamily\small, % monospaced
+  frame=single,               % box around
+  numbers=none,               % no line numbers
+  breaklines=true,            % wrap long lines
+  showstringspaces=false      % cleaner strings
+}
 
 \newmdenv[
   backgroundcolor=gray!10, % light gray background
@@ -91,7 +101,7 @@
 
 \DeclareAcronym{kr}{
   short = KR,
-  long = knowledge repository,
+  long = knowledge repository
 }
 
 \DeclareAcronym{kg}{
