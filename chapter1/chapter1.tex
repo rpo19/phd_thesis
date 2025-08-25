@@ -76,14 +76,42 @@ Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', 
 In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion).
 This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
 \begin{definition}[Entity]
-    An entity is a uniquely identifiable object, thing, or concept, characterized by its identifiers or names, type(s), attributes, and relationships to other entities or concepts.
+An \emph{entity} is a uniquely identifiable object, thing, or concept. 
+It is described through a set of \emph{entity properties}, always including 
+at least one unique identifier and one name (which may in some cases coincide). 
+Additinal entity properties include types, attributes, and 
+relationships to other entities or concepts.
 \end{definition}
-\todo{add entiy properties? or add some entity examples}
 
+For example, consider the entity \textsc{Barack Obama}. 
+A possible unique identifier is ``Barack Obama (44th US president)'', which can serve also as a name, alongwith ``Barack Obama.'' 
+The entity belongs to the types \texttt{Person} and \texttt{Politician}. 
+Its attributes include the full birth name ``Barack Hussein Obama II'' and the date of birth ``Aug 4, 1961''. 
+Relationships connect this entity to other entities such as its birthplace, \textsc{Honolulu}, and its spouse, \textsc{Michelle Obama}.
+
+Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~\cite{entityorientedsearch2018}.
+%
+\begin{definition}[\Acl{kr}]
+A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018}.
+\end{definition}
+
+Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
+
+For structured representations of entities, so that they can be used easily by computers, rdf~\cite{rdf} is predominant...
+\todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
+
+
+\todo{paraphrase and move KG after saying that they are equivalente but when viewed as a graph we use kg. also say why can be viewed as a graph. introduce also triples sub-pred-obj}
+%
+\todo{intrduce facts and triples and then move to the kb definition}
+\begin{definition}[\Acl{kb}]
+    ``A \acf{kb} is a structured knowledge repository that contains a set of facts (assertions) about entities''~\cite{entityorientedsearch2018}.
+\end{definition}
+%
 \begin{figure}[h]
 \centering
 % as of aug 25, 2025
-\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}.},label={lis:obama}]
+\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia,dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}.},label={lis:obama}]
 <dbr:Barack_Obama>
 
     <dbo:birthName>    "Barack Hussein Obama II"
@@ -99,19 +127,6 @@ This occurs because, at the implementation level, the same methods can detect bo
                         African-American president [...]"
 \end{lstlisting}
 \end{figure}
-\todo{something about triples and turtle? maybe later in the semantic web. make it turtle (missing ;?)}
-
-The information about entities and their relationships can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~\cite{entityorientedsearch2018}.
-%
-\begin{definition}[\Acl{kr}]
-    ``A \acf{kr} is a catalog of entities that contains entity type information, and (optionally) descriptions or properties
-    of entities, in a semi-structured or structured format''~\cite{entityorientedsearch2018}.
-\end{definition}
-\todo{paraphrase and move KG after saying that they are equivalente but when viewed as a graph we use kg. also say why can be viewed as a graph. introduce also triples sub-pred-obj}
-%
-\begin{definition}[\Acl{kb}]
-    ``A \acf{kb} is a structured knowledge repository that contains a set of facts (assertions) about entities''~\cite{entityorientedsearch2018}.
-\end{definition}
 %
 Listing~\ref{lis:obama} shows some \emph{entity properties} for the DBpedia~\cite{dbpedia_auer_nucleus_2007} entity of \textsc{Barack Obama}, including types (``\textless dbo:Person\textgreater'', ``\textless dbo:Politician\textgreater''), attributes (``\textless dbo:birthName\textgreater'', ``\textless dbo:birthDate\textgreater'', ``\textless rdfs:comment\textgreater''), and relationships with other entities (``\textless dbo:birthPlace\textgreater'', ``\textless dbo:spouse\textgreater'').
 
