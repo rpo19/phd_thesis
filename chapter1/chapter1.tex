@@ -99,7 +99,13 @@ Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each 
 
 While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the Web into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
 
-The \acf{rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity.
+The \acf{rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
+\begin{definition}[Fact]
+    A fact is an atomic statement, a single and indivisible assertion of a specific piece of information about the world, typically describing a property of an entity or a relationship between entities.
+\end{definition}
+Example of facts are ... (about Barack obama)
+Instead in \ac{rdf} ...
+
 \todo{definition of fact and examples}
 
 knowledge in the form of triples---subject, predicate, object---where each element is typically identified by a URI. This simple but powerful structure allows entities to be uniquely referenced and linked across datasets, forming the foundation for interoperable, machine-readable knowledge on the Web~\cite{klyne2004rdf}.
