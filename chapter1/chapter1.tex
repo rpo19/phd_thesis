@@ -97,7 +97,14 @@ A \acf{kr} is a structured or semi-structured collection of entities~\cite{entit
 
 Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
 
-For structured representations of entities, so that they can be used easily by computers, rdf~\cite{rdf} is predominant...
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the Web into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
+
+The \acf{rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity.
+\todo{definition of fact and examples}
+
+knowledge in the form of triples---subject, predicate, object---where each element is typically identified by a URI. This simple but powerful structure allows entities to be uniquely referenced and linked across datasets, forming the foundation for interoperable, machine-readable knowledge on the Web~\cite{klyne2004rdf}.
+
+
 \todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
 
 
