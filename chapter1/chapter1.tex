@@ -69,7 +69,7 @@ Applications for information access include, but are not limited to:
 
 \todo{collegare a entities e continuare}
 
-\section{What Is an Entity?}
+\section{Entities and How to Represent Them}
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
@@ -99,52 +99,71 @@ Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each 
 
 While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the Web into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
 
-The \acf{rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
+The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
     A fact is an atomic statement, a single and indivisible assertion of a specific piece of information about the world, typically describing a property of an entity or a relationship between entities.
 \end{definition}
-Example of facts are ... (about Barack obama)
-Instead in \ac{rdf} ...
-
-\todo{definition of fact and examples}
-
-knowledge in the form of triples---subject, predicate, object---where each element is typically identified by a URI. This simple but powerful structure allows entities to be uniquely referenced and linked across datasets, forming the foundation for interoperable, machine-readable knowledge on the Web~\cite{klyne2004rdf}.
-
-
-\todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
-
-
-\todo{paraphrase and move KG after saying that they are equivalente but when viewed as a graph we use kg. also say why can be viewed as a graph. introduce also triples sub-pred-obj}
+Example of facts are ``Barack Obama was born on Aug 04, 1961.'' or ``Barack Obama was born in Honolulu.''
+Instead, in \ac{rdf} resources are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually IRIs (Internationalized Resource Identifier~\cite{durst2005iri}---sequences of unicode characters that uniquely identify resources), while the object is usually either a IRI or a literal (used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag)~\cite{klyne2004rdf}.
+\todo{maybe better to use IRI}
 %
-\todo{intrduce facts and triples and then move to the kb definition}
-\begin{definition}[\Acl{kb}]
-    ``A \acf{kb} is a structured knowledge repository that contains a set of facts (assertions) about entities''~\cite{entityorientedsearch2018}.
-\end{definition}
+The previous facts appear as follows in \ac{rdf}:
 %
+\begin{lstlisting}
+    <*@\url{http://dbpedia.org/resource/Barack_Obama}@*>
+            <*@\url{http://dbpedia.org/ontology/birthName}@*>
+                    "Barack Hussein Obama II"@en .
+
+    <*@\url{http://dbpedia.org/resource/Barack_Obama}@*>
+            <*@\url{http://dbpedia.org/ontology/birthPlace}@*>
+                    <*@\url{http://dbpedia.org/resource/Honolulu}@*> .
+\end{lstlisting}
+
+
+Listing~\ref{lis:obama} shows some \emph{entity properties} for the entity \textsc{Barack Obama} from DBpedia~\cite{dbpedia_auer_nucleus_2007}. It uses \ac{rdf} following the Turtle~\cite{prudhommeaux2014turtle} syntax and includes types (``dbo:Person'', ``dbo:Politician''), attributes (``dbo:birthName'', ``dbo:birthDate'', ``rdfs:comment''), and relationships with other entities (``dbo:birthPlace'', ``dbo:spouse''). Prefixes are defined to avoid repetitive long IRIs.
+
 \begin{figure}[h]
 \centering
 % as of aug 25, 2025
-\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia,dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}.},label={lis:obama}]
-<dbr:Barack_Obama>
+\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia,dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}, in Turtle format~\cite{prudhommeaux2014turtle}.},label={lis:obama}]
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-    <dbo:birthName>    "Barack Hussein Obama II"
-    <dbo:birthPlace>   <dbr:Honolulu>
-    <dbo:birthDate>    "1961-08-04"
-    <rdf:type>         <dbo:Person>
-    <rdf:type>         <dbo:Politician>
-    <dbo:spouse>       <dbr:Michelle_Obama>
-    <rdfs:comment>     "Barack Hussein Obama II ([...] born August 4,
-                        1961) is an American politician who served as
-                        the 44th president of the United States from
-                        2009 to 2017. [...] Obama was the first
-                        African-American president [...]"
+dbr:Barack_Obama
+
+        dbo:birthName       "Barack Hussein Obama II" ;
+        dbo:birthPlace      dbr:Honolulu ;
+        dbo:birthDate       "1961-08-04" ;
+        rdf:type            dbo:Person ;
+        rdf:type            dbo:Politician ;
+        dbo:spouse          dbr:Michelle_Obama ;
+        rdfs:comment        "Barack Hussein Obama II ([...] born August 4,
+                            1961) is an American politician who served as
+                            the 44th president of the United States from
+                            2009 to 2017. [...] Obama was the first
+                            African-American president [...]" .
+
 \end{lstlisting}
 \end{figure}
+
+Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
+
+
+
+
+
 %
-Listing~\ref{lis:obama} shows some \emph{entity properties} for the DBpedia~\cite{dbpedia_auer_nucleus_2007} entity of \textsc{Barack Obama}, including types (``\textless dbo:Person\textgreater'', ``\textless dbo:Politician\textgreater''), attributes (``\textless dbo:birthName\textgreater'', ``\textless dbo:birthDate\textgreater'', ``\textless rdfs:comment\textgreater''), and relationships with other entities (``\textless dbo:birthPlace\textgreater'', ``\textless dbo:spouse\textgreater'').
+\todo{intrduce facts and triples and then move to the kb definition}
+\begin{definition}[\Acl{kb}]
+    A \acf{kb} is a structured form of \acl{kr} that organizes and stores facts about entities. 
+    These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018}.
+\end{definition}
 
+\todo{KG after saying that they are equivalente but when viewed as a graph we use kg. also say why can be viewed as a graph. introduce also triples sub-pred-obj}
 
-
+\todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
 
 
 % \begin{figure}[h]

@@ -36,7 +36,14 @@
 \usepackage{mdframed}
 \usepackage{listings}
 
-% Optional: customize style for RDF-like snippets
+\lstset{
+  basicstyle=\ttfamily,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  escapeinside={*@}{@*}, % allow LaTeX inside listings
+}
+
 \lstdefinestyle{rdfstyle}{
   basicstyle=\ttfamily\small, % monospaced
   frame=single,               % box around
