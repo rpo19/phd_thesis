@@ -35,6 +35,15 @@
 \usepackage{mfirstuc}
 \usepackage{mdframed}
 \usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+
+\tikzset{
+  entity/.style={ellipse, draw, fill=blue!15, align=center, minimum width=2cm},
+  literal/.style={rectangle, draw, fill=green!15, align=center, minimum width=2.5cm},
+  class/.style={diamond, draw, fill=orange!20, align=center, minimum width=2cm},
+  edge/.style={-Latex}
+}
 
 \lstset{
   basicstyle=\ttfamily,
@@ -280,6 +289,9 @@ I also developed \textbf{ReFactX}, a scalable and efficient method for answering
 % Name & headline
 
 %\switchcolumn
+\todo{remove}
+Font: \fontname\font
+
 \section*{List of publications}
 $\bullet$ Paper 1 \cite{yourpaper1}
 

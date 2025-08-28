@@ -130,12 +130,13 @@ Listing~\ref{lis:obama} shows some \emph{entity properties} for the entity \text
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 dbr:Barack_Obama
 
-        dbo:birthName       "Barack Hussein Obama II" ;
+        dbo:birthName       "Barack Hussein Obama II"@en ;
         dbo:birthPlace      dbr:Honolulu ;
-        dbo:birthDate       "1961-08-04" ;
+        dbo:birthDate       "1961-08-04"^^xsd:date ;
         rdf:type            dbo:Person ;
         rdf:type            dbo:Politician ;
         dbo:spouse          dbr:Michelle_Obama ;
@@ -143,46 +144,38 @@ dbr:Barack_Obama
                             1961) is an American politician who served as
                             the 44th president of the United States from
                             2009 to 2017. [...] Obama was the first
-                            African-American president [...]" .
+                            African-American president [...]"@en .
 
 \end{lstlisting}
 \end{figure}
 
 Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
-
-
-
-
-
 %
 \todo{intrduce facts and triples and then move to the kb definition}
 \begin{definition}[\Acl{kb}]
-    A \acf{kb} is a structured form of \acl{kr} that organizes and stores facts about entities. 
+    A \acf{kb}, or a \acf{kg}, is a structured form of \acl{kr} that organizes and stores facts about entities. 
     These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018}.
+    %
+    When the primary interest lies in the connections between entities, a \acl{kb} is often referred to as a \emph{\acl{kg}}.
 \end{definition}
 
-\todo{KG after saying that they are equivalente but when viewed as a graph we use kg. also say why can be viewed as a graph. introduce also triples sub-pred-obj}
+Figure~\ref{fig:barack_kg} shows an example \acl{kg} about \textsc{Barack Obama} and some connected entities.
+
+\begin{figure}[htbp]
+    \centering
+    % Include the PDF file
+    \includegraphics[width=\textwidth]{images/barack_kg.pdf}
+    \caption{Example of \acl{kg}. \ac{rdf} prefixes are defined in Listing~\ref{lis:obama}}
+    \label{fig:barack_kg}
+\end{figure}
+
+
+
+\todo{problem of incompleteness. to introduce the incremental kbp}
 
 \todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
 
 
-% \begin{figure}[h]
-% \centering
-% \begin{lstlisting}[style=rdfstyle,caption={DBpedia entity: Rome},label={fig:rome}]
-% <dbr:Rome>
-%     <foaf:name>        "Rome"
-%     <dbo:country>      <dbr:Italy>
-%     <dbo:isPartOf>     <dbr:Lazio>
-%     <dct:description>  "Capital city of Italy"
-%     <dbo:populationTotal> "2860009"
-%     <rdf:type>         <dbo:City>
-%     <dct:subject>      <dbc:Capitals_in_Europe>
-%     <dct:subject>      <dbc:World_Heritage_Sites_in_Italy>
-%     <rdfs:comment>     "Rome is the capital and most populous city of Italy, famous
-%                         for its history as the center of the Roman Empire, the Vatican,
-%                         and its cultural and architectural landmarks."
-% \end{lstlisting}
-% \end{figure}
 
 \section{Entities in the Literature}
 
