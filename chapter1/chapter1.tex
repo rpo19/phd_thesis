@@ -97,7 +97,7 @@ A \acf{kr} is a structured or semi-structured collection of entities~\cite{entit
 
 Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the Web into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
 
 The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
@@ -172,9 +172,18 @@ Figure~\ref{fig:barack_kg} shows an example \acl{kg} about \textsc{Barack Obama}
 
 
 \todo{problem of incompleteness. to introduce the incremental kbp. structured means higher quality. unstructured more information lower quality. how is wikidata curated? and dbpedia? to justify the additional human effort. cerca motivazione da paper di hybrid qa come humaniq.}
-\Acl{kr} suffer from incompleteness, since there is always new information to add or update~\cite{entityorientedsearch2018}. \Acp{kb}, in particular, often require additional human effort with respect to unstructured \ac{kr}~\cite{}\todo{cite and give more focus to the incompleteness}.
 
-\todo{while SW technologies can repr ents in structured form eg rdf, triples sub-pre-obj, kb kg, dbpedia, wikidata, freebase, yago (ontologies?)}
+\subsubsection{Incompleteness of Knowledge Bases}
+\todo{can be expanded and called properties of Kbs}
+%
+\acp{kb} are often incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018}. For example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
+This incompleteness is further supported by several research proposals for answering questions in natural language that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
+%
+Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{web}, suffer---at least partially---from both incompleteness and unreliable information form. Compared to the \ac{web}, they are more structured but less broad and comprehensive. Conversely, relative to \acp{kb}, they cover a wider range of information but present it in a less structured and less reliable form.\todo{missing citation? but it is based on previous statements, so probably not needed. maybe I can cite balog but does not say this clearly.}
+
+\todo{now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
+
+\todo{lehmann beyond cita qualcosa di interessante per le entità con llm per taggare documenti}
 
 
 
