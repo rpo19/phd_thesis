@@ -73,7 +73,7 @@ Applications for information access include, but are not limited to:
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
-In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion).
+In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
 This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \citet{entityorientedsearch2018} definition:
 \begin{definition}[Entity]
 An \emph{entity} is a uniquely identifiable object, thing, or concept. 
@@ -173,24 +173,35 @@ Figure~\ref{fig:barack_kg} shows an example \acl{kg} about \textsc{Barack Obama}
 
 \todo{problem of incompleteness. to introduce the incremental kbp. structured means higher quality. unstructured more information lower quality. how is wikidata curated? and dbpedia? to justify the additional human effort. cerca motivazione da paper di hybrid qa come humaniq.}
 
-\subsubsection{Incompleteness of Knowledge Bases}
+\subsection{Structured or Unstructured? The Web versus Knowledge Bases}
 \todo{can be expanded and called properties of Kbs}
 %
-\acp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018}. For example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
-This incompleteness is further supported by several research proposals for answering questions in natural language that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
+Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
+This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (see Section\todo{})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
 %
 \todo{maybe useful from balog ``Keeping up
 with these changes requires a continuous effort from editors and content managers''}
 Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{web}, suffer---at least partially---from both incompleteness and unreliable information form. Compared to the \ac{web}, they are more structured but less broad and comprehensive. Conversely, relative to \acp{kb}, they cover a wider range of information but present it in a less structured and less reliable form.\todo{missing citation? but it is based on previous statements, so probably not needed. maybe I can cite balog but does not say this clearly.}
 
+\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018}.
+
+\subsection{Information Extraction and Knowledge Base Population}
+\todo{maybe introduce a bit nlp wiht the objective and computational linguistic with the objective of capturing the meaning of text}
+Combining the higher-quality information from \ac{kb} with the broader coverage of unstructured data has motivated the research in \emph{\acl{ie}} since three decades ago~\cite{infoextraction2008,entityorientedsearch2018}.
+\begin{definition}[Information Extraction]
+``\Acf{ie} refers to the automatic extraction of structured information such as entities, relationships between entities, and attributes describing entities from unstructured sources''~\cite{infoextraction2008}.
+\end{definition}
+The use of \ac{ie} techniques is generally aimed at either \emph{\acl{sta}} or \emph{\acl{kbp}}~\cite{entityorientedsearch2018}.
+In the former case, annotating text with information from a \ac{kb} enriches the text with additional semantics, making it more machine-understandable, and enabling advanced information access functionalities, such as entity-based search and filtering via faceting~\cite{entityorientedsearch2018}.
+In the latter case, \ac{ie} is used to populate or update a \ac{kb} with information extracted from unstructured sources, thereby enhancing the \ac{kb}'s coverage or keeping it up to date.
+
+While \acsp{llm} possess high-level natural language understanding capabilities, \acl{sta} is still useful.\todo{find papers and motivate} 
+
+\todo{now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
 
 \todo{also say that info extraction can add some kind of structure to unstructured web content}
 \todo{for these reasons (verify makes sense) decades of research focused on info extraction (giving entity-based "structure"/order to unstructured content---using kbs to "structure"/make more machine understandable text) and knowledge base population (automatically populating/updating structured knowledge bases---using text for updating kbs)}
 \todo{present info extraction also as an enrichment of text/unstructured data via semantic annotation}
-
-\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018}. For this reason
-
-\todo{now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
 
 \todo{lehmann beyond cita qualcosa di interessante per le entità con llm per taggare documenti}
 
