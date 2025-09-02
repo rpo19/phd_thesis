@@ -9,7 +9,6 @@
 % bit of context of nlp, ir, semantic web and databases
 % description of the domain and subdomains (law judgements and data from criminal investigations)
 % literature of most relevant tasks (NER, NEL, coreference resolution, QA) 
-\todo{info access or discovery?}
 \todo{who access the information? humans, llms, humans through llms accessing}
 This chapter lays the foundations for the rest of the thesis by carefully introducing the background on which our work builds. We begin by discussing about information access and the notions of \emph{information needs} and \emph{information objects}~\cite{entityorientedsearch2018}. We define what is an entity and then turn to information extraction. To better situate the discussion within the relevant branches of computer science---namely \acl{nlp}, \acl{ir}, \acl{sw}, and \acl{db}---a brief historical overview is presented for each of them, focusing on the interceptions with this work\todo{improve}. Once this broader context is established, we describe the specific knowledge-intensive domains that motivate our study, namely legal judgments and data from criminal investigations. Finally, we review the literature on the concrete tasks that are most directly related to our research---such as \acl{er}, \acl{el}, \acl{cr}, and \acl{qa}.
 
@@ -67,7 +66,6 @@ Applications for information access include, but are not limited to:
     \item question-answering systems that provide direct answers to users' questions based on information from structured or unstructured data.
 \end{itemize} 
 
-\todo{collegare a entities e continuare}
 
 \section{Entities and How to Represent Them}
 
@@ -105,7 +103,6 @@ The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a 
 \end{definition}
 Example of facts are ``Barack Obama was born on Aug 04, 1961.'' or ``Barack Obama was born in Honolulu.''
 Instead, in \ac{rdf} resources are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually IRIs (Internationalized Resource Identifier~\cite{durst2005iri}---sequences of unicode characters that uniquely identify resources), while the object is usually either a IRI or a literal (used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag)~\cite{klyne2004rdf}.
-\todo{maybe better to use IRI}
 %
 The previous facts appear as follows in \ac{rdf}:
 %
@@ -185,49 +182,27 @@ Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{w
 
 \Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018}.
 
-\subsection{Information Extraction and Knowledge Base Population}
-\todo{maybe introduce a bit nlp wiht the objective and computational linguistic with the objective of capturing the meaning of text}
-Combining the higher-quality information from \ac{kb} with the broader coverage of unstructured data has motivated the research in \emph{\acl{ie}} since three decades ago~\cite{infoextraction2008,entityorientedsearch2018}.
+% \subsection{Information Extraction and Knowledge Base Population}
+\todo{maybe introduce a bit nlp with the objective and computational linguistics with the objective of capturing the meaning of text}
+
+Capturing the meaning of text is a central goal of \acl{nlp}~\cite{entityorientedsearch2018},\todo{say something more about nlp} and the automatic extraction of semantic information from text---such as mentions of named entities, relationships, and attributes---is known as \emph{\acl{ie}}. This has been the objective of major competitions, including the Message Understanding Conference (MUC)~\cite{muc_lessons_1998,muc6_overview_1995,muc7_overview_1998}, the Computational Natural Language Learning (CoNLL) 2003 shared task~\cite{conll2003}, and the Automatic Content Extraction (ACE) program~\cite{ace_2004}.
+
+% Combining the higher-quality information from \ac{kb} with the broader coverage of unstructured data has motivated the research in \emph{\acl{ie}} since three decades ago~\cite{infoextraction2008,entityorientedsearch2018}.
 \begin{definition}[Information Extraction]
 ``\Acf{ie} refers to the automatic extraction of structured information such as entities, relationships between entities, and attributes describing entities from unstructured sources''~\cite{infoextraction2008}.
 \end{definition}
 The use of \ac{ie} techniques is generally aimed at either \emph{\acl{sta}} or \emph{\acl{kbp}}~\cite{entityorientedsearch2018}.
-In the former case, annotating text with information from a \ac{kb} enriches the text with additional semantics, making it more machine-understandable, and enabling advanced information access functionalities, such as entity-based search and filtering via faceting~\cite{entityorientedsearch2018}.
-In the latter case, \ac{ie} is used to populate or update a \ac{kb} with information extracted from unstructured sources, thereby enhancing the \ac{kb}'s coverage or keeping it up to date.
+In the former case, annotating text with information from a \ac{kb} enriches the text with additional semantics, enabling advanced information access functionalities, such as entity-based search and filtering via faceting~\cite{entityorientedsearch2018}.
+In the latter case, \ac{ie} is used to populate or update a \ac{kb} with information extracted from unstructured sources to enhance the \ac{kb}'s coverage and keep it up to date.
 
 While \acsp{llm} possess high-level natural language understanding capabilities, \acl{sta} is still useful.\todo{find papers and motivate} 
-
-\todo{now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
-
-\todo{also say that info extraction can add some kind of structure to unstructured web content}
-\todo{for these reasons (verify makes sense) decades of research focused on info extraction (giving entity-based "structure"/order to unstructured content---using kbs to "structure"/make more machine understandable text) and knowledge base population (automatically populating/updating structured knowledge bases---using text for updating kbs)}
-\todo{present info extraction also as an enrichment of text/unstructured data via semantic annotation}
-
 \todo{lehmann beyond cita qualcosa di interessante per le entità con llm per taggare documenti}
+\todo{LLMs cannot contain all the knowledge. different kind of memories?. RAG,...paper citato da lehmannbeyond e altri. semantic/faceted search can be useful also to llms with tools}
+
+Before desribing the literature of \ac{ie} and related tasks, we first introduce the specific domains that motivate this work.
+\todo{improve. now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
 
 
-
-\section{Entities in the Literature}
-
-
-
-\todo{now kg repository and kb}
-\todo{info extraction together with nlp,ir,db,..}
-
-
-
-
-\todo{then speak about the intersection of the fields nlp,ir,db,sw}
-\section{Information Retrieval}
-
-
-Indeed, \acl{ir} focuses on matching the user's information need--- which can be expressed as a keyword-based query or a question in natura language---with one or more information objects---such as a document containing relevant information or an answer in natural language~\cite{entityorientedsearch2018}.
-
-% Several international conferences, such as TREC~\cite{} or SIGIR~\cite{}, are held periodically since 1992~\cite{} to advance the state-of-the-art in \acl{ir}, and 
-
-
-
-% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \emph{information need}
 
 \section{Domains}
 \label{sec:domains}
@@ -307,6 +282,29 @@ Andrea Bianchi
 
 \todo{maybe annotate the entities}
 \todo{literature on what they are doing to help user in these domains.}
+
+\section{Entities in the Literature}
+
+
+
+\todo{now kg repository and kb}
+\todo{info extraction together with nlp,ir,db,..}
+
+
+
+
+\todo{then speak about the intersection of the fields nlp,ir,db,sw}
+\section{Information Retrieval}
+
+
+Indeed, \acl{ir} focuses on matching the user's information need--- which can be expressed as a keyword-based query or a question in natura language---with one or more information objects---such as a document containing relevant information or an answer in natural language~\cite{entityorientedsearch2018}.
+
+% Several international conferences, such as TREC~\cite{} or SIGIR~\cite{}, are held periodically since 1992~\cite{} to advance the state-of-the-art in \acl{ir}, and 
+
+
+
+% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \emph{information need}
+
 
 \section{Information Extraction}
 \paragraph{definitions}
