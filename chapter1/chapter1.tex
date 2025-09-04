@@ -195,17 +195,33 @@ The use of \ac{ie} techniques is generally aimed at either \emph{\acl{sta}} or \
 In the former case, annotating text with information from a \ac{kb} enriches the text with additional semantics, enabling advanced information access functionalities, such as entity-based search and filtering via faceting~\cite{entityorientedsearch2018}.
 In the latter case, \ac{ie} is used to populate or update a \ac{kb} with information extracted from unstructured sources to enhance the \ac{kb}'s coverage and keep it up to date.
 
-\subsubsection{Why useful in the era of LLMs}
-
+\subsection{Large Language Models and Knowledge Bases}
+\todo{comparison llms and kbs. look for the paper. lms as kbs. one may think that kbs are useless now...}
 Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_report_2023,gpt_lm_few_shot_learners_2020} and Llama~\cite{grattafiori2024llama3herdmodels}, have demonstrated remarkable capabilities in understanding natural language, enabling the application of \ac{nlp} tasks without the need for task-specific finetuning~\cite{gpt_lm_few_shot_learners_2020,instruct_gpt_2022,grattafiori2024llama3herdmodels}.
 There are attempts to use them for complex tasks, including scientific discovery~\cite{ai4science2023impactlargelanguagemodels,nathani2025mlgymnewframeworkbenchmark} and intelligence analysis~\cite{fabula_intelligence_llm_2024}\todo{maybe be good to add some legal attempts to replace judges or lawyers}.
-Advances in extending the context window of \acp{llm}~\cite{}\todo{gemini 1m tokens. tesi di valentina} and on reducing the computational complexity reduced from quadratic to pseudo-linear time~\cite{}\todo{guarda il poster del 2 anno}.
-\todo{maybe i should already introduce RAG?}
-However, processing large volumes of text included in the context window of an \ac{llm} implies challenges such as the ``lost in the middle'' and the ``needle in a haystack'' problems~\cite{liu-etal-2024-lost,kuratov2024searchneedles11mhaystack}, where relevant information located far from the beginning or end of a long context may be overlooked by the model.
+
+One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. 
+
+% in terms of knowledge
+\Aclp{llm} posses broad knowledge as they scale is already over millions of parameters and are trained on massive corpora~\cite{}. But similarly to \acp{kb} they are not omniscient, since information is constantly evolving\todo{see above}.
+
+
+Techniques to update inner \acp{llm} knowledge exist~\cite{}\todo{rome,...} but...
+
+
+
+
+%
+However, processing large volumes of text with \acp{llm} remains challenging\cite{}.
+% long context and linear attention
+Recent advances have extended the context window of \acp{llm} to millions of tokens~\cite{geminiteam2024gemini15unlockingmultimodal,kuratov2024searchneedles11mhaystack}, while other approaches aim to reduce the quadratic computational cost of full attention to linear-time complexity with respect to the number of input tokens~\cite{bigbird_2020,beltagy2020longformerlongdocumenttransformer,ding2023longnetscalingtransformers1000000000}.
+But including very large texts in the context window of an \ac{llm} implies challenges such as the ``lost in the middle'' problem~\cite{liu-etal-2024-lost}---where relevant information located far from the beginning or end of a long context may be overlooked by the model---and, even if the complexity is linear, the computational cost may remain significant.
+% rag and external memory
+\todo{rag external memory. see also gemini 1.5 paper}
 For this reason, recent work have proposed the usage of entities and knowledge graph combined with \acp{llm} to improve their performance on answering complex questions~\cite{edge2025localglobalgraphrag,hybridrag_kg_vector_rag_2024,Xu_2024_rag_kg}.\todo{read better the papers and find others. also look at matteo talk for ailc cattolica}
 For instance, \citet{edge2025localglobalgraphrag} automatically creates a \acl{kg} from a collection of documents by extracting entities and relationships, it detects communities organizin them in hierarchical levels and builds a summary for each community, allowing an \ac{llm} to answer global questions, such as ``What are the key topics represented in the dataset?''.
 \todo{other usage of entities are... see matteo talk. should be good something for the retrieval}
-Furthermore, semantic search capabilities, such as faceted search, can be useful tools not just for humans but also for agentic \acp{llm}~\cite{}\todo{prendi da refactx qualcosa}, which can leverage them to access relevant information more effectively.
+Furthermore, semantic search capabilities, such as faceted search, can be useful tools not just for humans but also for agentic \acp{llm}~\cite{thoppilan2022lamdalanguagemodelsdialog,parisi2022talmtoolaugmentedlanguage,schick2023toolformerlanguagemodelsteach,yao2023react,gao-etal-2025-efficient}\todo{prendi da refactx qualcosa}, which can leverage them to access relevant information more effectively.
 
 So \acl{sta} is still useful.\todo{remove} 
 % graphrag
