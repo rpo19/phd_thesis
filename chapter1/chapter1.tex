@@ -149,6 +149,8 @@ dbr:Barack_Obama
 Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
 %
 \todo{intrduce facts and triples and then move to the kb definition}
+% kb definition knowledge base definition
+\todo{add operation that make a kb. querying, updating, reasoning,...?}
 \begin{definition}[\Acl{kb}]
     A \acf{kb}, or a \acf{kg}, is a structured form of \acl{kr} that organizes and stores facts about entities. 
     These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018}.
@@ -197,10 +199,15 @@ In the latter case, \ac{ie} is used to populate or update a \ac{kb} with informa
 
 \subsection{Large Language Models and Knowledge Bases}
 \todo{comparison llms and kbs. look for the paper. lms as kbs. one may think that kbs are useless now...}
+\todo{also speak of the big amount of knowledge of llms and of the research to update that knowledge. move at the beginning. deepseek r1 size. }
 Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_report_2023,gpt_lm_few_shot_learners_2020} and Llama~\cite{grattafiori2024llama3herdmodels}, have demonstrated remarkable capabilities in understanding natural language, enabling the application of \ac{nlp} tasks without the need for task-specific finetuning~\cite{gpt_lm_few_shot_learners_2020,instruct_gpt_2022,grattafiori2024llama3herdmodels}.
 There are attempts to use them for complex tasks, including scientific discovery~\cite{ai4science2023impactlargelanguagemodels,nathani2025mlgymnewframeworkbenchmark} and intelligence analysis~\cite{fabula_intelligence_llm_2024}\todo{maybe be good to add some legal attempts to replace judges or lawyers}.
+Futhermore, \acl{llm} retain considerable factual knowledge from their pretraining corpora~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, and state-of-the-art models are trained on trillions of tokens; DeepSeek-V3 counts 671 billion parameters and is trained on 14.8 trillion tokens~\cite{deepseekai2025deepseekv3technicalreport}.
 
-One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. 
+One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have compared \aclp{llm} and \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language} or \todo{kg roadmap. works that try to inject kb knowledge into llms,... or work that allow llms to query kbs? kb-rag? need also to detail rag}
+\todo{final thought: kbs and llms are complementary and it is worth to work for their sinergy}
+\todo{show that some paper add structure to document collections: see graphrah and co}
+\todo{allucinations. llm really know what they know? find paper}
 
 % in terms of knowledge
 \Aclp{llm} posses broad knowledge as they scale is already over millions of parameters and are trained on massive corpora~\cite{}. But similarly to \acp{kb} they are not omniscient, since information is constantly evolving\todo{see above}.
