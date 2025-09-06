@@ -95,7 +95,7 @@ A \acf{kr} is a structured or semi-structured collection of entities~\cite{entit
 
 Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
 
 The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
@@ -157,7 +157,6 @@ Structured entity knowledge, such as represented in \ac{rdf}, is usually stored 
     %
     When the primary interest lies in the connections between entities, a \acl{kb} is often referred to as a \emph{\acl{kg}}.
 \end{definition}
-
 Figure~\ref{fig:barack_kg} shows an example \acl{kg} about \textsc{Barack Obama} and some connected entities.
 
 \begin{figure}[htbp]
@@ -184,7 +183,12 @@ Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{w
 
 \Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018}.
 
+While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wikidata,vrandevcic2014wikidata}) and also unstructured \ac{kr} (Wikipedia~\cite{wikipedia}) support \emph{CRUD} operations (Create, Read, Update, Delete)~\cite{elmasri2014fundamentals} to allow their maintenance over time~\cite{shafee2023ten_rules_editing_wikidata}. These operations are also defined in the SPARQL/Update~\cite{seaborne2008sparqlupdate} language.
+
+
+
 % \subsection{Information Extraction and Knowledge Base Population}
+\todo{not sure where to put this. it is like combining kbs and the web}
 \todo{maybe introduce a bit nlp with the objective and computational linguistics with the objective of capturing the meaning of text}
 
 Capturing the meaning of text is a central goal of \acl{nlp}~\cite{entityorientedsearch2018},\todo{say something more about nlp} and the automatic extraction of semantic information from text---such as mentions of named entities, relationships, and attributes---is known as \emph{\acl{ie}}. This has been the objective of major competitions, including the Message Understanding Conference (MUC)~\cite{muc_lessons_1998,muc6_overview_1995,muc7_overview_1998}, the Computational Natural Language Learning (CoNLL) 2003 shared task~\cite{conll2003}, and the Automatic Content Extraction (ACE) program~\cite{ace_2004}.
@@ -204,7 +208,20 @@ Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_repo
 There are attempts to use them for complex tasks, including scientific discovery~\cite{ai4science2023impactlargelanguagemodels,nathani2025mlgymnewframeworkbenchmark} and intelligence analysis~\cite{fabula_intelligence_llm_2024}\todo{maybe be good to add some legal attempts to replace judges or lawyers}.
 Futhermore, \acl{llm} retain considerable factual knowledge from their pretraining corpora~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, and state-of-the-art models are trained on trillions of tokens; DeepSeek-V3 counts 671 billion parameters and is trained on 14.8 trillion tokens~\cite{deepseekai2025deepseekv3technicalreport}.
 
-One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have compared \aclp{llm} and \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language} or \todo{kg roadmap. works that try to inject kb knowledge into llms,... or work that allow llms to query kbs? kb-rag? need also to detail rag}
+One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have focused the knowledge of \aclp{llm} and how they compare to \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language}, with the survey \citet{kg_llm_roadmap_2024} defining a roadmap for their sinergy.
+Advantages of LLMs:
+\begin{itemize}
+    \item Cons: do llm know what they know? hallucinations
+    \item Cons: updates (see roadmap arxiv)
+\end{itemize}
+Advantages of Kbs:
+\begin{itemize}
+    \item
+\end{itemize}
+\todo{little review of the combination between kbs and llms. also rag as llm combined with unstructured data (not kr or kb but still knowledge like the web)}
+
+
+or \todo{kg roadmap. works that try to inject kb knowledge into llms,... or work that allow llms to query kbs? kb-rag? need also to detail rag}
 \todo{final thought: kbs and llms are complementary and it is worth to work for their sinergy}
 \todo{show that some paper add structure to document collections: see graphrah and co}
 \todo{allucinations. llm really know what they know? find paper}
