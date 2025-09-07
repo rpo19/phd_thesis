@@ -1421,3 +1421,103 @@ series = {ICML'24}
   year={2014},
   publisher={Pearson}
 }
+
+@inproceedings{li2024unveiling,
+title={Unveiling the Pitfalls of Knowledge Editing for Large Language Models},
+author={Zhoubo Li and Ningyu Zhang and Yunzhi Yao and Mengru Wang and Xi Chen and Huajun Chen},
+booktitle={The Twelfth International Conference on Learning Representations},
+year={2024},
+url={https://openreview.net/forum?id=fNktD3ib16}
+}
+
+@inproceedings{yao-etal-2023-editing,
+    title = "Editing Large Language Models: Problems, Methods, and Opportunities",
+    author = "Yao, Yunzhi  and
+      Wang, Peng  and
+      Tian, Bozhong  and
+      Cheng, Siyuan  and
+      Li, Zhoubo  and
+      Deng, Shumin  and
+      Chen, Huajun  and
+      Zhang, Ningyu",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.632/",
+    doi = "10.18653/v1/2023.emnlp-main.632",
+    pages = "10222--10240",
+    abstract = "Despite the ability to train capable LLMs, the methodology for maintaining their relevancy and rectifying errors remains elusive. To this end, the past few years have witnessed a surge in techniques for editing LLMs, the objective of which is to alter the behavior of LLMs \textbf{efficiently} within a specific domain without negatively impacting performance across other inputs. This paper embarks on a deep exploration of the problems, methods, and opportunities related to model editing for LLMs. In particular, we provide an exhaustive overview of the task definition and challenges associated with model editing, along with an in-depth empirical analysis of the most progressive methods currently at our disposal. We also build a new benchmark dataset to facilitate a more robust evaluation and pinpoint enduring issues intrinsic to existing techniques. Our objective is to provide valuable insights into the effectiveness and feasibility of each editing technique, thereby assisting the community in making informed decisions on the selection of the most appropriate method for a specific task or context."
+}
+
+@article{kg_editing_survey_2024,
+author = {Wang, Song and Zhu, Yaochen and Liu, Haochen and Zheng, Zaiyi and Chen, Chen and Li, Jundong},
+title = {Knowledge Editing for Large Language Models: A Survey},
+year = {2024},
+issue_date = {March 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {57},
+number = {3},
+issn = {0360-0300},
+url = {https://doi.org/10.1145/3698590},
+doi = {10.1145/3698590},
+abstract = {Large Language Models (LLMs) have recently transformed both the academic and industrial landscapes due to their remarkable capacity to understand, analyze, and generate texts based on their vast knowledge and reasoning ability. Nevertheless, one major drawback of LLMs is their substantial computational cost for pre-training due to their unprecedented amounts of parameters. The disadvantage is exacerbated when new knowledge frequently needs to be introduced into the pre-trained model. Therefore, it is imperative to develop effective and efficient techniques to update pre-trained LLMs. Traditional methods encode new knowledge in pre-trained LLMs through direct fine-tuning. However, naively re-training LLMs can be computationally intensive and risks degenerating valuable pre-trained knowledge irrelevant to the update in the model. Recently, Knowledge-based Model Editing (KME), also known as Knowledge Editing or Model Editing, has attracted increasing attention, which aims at precisely modifying the LLMs to incorporate specific knowledge, without negatively influencing other irrelevant knowledge. In this survey, we aim at providing a comprehensive and in-depth overview of recent advances in the field of KME. We first introduce a general formulation of KME to encompass different KME strategies. Afterward, we provide an innovative taxonomy of KME techniques based on how the new knowledge is introduced into pre-trained LLMs, and investigate existing KME strategies while analyzing key insights, advantages, and limitations of methods from each category. Moreover, representative metrics, datasets, and applications of KME are introduced accordingly. Finally, we provide an in-depth analysis regarding the practicality and remaining challenges of KME and suggest promising research directions for further advancement in this field.},
+journal = {ACM Comput. Surv.},
+month = nov,
+articleno = {59},
+numpages = {37},
+keywords = {Model editing, knowledge update, fine-tuning, large language models}
+}
+
+@article{cohen-etal-2024-rippleeffects,
+    title = "Evaluating the Ripple Effects of Knowledge Editing in Language Models",
+    author = "Cohen, Roi  and
+      Biran, Eden  and
+      Yoran, Ori  and
+      Globerson, Amir  and
+      Geva, Mor",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "12",
+    year = "2024",
+    address = "Cambridge, MA",
+    publisher = "MIT Press",
+    url = "https://aclanthology.org/2024.tacl-1.16/",
+    doi = "10.1162/tacl_a_00644",
+    pages = "283--298",
+    abstract = "Modern language models capture a large body of factual knowledge. However, some facts can be incorrectly induced or become obsolete over time, resulting in factually incorrect generations. This has led to the development of various editing methods that allow updating facts encoded by the model. Evaluation of these methods has primarily focused on testing whether an individual fact has been successfully injected, and if similar predictions for other subjects have not changed. Here we argue that such evaluation is limited, since injecting one fact (e.g., ``Jack Depp is the son of Johnny Depp'') introduces a ``ripple effect'' in the form of additional facts that the model needs to update (e.g., ``Jack Depp is the sibling of Lily-Rose Depp''). To address this, we propose novel evaluation criteria that consider the implications of an edit on related facts. Using these criteria, we then construct RippleEdits, a diagnostic benchmark of 5K factual edits, capturing various types of ripple effects. We evaluate prominent editing methods on RippleEdits, showing that they fail to introduce consistent changes in the model{'}s knowledge. In addition, we find that a simple in-context editing baseline obtains the best scores on our benchmark, suggesting a promising research direction for model editing.1"
+}
+
+@article{ji_etal-2023-survey-hallucination,
+author = {Ji, Ziwei and Lee, Nayeon and Frieske, Rita and Yu, Tiezheng and Su, Dan and Xu, Yan and Ishii, Etsuko and Bang, Ye Jin and Madotto, Andrea and Fung, Pascale},
+title = {Survey of Hallucination in Natural Language Generation},
+year = {2023},
+issue_date = {December 2023},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {55},
+number = {12},
+issn = {0360-0300},
+url = {https://doi.org/10.1145/3571730},
+doi = {10.1145/3571730},
+abstract = {Natural Language Generation (NLG) has improved exponentially in recent years thanks to the development of sequence-to-sequence deep learning technologies such as Transformer-based language models. This advancement has led to more fluent and coherent NLG, leading to improved development in downstream tasks such as abstractive summarization, dialogue generation, and data-to-text generation. However, it is also apparent that deep learning based generation is prone to hallucinate unintended text, which degrades the system performance and fails to meet user expectations in many real-world scenarios. To address this issue, many studies have been presented in measuring and mitigating hallucinated texts, but these have never been reviewed in a comprehensive manner before.In this survey, we thus provide a broad overview of the research progress and challenges in the hallucination problem in NLG. The survey is organized into two parts: (1) a general overview of metrics, mitigation methods, and future directions, and (2) an overview of task-specific research progress on hallucinations in the following downstream tasks, namely abstractive summarization, dialogue generation, generative question answering, data-to-text generation, and machine translation. This survey serves to facilitate collaborative efforts among researchers in tackling the challenge of hallucinated texts in NLG.},
+journal = {ACM Comput. Surv.},
+month = mar,
+articleno = {248},
+numpages = {38},
+keywords = {consistency in NLG, factuality in NLG, faithfulness in NLG, extrinsic hallucination, intrinsic hallucination, Hallucination}
+}
+
+@misc{zheng2024reliablellmsknowledgebases,
+      title={How Reliable are LLMs as Knowledge Bases? Re-thinking Facutality and Consistency}, 
+      author={Danna Zheng and Mirella Lapata and Jeff Z. Pan},
+      year={2024},
+      eprint={2407.13578},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.13578}, 
+}

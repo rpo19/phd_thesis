@@ -201,6 +201,13 @@ The use of \ac{ie} techniques is generally aimed at either \emph{\acl{sta}} or \
 In the former case, annotating text with information from a \ac{kb} enriches the text with additional semantics, enabling advanced information access functionalities, such as entity-based search and filtering via faceting~\cite{entityorientedsearch2018}.
 In the latter case, \ac{ie} is used to populate or update a \ac{kb} with information extracted from unstructured sources to enhance the \ac{kb}'s coverage and keep it up to date.
 
+\subsection{Natural Language Processing and Large Language Models}
+Before describing the literature of \ac{ie} and related tasks, we first introduce recent advances in \ac{nlp}, with special focus on \acp{llm} and on their relation with \acp{kb}.
+
+\subsection{BERT}
+
+\todo{Spacy architectures?. no just introduce trasformers abstractly. then spacy and others in IE}
+
 \subsection{Large Language Models and Knowledge Bases}
 \todo{comparison llms and kbs. look for the paper. lms as kbs. one may think that kbs are useless now...}
 \todo{also speak of the big amount of knowledge of llms and of the research to update that knowledge. move at the beginning. deepseek r1 size. }
@@ -209,6 +216,17 @@ There are attempts to use them for complex tasks, including scientific discovery
 Futhermore, \acl{llm} retain considerable factual knowledge from their pretraining corpora~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, and state-of-the-art models are trained on trillions of tokens; DeepSeek-V3 counts 671 billion parameters and is trained on 14.8 trillion tokens~\cite{deepseekai2025deepseekv3technicalreport}.
 
 One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have focused the knowledge of \aclp{llm} and how they compare to \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language}, with the survey \citet{kg_llm_roadmap_2024} defining a roadmap for their sinergy.
+
+% llm cons editing
+While \acp{llm} possess broad knowledge, they also suffer from the incompleteness problem, as their number of parameters is limited and information is constantly evolving. Furthermore, their parametric knowledge (i.e., the knowledge stored in the model parameters) is difficult to update. There are techniques to update models' knowledge without re-train~\cite{yao-etal-2023-editing,kg_editing_survey_2024}, but with the risk of side effects, such as knowledge inconsistencies~\cite{li2024unveiling,cohen-etal-2024-rippleeffects}, with \citet{cohen-etal-2024-rippleeffects} obtaining more consistent results with an in-context editing baseline, that adds the edited information in prompt.
+% llm pro easy to learn from unstructured without humans
+However, whilst \ac{kb} updates require structured facts to be inserted, often by humans~\cite{}\todo{verify humans are required}, \acp{llm} can extract knownledge from unstructured data during the training process, benefiting from data diversity (e.g., paraphrasing)~\cite{physics_of_lm_3.1_2024}.
+% llm cons hallucinations
+Nevertheless, \acp{llm} can generate unfaithful information, known as \emph{hallucination}~\cite{ji_etal-2023-survey-hallucination}.
+% kg pro answering global questions like counts, intersections
+\acp{kb} also are more interpretable, in the sense that it is possible to trace back the result of a query to the \ac{kb} facts and they do not fail global questions (e.g., ``How many presidents of the US were born in Hawaii?'') that are difficult for \acp{llm}~\cite{physics_of_lm_3.1_2024}.
+\ac{kb} are consistent while \acp{llm} are not consistent and reliable~\cite{zheng2024reliablellmsknowledgebases}.\todo{verify paper}
+
 Advantages of LLMs:
 \begin{itemize}
     \item Cons: do llm know what they know? hallucinations
