@@ -204,6 +204,19 @@ In the latter case, \ac{ie} is used to populate or update a \ac{kb} with informa
 \subsection{Natural Language Processing and Large Language Models}
 Before describing the literature of \ac{ie} and related tasks, we first introduce recent advances in \ac{nlp}, with special focus on \acp{llm} and on their relation with \acp{kb}.
 
+\Acl{nlp} refers to the processing and understanding of a sequence of words in natural language by a computer~\cite{bates1995models}.
+Its research dates back to the 1950s, initially focusing on foundational tasks such as machine translation and question answering~\cite{bates1995models}.\todo{definition of QA here?}
+Over the years, \ac{nlp} has evolved significantly, with early approaches relying on rule-based systems and statistical methods, while more recent advancements have been driven by machine learning techniques, particularly deep learning~\cite{entityorientedsearch2018}.
+Recently, the introduction of transformer architectures~\cite{vaswani_transformers_2017} has revolutionized the field, establishing them as the dominant approach for building foundational models, i.e., large models pretrained on massive data that can be used or adapted for downstream tasks~\cite{gu2024mamba}.
+\begin{definition}
+    [Language Model] A \acf{lm} is a probability distribution over a vocabulary of tokens, typically conditioned on an input sequence, and used to predict the next token~\cite{lm_java_methods_2023,jm3}.
+\end{definition}
+\todo{and a large language model?}
+% formalization
+We speak about \emph{tokens} instead of words because modern \ac{lm} do not operate at the word level but rather on subword units, which can be whole words, word parts, symbols, or characters~\cite{comprensive_overview_llm_2025}. The use of a token-based vocabulary, instead of a word-based or character-based one, derives from the need to balance vocabulary size and coverage. Word-based vocabularies suffer from the issue of out-of-vocabulary words. Character-based vocabularies, on the other hand, can lead to longer sequences and increased computational costs~\cite{sun-etal-2023-characters}. Token-based tokenizers, such as Byte-Pair Encoding (BPE)~\cite{sennrich-etal-2016-neural}, can represent frequent words using a single token, still allowing the representation of rare or novel words by combining multiple tokens.\todo{verify correctness}
+
+\todo{formalization, transformers, llms, bert}
+
 \subsection{BERT}
 
 \todo{Spacy architectures?. no just introduce trasformers abstractly. then spacy and others in IE}

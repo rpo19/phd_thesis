@@ -1521,3 +1521,121 @@ keywords = {consistency in NLG, factuality in NLG, faithfulness in NLG, extrinsi
       primaryClass={cs.CL},
       url={https://arxiv.org/abs/2407.13578}, 
 }
+
+@article{bates1995models,
+  title={Models of natural language understanding.},
+  author={Bates, Madeleine},
+  journal={Proceedings of the National Academy of Sciences},
+  volume={92},
+  number={22},
+  pages={9977--9982},
+  year={1995}
+}
+
+@inproceedings{
+gu2024mamba,
+title={Mamba: Linear-Time Sequence Modeling with Selective State Spaces},
+author={Albert Gu and Tri Dao},
+booktitle={First Conference on Language Modeling},
+year={2024},
+url={https://openreview.net/forum?id=tEYskw1VY2}
+}
+
+@inproceedings{vaswani_transformers_2017,
+ author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, \L ukasz and Polosukhin, Illia},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {I. Guyon and U. Von Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Attention is All you Need},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf},
+ volume = {30},
+ year = {2017}
+}
+
+@inproceedings{lm_java_methods_2023,
+author = {Su, Chia-Yi and Bansal, Aakash and Jain, Vijayanta and Ghanavati, Sepideh and McMillan, Collin},
+title = {A Language Model of Java Methods with Train/Test Deduplication},
+year = {2023},
+isbn = {9798400703270},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3611643.3613090},
+doi = {10.1145/3611643.3613090},
+abstract = {This tool demonstration presents a research toolkit for a language model of Java source code. The target audience includes researchers studying problems at the granularity level of subroutines, statements, or variables in Java. In contrast to many existing language models, we prioritize features for researchers including an open and easily-searchable training set, a held out test set with different levels of deduplication from the training set, infrastructure for deduplicating new examples, and an implementation platform suitable for execution on equipment accessible to a relatively modest budget. Our model is a GPT2-like architecture with 350m parameters. Our training set includes 52m Java methods (9b tokens) and 13m StackOverflow threads (10.5b tokens). To improve accessibility of research to more members of the community, we limit local resource requirements to GPUs with 16GB video memory. We provide a test set of held out Java methods that include descriptive comments, including the entire Java projects for those methods. We also provide deduplication tools using precomputed hash tables at various similarity thresholds to help researchers ensure that their own test examples are not in the training set. We make all our tools and data open source and available via Huggingface and Github.},
+booktitle = {Proceedings of the 31st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+pages = {2152–2156},
+numpages = {5},
+keywords = {deduplication, java, language model, research tools},
+location = {San Francisco, CA, USA},
+series = {ESEC/FSE 2023}
+}
+
+@Book{jm3,
+  author =       "Daniel Jurafsky and James H. Martin",
+  title =        "Speech and Language Processing: An Introduction to Natural Language Processing, 
+  		  Computational Linguistics, and Speech Recognition,
+		   with Language Models",
+  year =         "2025",
+  url = {https://web.stanford.edu/~jurafsky/slp3/},
+  note = "Online manuscript released August 24, 2025",
+  edition =         "3rd",
+  }
+
+@inproceedings{sun-etal-2023-characters,
+  title = "From Characters to Words: Hierarchical Pre-trained Language Model for Open-vocabulary Language Understanding",
+  author = "Sun, Li  and
+    Luisier, Florian  and
+    Batmanghelich, Kayhan  and
+    Florencio, Dinei  and
+    Zhang, Cha",
+  editor = "Rogers, Anna  and
+    Boyd-Graber, Jordan  and
+    Okazaki, Naoaki",
+  booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+  month = jul,
+  year = "2023",
+  address = "Toronto, Canada",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2023.acl-long.200/",
+  doi = "10.18653/v1/2023.acl-long.200",
+  pages = "3605--3620",
+  abstract = "Current state-of-the-art models for natural language understanding require a preprocessing step to convert raw text into discrete tokens. This process known as tokenization relies on a pre-built vocabulary of words or sub-word morphemes. This fixed vocabulary limits the model{'}s robustness to spelling errors and its capacity to adapt to new domains. In this work, we introduce a novel open-vocabulary language model that adopts a hierarchical two-level approach: one at the word level and another at the sequence level. Concretely, we design an intra-word module that uses a shallow Transformer architecture to learn word representations from their characters, and a deep inter-word Transformer module that contextualizes each word representation by attending to the entire word sequence. Our model thus directly operates on character sequences with explicit awareness of word boundaries, but without biased sub-word or word-level vocabulary. Experiments on various downstream tasks show that our method outperforms strong baselines. We also demonstrate that our hierarchical model is robust to textual corruption and domain shift."
+}
+
+@article{comprensive_overview_llm_2025,
+author = {Naveed, Humza and Khan, Asad Ullah and Qiu, Shi and Saqib, Muhammad and Anwar, Saeed and Usman, Muhammad and Akhtar, Naveed and Barnes, Nick and Mian, Ajmal},
+title = {A Comprehensive Overview of Large Language Models},
+year = {2025},
+issue_date = {October 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {16},
+number = {5},
+issn = {2157-6904},
+url = {https://doi.org/10.1145/3744746},
+doi = {10.1145/3744746},
+abstract = {Large Language Models (LLMs) have recently demonstrated remarkable capabilities in natural language processing tasks and beyond. This success of LLMs has led to a large influx of research contributions in this direction. These works encompass diverse topics such as architectural innovations, better training strategies, context length improvements, fine-tuning, multimodal LLMs, robotics, datasets, benchmarking, efficiency, and more. With the rapid development of techniques and regular breakthroughs in LLM research, it has become considerably challenging to perceive the bigger picture of the advances in this direction. Considering the rapidly emerging plethora of literature on LLMs, it is imperative that the research community is able to benefit from a concise yet comprehensive overview of the recent developments in this field. This article provides an overview of the literature on a broad range of LLM-related concepts. Our self-contained comprehensive overview of LLMs discusses relevant background concepts along with covering the advanced topics at the frontier of research in LLMs. This review article is intended to provide not only a systematic survey but also a quick, comprehensive reference for the researchers and practitioners to draw insights from extensive, informative summaries of the existing works to advance the LLM research.},
+journal = {ACM Trans. Intell. Syst. Technol.},
+month = aug,
+articleno = {106},
+numpages = {72},
+keywords = {Large Language Models, LLMs, chatGPT, Augmented LLMs, Multimodal LLMs, LLM training, LLM Benchmarking}
+}
+
+@inproceedings{sennrich-etal-2016-neural,
+    title = "Neural Machine Translation of Rare Words with Subword Units",
+    author = "Sennrich, Rico  and
+      Haddow, Barry  and
+      Birch, Alexandra",
+    editor = "Erk, Katrin  and
+      Smith, Noah A.",
+    booktitle = "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = aug,
+    year = "2016",
+    address = "Berlin, Germany",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P16-1162/",
+    doi = "10.18653/v1/P16-1162",
+    pages = "1715--1725"
+}
