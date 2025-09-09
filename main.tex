@@ -35,23 +35,17 @@
 \usepackage{hyperref}
 \usepackage{amsthm}
 \usepackage{acro}
-\usepackage[round,authoryear]{natbib}
 \usepackage{mfirstuc}
 \usepackage{mdframed}
 \usepackage{listings}
-\usepackage{tikz}
 \usepackage{cleveref}
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage[style=authoryear,citestyle=authoryear,maxcitenames=6]{biblatex}
+\addbibresource{bibliography/bibliography.bib}
+
+\let\cite\parencite
 
 \crefname{lstlisting}{listing}{listings}
 \Crefname{lstlisting}{Listing}{Listings}
-
-\tikzset{
-  entity/.style={ellipse, draw, fill=blue!15, align=center, minimum width=2cm},
-  literal/.style={rectangle, draw, fill=green!15, align=center, minimum width=2.5cm},
-  class/.style={diamond, draw, fill=orange!20, align=center, minimum width=2cm},
-  edge/.style={-Latex}
-}
 
 \lstset{
   basicstyle=\ttfamily,
@@ -80,8 +74,6 @@
   innerrightmargin=10pt,
   roundcorner=5pt
 ]{graybox}
-
-\let\cite\citep
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
@@ -407,8 +399,8 @@ As an \textbf{author:}
 
 %%%% BIBLIOGRAPHY %%%%%
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plainnat} % bibliography style
-\bibliography{bibliography/bibliography.bib} 
+\printbibliography
+
 
 \addcontentsline{toc}{chapter}{Acknowledgements}
 \include{thankyou/thankyou}
