@@ -209,11 +209,33 @@ Its research dates back to the 1950s, initially focusing on foundational tasks s
 Over the years, \ac{nlp} has evolved significantly, with early approaches relying on rule-based systems and statistical methods, while more recent advancements have been driven by machine learning techniques, particularly deep learning~\cite{entityorientedsearch2018}.
 Recently, the introduction of transformer architectures~\cite{vaswani_transformers_2017} has revolutionized the field, establishing them as the dominant approach for building foundational models, i.e., large models pretrained on massive data that can be used or adapted for downstream tasks~\cite{gu2024mamba}.
 \begin{definition}
-    [Language Model] A \acf{lm} is a probability distribution over a vocabulary of tokens, typically conditioned on an input sequence, and used to predict the next token~\cite{lm_java_methods_2023,jm3}.
+    [Language Model] A \acf{lm} is a probability distribution over a vocabulary of tokens, conditioned on an input sequence, and used to predict the next token~\cite{lm_java_methods_2023,jm3}.
 \end{definition}
 \todo{and a large language model?}
 % formalization
 We speak about \emph{tokens} instead of words because modern \ac{lm} do not operate at the word level but rather on subword units, which can be whole words, word parts, symbols, or characters~\cite{comprensive_overview_llm_2025}. The use of a token-based vocabulary, instead of a word-based or character-based one, derives from the need to balance vocabulary size and coverage. Word-based vocabularies suffer from the issue of out-of-vocabulary words. Character-based vocabularies, on the other hand, can lead to longer sequences and increased computational costs~\cite{sun-etal-2023-characters}. Token-based tokenizers, such as Byte-Pair Encoding (BPE)~\cite{sennrich-etal-2016-neural}, can represent frequent words using a single token, still allowing the representation of rare or novel words by combining multiple tokens.\todo{verify correctness}
+
+This definition of \ac{lm} is in-line with \emph{casual language modeling}, that predicts the next token given the previous ones~\cite{jain-etal-2023-cl-for-causal-lm}, and these models are also reffered to as \emph{autoregressive models}, i.e. ``models regressing the outcomes on previous values of the same time series''~\cite{regis2022_autoregressive}, where in \ac{nlp} we have a sequence of tokens instead of a time series.
+\todo{causal lm objective and dl training and formulation}
+
+Given a sequence of tokens $x = [x_0, x_1, \ldots, x_|x|]$, a causal \ac{lm} estimates the probability of the token $x_i$ as
+\begin{equation}
+    P(x_i | x_1, x_2, \ldots, x_{i-1}) = P(x_i | x_{<i}),
+\end{equation}
+while the probability of the whole sequence is commonly estimated by the factorization~\cite{jain-etal-2023-cl-for-causal-lm}
+\begin{equation}
+    P(x) = \prod_{i=1}^{|x|} P(x_i | x_{<i}).
+\end{equation}
+Deep-learning based causal \ac{lm} are trained via maximum likelihood estimation~\cite{jain-etal-2023-cl-for-causal-lm}, i.e., by maximizing the log-likelihood of the training data~\cite{MLE_tutorial}, that corresponds to $N$ sequences of tokens $[x^0, x^1, \ldots, x^|N|]$. The training loss is thus
+\begin{equation}
+    \mathcal{L}_{CLM} = - \frac{1}{N} \sum_{j=1}^{N} \log P(x^j) = - \sum_{j=1}^{N} \sum_{i=1}^{|x^j|} \log P(x_i^j | x_{<i}^j).
+\end{equation}
+\todo{what is deep learning, what a loss, why is it negative to minimize}
+
+
+Another paradigm is \emph{masked language modeling}, where some tokens in the input sequence are masked and the model is trained to predict the original tokens based on the surrounding context~\cite{devlin-etal-2019-bert}.
+
+\todo{use sequence instead of time-series}
 
 \todo{formalization, transformers, llms, bert}
 
