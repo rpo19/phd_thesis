@@ -40,7 +40,11 @@
 \usepackage{mdframed}
 \usepackage{listings}
 \usepackage{tikz}
+\usepackage{cleveref}
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+
+\crefname{lstlisting}{listing}{listings}
+\Crefname{lstlisting}{Listing}{Listings}
 
 \tikzset{
   entity/.style={ellipse, draw, fill=blue!15, align=center, minimum width=2cm},
@@ -85,7 +89,6 @@
 \BeforeBeginEnvironment{definition}{\begin{samepage}\begin{graybox}}
 \AfterEndEnvironment{definition}{\end{graybox}\end{samepage}}
 
-
 \DeclareAcronym{ie}{
   short = IE,
   long = information extraction,
@@ -97,6 +100,17 @@
 \DeclareAcronym{ia}{
   short = IA,
   long = information access,
+}
+
+\DeclareAcronym{ner}{
+  short = NER,
+  long = named entity recognition,
+}
+
+
+\DeclareAcronym{dl}{
+  short = DL,
+  long = deep learning,
 }
 
 \DeclareAcronym{ir}{
@@ -193,6 +207,28 @@
   plural = s,
   long-plural = s
 }
+
+\DeclareAcronym{clm}{
+  short = CLM,
+  long = causal language model,
+  plural = s,
+  long-plural = s
+}
+
+
+\DeclareAcronym{mlm}{
+  short = MLM,
+  long = masked language model,
+  plural = s,
+  long-plural = s
+}
+
+
+\DeclareAcronym{pos}{
+  short = POS,
+  long = part-of-speech,
+}
+
 
 \DeclareAcronym{web}{
   short = Web,
