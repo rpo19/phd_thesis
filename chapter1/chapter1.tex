@@ -257,11 +257,10 @@ The training loss, corresponding to maximum likelihood estimation over the maske
 
 While \acp{clm} are suited for text generation, \acp{mlm} are typically used for sequence labeling or token classification tasks, taking advantage of the context from both sides~\cite{jm3}. Examples of such tasks include \acf{pos} tagging, where each token is assigned a part-of-speech category such as \texttt{Noun}, \texttt{Verb}, or \texttt{Adj}, and \acf{ner}---described in \todo{sect ner}---where each token is assigned a label indicating whether it is part of a named entity and its type, such as \texttt{Person}, \texttt{Location}, or \texttt{Organization}~\cite{jm3}.
 
-
-
-\todo{formalization of mlm}
-
 \subsubsection{Transformers}
+Transformers have been introduced in 2017 by \textcite{vaswani_transformers_2017} and evaluated on the machine translation task, demonstrating superior performance and higher parallization at training-time compared to previous architectures~\cite{vaswani_transformers_2017}.
+The transformer architecture is composed of a stack of encoders and a stack of decoders. A core component of transformers is the \emph{attention mechanism}\todo{describe encoder decoder, attention and self attention}.
+\todo{briefly introduce representation learning, word embeddings and maybe knowledge grah embeddings}
 
 \todo{transformers: encoder decoder attention self-attention. in-context learning. pretraining and finetuning transfer learning. rl tuning on human feedback. reasoning models}
 
