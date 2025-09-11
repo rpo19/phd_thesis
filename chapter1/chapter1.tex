@@ -258,17 +258,18 @@ The training loss, corresponding to maximum likelihood estimation over the maske
 While \acp{clm} are suited for text generation, \acp{mlm} are typically used for sequence labeling or token classification tasks, taking advantage of the context from both sides~\cite{jm3}. Examples of such tasks include \acf{pos} tagging, where each token is assigned a part-of-speech category such as \texttt{Noun}, \texttt{Verb}, or \texttt{Adj}, and \acf{ner}---described in \todo{sect ner}---where each token is assigned a label indicating whether it is part of a named entity and its type, such as \texttt{Person}, \texttt{Location}, or \texttt{Organization}~\cite{jm3}.
 
 \subsubsection{Transformers}
-Transformers have been introduced in 2017 and evaluated on the machine translation, a language modeling task, demonstrating superior performance and higher parallization at training-time compared to previous architectures~\cite{vaswani_transformers_2017}.
+\emph{Transformers} have been introduced in 2017 and evaluated on the machine translation, a language modeling task, demonstrating superior performance and higher parallization at training-time compared to previous architectures~\cite{vaswani_transformers_2017}.
 \
 todo{say why machine translation is language modeling}
-The transformer architecture is composed of a stack of encoders and a stack of decoders, and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}, supported by positional encodings that provide information about the order of the tokens~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
+The transformer uses an encoder-decoder architecture and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
 \todo{briefly introduce representation learning, word embeddings and maybe knowledge grah embeddings. jm3 or repr learn 4 nlp}
-An \emph{encoder} processes tokens as input and transforms each into a vector representation, commonly referred to as an encoding or embedding~\cite{jm3}.
+An \emph{encoder} processes tokens as input and transforms each into a vector representation, commonly referred to as an embedding~\cite{jm3}.
 % To place this concept in context, it can be connected to the broader field of \emph{representation learning}, which---with respect to text---aims at automatically learn useful representations of words, sentences, or documents~\cite{jm3}.
 
 \paragraph{Vector Semantics and Representation Learning}
-To place this concept in context, it can be connected to the fields of \emph{representation learning} and \emph{vector semantics}.
-The origins of \emph{vector semantics} can be traced to the 1950s with the \emph{distributional hypothesis}~\cite{Harris01081954}---i.e., words occurring in similar contexts tend to have similar meanings~\cite{jm3}---and the idea of using points in a three-dimentional space for representing words connotation~\cite{osgood1957}. Words like ``car'' and ``automobile'' are synonyms, but their \say{similarity} cannot be captured via string similarity (e.g., edit distance~\cite{jm3}). Also ``cats'' and ``dogs'', or ``coffee'' and ``cup'' can be considered similar or related.\todo{paraphrase the examples}
+To place the concept of \emph{embedding} in context, it can be connected to the fields of \emph{representation learning} and \emph{vector semantics}.
+\emph{Representation learning} provides methods for learning useful representations from data, including text (words, sentences, documents)~\cite{bengio_representation_learning_2013}.\todo{ragiona se togliere repr learning}
+With respect to \emph{vector semantics}, its origin can be traced to the 1950s with the \emph{distributional hypothesis}~\cite{Harris01081954}---i.e., words occurring in similar contexts tend to have similar meanings~\cite{jm3}---and the idea of using points in a three-dimentional space for representing words connotation~\cite{osgood1957}. Words like ``car'' and ``automobile'' are synonyms, but their \say{similarity} cannot be captured via string similarity (e.g., edit distance~\cite{jm3}). Also ``cats'' and ``dogs'', or ``coffee'' and ``cup'' can be considered similar or related.\todo{paraphrase the examples}
 The intuition of vector semantics is to assign each word an \emph{embedding}, i.e., a vector for representing a word in a multi-dimentional semantic space, where similarities between embeddings would reflect the similarities of words' meanings~\cite{jm3}.
 
 Different techniques have been proposed for obtaining word embeddings. In 2013, \textcite{mikolov2013} introduced \emph{word2vec}, which, in the case of the CBOW (Continuous Bag of Words) architecture, learns dense semantic embeddings by training a model to predict a target word from its surrounding context~\cite{mikolov2013}. \emph{Dense} embeddings refer to low-dimentional vectors, in constrast with very long \emph{sparse} vectors, such as the ones one-hot vectors, whose size corresponds to the length of the entire vocabulary (often between 10,000 and 50,000 words)~\cite{jm3}.
@@ -282,7 +283,31 @@ Subtracting the embedding of ``man'' from ``king'', then adding ``woman'' produc
 However, assigning a single embedding to each word in the vocabulary is insufficient for polysemous words, such as ``mouse'' or ``bank'', which have multiple distinct senses. For instance, ``mouse'' can refer either to the small rodent or to the device used to control a computer, depending on the context~\cite{jm3}.
 \todo{this is why people introduced contextual embeddings and these embedding are indeed often obtained with transformers. then go on with transformers encoders that use the context weighted by attention to enrich the embedding of the tokens layer by layer}
 
+On the other hand, transformers are able to compute \emph{contextual embeddings}, i.e., dense vectors representing the meaning of a token in the context~\cite{jm3}.\todo{piture from jm3 fig 9.6}
+%
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/contextual_embeddings.png}
+    \caption{Contextual embeddings of the word ``die'' calculated with BERT~\cite{devlin-etal-2019-bert}, projected in two dimensions. Figure from~\cite{cohen_2019_contextual_embeddings}.}
+    \label{fig:contextual_embeddings}
+\end{figure}
+%
+\Cref{fig:contextual_embeddings} shows the contextual embeddings computed with BERT~\cite{devlin-etal-2019-bert}, an encoder-only transformer, for the word ``die'', used in different contexts with different meanings, both in English and in German. The embeddings are positioned in semantic clusters according to the meaning of ``die'': \textsc{die (German)}, \textsc{die (death)}, and \textsc{die (dice)}.
 
+
+\paragraph{The Transformer Architecture}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{images/The_transformer_encoder_decoder_stack.png}
+    \caption{The transformer encoder-decoder stack (applied to machine translation). Figure from~\cite{Alammar2018IllustratedTransformer}}
+    \label{fig:transformer_encoder_decoder}
+\end{figure}
+%
+Turning back to the transformer architecture, it is composed of a stack of encoders and a stack of decoders, as depicted in \cref{fig:transformer_encoder_decoder}. Each encoder and each decoder block receives a sequence of token embeddings as input and produces as output another sequence of embeddings.\todo{verify with jm3 and improve. add the picture from vaswani for describing the single block}
+
+
+and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}, supported by positional encodings that provide information about the order of the tokens~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
 
 \todo{transformers: encoder decoder attention self-attention. in-context learning. pretraining and finetuning transfer learning. rl tuning on human feedback. reasoning models}
 

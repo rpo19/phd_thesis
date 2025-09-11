@@ -1,3 +1,10 @@
 main.pdf filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 logos/Bicocca_transparent.png filter=lfs diff=lfs merge=lfs -text
+images/Screenshot[[:space:]]Barack[[:space:]]Obama[[:space:]]-[[:space:]]Google[[:space:]]Search.png filter=lfs diff=lfs merge=lfs -text
+images/Screenshot[[:space:]]Better[[:space:]]Actor[[:space:]]-[[:space:]]Google[[:space:]]Search.png filter=lfs diff=lfs merge=lfs -text
+images/Screenshot[[:space:]]Rome[[:space:]]-[[:space:]]Google[[:space:]]Search.png filter=lfs diff=lfs merge=lfs -text
+images/The_transformer_encoder_decoder_stack.png filter=lfs diff=lfs merge=lfs -text
+images/contextual_embeddings.png filter=lfs diff=lfs merge=lfs -text
+images/barack_kg.pdf filter=lfs diff=lfs merge=lfs -text
+phd_3rd_year_report-2_250715_112700.pdf filter=lfs diff=lfs merge=lfs -text
