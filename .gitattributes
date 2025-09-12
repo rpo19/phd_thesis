@@ -8,3 +8,6 @@ images/The_transformer_encoder_decoder_stack.png filter=lfs diff=lfs merge=lfs -
 images/contextual_embeddings.png filter=lfs diff=lfs merge=lfs -text
 images/barack_kg.pdf filter=lfs diff=lfs merge=lfs -text
 phd_3rd_year_report-2_250715_112700.pdf filter=lfs diff=lfs merge=lfs -text
+images/transformer_architecture.png filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text

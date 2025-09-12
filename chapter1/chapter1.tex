@@ -288,7 +288,7 @@ On the other hand, transformers are able to compute \emph{contextual embeddings}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{images/contextual_embeddings.png}
-    \caption{Contextual embeddings of the word ``die'' calculated with BERT~\cite{devlin-etal-2019-bert}, projected in two dimensions. Figure from~\cite{cohen_2019_contextual_embeddings}.}
+    \caption{Contextual embeddings of the word ``die'' calculated with BERT~\cite{devlin-etal-2019-bert}, projected in two dimensions. Figure from~\textcite{cohen_2019_contextual_embeddings}.}
     \label{fig:contextual_embeddings}
 \end{figure}
 %
@@ -300,11 +300,33 @@ On the other hand, transformers are able to compute \emph{contextual embeddings}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{images/The_transformer_encoder_decoder_stack.png}
-    \caption{The transformer encoder-decoder stack (applied to machine translation). Figure from~\cite{Alammar2018IllustratedTransformer}}
+    \caption{The transformer encoder-decoder stack (applied to machine translation, French to English). Figure from~\textcite{Alammar2018IllustratedTransformer}}
     \label{fig:transformer_encoder_decoder}
 \end{figure}
 %
-Turning back to the transformer architecture, it is composed of a stack of encoders and a stack of decoders, as depicted in \cref{fig:transformer_encoder_decoder}. Each encoder and each decoder block receives a sequence of token embeddings as input and produces as output another sequence of embeddings.\todo{verify with jm3 and improve. add the picture from vaswani for describing the single block}
+Turning back to the transformer architecture, it is composed of a stack of encoders and a stack of decoders, as depicted in \cref{fig:transformer_encoder_decoder}.
+%
+Given an input sentence of $N$ tokens, the sentence is divided in tokens, or \emph{tokenized}, then each token is assigned a static embedding from a matrix $E$ of shape $[|V|xd]$ where $V$ is the vocabulary of the model and $d$ the depth or number of dimensions of the embedding.
+Subsequently, the token embeddings are processed by encoder and decoder blocks that contextualize them, by incorporating the meaning of contextual tokens. \emph{Attention} is the mechanism that weights and aggregates the token embeddings~\cite{jm3}.
+%
+\begin{figure}[ht]
+    \centering
+    \includegraphics[height=10cm]{images/transformer_architecture.png}
+    \caption{Overview of the transformer architecture. The encoder module is on the left, the decoder on the right. Figure from~\textcite{vaswani_transformers_2017}.}
+    \label{fig:transformer_architecture}
+\end{figure}
+
+As visible in \cref{fig:transformer_architecture}, both the encoder (on the left side) and decoder modules (on the right) include attention layers.\todo{valuta se muovere dopo e aggiungi l'idea che i layer man mano arricchiscono le rappresentazioni con il contesto. parla di cross attention e magari cita bengio}
+
+The transformer in figure targets machine translation. Suppose we are translating the French sentence ``Je suis étudiant'' to English, the expect output is ``I am a student''. The input tokens in French are fed to the network (bottom left) and the English output token ``I'' is produced (top right). Subsequently, the encoder (left module) receives the same starting tokens in French, while the decoder receives as input the already generated sequence of tokens in English, so far ``I'', resulting in the generation of ``am''. This process is continued iteratively until the model generates an end-of-sequence token or reaches the allowed limit of tokens to generate.\todo{valuta se cambiare immagine}
+
+
+
+Both encoder and decoder block receive as input an embedding for each token and produce another embedding as output. Formally, let $X$ be the input matrix of shape $[Nxd]$. 
+
+
+
+Each encoder and each decoder block receives a sequence of token embeddings as input and produces as output another sequence of embeddings.\todo{verify with jm3 and improve. add the picture from vaswani for describing the single block}
 
 
 and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}, supported by positional encodings that provide information about the order of the tokens~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
