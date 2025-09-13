@@ -297,44 +297,42 @@ On the other hand, transformers are able to compute \emph{contextual embeddings}
 
 \paragraph{The Transformer Architecture}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\textwidth]{images/The_transformer_encoder_decoder_stack.png}
-    \caption{The transformer encoder-decoder stack (applied to machine translation, French to English). Figure from~\textcite{Alammar2018IllustratedTransformer}}
-    \label{fig:transformer_encoder_decoder}
-\end{figure}
-\todo{replace with mine original}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[height=10cm]{images/Transformer_mt.drawio.pdf}
+%     \caption{The transformer encoder-decoder stack (applied to machine translation, English to Italian).}
+%     \label{fig:transformer_encoder_decoder}
+% \end{figure}
 %
-Turning back to the transformer architecture, it is composed of a stack of encoders and a stack of decoders, as depicted in \cref{fig:transformer_encoder_decoder}.
+Turning back to the transformer architecture, it is composed of a stack of encoders and a stack of decoders, as depicted in \Cref{fig:transformer_all}.
 %
-Given an input sentence of $N$ tokens, the sentence is divided in tokens, or \emph{tokenized}, then each token is assigned a static embedding from a matrix $E \in \mathbb{R}^{|V| \times d}$ where $V$ is the vocabulary of the model and $d$ the depth or number of dimensions of the embedding.
+Given an input sentence of $N$ tokens, the sentence is divided in tokens, or \emph{tokenized}, then each token is assigned a static embedding from an embedding matrix $E \in \mathbb{R}^{|V| \times d}$ where $V$ is the vocabulary of the model and $d$ the depth or number of dimensions of the embeddings.
 Subsequently, the token embeddings are processed by encoder and decoder blocks that contextualize them, by incorporating the meaning of contextual tokens. \emph{Attention} is the mechanism that weights and aggregates the token embeddings~\cite{jm3}.
 %
-\begin{figure}[ht]
+\begin{figure}[ht!]
     \centering
-    \includegraphics[height=10cm]{images/transformer_architecture.png}
-    \caption{Overview of the transformer architecture. The encoder module is on the left, the decoder on the right. Figure from~\textcite{vaswani_transformers_2017}.}
-    \label{fig:transformer_architecture}
+    \includegraphics[width=.9\textwidth]{images/Transformer_all.drawio.pdf}
+    \caption{Overview of the transformer architectures.}
+    \label{fig:transformer_all}
 \end{figure}
-\todo{replace picture}
+\todo{verify starting token}
 
 
-The transformer in \ref{} targets machine translation. Suppose we are translating the French sentence ``Je suis étudiant'' to English, the expect output is ``I am a student''. The input tokens in French are fed to the network (bottom left) and the English output token ``I'' is produced (top right). Subsequently, the encoder (left module) receives the same starting tokens in French, while the decoder receives as input the already generated sequence of tokens in English, so far ``I'', resulting in the generation of ``am''. This process is continued iteratively until the model generates an end-of-sequence token or reaches the allowed limit of tokens to generate.\todo{valuta se cambiare immagine o farne una e non citare jalammar. fai immagine (divisa in 3) encoder-decoder (machine translation), encoder-only (NER), decoder-only (text generation) with zoom on encoder and decoder block showing attention and ffn}
+The original encoder-decoder transformer~\cite{vaswani_transformers_2017}, depicted in \Cref{fig:transformer_all}(a), targets machine translation. For example, given the English sentence ``Milan is in Italy'', the expect output in Italian is ``Milano è in Italia''. 
+The input tokens in English are provided to the encoder (bottom left) and the decoder (bottom right) receives a special starting token ``<start>''. In the first forward pass the model generates ``Milano''. At the next step, the encoder receives the same input\todo{cached? and caching also for generation}, while the decoder receives as input the already generated sequence of tokens in Italian, ``<start>'' and ``Milano'', to generate ``è'' (the Italian verb to be). This iterative process continues until the model generates an end-of-sequence token or reaches maximum generation length.\todo{valuta se cambiare immagine o farne una e non citare jalammar. fai immagine (divisa in 3) encoder-decoder (machine translation), encoder-only (NER), decoder-only (text generation) with zoom on encoder and decoder block showing attention and ffn}
 
 \todo{speak of encoder-only and decoder-only. who is better for what}
 
-As visible in \cref{fig:transformer_architecture}, the encoder (on the left side) and decoder modules (on the right) include attention layers.\todo{valuta se muovere dopo e aggiungi l'idea che i layer man mano arricchiscono le rappresentazioni con il contesto. parla di cross attention e magari cita bengio}
 Both encoder and decoder receive as input an embedding for each token and produce another embedding as output. Formally, let $X \in \mathbb{R}^{N \times d}$ be the input matrix of shape $N \times d$. After processing $X$ the first encoder produces $X^i \in \mathbb{R}^{N \times d}$, a matrix of the same shape of $X$. This process is reapeated for every encoder block, progressively enriching the tokens' embeddings with contextual information weighted by the attention mechanism. 
 
+As visible in \Cref{fig:transformer_all}(a), both the encoder and decoder modules include a \emph{self-attention} layer and the decoder also has a \emph{cross-attention} layer.\todo{valuta se muovere dopo e aggiungi l'idea che i layer man mano arricchiscono le rappresentazioni con il contesto. parla di cross attention e magari cita bengio}
 \todo{continue with attention: self and cross}
 
+\todo{spiega le attention. self attention same sentence. cross different sentences (example from mt bengio)}
+\todo{due parole su encoder (bert) and decoder-only}
+\todo{aggiungi qualcosa come "for more/further details on xxx refer to the book jm3"}
+\todo{icl, rl on human feedback, reasoning models}
 
-
-
-Each encoder and each decoder block receives a sequence of token embeddings as input and produces as output another sequence of embeddings.\todo{verify with jm3 and improve. add the picture from vaswani for describing the single block}
-
-
-and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}, supported by positional encodings that provide information about the order of the tokens~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
 
 \todo{transformers: encoder decoder attention self-attention. in-context learning. pretraining and finetuning transfer learning. rl tuning on human feedback. reasoning models}
 
