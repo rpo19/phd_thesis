@@ -326,9 +326,19 @@ The input tokens in English are provided to the encoder (bottom left) and the de
 Both encoder and decoder receive as input an embedding for each token and produce another embedding as output. Formally, let $X \in \mathbb{R}^{N \times d}$ be the input matrix of shape $N \times d$. After processing $X$ the first encoder produces $X^i \in \mathbb{R}^{N \times d}$, a matrix of the same shape of $X$. This process is reapeated for every encoder block, progressively enriching the tokens' embeddings with contextual information weighted by the attention mechanism. 
 
 As visible in \Cref{fig:transformer_all}(a), both the encoder and decoder modules include a \emph{self-attention} layer and the decoder also has a \emph{cross-attention} layer.\todo{valuta se muovere dopo e aggiungi l'idea che i layer man mano arricchiscono le rappresentazioni con il contesto. parla di cross attention e magari cita bengio}
-\todo{continue with attention: self and cross}
+Self-attention can be considered as a mechanism for constructing contextual representations of a token's meaning by focusing on and combining information from nearby tokens~\cite{jm3}. Indeed, tokens in a sequence attend to the same sequence.
+The cross-attention, instead, is perfomed between different sequences. For example in machine translation, the decoder, while generating in the target language, selects which parts of the source sentence (in the source language) to pay attention to~\cite{bahdanau2015neural}. In the transformer~\cite{vaswani_transformers_2017}, each decoder layer attends to the final representations from the encoder stack.
 
-\todo{spiega le attention. self attention same sentence. cross different sentences (example from mt bengio)}
+For further details of the attention mechanism and its implementation, refer to \textcite{jm3}.\todo{scegli dove metterlo e fallo anche con gli altri libri (balog)}
+
+
+\subsection{Encdoder-only models}
+\todo{cita jm3 che dice che non vengono usati per generation. anche bert. alla fine parla anche dei task di allenamento e self.super}
+
+\subsection{Decoder-only}
+
+\todo{instruction-following. prompt-based. generalization to lot of tasks without fine-tuning. transfer learning. in-context learning}
+
 \todo{due parole su encoder (bert) and decoder-only}
 \todo{aggiungi qualcosa come "for more/further details on xxx refer to the book jm3"}
 \todo{icl, rl on human feedback, reasoning models}
@@ -342,7 +352,6 @@ As visible in \Cref{fig:transformer_all}(a), both the encoder and decoder module
 
 \todo{formalization, transformers, llms, bert}
 
-\subsection{BERT}
 
 \todo{Spacy architectures?. no just introduce trasformers abstractly. then spacy and others in IE}
 
