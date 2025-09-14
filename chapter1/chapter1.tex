@@ -226,15 +226,15 @@ This definition of \ac{lm} is in-line with \emph{casual language modeling (CLM)}
 
 Given a sequence of tokens $x = [x_0, x_1, \ldots, x_|x|]$, a causal \ac{lm} estimates the probability of the token $x_i$ as
 \begin{equation}
-    P(x_i | x_1, x_2, \ldots, x_{i-1}) = P(x_i | x_{<i}),
+    P(x_i \mid x_1, x_2, \ldots, x_{i-1}) = P(x_i \mid x_{<i}),
 \end{equation}
 while the probability of the whole sequence is commonly estimated by the factorization~\cite{jain-etal-2023-cl-for-causal-lm,jm3}
 \begin{equation}
-    P(x) = \prod_{i=1}^{|x|} P(x_i | x_{<i}).
+    P(x) = \prod_{i=1}^{|x|} P(x_i \mid x_{<i}).
 \end{equation}
 Deep-learning based causal \ac{lm} are trained via maximum likelihood estimation~\cite{jain-etal-2023-cl-for-causal-lm}, i.e., by maximizing the log-likelihood of the training data~\cite{MLE_tutorial}, that corresponds to $N$ sequences of tokens $[x^0, x^1, \ldots, x^|N|]$. The training loss is thus
 \begin{equation}
-    \mathcal{L}_{CLM} = - \frac{1}{N} \sum_{j=1}^{N} \log P(x^j) = - \sum_{j=1}^{N} \sum_{i=1}^{|x^j|} \log P(x_i^j | x_{<i}^j).
+    \mathcal{L}_{CLM} = - \frac{1}{N} \sum_{j=1}^{N} \log P(x^j) = - \sum_{j=1}^{N} \sum_{i=1}^{|x^j|} \log P(x_i^j \mid x_{<i}^j).
 \end{equation}
 
 \Aclp{clm}, that estimates the probability distribution for the next token given the previous ones, are used for text generation by iteratively sampling the next token from the distribution (e.g., greedily selecting the most probable token) and appending it to the input sequence~\cite{jm3}. 
@@ -331,6 +331,9 @@ The cross-attention, instead, is perfomed between different sequences. For examp
 
 For further details of the attention mechanism and its implementation, refer to \textcite{jm3}.\todo{scegli dove metterlo e fallo anche con gli altri libri (balog)}
 
+The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised settings on tranlational datasets~\cite{}.
+
+Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only} is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations. An core component of the success of transformers and, in particular, of encoder-only transformers is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}. \textcite{devlin-etal-2019-bert} demonstrate that rich on generic language tasks, such as \acl{mlm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \ac{mlm} is semi-supervised, meaning that it does not depend on human annotation, thus datasets can scale with minimal human effort~\cite{}.\todo{trova citazione}
 
 \subsection{Encdoder-only models}
 \todo{cita jm3 che dice che non vengono usati per generation. anche bert. alla fine parla anche dei task di allenamento e self.super}
