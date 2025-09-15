@@ -333,7 +333,13 @@ For further details of the attention mechanism and its implementation, refer to 
 
 The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised settings on tranlational datasets~\cite{}.
 
-Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only} is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations. An core component of the success of transformers and, in particular, of encoder-only transformers is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}. \textcite{devlin-etal-2019-bert} demonstrate that rich on generic language tasks, such as \acl{mlm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \ac{mlm} is semi-supervised, meaning that it does not depend on human annotation, thus datasets can scale with minimal human effort~\cite{}.\todo{trova citazione}
+Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only} is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations.
+
+\todo{decoder only}
+
+A core component of the success of transformers and, is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}, which is often achieved via pre-training on huge corpora with self-supervised objectives, such as \ac{mlm} or \ac{clm}, that do not require human labeling, to subsequently fine-tune the models parameters to downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving}.
+\textcite{devlin-etal-2019-bert} and \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}.
+
 
 \subsection{Encdoder-only models}
 \todo{cita jm3 che dice che non vengono usati per generation. anche bert. alla fine parla anche dei task di allenamento e self.super}
