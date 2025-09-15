@@ -331,22 +331,28 @@ The cross-attention, instead, is perfomed between different sequences. For examp
 
 For further details of the attention mechanism and its implementation, refer to \textcite{jm3}.\todo{scegli dove metterlo e fallo anche con gli altri libri (balog)}
 
-The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised settings on tranlational datasets~\cite{}.
+The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised settings on tranlational datasets~\cite{}.\todo{vaswani but maybe something else}
 
-Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only} is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations.
+Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only}, whose architecture is schetched in \Cref{fig:transformer_all}(b), is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations.\todo{due parole su document retrieval. controlla architettura dei moderni modelli di embedding}
 
 \todo{decoder only}
+Also decoder-only models can be used used for language modeling\todo{ensure lm refers to clm}, as visible in \Cref{fig:transformer_all}(c), especially for tasks focusing a single language and vocabulary. Some examples are story telling 
+However, modern decoder-only models are built with a vocabulary supporting dozens of languages~\cite{}, thus being suitable for translation tasks too.
 
 A core component of the success of transformers and, is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}, which is often achieved via pre-training on huge corpora with self-supervised objectives, such as \ac{mlm} or \ac{clm}, that do not require human labeling, to subsequently fine-tune the models parameters to downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving}.
 \textcite{devlin-etal-2019-bert} and \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}.
 
+\todo{efficiency of models}
 
-\subsection{Encdoder-only models}
+
 \todo{cita jm3 che dice che non vengono usati per generation. anche bert. alla fine parla anche dei task di allenamento e self.super}
 
 \subsection{Decoder-only}
 
 \todo{instruction-following. prompt-based. generalization to lot of tasks without fine-tuning. transfer learning. in-context learning}
+
+\todo{embedding gemma is encoder?}
+\todo{t5gemma encoder-decoder https://developers.googleblog.com/en/t5gemma/}
 
 \todo{due parole su encoder (bert) and decoder-only}
 \todo{aggiungi qualcosa come "for more/further details on xxx refer to the book jm3"}
