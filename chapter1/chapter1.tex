@@ -339,11 +339,21 @@ Besides the encoder-decoder architecture for machine translation, two relevant m
 \emph{Decoder-only} models can be used used for language modeling\todo{ensure lm refers to clm}, as visible in \Cref{fig:transformer_all}(c), but they use the same vocabulary for input and output tokens, differently from encoder-decoder models that are used for machine translation or even speech recognition---where the input represents speech~\cite{jm3}.
 
 A core component of the success of transformers and, is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}, which is often achieved via pre-training on huge corpora with self-supervised objectives, such as \ac{mlm} or \ac{clm}, that do not require human labeling, to subsequently fine-tune the models parameters to downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5}.
-\textcite{devlin-etal-2019-bert}, \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \textcite{Raffel2020t5} and \textcite{radford2019unsupervised_learners}, respectively, have achieved state-of-the-art performance on several language understanding tasks by mapping them in a text-to-text format, and have demonstrated the ability of \acp{lm} in a \emph{zero-shot} setting.
+\textcite{devlin-etal-2019-bert}, \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \textcite{Raffel2020t5} and \textcite{radford2019unsupervised_learners}, respectively, have achieved state-of-the-art performance on several language understanding tasks by mapping them in a text-to-text format, and have demonstrated the ability of \acp{lm} in a zero-shot setting. In this context, \emph{zero-shot} refers to using a model for a task for which it has not fine-tuned for, by providing a natural language description of the task~\cite{browngpt3}.
 
-\todo{gpt3, chatgpt with instruction following, reasoning models,...}
+Later, by scaling the number of model parameters, \acfp{llm}, such as GPT-3~\cite{browngpt3} counting 175 billions of parameters, researchers have been able to achieve surprising results in zero-shot and few-shot---like zero-shot but also providing few natural language examples of the task---settings, in some cases even competitive with state-of-the-art fine-tuning approaches~\cite{browngpt3}.
+These improvements enabled user to \emph{prompt} or instruct language models to do specific task, eventually providing one-shot or few-shot examples to better take advantage of their \emph{\acf{icl}} capability~\cite{jm3}. A \emph{prompt}, indeed, is a textual istruction given the user gives to a model for accomplishing a specific task. \emph{\Ac{icl}} refers to learning a task or improving the performance on that task without updating model parameters, e.g., with few-shot prompting~\cite{jm3}.
 
-Nowadays, the most popular architecture for \acfp{llm}---billion-sized \aclp{lm}~\cite{}\todo{cita qualche llm}---is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demostrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}. 
+\todo{instruction tuning}
+
+
+\todo{prompting and icl}
+
+\todo{gpt3, chatgpt with instruction following,  reasoning models,...}
+
+Other milestones that are important to mention 
+
+Today, the most popular architecture for \acp{llm} is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demostrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}.
 
 For a broader and more detailed perspective on the history of \acp{llm} refer to \textcite{Zhou2024_from_bert_to_chat}.\todo{use nlp description from this paper}
 
