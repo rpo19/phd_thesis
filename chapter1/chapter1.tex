@@ -338,24 +338,22 @@ Besides the encoder-decoder architecture for machine translation, two relevant m
 \todo{decoder only}
 \emph{Decoder-only} models can be used used for language modeling\todo{ensure lm refers to clm}, as visible in \Cref{fig:transformer_all}(c), but they use the same vocabulary for input and output tokens, differently from encoder-decoder models that are used for machine translation or even speech recognition---where the input represents speech~\cite{jm3}.
 
+Today, the most popular architecture for \acp{llm} is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demostrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}.
+
 A core component of the success of transformers and, is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}, which is often achieved via pre-training on huge corpora with self-supervised objectives, such as \ac{mlm} or \ac{clm}, that do not require human labeling, to subsequently fine-tune the models parameters to downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5}.
 \textcite{devlin-etal-2019-bert}, \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \textcite{Raffel2020t5} and \textcite{radford2019unsupervised_learners}, respectively, have achieved state-of-the-art performance on several language understanding tasks by mapping them in a text-to-text format, and have demonstrated the ability of \acp{lm} in a zero-shot setting. In this context, \emph{zero-shot} refers to using a model for a task for which it has not fine-tuned for, by providing a natural language description of the task~\cite{browngpt3}.
 
 Later, by scaling the number of model parameters, \acfp{llm}, such as GPT-3~\cite{browngpt3} counting 175 billions of parameters, researchers have been able to achieve surprising results in zero-shot and few-shot---like zero-shot but also providing few natural language examples of the task---settings, in some cases even competitive with state-of-the-art fine-tuning approaches~\cite{browngpt3}.
 These improvements enabled user to \emph{prompt} or instruct language models to do specific task, eventually providing one-shot or few-shot examples to better take advantage of their \emph{\acf{icl}} capability~\cite{jm3}. A \emph{prompt}, indeed, is a textual istruction given the user gives to a model for accomplishing a specific task. \emph{\Ac{icl}} refers to learning a task or improving the performance on that task without updating model parameters, e.g., with few-shot prompting~\cite{jm3}.
 
-\todo{instruction tuning}
+However, increasing models' size in terms of number of parameters have not been enough to improve their behaviour at following users' instruction~\cite{instruct_gpt_2022}. Models, for instance, may generate unhelpful, toxic, or hallucinated~\cite{maynez-etal-2020-faithfulness-hallucination,ji_etal-2023-survey-hallucination}---i.e., incoherent, nonsensical, or unfaithful to the provided input---content. For this reason, techniques to \emph{align} models to user's intent have been applied to \acp{llm}, including some based on supervised fine-tuning with cureated examples~\cite{zhou2023lima} and on reinforcement learning, such as \emph{\acf{rlhf}}~\cite{instruct_gpt_2022}.
+Also methods for improving reasoning in \acp{llm} have been studied. \Acf{cot}~\cite{wei2022chainofthought} consists in decomposing a complicated reasoning task in multiple intermediate steps, which are solved to reach the final solution. More recently, so-called \emph{\acfp{lrm}}~\cite{tie2025surveyposttraininglargelanguage} have been trained to generate long \aclp{cot}~\cite{openai2024openaio1card,deepseekai2025deepseekr1incentivizingreasoningcapability}.
+
+\todo{maybe add some definitions}
 
 
-\todo{prompting and icl}
 
-\todo{gpt3, chatgpt with instruction following,  reasoning models,...}
-
-Other milestones that are important to mention 
-
-Today, the most popular architecture for \acp{llm} is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demostrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}.
-
-For a broader and more detailed perspective on the history of \acp{llm} refer to \textcite{Zhou2024_from_bert_to_chat}.\todo{use nlp description from this paper}
+For a broader and more detailed perspective on the history of \acp{llm} refer to \textcite{Zhou2024_from_bert_to_chat}\todo{use nlp description from this paper} and \textcite{tie2025surveyposttraininglargelanguage}.
 
 
 \todo{efficiency of models}
@@ -383,6 +381,7 @@ For a broader and more detailed perspective on the history of \acp{llm} refer to
 \todo{Spacy architectures?. no just introduce trasformers abstractly. then spacy and others in IE}
 
 \subsection{Large Language Models and Knowledge Bases}
+\todo{blend together with llms}
 \todo{comparison llms and kbs. look for the paper. lms as kbs. one may think that kbs are useless now...}
 \todo{also speak of the big amount of knowledge of llms and of the research to update that knowledge. move at the beginning. deepseek r1 size. }
 Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_report_2023,gpt_lm_few_shot_learners_2020} and Llama~\cite{grattafiori2024llama3herdmodels}, have demonstrated remarkable capabilities in understanding natural language, enabling the application of \ac{nlp} tasks without the need for task-specific finetuning~\cite{gpt_lm_few_shot_learners_2020,instruct_gpt_2022,grattafiori2024llama3herdmodels}.
