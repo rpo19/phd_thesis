@@ -446,14 +446,52 @@ So \acl{sta} is still useful.\todo{remove}
 \todo{lehmann beyond cita qualcosa di interessante per le entità con llm per taggare documenti}
 \todo{LLMs cannot contain all the knowledge. different kind of memories?. RAG,...paper citato da lehmannbeyond e altri. semantic/faceted search can be useful also to llms with tools}
 
+\section{Artificial Intelligence}
+What is it, how the term is used for and maybe a definition for this thesis
+
 Before desribing the literature of \ac{ie} and related tasks, we first introduce the specific domains that motivate this work.
 \todo{improve. now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}
 
 
 
-\section{Domains}
+\section{Legal Domain}
 \label{sec:domains}
+In this section, we describe the Italian legal system, the different types of trials with the documents involved, and the relationship between Italian law, \acl{ai} and predictability (ai act, gdpr).
+italian criminal proceedings, vs civil
+\todo{introdurre ai prima}
+\todo{different law codes, civil law, supreme court (vs common law)}
 
+The Italian Republic uses the \emph{civil law} system, in contrast with countries such as the United Kingdom of Great Britain and Northern Ireland and the United State of America, using the \emph{common law} system. Civil law is based on codes, while common law is based on case-law. Typically, civil law systems rely on four foundational codes: civil code, the civil procedure code, criminal code, and criminal procedure code. \todo{here add a brief descriptions of what are these codes} These codes are intended as coherent and consistent principles for supporting the broader legal system. In contrast, common law systems typically develop codes in response to specific issues, often drafting them only after principles have already emerged through case law.
+Furthermore, in common law, precedent cases are of central importance, as judges are required to follow earlier decisions, and a single ruling from a higher court may determine the outcome of a case. This is different in civil law, where a single precedent case is generally not treated as binding, with the possible exception of decisions in the constitutional sphere~\cite{Carlson2009}. 
+
+\todo{cassazione}
+
+
+
+\section{Inception of Legal Proceedings in the Italian Legal System}
+
+In the Italian legal system, a legal proceeding (\textit{procedimento}) may arise in either the civil or the criminal sphere, with distinct initiation mechanisms reflecting the nature of the dispute.
+
+\subsection{Civil Proceedings}
+
+Civil proceedings (\textit{procedimenti civili}) are \emph{initiated by a private party}. The \emph{plaintiff} begins the process by filing an \textit{atto di citazione} (writ of summons) with the competent court. This document must indicate: the identities of the parties, the tribunal being addressed, the factual and legal basis of the claim, the evidence intended to be produced, and the date of the hearing \cite[Article 163]{CPC}. 
+
+The \emph{defendant} responds with a \textit{comparsa di risposta} (statement of defense), outlining their defenses and any counterclaims \cite[Article 167]{CPC}. From this moment, the judicial authority schedules hearings, manages the collection of evidence, and ultimately renders a decision (\textit{sentenza}) which must include motivations as required by the Constitution~\cite[Article 111]{Costituzione}.
+
+\subsection{Criminal Proceedings}
+
+Criminal proceedings (\textit{procedimenti penali}) begin with the occurrence of a potential criminal offense. When a \emph{notitia criminis} (report of a crime) is received---via complaint, denunciation, or ex officio observation\todo{meaning}---the \textit{Pubblico Ministero} opens the preliminary investigation (\textit{indagini preliminari})~\cite[Article 326]{CPP} under the authority of the \textcite{CPP}. \todo{aggiungi citazioni ai codici direttamente. poi agli articoli}
+
+During this phase, investigative acts are performed by the \textit{Pubblico Ministero} and the \textit{Polizia Giudiziaria}, and documented in official records (\textit{verbali}) as required by \cite[Article 373]{CPP}. The suspect is formally notified through an \textit{informazione di garanzia} \cite[Article 369]{CPP}. If sufficient evidence exists, the prosecutor requests an indictment (\textit{richiesta di rinvio a giudizio}) and the judge for the preliminary hearing (\textit{GUP}) decides whether the case proceeds to trial \cite[Article 416]{CPP}.
+
+
+
+
+\todo{something general for legal}
+
+\cite{BELLANDI2024,pozzi_wise_2025,aixia_2023,Agazzi2025DAVE,real_batini2021semantic}
+\todo{italian legal system. civile penale, investigations. usa tesi dottorato legal}
+\todo{AI act. news for legal AI italy, batini,...}
 \subsection{Criminal Investigations}
 Data in criminal investigations comes from a heterogeneity of sources such as documents, e.g., reports by consultants, (semi-)structured files, e.g., phone call records, bank transfers, and digitalized papers, e.g., seized in the investigation.
 \todo{add example}
