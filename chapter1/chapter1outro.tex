@@ -1,0 +1,129 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55555555
+
+
+\todo{controlla che le sezioni hanno senso rispetto a la banca dati online}
+
+\todo{maybe annotate the entities}
+\todo{literature on what they are doing to help user in these domains.}
+
+\section{Entities in the Literature}
+
+
+
+\todo{now kg repository and kb}
+\todo{info extraction together with nlp,ir,db,..}
+
+
+
+
+\todo{then speak about the intersection of the fields nlp,ir,db,sw}
+\section{Information Retrieval}
+
+
+Indeed, \acl{ir} focuses on matching the user's information need--- which can be expressed as a keyword-based query or a question in natura language---with one or more information objects---such as a document containing relevant information or an answer in natural language~\cite{entityorientedsearch2018}.
+
+% Several international conferences, such as TREC~\cite{} or SIGIR~\cite{}, are held periodically since 1992~\cite{} to advance the state-of-the-art in \acl{ir}, and 
+
+
+
+% an important field of \acl{cs}, represented by several international conferences since 1992 that is focusing  research is focusing  other words, given an \emph{information need}
+
+
+\section{Information Extraction}
+\paragraph{definitions}
+\begin{definition}[Information Extraction]
+\Ac{ie} ``refers to
+the automatic extraction of structured information such as entities, relationships
+between entities, and attributes describing entities from unstructured sources''~\cite{infoextraction2008}.
+\end{definition}
+
+
+\textbf{namedy entity} and \textbf{concepts}~\cite{entityorientedsearch2018}.
+
+\textbf{extracting knowledge} and its difference with bare information extraction. Integrating knowledge (e.g. NEL), semantic web,... inferring relations,...
+
+Describe and give the definitions always continuing the examples.
+
+Knowledge in general? types of knowledge? Knowledge Graphs, Knowledge representation
+Entity Recognition, Linking and other tasks
+
+How to extract Knowledge
+
+How can machine access Knowledge?
+
+different ways for accessing external knowledge
+
+maybe move SOTA in the respective chapters
+\subsection{Named Entity Recognition}
+
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Judgment Extract:}\\[0.5em]
+The plaintiff \PERSON{Tizio Rossi}, residing in \LOCATION{Turin}, represented by Attorney \PERSON{Lucia Verdi}, alleged that on \DATE{January 10, 2023} he lent the defendant \PERSON{Caio Neri} the sum of EUR 15,000, repayable by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \LOCATION{Court Building in Turin}.\\[0.5em]
+The Court finds the loan contract valid and orders \PERSON{Caio Neri} to pay \PERSON{Tizio Rossi} EUR 15,000 plus interest from \DATE{July 1, 2023}, pursuant to \LAW{Articles 1282 and 1284}.\\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Chat Extract:}\\[0.5em]
+\DATE{2025-07-28 -- 14:15} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?\\[0.3em]
+\DATE{2025-07-29 -- 08:45} \PERSON{Mario Rossi} [voice message]: \\
+"...better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month."\\
+\end{minipage}
+\caption{Extracts of the judgment and chat logs side-by-side with entity highlights and inline entity type labels.}
+\label{fig:extracts-ner}
+\end{figure}
+
+
+
+
+\subsection{Named Entity Linking}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Judgment Extract (NEL):}\\[0.5em]
+The plaintiff \NELPerson{Tizio Rossi}{}, residing in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino}{\WikiIcon Turin}, represented by Attorney \NELPerson{Lucia Verdi}{}, alleged that on \NELDate{January 10, 2023} he lent the defendant \NELPerson{Caio Neri}{} the sum of EUR 15,000, repayable by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \NELLocation{Court Building in Turin}{https://it.wikipedia.org/wiki/Palazzo\_di\_Giustizia\_(Torino)}.\\[0.5em]
+The Court finds the loan contract valid and orders \NELPerson{Caio Neri}{} to pay \NELPerson{Tizio Rossi}{} EUR 15,000 plus interest from \NELDate{July 1, 2023}, pursuant to \NELLaw{Articles 1282 and 1284}.\\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Chat Extract (NEL):}\\[0.5em]
+\NELDate{2025-07-28 -- 14:15} \NELPerson{Luca Bianchi}{}: Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://it.wikipedia.org/wiki/Piazza\_Vittorio\_Veneto\_(Torino)} in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino} or the one by the river?\\[0.3em]
+\NELDate{2025-07-29 -- 08:45} \NELPerson{Mario Rossi}{} [voice message]: \\
+"...better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{https://it.wikipedia.org/wiki/Gianni} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via\_Roma\_(Torino)} near \NELLocation{Porta Susa station}{https://it.wikipedia.org/wiki/Porta\_Susa\_station}. Also, bring the envelope I gave you last month."\\
+\end{minipage}
+\caption{Judgment and chat extracts side-by-side with entity linking (NEL) highlighting and canonical links.}
+\label{fig:extracts-nel-new}
+\end{figure}
+\todo{migliora. potrei usare logowikipedia/Torino,... e magari link a leggi per articoli. vedi paper con statale}
+
+
+\subsection{NIL Prediction}
+\subsection{NIL Clustering}
+\subsection{coreference resolution}
+\todo{what did LLMs change?}
+\subsection{Human-in-the-Loop}
+
+\section{Knowledge Access and Integration}
+\subsection{Question Answering}
+
+
+\section{Legal Domain}
+\todo{faceted search, HITL legal,...}
+\subsection{Law and Judgements}
+\todo{Extraction tasks in these domains}
+\subsection{Criminal Investigations and Instant Messaging Data}
+\subsection{Domain Adaptation Techniques}
+\todo{maybe mention model merging too}
+\subsection{LLMs with sensitive data}
+
