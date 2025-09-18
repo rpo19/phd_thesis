@@ -38,6 +38,7 @@
 \usepackage{mdframed}
 \usepackage{listings}
 \usepackage{cleveref}
+\usepackage{csquotes}
 \usepackage[style=numeric,maxcitenames=1,maxbibnames=6]{biblatex}
 \addbibresource{bibliography/bibliography.bib}
 
@@ -244,6 +245,13 @@
 }
 
 
+
+\DeclareAcronym{ml}{
+  short = ML,
+  long = machine learning,
+}
+
+
 \DeclareAcronym{web}{
   short = Web,
   long = Web,
@@ -290,7 +298,7 @@
 \newcommand{\phd}{Ph.D.\ }
 
 % TODO remove
-\includeonly{chapter1/legal}
+\includeonly{chapter1/llms,chapter1/legal}
 
 % \definecolor{red}{rgb}{0.631, 0.094, 0.094}
 \begin{document}
