@@ -14,25 +14,75 @@ In the Italian system, both in civil and in criminal procedures, the three grade
 Decisions of the Court of Cassation are not laws and are not formally binding, yet they strongly influence lower courts and promote a consistent interpretation of the law, reflecting the court's so-called \emph{nomophilactic function}~\cite{lazovic2022}. In Italy, the supreme court has a dual role: to render a final judgment on individual cases, thereby ensuring justice, and to establish interpretative guidelines that shape national jurisprudence~\cite[Article 65]{RD1941_12_art65}.
 
 
-\subsection{Inception of Legal Proceedings in the Italian Legal System}
+\subsection{Legal Proceedings in the Italian Legal System}
 
 In the Italian legal system, a legal proceeding (\textit{procedimento}) may arise in either the civil or the criminal sphere, with distinct initiation mechanisms reflecting the nature of the dispute.
 
 % \subsubsection{Civil Proceedings}
 
-Civil proceedings (\textit{procedimenti civili}) are \emph{initiated by a private party}. The \emph{plaintiff} begins the process by filing an \textit{atto di citazione} (writ of summons) with the competent court. This document must indicate: the identities of the parties, the tribunal being addressed, the factual and legal basis of the claim, the evidence intended to be produced, and the date of the hearing \cite[Article 163]{CPC}. 
+Civil proceedings are initiated by a private party. The \emph{plaintiff} begins the process by filing an writ of summons with the competent court. This document must indicate: the identities of the parties, the tribunal being addressed, the factual and legal basis of the claim, the evidence intended to be produced, and the date of the hearing \cite[Article 163]{CPC}. 
 
-The \emph{defendant} responds with a \textit{comparsa di risposta} (statement of defense), outlining their defenses and any counterclaims \cite[Article 167]{CPC}. From this moment, the judicial authority schedules hearings, manages the collection of evidence, and ultimately renders a decision (\textit{sentenza}) which must include motivations as required by the Constitution~\cite[Article 111]{Costituzione}.
+The \emph{defendant} responds with a statement of defense, outlining their defenses and any counterclaims \cite[Article 167]{CPC}. From this moment, the judicial authority schedules hearings, manages the collection of evidence, and ultimately renders a decision---a \emph{judgment}---which must include motivations as required by the Constitution~\cite[Article 111]{Costituzione}.
 
 % \subsubsection{Criminal Proceedings}
 
-Criminal proceedings (\textit{procedimenti penali}) begin with the occurrence of a potential criminal offense. When a \emph{notitia criminis} (report of a crime) is received---via complaint, denunciation, or ex officio observation\todo{meaning}---the \textit{Pubblico Ministero} opens the preliminary investigation (\textit{indagini preliminari})~\cite[Article 326]{CPP} under the authority of the \textcite{CPP}. \todo{aggiungi citazioni ai codici direttamente. poi agli articoli}
+Criminal proceedings begin with the occurrence of a potential criminal offense. When the report of a crime is received, the public prosecutor opens the preliminary investigation~\cite[Article 326]{CPP}.
 
-During this phase, investigative acts are performed by the \textit{Pubblico Ministero} and the \textit{Polizia Giudiziaria}, and documented in official records (\textit{verbali}) as required by \cite[Article 373]{CPP}. The suspect is formally notified through an \textit{informazione di garanzia} \cite[Article 369]{CPP}. If sufficient evidence exists, the prosecutor requests an indictment (\textit{richiesta di rinvio a giudizio}) and the judge for the preliminary hearing (\textit{GUP}) decides whether the case proceeds to trial \cite[Article 416]{CPP}.
+During this phase, investigative acts are performed by the public prosecutor and the judicial police, and documented in official records~\cite[Article 373]{CPP}. The suspect is formally notified through a guarantee notic, a document informing them of the charges and their rights~\cite[Article 369]{CPP}. If sufficient evidence exists, the prosecutor requests an indictment and the judge for the preliminary hearing decides whether the case proceeds to trial \cite[Article 416]{CPP}.
 
 \todo{ai and legal, plus predictability}
 \todo{per i documenti: sentenze e fascicoli. vedi chat e tesi di alessandro mariani. 132 cpc}
 \todo{corti europee e internazionali e impatti sul legal ita: gdpr ai act anche}
+
+% \subsubsection{Documents}
+The documentation of civil and criminal proceedings is governed by the provisions of the respective codes of procedure~\cite[Articles 168--169]{CPC}; \cite[Articles 431, 114, 391-octies]{CPP}, which govern the formation, content, and accessibility of case files.
+Civil files typically include the summons, payment receipts, pleadings, briefs, hearing minutes, judicial orders, evidentiary acts, and judgments~\cite[Article 168]{CPC}, while criminal trial files contain acts related to prosecutability and civil claims, non-repeatable acts by police or parties, evidentiary acts, official documents, and, when applicable, seized items~\cite[Article 431]{CPP}.
+Furthermore, the content of the judgment are regulated, requiring identification of the parties, a statement of facts, the legal reasoning, and the operative part of the decision~\cite[Articles 544--545]{CPP}; \cite[Article 133]{CPC}. For this reason, judgments can be treated as semi-structured documents, in the sense that they usually contain identifiable sections, even though the expression and organization of legal language may vary---e.g., depending of the style of the judge~\cite{galli2025analisi,pont2023legalsummarisationllmsprodigit}.
+
+\todo{international influence, eu gdpr ai act}
+
+\subsection{Analyzing Legal Documents}
+\todo{also AI for legal}
+
+
+\subsection{Judgments}
+Legal documents, and especially court judgments and orders, contain information that is valuable in multiple applications (from legal case retrieval to legal process analysis), for different purposes (from the comparison with similar cases for uniform judgments to discovering trends for specific legal subjects, e.g., counting the average maintenance in relation to economical conditions of the partners in divorces), and stakeholders (from judges to law administrators, lawmakers, lawyers, scholars, and the general public).
+\todo{add example in english}
+An example of fictional Italian civil judgment, translated in English, is available in \Cref{fig:civil-judgment-legal-articles}.
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.9\linewidth}
+\ttfamily
+\small
+ORDINARY COURT OF TURIN\\
+Civil Division\\
+Judgment No. 1234/2025\\
+Published on March 15, 2025\\[1em]
+ITALIAN REPUBLIC\\
+IN THE NAME OF THE ITALIAN PEOPLE\\[1em]
+The Court, sitting as a single judge, in the person of Judge Andrea Bianchi, has delivered the following:\\[1em]
+JUDGMENT\\[0.5em]
+in the civil case registered under No. 4567/2024\\
+between\\[0.5em]
+Mario Rossi, residing in Turin, represented and defended by Attorney Lucia Verdi, with elected domicile at her office in Turin -- plaintiff\\[0.5em]
+and\\[0.5em]
+Carlo Neri, residing in Milan, represented and defended by Attorney Marco Ferrari, with elected domicile at his office in Milan -- defendant\\[1em]
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on January 10, 2023, he lent him the sum of EUR 15,000, as evidenced by a private written agreement signed by both parties, with the obligation to repay by June 30, 2023, pursuant to Article 1813 of the Italian Civil Code (loan contract). Despite repeated requests, the defendant allegedly failed to repay the sum. The defendant, appearing in court at the Court Building in Turin, contested the existence of the debt, claiming that the sum received was a gift under Article 769 of the Italian Civil Code.\\[1em]
+REASONS FOR THE DECISION\\
+The evidence confirmed the existence of a loan contract under Article 1813 of the Italian Civil Code, as established by the private written agreement submitted in evidence and by the testimony of two independent witnesses (pursuant to Articles 2721--2725 of the Italian Civil Code on testimonial evidence). The claim of a gift is unfounded, as no donative intent on the part of the plaintiff was proven, as required by Article 769 of the Italian Civil Code. Pursuant to Article 2697 of the Italian Civil Code, the burden of proof lies with the party asserting release from an obligation, and in this case the defendant failed to provide adequate proof. Therefore, the plaintiff's credit must be recognized in the amount of EUR 15,000, plus statutory interest from July 1, 2023, in accordance with Article 1282 of the Italian Civil Code.\\[1em]
+RULING\\
+The Court, definitively ruling, dismissing any other claims or objections,\\
+orders Mr. Carlo Neri to pay Mr. Mario Rossi the sum of EUR 15,000, plus statutory interest from July 1, 2023 until payment in full (Articles 1282 and 1284 of the Italian Civil Code);\\
+orders the defendant to reimburse the plaintiff's legal costs, set at EUR 2,500 for legal fees, plus statutory surcharges, pursuant to Articles 91 and 92 of the Italian Code of Civil Procedure.\\[1em]
+Turin, March 10, 2025\\
+The Judge\\
+Andrea Bianchi
+\end{minipage}
+\caption{Illustrative example of an Italian civil judgment.}
+\label{fig:civil-judgment-legal-articles}
+\end{figure}
 
 
 
@@ -68,46 +118,8 @@ Date Range: 2025-07-28 to 2025-07-30\\[0.5em]
 \textbf{[2025-07-29 -- 09:02]} L: Got it. 6:30 PM, Via Roma 210, Friday. I'll bring the envelope.\\
 \textbf{[2025-07-30 -- 16:47]} M: Perfect.
 \end{minipage}
-\caption{Simulated chat exchange containing dates, locations, persons, and a long voice message transcription.}
+\caption{Illustrative example of chat exchange.}
 \label{fig:chat-investigation-example}
 \end{figure}
 
-
-\subsection{Judgments}
-Legal documents, and especially court judgments and orders, contain information that is valuable in multiple applications (from legal case retrieval to legal process analysis), for different purposes (from the comparison with similar cases for uniform judgments to discovering trends for specific legal subjects, e.g., counting the average maintenance in relation to economical conditions of the partners in divorces), and stakeholders (from judges to law administrators, lawmakers, lawyers, scholars, and the general public).
-\todo{add example in english}
-
-\begin{figure}[htbp]
-\centering
-\begin{minipage}{0.9\linewidth}
-\ttfamily
-\small
-ORDINARY COURT OF TURIN\\
-Civil Division\\
-Judgment No. 1234/2025\\
-Published on March 15, 2025\\[1em]
-ITALIAN REPUBLIC\\
-IN THE NAME OF THE ITALIAN PEOPLE\\[1em]
-The Court, sitting as a single judge, in the person of Judge Andrea Bianchi, has delivered the following:\\[1em]
-JUDGMENT\\[0.5em]
-in the civil case registered under No. 4567/2024\\
-between\\[0.5em]
-Tizio Rossi, residing in Turin, represented and defended by Attorney Lucia Verdi, with elected domicile at her office in Turin -- plaintiff\\[0.5em]
-and\\[0.5em]
-Caio Neri, residing in Milan, represented and defended by Attorney Marco Blu, with elected domicile at his office in Milan -- defendant\\[1em]
-FACTS\\
-The plaintiff summoned the defendant to court, alleging that on January 10, 2023, he lent him the sum of EUR 15,000, as evidenced by a private written agreement signed by both parties, with the obligation to repay by June 30, 2023, pursuant to Article 1813 of the Italian Civil Code (loan contract). Despite repeated requests, the defendant allegedly failed to repay the sum. The defendant, appearing in court at the Court Building in Turin, contested the existence of the debt, claiming that the sum received was a gift under Article 769 of the Italian Civil Code.\\[1em]
-REASONS FOR THE DECISION\\
-The evidence confirmed the existence of a loan contract under Article 1813 of the Italian Civil Code, as established by the private written agreement submitted in evidence and by the testimony of two independent witnesses (pursuant to Articles 2721--2725 of the Italian Civil Code on testimonial evidence). The claim of a gift is unfounded, as no donative intent on the part of the plaintiff was proven, as required by Article 769 of the Italian Civil Code. Pursuant to Article 2697 of the Italian Civil Code, the burden of proof lies with the party asserting release from an obligation, and in this case the defendant failed to provide adequate proof. Therefore, the plaintiff's credit must be recognized in the amount of EUR 15,000, plus statutory interest from July 1, 2023, in accordance with Article 1282 of the Italian Civil Code.\\[1em]
-RULING\\
-The Court, definitively ruling, dismissing any other claims or objections,\\
-orders Mr. Caio Neri to pay Mr. Tizio Rossi the sum of EUR 15,000, plus statutory interest from July 1, 2023 until payment in full (Articles 1282 and 1284 of the Italian Civil Code);\\
-orders the defendant to reimburse the plaintiff's legal costs, set at EUR 2,500 for legal fees, plus statutory surcharges, pursuant to Articles 91 and 92 of the Italian Code of Civil Procedure.\\[1em]
-Turin, March 10, 2025\\
-The Judge\\
-Andrea Bianchi
-\end{minipage}
-\caption{Example of an abbreviated Italian civil judgment with references to legal articles and location entities.}
-\label{fig:civil-judgment-legal-articles}
-\end{figure}
 
