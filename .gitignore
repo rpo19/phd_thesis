@@ -19,7 +19,7 @@
 *.dvi
 
 # PDF output
-main.pdf # sync in LFS
+main.pdf
 
 # Directory for auxiliary files created by latexmk
 latexmk/
