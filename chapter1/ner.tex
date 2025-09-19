@@ -1,0 +1,68 @@
+\section{NER}
+
+\Acf{ner} is the task of ...
+
+Multiple rule-based and machine-learning approaches with manually crafted features have been proposed and remain useful in practice for certain entity types, where naming patterns are relatively well established~\cite{Sevgili2020NeuralEL}. More recent \ac{ner} methods rely on deep learning architectures, often in combination with conditional random fields (CRFs)~\cite{Sevgili2020NeuralEL}. In this setting, word- and character-level embeddings provide effective features for sequence labeling tasks. The state of the art on the CoNLL2003 English benchmark achieves an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings~\cite{wang-etal-2021-automated}.
+
+For Italian, recent studies demonstrate that BERT-based models~\cite{devlin-etal-2019-bert} outperform CRF-based methods for entity types such as \texttt{Person}, \texttt{Organization}, and \texttt{Location}~\cite{lrec2022kind}. In this work, we evaluate different Italian \ac{ner} approaches that integrate rules, CRFs, and contextualized embeddings, considering both pre-trained and fine-tuned models.
+
+\section{Related Work on Named Entity Recognition}
+
+Named Entity Recognition (NER) is a core information extraction task: identifying spans of text referring to entities (persons, organizations, locations, legal articles, etc.) and classifying them into semantic categories. Below, we review the main strands of work, from classical approaches to recent advances.
+
+\subsection{Classical and Pre-Transformer Approaches}
+
+Early NER systems were based on \emph{rule-based} or \emph{manually engineered features}, often relying on lexicons, gazetteers, orthographic or morphological patterns, and handcrafted heuristics. These approaches remain useful in settings where entity types follow stable naming conventions and resources are limited \cite{Sevgili2020NeuralEL}. 
+
+Later, \emph{statistical sequence labeling methods}, in particular conditional random fields (CRFs), became dominant. CRFs were often enriched with features such as word embeddings, character-level representations, and subword cues. These methods proved effective for handling out-of-vocabulary words and morphological variation, especially in domains with moderate amounts of annotated data.
+
+\subsection{Deep Learning and Contextualized Embeddings}
+
+The advent of neural architectures led to significant improvements. Recurrent neural networks (RNNs), convolutional networks (CNNs), and hybrid models were combined with CRFs to capture context while maintaining sequence labeling consistency \cite{Sevgili2020NeuralEL}. Word and character embeddings provided valuable input representations for NER classifiers.
+
+A major breakthrough came with \emph{contextualized embeddings}. Models such as ELMo, GPT, and especially BERT enabled words to be represented differently depending on context, solving long-standing disambiguation challenges. On the CoNLL-2003 English benchmark, the leading approach achieved an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings \cite{wang-etal-2021-automated}. 
+
+For Italian, BERT-based models were shown to outperform CRFs for entity types such as ``person'', ``organization'', and ``location'' \cite{lrec2022kind}.
+
+\subsection{Recent Advances}
+
+More recent work has expanded the scope of NER in several directions. Transformer-based models have become the dominant paradigm, often enhanced with structured prediction layers such as CRFs, graph-based encoders, or reinforcement learning strategies. Large language models (LLMs) are increasingly applied to NER, either through fine-tuning or prompting, enabling promising results even in few-shot and zero-shot scenarios.
+
+Another line of work addresses \emph{low-resource settings}, where annotated corpora are scarce. Techniques such as transfer learning, semi-supervised learning, active learning, and domain adaptation are used to improve performance when training data is limited. Comparative studies show that dataset characteristics --- including domain specificity, size, and class distribution --- strongly affect the relative performance of different methods.
+
+Despite these advances, several challenges remain. Performance degrades under domain shift or with rare, domain-specific entities, such as those found in legal or biomedical texts. Nested and overlapping entities remain difficult to model, and computational cost, interpretability, and fairness continue to be open issues in practical applications.
+
+For further information refer to \textcite{keraghel2024recentadvancesnamedentity}
+
+\todo{zero-shot gliner, gpt-ner}
+\todo{order: definition, example figure, literature and advancements, "production" libraries eg spacy, tint,...}
+\todo{ner for italian (and legal)?}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\PERSON{Mario Rossi}, residing in \LOCATION{Turin} \texttt{[...]} -- plaintiff\\
+and\\
+\PERSON{Carlo Neri}, residing in \LOCATION{Milan} \texttt{[...]} -- defendant\\
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813} \texttt{[...]}
+\subcaption{\ac{ner} on a judgment}
+\label{fig:extract-ner-judgment}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\DATE{[2025-07-28 -- 14:15]} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?
+\DATE{[2025-07-29 -- 08:45]} \PERSON{Mario Rossi}: \textit{[Voice message -- 2 min 14 sec]}
+\quad \textit{Transcription:}\\
+\quad \texttt{[...]} better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\subcaption{\ac{ner} on chat logs}
+\label{fig:extract-ner-chat}
+\end{minipage}
+\caption{\ac{ner} application with entity highlights and labels.}
+\label{fig:extracts-ner}
+\end{figure}
+
