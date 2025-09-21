@@ -1,14 +1,31 @@
 \subsection{Named Entity Recognition}
+\begin{definition}
+    [Named Entity Recognition (NER)]
+    \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018}.
+\end{definition}
+While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{}, legal references~\cite{}, and more~\cite{entityorientedsearch2018}. Furthemore, the interest in extending the types of entities recognized can be supported by the research on the field of fine-grained entity typing, which aims to classify entities into a larger set of more specific categories~\cite{}.
 
 \begin{itemize}
-    \item rule-based, gazetteers
-    \item feature engineering, HMM CRF
-    \item deep learning, LSTM CRF
-    \item BERT
-    \item Gliner and zero shot
+    \item what is ner
+    \item why useful? how they use it? pseudonyms, anonymization, search, knowledge graphs, information extraction, kbp
+    \item how it is done
+    \item extra: Gliner and zero shot
     \item LLMs
     \item fine-grained, nested, non-continued
+    \item spacy state-space models
 \end{itemize}
+
+\todo{definition, sequence labeling/classification. formal definition?}
+
+\todo{ok but why are we using these models? to incorporate contextual meaning}
+Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches tipically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
+Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}. \todo{spiegare brevemente crf?}
+With neural networks, deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{} or CNN-CRF~\cite{}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformeres~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
+
+
+
+
+
 
 Multiple rule-based and machine-learning approaches with manually crafted features have been proposed and remain useful in practice for certain entity types, where naming patterns are relatively well established~\cite{Sevgili2020NeuralEL}. More recent \ac{ner} methods rely on deep learning architectures, often in combination with conditional random fields (CRFs)~\cite{Sevgili2020NeuralEL}. In this setting, word- and character-level embeddings provide effective features for sequence labeling tasks. The state of the art on the CoNLL2003 English benchmark achieves an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings~\cite{wang-etal-2021-automated}.
 
