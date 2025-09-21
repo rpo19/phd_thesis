@@ -1,6 +1,14 @@
-\section{NER}
+\subsection{Named Entity Recognition}
 
-\Acf{ner} is the task of ...
+\begin{itemize}
+    \item rule-based, gazetteers
+    \item feature engineering, HMM CRF
+    \item deep learning, LSTM CRF
+    \item BERT
+    \item Gliner and zero shot
+    \item LLMs
+    \item fine-grained, nested, non-continued
+\end{itemize}
 
 Multiple rule-based and machine-learning approaches with manually crafted features have been proposed and remain useful in practice for certain entity types, where naming patterns are relatively well established~\cite{Sevgili2020NeuralEL}. More recent \ac{ner} methods rely on deep learning architectures, often in combination with conditional random fields (CRFs)~\cite{Sevgili2020NeuralEL}. In this setting, word- and character-level embeddings provide effective features for sequence labeling tasks. The state of the art on the CoNLL2003 English benchmark achieves an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings~\cite{wang-etal-2021-automated}.
 
@@ -66,3 +74,8 @@ The plaintiff summoned the defendant to court, alleging that on \DATE{January 10
 \label{fig:extracts-ner}
 \end{figure}
 
+
+
+
+\todo{fine-graned entity types, nested entities, overlapping entities}
+\todo{universal ner?}

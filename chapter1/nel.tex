@@ -1,6 +1,41 @@
+
+\subsection{Named Entity Linking}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Judgment Extract (NEL):}\\[0.5em]
+The plaintiff \NELPerson{Tizio Rossi}{}, residing in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino}{\WikiIcon Turin}, represented by Attorney \NELPerson{Lucia Verdi}{}, alleged that on \NELDate{January 10, 2023} he lent the defendant \NELPerson{Caio Neri}{} the sum of EUR 15,000, repayable by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \NELLocation{Court Building in Turin}{https://it.wikipedia.org/wiki/Palazzo\_di\_Giustizia\_(Torino)}.\\[0.5em]
+The Court finds the loan contract valid and orders \NELPerson{Caio Neri}{} to pay \NELPerson{Tizio Rossi}{} EUR 15,000 plus interest from \NELDate{July 1, 2023}, pursuant to \NELLaw{Articles 1282 and 1284}.\\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\ttfamily
+\small
+\textbf{Chat Extract (NEL):}\\[0.5em]
+\NELDate{2025-07-28 -- 14:15} \NELPerson{Luca Bianchi}{}: Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://it.wikipedia.org/wiki/Piazza\_Vittorio\_Veneto\_(Torino)} in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino} or the one by the river?\\[0.3em]
+\NELDate{2025-07-29 -- 08:45} \NELPerson{Mario Rossi}{} [voice message]: \\
+"...better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{https://it.wikipedia.org/wiki/Gianni} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via\_Roma\_(Torino)} near \NELLocation{Porta Susa station}{https://it.wikipedia.org/wiki/Porta\_Susa\_station}. Also, bring the envelope I gave you last month."\\
+\end{minipage}
+\caption{Judgment and chat extracts side-by-side with entity linking (NEL) highlighting and canonical links.}
+\label{fig:extracts-nel-new}
+\end{figure}
+\todo{migliora. potrei usare logowikipedia/Torino,... e magari link a leggi per articoli. vedi paper con statale}
+
+
+\subsection{NIL Prediction}
+\subsection{NIL Clustering}
+\subsection{coreference resolution}
+\todo{what did LLMs change?}
+\subsection{Human-in-the-Loop}
+
+
 \section{NEL}
 \todo{relic}
 \todo{grammar constrained nel}
 \todo{genre and autoregressive}
 genie, refined, blink,...
 \todo{see ms thesis survey}
+
