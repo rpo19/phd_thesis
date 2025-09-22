@@ -66,45 +66,21 @@ Refer to \textcite{alshammari2021impact} for a comparison of different annotatio
 
 \todo{ok but why are we using these models? to incorporate contextual meaning}
 Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches tipically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
-Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}. \todo{spiegare brevemente crf?}
-With neural networks, deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{} or CNN-CRF~\cite{}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformeres~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
+Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
+With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
 
 
 
 
+More recently, \ac{ner} has been approached using \aclp{llm} with different techniques, such as zero-shot prompting, \acl{icl}, and supervised fine-tuning~\cite{xu2024llm_for_ie}. For example, \textcite{wang-etal-2025-gptner} performs \ac{ner} via \ac{icl} by mapping the task to a text generation problem~\cite{}---i.e., by asking the model to repeat the input text surrounding entity mentions with a prefix and suffix (e.g., ``<PERSON> Barack Obama </PERSON>''). Other approaches prompt \acp{llm} to enumerate entity mentions in a structured format without repeating the input text~\cite{xie-etal-2024-self}, or even to produce code that represents the extracted entities~\cite{sainz2024gollie,li-etal-2023-codeie}---for instance, by defining a class for each entity type with fields such as the mention string, and then asking the model to output a list of entity objects~\cite{sainz2024gollie}.
+
+\todo{zs gliner nuner trend, nested}
 
 
-Multiple rule-based and machine-learning approaches with manually crafted features have been proposed and remain useful in practice for certain entity types, where naming patterns are relatively well established~\cite{Sevgili2020NeuralEL}. More recent \ac{ner} methods rely on deep learning architectures, often in combination with conditional random fields (CRFs)~\cite{Sevgili2020NeuralEL}. In this setting, word- and character-level embeddings provide effective features for sequence labeling tasks. The state of the art on the CoNLL2003 English benchmark achieves an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings~\cite{wang-etal-2021-automated}.
+via prompting~\cite{liu2023pre}, achieving competitive performance in zero-shot and few-shot settings~\cite{keraghel2024recentadvancesnamedentity}.
+\todo{gpt-ner, code llm, }
 
-For Italian, recent studies demonstrate that BERT-based models~\cite{devlin-etal-2019-bert} outperform CRF-based methods for entity types such as \texttt{Person}, \texttt{Organization}, and \texttt{Location}~\cite{lrec2022kind}. In this work, we evaluate different Italian \ac{ner} approaches that integrate rules, CRFs, and contextualized embeddings, considering both pre-trained and fine-tuned models.
-
-\section{Related Work on Named Entity Recognition}
-
-Named Entity Recognition (NER) is a core information extraction task: identifying spans of text referring to entities (persons, organizations, locations, legal articles, etc.) and classifying them into semantic categories. Below, we review the main strands of work, from classical approaches to recent advances.
-
-\subsection{Classical and Pre-Transformer Approaches}
-
-Early NER systems were based on \emph{rule-based} or \emph{manually engineered features}, often relying on lexicons, gazetteers, orthographic or morphological patterns, and handcrafted heuristics. These approaches remain useful in settings where entity types follow stable naming conventions and resources are limited \cite{Sevgili2020NeuralEL}. 
-
-Later, \emph{statistical sequence labeling methods}, in particular conditional random fields (CRFs), became dominant. CRFs were often enriched with features such as word embeddings, character-level representations, and subword cues. These methods proved effective for handling out-of-vocabulary words and morphological variation, especially in domains with moderate amounts of annotated data.
-
-\subsection{Deep Learning and Contextualized Embeddings}
-
-The advent of neural architectures led to significant improvements. Recurrent neural networks (RNNs), convolutional networks (CNNs), and hybrid models were combined with CRFs to capture context while maintaining sequence labeling consistency \cite{Sevgili2020NeuralEL}. Word and character embeddings provided valuable input representations for NER classifiers.
-
-A major breakthrough came with \emph{contextualized embeddings}. Models such as ELMo, GPT, and especially BERT enabled words to be represented differently depending on context, solving long-standing disambiguation challenges. On the CoNLL-2003 English benchmark, the leading approach achieved an F$_1$ score of 94.6 by combining character-based, contextualized, and non-contextualized embeddings \cite{wang-etal-2021-automated}. 
-
-For Italian, BERT-based models were shown to outperform CRFs for entity types such as ``person'', ``organization'', and ``location'' \cite{lrec2022kind}.
-
-\subsection{Recent Advances}
-
-More recent work has expanded the scope of NER in several directions. Transformer-based models have become the dominant paradigm, often enhanced with structured prediction layers such as CRFs, graph-based encoders, or reinforcement learning strategies. Large language models (LLMs) are increasingly applied to NER, either through fine-tuning or prompting, enabling promising results even in few-shot and zero-shot scenarios.
-
-Another line of work addresses \emph{low-resource settings}, where annotated corpora are scarce. Techniques such as transfer learning, semi-supervised learning, active learning, and domain adaptation are used to improve performance when training data is limited. Comparative studies show that dataset characteristics --- including domain specificity, size, and class distribution --- strongly affect the relative performance of different methods.
-
-Despite these advances, several challenges remain. Performance degrades under domain shift or with rare, domain-specific entities, such as those found in legal or biomedical texts. Nested and overlapping entities remain difficult to model, and computational cost, interpretability, and fairness continue to be open issues in practical applications.
-
-For further information refer to \textcite{keraghel2024recentadvancesnamedentity}
+For further information refer to \textcite{keraghel2024recentadvancesnamedentity} for \ac{ner} and to \textcite{xu2024llm_for_ie} for \ac{ie} with \acp{llm}.
 
 \todo{zero-shot gliner, gpt-ner}
 \todo{order: definition, example figure, literature and advancements, "production" libraries eg spacy, tint,...}
