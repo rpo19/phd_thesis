@@ -3,7 +3,31 @@
     [Named Entity Recognition (NER)]
     \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018}.
 \end{definition}
-While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{}, legal references~\cite{}, and more~\cite{entityorientedsearch2018}. Furthemore, the interest in extending the types of entities recognized can be supported by the research on the field of fine-grained entity typing, which aims to classify entities into a larger set of more specific categories~\cite{}.
+While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023}, legal references~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish}, and more~\cite{entityorientedsearch2018}. The \ac{nlp} community manifested interest in extending the types of entities recognized, proposing hundreds of entity types~\cite{sekine2002extended_150ner_types,sekine2004definition_200ner_types} and introducing the \emph{fine-grained entity typing} field, which aims to classify entities into a larger set of more specific categories~\cite{fget_review_2023}.
+
+Formally, given a sequence of tokens $X$,
+\begin{equation}
+    X = [x_0, x_1, \ldots, x_{|X|}]
+\end{equation}
+and a set of categories $T$,
+\begin{equation}
+T = \{\texttt{Person}, \texttt{Location}, \texttt{Organization}, \ldots\},
+\end{equation}
+a \ac{ner} system produces a set of tuples $Y$:
+\begin{equation}
+Y = \{(i_{start},i_{end},t^i),\ldots\}, \text{ where } i_{start}, i_{end} \in \{0,1,\ldots,|X|\}, t^i \in T.
+\end{equation}
+Considering the example sentence ``Barack Obama was born on Aug 04, 1961.'', a \ac{ner} system should identify two mentions of entities: ``Barack Obama'' as a \texttt{Person} and ``Aug 04, 1961'' as a \texttt{Date}. Supposing the tokenization produces the following sequence, is
+\begin{equation}
+X^I = [\text{``Barack''}_0, \text{``Obama''}_1, \text{``was''}_2, \text{``born''}_3, 
+       \text{``on''}_4, \text{``Aug''}_5, \text{``04''}_6, \text{``,''}_7, 
+       \text{``1961''}_8, \text{``.''}_9]
+\end{equation}
+the expected output is
+\begin{equation}
+Y^I = \{(0, 1, \texttt{Person}), (5, 8, \texttt{Date})\}.
+\end{equation}
+The first tuple correspond to ``Barack Obama'' (\texttt{Person})---from token 0 to token 1, while the second to ``Aug 04, 1961'' (\texttt{Date})---from token 5 to token 8.
 
 \begin{itemize}
     \item what is ner
