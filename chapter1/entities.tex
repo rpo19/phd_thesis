@@ -1,9 +1,9 @@
 \section{Entities and How to Represent Them}
 
-``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018}.
+``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018balog}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
 In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
-This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \textcite{entityorientedsearch2018} definition:
+This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018balog}. Modern natural language toolkits, such as spaCy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \textcite{entityorientedsearch2018balog} definition:
 \begin{definition}[Entity]
 An \emph{entity} is a uniquely identifiable object, thing, or concept. 
 It is described through a set of \emph{entity properties}, always including 
@@ -18,15 +18,15 @@ The entity belongs to the types \texttt{Person} and \texttt{Politician}.
 Its attributes include the full birth name ``Barack Hussein Obama II'' and the date of birth ``Aug 4, 1961''. 
 Relationships connect this entity to other entities such as its birthplace, \textsc{Honolulu}, and its spouse, \textsc{Michelle Obama}.
 
-Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~\cite{entityorientedsearch2018}.
+Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~\cite{entityorientedsearch2018balog}.
 %
 \begin{definition}[\Acl{kr}]
-A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018}.
+A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018balog}.
 \end{definition}
 
 Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
 The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
@@ -83,7 +83,7 @@ Structured entity knowledge, such as represented in \ac{rdf}, is usually stored 
 \todo{add operation that make a kb. querying, updating, reasoning,...?}
 \begin{definition}[\Acl{kb}]
     A \acf{kb}, or a \acf{kg}, is a structured form of \acl{kr} that organizes and stores facts about entities. 
-    These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018}.
+    These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018balog}.
     %
     When the primary interest lies in the connections between entities, a \acl{kb} is often referred to as a \emph{\acl{kg}}.
 \end{definition}
@@ -104,14 +104,14 @@ Structured entity knowledge, such as represented in \ac{rdf}, is usually stored 
 \subsection{Structured or Unstructured? The Web versus Knowledge Bases}
 \todo{can be expanded and called properties of Kbs}
 %
-Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
+Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018balog}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
 This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (see \todo{})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
 %
 \todo{maybe useful from balog ``Keeping up
 with these changes requires a continuous effort from editors and content managers''}
 Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{web}, suffer---at least partially---from both incompleteness and unreliable information form. Compared to the \ac{web}, they are more structured but less broad and comprehensive. Conversely, relative to \acp{kb}, they cover a wider range of information but present it in a less structured and less reliable form.\todo{missing citation? but it is based on previous statements, so probably not needed. maybe I can cite balog but does not say this clearly.}
 
-\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018}.
+\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018balog}.
 
 While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wikidata,vrandevcic2014wikidata}) and also unstructured \ac{kr} (Wikipedia~\cite{wikipedia}) support \emph{CRUD} operations (Create, Read, Update, Delete)~\cite{elmasri2014fundamentals} to allow their maintenance over time~\cite{shafee2023ten_rules_editing_wikidata}. These operations are also defined in the SPARQL/Update~\cite{seaborne2008sparqlupdate} language.
 
@@ -121,4 +121,4 @@ While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wi
 \todo{not sure where to put this. it is like combining kbs and the web}
 \todo{maybe introduce a bit nlp with the objective and computational linguistics with the objective of capturing the meaning of text}
 
-As later described in \Cref{sec:information_extraction}, researchers in \acl{nlp} have developed methods to automatically extract entities, relationships, and attributes from unstructured text~\cite{entityorientedsearch2018}. These methods can be used to populate and extend existing \acp{kb}, a task known as \emph{\acl{kbp}}~\cite{entityorientedsearch2018}.
+As later described in \Cref{sec:information_extraction}, researchers in \acl{nlp} have developed methods to automatically extract entities, relationships, and attributes from unstructured text~\cite{entityorientedsearch2018balog}. These methods can be used to populate and extend existing \acp{kb}, a task known as \emph{\acl{kbp}}~\cite{entityorientedsearch2018balog}.

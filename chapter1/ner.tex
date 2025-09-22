@@ -1,9 +1,13 @@
 \subsection{Named Entity Recognition}
 \begin{definition}
     [Named Entity Recognition (NER)]
-    \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018}.
+    \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}.
 \end{definition}
-While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023}, legal references~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish}, and more~\cite{entityorientedsearch2018}. The \ac{nlp} community manifested interest in extending the types of entities recognized, proposing hundreds of entity types~\cite{sekine2002extended_150ner_types,sekine2004definition_200ner_types} and introducing the \emph{fine-grained entity typing} field, which aims to classify entities into a larger set of more specific categories~\cite{fget_review_2023}.
+While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023}, legal references~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish}, and more~\cite{entityorientedsearch2018balog}. The \ac{nlp} community manifested interest in extending the types of entities recognized, proposing hundreds of entity types~\cite{sekine2002extended_150ner_types,sekine2004definition_200ner_types,yosef-etal-2012-hyena} and introducing the \emph{fine-grained entity typing} field, which aims to classify entities into a larger set of more specific categories~\cite{fget_review_2023}.
+
+\ac{ner} is often the first component of \acl{ie}, contributing to \acl{sta}, \acl{kbp} and downstream tasks such as entity-based search or maintaining \acp{kb} up to date~\cite{entityorientedsearch2018balog}.
+Besides, \ac{ner} is applied in specific domains, such as the healthcare~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023} or the legal~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish} ones, to extract domain-specific entities and support specialized applications.
+Beyond these areas, \ac{ner} can contribute to downstream tasks including document summarization~\cite{khademi2020persian,lin-zeldes-2024-gumsley,roha_ner_summarizaton_2023} and machine translation~\cite{xie2022end,hkiri-etal-2017-arabic}, where it helps preserve and highlight key entities, or question answering~\cite{molla2006named,ner_qa_review_2016}, by identifying entities mentioned in the query.
 
 Formally, given a sequence of tokens $X$,
 \begin{equation}
@@ -17,17 +21,36 @@ a \ac{ner} system produces a set of tuples $Y$:
 \begin{equation}
 Y = \{(i_{start},i_{end},t^i),\ldots\}, \text{ where } i_{start}, i_{end} \in \{0,1,\ldots,|X|\}, t^i \in T.
 \end{equation}
-Considering the example sentence ``Barack Obama was born on Aug 04, 1961.'', a \ac{ner} system should identify two mentions of entities: ``Barack Obama'' as a \texttt{Person} and ``Aug 04, 1961'' as a \texttt{Date}. Supposing the tokenization produces the following sequence, is
+Considering the example sentence ``Barack Obama was born on Aug 04, 1961.'', a \ac{ner} system should identify two mentions of entities: ``Barack Obama'' as a \texttt{Person} and ``Aug 04, 1961'' as a \texttt{Date}. Supposing the tokenization produces the sequence $X^I$,
 \begin{equation}
 X^I = [\text{``Barack''}_0, \text{``Obama''}_1, \text{``was''}_2, \text{``born''}_3, 
        \text{``on''}_4, \text{``Aug''}_5, \text{``04''}_6, \text{``,''}_7, 
        \text{``1961''}_8, \text{``.''}_9]
 \end{equation}
-the expected output is
+the expected output is as follows:
 \begin{equation}
 Y^I = \{(0, 1, \texttt{Person}), (5, 8, \texttt{Date})\}.
 \end{equation}
 The first tuple correspond to ``Barack Obama'' (\texttt{Person})---from token 0 to token 1, while the second to ``Aug 04, 1961'' (\texttt{Date})---from token 5 to token 8.
+
+Tipically, \ac{ner} systems are modeled as sequence labeling tasks~\cite{jm3,keraghel2024recentadvancesnamedentity,entityorientedsearch2018balog}, where---in the simplest case---each token $x_i$ in the input sequence $X$ is assigned a label $l_i \in L$, where $L$ is defined as follow:
+\begin{equation}
+    T = \{\texttt{I-PER}, \texttt{I-LOC}, \texttt{I-ORG}, \texttt{O}\},
+\end{equation}
+\texttt{I-}\textit{TYPE} indicates that the token is \texttt{I}nside an entity of type \texttt{TYPE}, while \texttt{O} indicates that the token is \texttt{O}utside any entity mention. The output of the \ac{ner} system is thus a sequence of labels $L$, that for the above example $X^I$ would be:
+\begin{equation}
+L^I = [\texttt{I-PER}, \texttt{I-PER}, \texttt{O}, \texttt{O}, \texttt{O}, \texttt{I-DATE}, \texttt{I-DATE}, \texttt{O}, \texttt{I-DATE}, \texttt{O}].
+\end{equation}
+The \emph{IO} scheme is the simplest labeling scheme for \ac{ner} and it cannot distinguish between consecutive entities of the same type~\cite{alshammari2021impact}. For example, consider the sentence ``Barack Obama Michelle Obama'' from the keywords of a newpaper, the IO scheme would label it as:
+\begin{equation}
+L^{II} = [\texttt{I-PER}, \texttt{I-PER}, \texttt{I-PER}, \texttt{I-PER}],
+\end{equation}
+thus failing to recognize the two distinct mentions of \texttt{Person}. More sofisticated and informative schemes exists, such as the \emph{BIO}~\cite{ramshaw-marcus-1995-text-bio-scheme}, which introduces the \texttt{B-}\textit{TYPE} label to indicate that the token is at the \texttt{B}eginning of an entity of type \texttt{TYPE}. WIth BIO, the above example would be labeled as:
+\begin{equation}
+L^{II} = [\texttt{B-PER}, \texttt{I-PER}, \texttt{B-PER}, \texttt{I-PER}],
+\end{equation}
+thus correctly distinguishing two mentions of \texttt{Person}.
+Refer to \textcite{alshammari2021impact} for a comparison of different annotation schemes for \ac{ner} and their impact on model performance.
 
 \begin{itemize}
     \item what is ner
