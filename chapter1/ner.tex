@@ -67,24 +67,23 @@ Refer to \textcite{alshammari2021impact} for a comparison of different annotatio
 \todo{ok but why are we using these models? to incorporate contextual meaning}
 Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches tipically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
 Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
-With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
+With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards} or BiLSTM-CNN-CRF~\cite{ma-hovy-2016-end}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
 
 
 
 
 More recently, \ac{ner} has been approached using \aclp{llm} with different techniques, such as zero-shot prompting, \acl{icl}, and supervised fine-tuning~\cite{xu2024llm_for_ie}. For example, \textcite{wang-etal-2025-gptner} performs \ac{ner} via \ac{icl} by mapping the task to a text generation problem~\cite{}---i.e., by asking the model to repeat the input text surrounding entity mentions with a prefix and suffix (e.g., ``<PERSON> Barack Obama </PERSON>''). Other approaches prompt \acp{llm} to enumerate entity mentions in a structured format without repeating the input text~\cite{xie-etal-2024-self}, or even to produce code that represents the extracted entities~\cite{sainz2024gollie,li-etal-2023-codeie}---for instance, by defining a class for each entity type with fields such as the mention string, and then asking the model to output a list of entity objects~\cite{sainz2024gollie}.
 
-\todo{zs gliner nuner trend, nested}
+The \ac{llm}-based approaches have shown strong adaptability, thanks to their zero-shot and few-shot capabilities, reducing the need for annotating large datasets for domain-specific applications~\cite{keraghel2024recentadvancesnamedentity}. However, \acp{llm} are resource intensive and their adoption is limited by infrastructural costs and latency~\cite{keraghel2024recentadvancesnamedentity}. Also designing effective prompts is an expensive process---requiring domain expertise---and small changes in the prompt can vary the model's behavior, making these approaches not suitable for domains where consistent outputs are required~\cite{keraghel2024recentadvancesnamedentity}. 
 
+Recent studies have explored the use of smaller models---i.e., DeBERTa~\cite{HeGChen2023} and RoBERTa~\cite{liu2020roberta}, which are improvement of BERT~\cite{devlin-etal-2019-bert}---for zero-shot \ac{ner}, where the entity types to recognize are provided as textual inputs for the model together with the input text~\cite{zaratiana-etal-2024-gliner,bogdanov-etal-2024-nuner}. An example application is to recognize entities of type \texttt{Clothing} or \texttt{Pet} by proving the strings ``clothing'' and ``pets'' in the input. These models achieve competitive performance compared to \acp{llm}, while being more efficient and easier to deploy~\cite{zaratiana-etal-2024-gliner,bogdanov-etal-2024-nuner}.
 
-via prompting~\cite{liu2023pre}, achieving competitive performance in zero-shot and few-shot settings~\cite{keraghel2024recentadvancesnamedentity}.
-\todo{gpt-ner, code llm, }
+For further information on recent advancements, refer to \textcite{keraghel2024recentadvancesnamedentity} for \ac{ner} and \textcite{xu2024llm_for_ie} for \ac{ie}---inclusing \ac{ner}---with \acp{llm}.
 
-For further information refer to \textcite{keraghel2024recentadvancesnamedentity} for \ac{ner} and to \textcite{xu2024llm_for_ie} for \ac{ie} with \acp{llm}.
-
-\todo{zero-shot gliner, gpt-ner}
 \todo{order: definition, example figure, literature and advancements, "production" libraries eg spacy, tint,...}
 \todo{ner for italian (and legal)?}
+
+Finally, several ready-to-use libraries exist for \ac{ner}, such as spaCy~\cite{honnibal2020spacy}, Flair~\cite{akbik2019flair}, Stanza~\cite{qi2020stanza}, Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, and Transformers~\cite{wolf-etal-2020-transformers}. These libraries provide pre-trained models for multiple languages, and can be easily integrated into applications. For instance, spaCy offers efficient and accurate \ac{ner} models that can be fine-tuned on custom datasets~\cite{honnibal2020spacy}. Its models are based on a transition-based parser~\cite{AliEtAl2023UnintendedMemorization} that maps structured prediction tasks, such as \ac{ner} and dependency parsing, into a sequence of state transitions~\cite{lample-etal-2016-neural}. The underlying architecture combines multiple subnetworks. The tok2vec component encodes tokens into embeddings enriched with sub-word features (e.g., prefixes, suffixes, or shapes such as ``xxxXx'' for ``spaCy'') using a CNN-based encoder. A lower subnet then constructs representations for each token by combining these features, while an optional upper feed-forward network refines the representation to predict action scores. When the upper network is not used, the lower subnet directly produces the scores~\cite{AliEtAl2023UnintendedMemorization}.
 
 \begin{figure}[htbp]
 \centering
@@ -110,12 +109,12 @@ The plaintiff summoned the defendant to court, alleging that on \DATE{January 10
 \subcaption{\ac{ner} on chat logs}
 \label{fig:extract-ner-chat}
 \end{minipage}
-\caption{\ac{ner} application with entity highlights and labels.}
+\caption{\Ac{ner} application with entity highlights and labels.}
 \label{fig:extracts-ner}
 \end{figure}
 
+An example application of \ac{ner} on legal judgments and chat logs is shown in Figure~\ref{fig:extracts-ner}, where entities such as persons, locations, dates, monetary values, and legal references are identified and classified.
 
 
 
-\todo{fine-graned entity types, nested entities, overlapping entities}
-\todo{universal ner?}
+\todo{nested entities, overlapping entities}

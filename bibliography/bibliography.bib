@@ -138,7 +138,6 @@ year="2023",
 publisher="Springer Nature Switzerland",
 address="Cham",
 pages="187--201",
-abstract="The extraction of named entities from court judgments is useful in several downstream applications, such as document anonymization and semantic search engines. In this paper, we discuss the application of named entity recognition and linking (NEEL) to extract entities from Italian civil court judgments. To develop and evaluate our work, we use a corpus of 146 manually annotated court judgments. We use a pipeline that combines a transformer-based Named Entity Recognition (NER) component, a transformer-based Named Entity Linking (NEL) component, and a NIL prediction component. While the NEL and NIL prediction components are not fine-tuned on domain-specific data, the NER component is fine-tuned on the annotated corpus. In addition, we compare different masked language modeling (MLM) adaptation strategies to optimize the result and investigate their impact. Results obtained on a 30-document test set reveal satisfactory performance, especially on the NER task, and emphasize challenges to improve NEEL on similar documents. Our code is available on GitHub.(https://github.com/rpo19/pozzi{\_}aixia{\_}2023. We are not allowed to publish sensitive data and the NER models trained on sensitive data.)",
 isbn="978-3-031-47546-7"
 }
 
@@ -320,7 +319,8 @@ series = {IJCKG '22}
     pages = "142--147",
 }
 
-@article{Bulatov_Kuratov_Kapushev_Burtsev_2024, title={Beyond Attention: Breaking the Limits of Transformer Context Length with Recurrent Memory}, volume={38}, kurl={https://ojs.aaai.org/index.php/AAAI/article/view/29722}, DOI={10.1609/aaai.v38i16.29722}, abstractNote={A major limitation for the broader scope of problems solvable by transformers is the quadratic scaling of computational complexity with input size. In this study, we investigate the recurrent memory augmentation of pre-trained transformer models to extend input context length while linearly scaling compute. Our approach demonstrates the capability to store information in memory for sequences of up to an unprecedented two million tokens while maintaining high retrieval accuracy. Experiments with language modeling tasks show perplexity improvement as the number of processed input segments increases. These results underscore the effectiveness of our method, which has significant potential to enhance long-term dependency handling in natural language understanding and generation tasks, as well as enable large-scale context processing for memory-intensive applications.}, number={16}, journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Bulatov, Aydar and Kuratov, Yuri and Kapushev, Yermek and Burtsev, Mikhail}, year={2024}, month={Mar.}, pages={17700-17708} }
+@article{Bulatov_Kuratov_Kapushev_Burtsev_2024, title={Beyond Attention: Breaking the Limits of Transformer Context Length with Recurrent Memory}, volume={38}, kurl={https://ojs.aaai.org/index.php/AAAI/article/view/29722}, DOI={10.1609/aaai.v38i16.29722}, 
+number={16}, journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Bulatov, Aydar and Kuratov, Yuri and Kapushev, Yermek and Burtsev, Mikhail}, year={2024}, month={Mar.}, pages={17700-17708} }
 
 @InProceedings{pozzi_wise_2025,
 author="Pozzi, Riccardo
@@ -569,7 +569,6 @@ isbn="978-981-96-5881-7"
     url = "https://aclanthology.org/2022.emnlp-main.346/",
     doi = "10.18653/v1/2022.emnlp-main.346",
     pages = "5184--5196",
-    abstract = "Access to external knowledge is essential for many natural language processing tasks, such as question answering and dialogue. Existing methods often rely on a parametric model that stores knowledge in its parameters, or use a retrieval-augmented model that has access to an external knowledge source. Parametric and retrieval-augmented models have complementary strengths in terms of computational efficiency and predictive accuracy. To combine the strength of both approaches, we propose the Efficient Memory-Augmented Transformer (EMAT) {--} it encodes external knowledge into a key-value memory and exploits the fast maximum inner product search for memory querying. We also introduce pre-training tasks that allow EMAT to encode informative key-value representations, and to learn an implicit strategy to integrate multiple memory slots into the transformer. Experiments on various knowledge-intensive tasks such as question answering and dialogue datasets show that, simply augmenting parametric models (T5-base) using our method produces more accurate results (e.g., 25.8 {\textrightarrow} 44.3 EM on NQ) while retaining a high throughput (e.g., 1000 queries/s on NQ). Compared to retrieval-augmented models, EMAT runs substantially faster across the board and produces more accurate results on WoW and ELI5."
 }
 
 @inproceedings{cao2021autoregressive,
@@ -1901,7 +1900,6 @@ publisher = {JMLR.org},
 volume = {21},
 number = {1},
 issn = {1532-4435},
-abstract = {Transfer learning, where a model is first pre-trained on a data-rich task before being fine-tuned on a downstream task, has emerged as a powerful technique in natural language processing (NLP). The effectiveness of transfer learning has given rise to a diversity of approaches, methodology, and practice. In this paper, we explore the landscape of transfer learning techniques for NLP by introducing a unified framework that converts all text-based language problems into a text-to-text format. Our systematic study compares pretraining objectives, architectures, unlabeled data sets, transfer approaches, and other factors on dozens of language understanding tasks. By combining the insights from our exploration with scale and our new "Colossal Clean Crawled Corpus", we achieve state-of-the-art results on many benchmarks covering summarization, question answering, text classification, and more. To facilitate future work on transfer learning for NLP, we release our data set, pre-trained models, and code.},
 journal = {J. Mach. Learn. Res.},
 month = jan,
 articleno = {140},
@@ -2563,4 +2561,144 @@ isbn="978-3-031-28238-6"
     url = "https://aclanthology.org/2023.acl-long.855/",
     doi = "10.18653/v1/2023.acl-long.855",
     pages = "15339--15353",
+}
+
+@misc{
+liu2020roberta,
+title={Ro{\{}BERT{\}}a: A Robustly Optimized {\{}BERT{\}} Pretraining Approach},
+author={Yinhan Liu and Myle Ott and Naman Goyal and Jingfei Du and Mandar Joshi and Danqi Chen and Omer Levy and Mike Lewis and Luke Zettlemoyer and Veselin Stoyanov},
+year={2020},
+url={https://openreview.net/forum?id=SyxS0T4tvS}
+}
+
+@inproceedings{HeGChen2023,
+  title        = {DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing},
+  author       = {Pengcheng He and Jianfeng Gao and Weizhu Chen},
+  booktitle    = {ICLR 2023},
+  year         = {2023},
+  url          = {https://openreview.net/forum?id=sE7-XhLxHA},
+  note         = {Poster},
+}
+
+@inproceedings{bogdanov-etal-2024-nuner,
+    title = "{N}u{NER}: Entity Recognition Encoder Pre-training via {LLM}-Annotated Data",
+    author = "Bogdanov, Sergei  and
+      Constantin, Alexandre  and
+      Bernard, Timoth{\'e}e  and
+      Crabb{\'e}, Benoit  and
+      Bernard, Etienne P",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.660/",
+    doi = "10.18653/v1/2024.emnlp-main.660",
+    pages = "11829--11841",
+}
+
+@inproceedings{zaratiana-etal-2024-gliner,
+    title = "{GL}i{NER}: Generalist Model for Named Entity Recognition using Bidirectional Transformer",
+    author = "Zaratiana, Urchade  and
+      Tomeh, Nadi  and
+      Holat, Pierre  and
+      Charnois, Thierry",
+    editor = "Duh, Kevin  and
+      Gomez, Helena  and
+      Bethard, Steven",
+    booktitle = "Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.naacl-long.300/",
+    doi = "10.18653/v1/2024.naacl-long.300",
+    pages = "5364--5376",
+}
+
+@inproceedings{ma-hovy-2016-end,
+    title = "End-to-end Sequence Labeling via Bi-directional {LSTM}-{CNN}s-{CRF}",
+    author = "Ma, Xuezhe  and
+      Hovy, Eduard",
+    editor = "Erk, Katrin  and
+      Smith, Noah A.",
+    booktitle = "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = aug,
+    year = "2016",
+    address = "Berlin, Germany",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P16-1101/",
+    doi = "10.18653/v1/P16-1101",
+    pages = "1064--1074"
+}
+
+@inproceedings{wolf-etal-2020-transformers,
+    title = "Transformers: State-of-the-Art Natural Language Processing",
+    author = "Wolf, Thomas  and
+      Debut, Lysandre  and
+      Sanh, Victor  and
+      Chaumond, Julien  and
+      Delangue, Clement  and
+      Moi, Anthony  and
+      Cistac, Pierric  and
+      Rault, Tim  and
+      Louf, Remi  and
+      Funtowicz, Morgan  and
+      Davison, Joe  and
+      Shleifer, Sam  and
+      von Platen, Patrick  and
+      Ma, Clara  and
+      Jernite, Yacine  and
+      Plu, Julien  and
+      Xu, Canwen  and
+      Le Scao, Teven  and
+      Gugger, Sylvain  and
+      Drame, Mariama  and
+      Lhoest, Quentin  and
+      Rush, Alexander",
+    editor = "Liu, Qun  and
+      Schlangen, David",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    month = oct,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-demos.6/",
+    doi = "10.18653/v1/2020.emnlp-demos.6",
+    pages = "38--45",
+}
+
+@article{AliEtAl2023UnintendedMemorization,
+  title        = {Unintended Memorization and Timing Attacks in Named Entity Recognition Models},
+  author={Rana Salal Ali and Benjamin Zi Hao Zhao and Hassan Jameel Asghar and Tham Nguyen and Ian David Wood and Mohamed Ali Kaafar},
+  journal      = {Proceedings on Privacy Enhancing Technologies (PoPETs)},
+  volume       = {2023},
+  number       = {2},
+  pages        = {329--346},
+  year         = {2023},
+  doi          = {10.56553/popets-2023-0056},
+  url          = {https://petsymposium.org/popets/2023/popets-2023-0056.php},
+}
+
+@inproceedings{lample-etal-2016-neural,
+    title = "Neural Architectures for Named Entity Recognition",
+    author = "Lample, Guillaume  and
+      Ballesteros, Miguel  and
+      Subramanian, Sandeep  and
+      Kawakami, Kazuya  and
+      Dyer, Chris",
+    editor = "Knight, Kevin  and
+      Nenkova, Ani  and
+      Rambow, Owen",
+    booktitle = "Proceedings of the 2016 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jun,
+    year = "2016",
+    address = "San Diego, California",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N16-1030/",
+    doi = "10.18653/v1/N16-1030",
+    pages = "260--270"
 }
