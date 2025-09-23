@@ -1,25 +1,69 @@
-
 \subsection{Named Entity Linking}
+\begin{definition}
+    [Named Entity Linking (NEL)]
+    \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entries in a \acf{kr}, such as Wikipedia, or to entities in a \ac{kb}, such as Wikidata~\cite{entityorientedsearch2018balog,jr3}.
+\end{definition}
+
+
+While \ac{ner} identifies spans of text that correspond to named entities (e.g., ``Barack Obama''), \ac{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \ac{kr} (e.g., the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity. For example, in the first case, the mention ``Lisbon'' may refer to Lisbon, Capital of Portugal\footnote{\url{https://www.wikidata.org/entity/Q597}} or to the movie Lisbon (1956 film)\footnote{\url{https://www.wikidata.org/entity/Q3203631}}. Furthermore, ambiguity can arise also for entities with the same type, such as Lisbon, Connecticut\footnote{\url{https://en.wikipedia.org/wiki/Lisbon,_Connecticut}}, or the other cities named ``Lisbon''\footnote{\url{https://en.wikipedia.org/wiki/Lisbon_(disambiguation)}}.
+In the second case, the mentions ``Barack Obama'' and ``President Obama'' should both be linked to the entity Barack Obama, Former US President\footnote{\url{https://www.wikidata.org/entity/Q76}}.
+
+Similarly to \ac{ner}, it is part of \ac{ie}, contributing to \acl{sta}, \acl{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \ac{kr} allows to create clickable hyperlinks that let users browse directly to entity pages (e.g., Wikipedia or Wikidata).
+Furthermore, in entity-based search applications, \ac{nel} enables more powerful facets and filters based on the entries in the \ac{kb} instead of on the mention surface forms.
+
+Other applications of \ac{nel} are towards \acl{qa} and \acl{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \ac{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
+\todo{also ner is probably useful for ir}
+
+\todo{check if compliant with kb definition}
+Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kb} $KB = \{e_1, e_2, \ldots\}$ containing entities with unique identifiers and descriptions, a \ac{nel} system produces a mapping:
+\begin{equation}
+f: M \to KB \cup \{\texttt{NIL}\},
+\end{equation}
+where \texttt{NIL} denotes that the mention does not correspond to any entry in the knowledge base.  
+For example, given the sentence ``Barack Obama was born in Hawaii.'' and the mention ``Barack Obama'', the system should map it to the entity \texttt{Q76} (\texttt{Barack Obama}) in Wikidata.
+
+Traditionally, \ac{nel} approaches have been decomposed into two main steps~\cite{shen2015entitylinking}:
+\begin{enumerate}
+    \item \textbf{Candidate Generation}: retrieving a set of possible entities from the \ac{kb} for a given mention, often based on lexical similarity or alias tables.
+    \item \textbf{Candidate Ranking}: selecting the most likely entity from the candidates, based on local context, global coherence, and entity popularity.
+\end{enumerate}
+
+Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
+With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
+
+Recent works explore the use of \acp{llm} for \ac{nel}, where entity linking is framed as text generation or retrieval-augmented tasks~\cite{shen2023large,poerner2020bertentitylinking}. For example, prompting an \ac{llm} to output a \texttt{Wikidata ID} or a canonical name, or integrating \ac{kb} lookups through retrieval-augmented generation. These approaches show promising results, especially for zero-shot or low-resource domains, but share the challenges of high computational costs and prompt sensitivity already discussed for \ac{ner}.
+
+\todo{add recent advancements: refined, genie?, genre, rexel, amazon paper...}
+
+Finally, several libraries support \ac{nel}, including DBpedia Spotlight~\cite{mendes2011dbpedia}, BLINK~\cite{wu2020blink}, REL~\cite{van2020rel}, and spaCy’s \texttt{EntityLinker} component~\cite{honnibal2020spacy}. These frameworks provide ready-to-use linking pipelines that combine candidate generation and ranking, and can be fine-tuned for domain-specific applications.
+
+
 
 \begin{figure}[htbp]
 \centering
 \begin{minipage}[t]{0.48\linewidth}
-\ttfamily
 \small
-\textbf{Judgment Extract (NEL):}\\[0.5em]
-The plaintiff \NELPerson{Tizio Rossi}{}, residing in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino}{\WikiIcon Turin}, represented by Attorney \NELPerson{Lucia Verdi}{}, alleged that on \NELDate{January 10, 2023} he lent the defendant \NELPerson{Caio Neri}{} the sum of EUR 15,000, repayable by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813} of the Italian Civil Code. The defendant appeared in court at the \NELLocation{Court Building in Turin}{https://it.wikipedia.org/wiki/Palazzo\_di\_Giustizia\_(Torino)}.\\[0.5em]
-The Court finds the loan contract valid and orders \NELPerson{Caio Neri}{} to pay \NELPerson{Tizio Rossi}{} EUR 15,000 plus interest from \NELDate{July 1, 2023}, pursuant to \NELLaw{Articles 1282 and 1284}.\\
+\NELPerson{Mario Rossi}{}{\NIL}
+, residing in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} \texttt{[...]} -- plaintiff\\
+and\\
+\NELPerson{Carlo Neri}{}{\NIL}
+, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on \NELDate{January 10, 2023} he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
+\subcaption{\ac{nel} on a judgment}
+\label{fig:extract-nel-judgment}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\linewidth}
-\ttfamily
 \small
-\textbf{Chat Extract (NEL):}\\[0.5em]
-\NELDate{2025-07-28 -- 14:15} \NELPerson{Luca Bianchi}{}: Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://it.wikipedia.org/wiki/Piazza\_Vittorio\_Veneto\_(Torino)} in \NELLocation{Turin}{https://it.wikipedia.org/wiki/Torino} or the one by the river?\\[0.3em]
-\NELDate{2025-07-29 -- 08:45} \NELPerson{Mario Rossi}{} [voice message]: \\
-"...better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{https://it.wikipedia.org/wiki/Gianni} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via\_Roma\_(Torino)} near \NELLocation{Porta Susa station}{https://it.wikipedia.org/wiki/Porta\_Susa\_station}. Also, bring the envelope I gave you last month."\\
+\NELDate{[2025-07-28 -- 14:15]} \NELPerson{Luca Bianchi}{}{\NIL} Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://en.wikipedia.org/wiki/Piazza_Vittorio_Veneto}{\WikiIcon Piazza Vittorio Veneto} in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} or the one by the river?\\
+\NELDate{[2025-07-29 -- 08:45]} \NELPerson{Mario Rossi}{}{\NIL} \textit{[Voice message -- 2 min 14 sec]}
+\quad \textit{Transcription:}\\
+\quad \texttt{[...]} better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{}{\NIL} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via_Roma_(Torino)}{\WikiIcon Via Roma 210} near \NELLocation{Porta Susa station}{https://en.wikipedia.org/wiki/Torino_Porta_Susa_railway_station}{\WikiIcon Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\subcaption{\ac{nel} on chat logs}
+\label{fig:extract-nel-chat-logs}
 \end{minipage}
-\caption{Judgment and chat extracts side-by-side with entity linking (NEL) highlighting and canonical links.}
+\caption{\Ac{nel} application for \acl{sta} with clickable links.}
 \label{fig:extracts-nel-new}
 \end{figure}
 \todo{migliora. potrei usare logowikipedia/Torino,... e magari link a leggi per articoli. vedi paper con statale}

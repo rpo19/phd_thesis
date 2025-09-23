@@ -5,9 +5,11 @@
 \end{definition}
 While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023}, legal references~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish}, and more~\cite{entityorientedsearch2018balog}. The \ac{nlp} community manifested interest in extending the types of entities recognized, proposing hundreds of entity types~\cite{sekine2002extended_150ner_types,sekine2004definition_200ner_types,yosef-etal-2012-hyena} and introducing the \emph{fine-grained entity typing} field, which aims to classify entities into a larger set of more specific categories~\cite{fget_review_2023}.
 
-\ac{ner} is often the first component of \acl{ie}, contributing to \acl{sta}, \acl{kbp} and downstream tasks such as entity-based search or maintaining \acp{kb} up to date~\cite{entityorientedsearch2018balog}.
+\todo{maybe remove the repetition useful for sta and kbp as ie}
+\ac{ner}, as an \acl{ie} task, contributes to \acl{sta}, \acl{kbp} and downstream tasks such as entity-based search or maintaining \acp{kb} up to date~\cite{entityorientedsearch2018balog}. For example, in \ac{sta}, recognizing entities and their allows to semantically highlight documents to let readers quickly grasp the main topics discussed from the entities mentioned. 
+
 Besides, \ac{ner} is applied in specific domains, such as the healthcare~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023} or the legal~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish} ones, to extract domain-specific entities and support specialized applications.
-Beyond these areas, \ac{ner} can contribute to downstream tasks including document summarization~\cite{khademi2020persian,lin-zeldes-2024-gumsley,roha_ner_summarizaton_2023} and machine translation~\cite{xie2022end,hkiri-etal-2017-arabic}, where it helps preserve and highlight key entities, or question answering~\cite{molla2006named,ner_qa_review_2016}, by identifying entities mentioned in the query.
+Beyond these areas, \ac{ner} can contribute to document summarization~\cite{khademi2020persian,lin-zeldes-2024-gumsley,roha_ner_summarizaton_2023} and machine translation~\cite{xie2022end,hkiri-etal-2017-arabic}, where it helps preserve and highlight key entities, or question answering~\cite{molla2006named,ner_qa_review_2016}, by identifying entities mentioned in the query.
 
 Formally, given a sequence of tokens $X$,
 \begin{equation}
@@ -52,19 +54,6 @@ L^{II} = [\texttt{B-PER}, \texttt{I-PER}, \texttt{B-PER}, \texttt{I-PER}],
 thus correctly distinguishing two mentions of \texttt{Person}.
 Refer to \textcite{alshammari2021impact} for a comparison of different annotation schemes for \ac{ner} and their impact on model performance.
 
-\begin{itemize}
-    \item what is ner
-    \item why useful? how they use it? pseudonyms, anonymization, search, knowledge graphs, information extraction, kbp
-    \item how it is done
-    \item extra: Gliner and zero shot
-    \item LLMs
-    \item fine-grained, nested, non-continued
-    \item spacy state-space models
-\end{itemize}
-
-\todo{definition, sequence labeling/classification. formal definition?}
-
-\todo{ok but why are we using these models? to incorporate contextual meaning}
 Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches tipically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
 Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
 With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards} or BiLSTM-CNN-CRF~\cite{ma-hovy-2016-end}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
@@ -88,19 +77,17 @@ Finally, several ready-to-use libraries exist for \ac{ner}, such as spaCy~\cite{
 \begin{figure}[htbp]
 \centering
 \begin{minipage}[t]{0.48\linewidth}
-\ttfamily
 \small
 \PERSON{Mario Rossi}, residing in \LOCATION{Turin} \texttt{[...]} -- plaintiff\\
 and\\
 \PERSON{Carlo Neri}, residing in \LOCATION{Milan} \texttt{[...]} -- defendant\\
 FACTS\\
-The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813} \texttt{[...]}
+The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813 c.c.} \texttt{[...]}
 \subcaption{\ac{ner} on a judgment}
 \label{fig:extract-ner-judgment}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\linewidth}
-\ttfamily
 \small
 \DATE{[2025-07-28 -- 14:15]} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?
 \DATE{[2025-07-29 -- 08:45]} \PERSON{Mario Rossi}: \textit{[Voice message -- 2 min 14 sec]}
@@ -109,7 +96,7 @@ The plaintiff summoned the defendant to court, alleging that on \DATE{January 10
 \subcaption{\ac{ner} on chat logs}
 \label{fig:extract-ner-chat}
 \end{minipage}
-\caption{\Ac{ner} application with entity highlights and labels.}
+\caption{\Ac{ner} application for \acl{sta} with entity highlights and labels.}
 \label{fig:extracts-ner}
 \end{figure}
 
