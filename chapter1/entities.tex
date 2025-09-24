@@ -24,7 +24,7 @@ Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~
 A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018balog}.
 \end{definition}
 
-Wikipedia~\cite{wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships.
+Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
 
 While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
@@ -50,7 +50,7 @@ The previous facts appear as follows in \ac{rdf}:
 \begin{figure}[h]
 \centering
 % as of aug 25, 2025
-\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia,dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}, in Turtle format~\cite{prudhommeaux2014turtle}.},label={lis:obama}]
+\begin{lstlisting}[style=rdfstyle,caption={Excerpt from the DBpedia~\cite{dbpedia,lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007} knowledge base entry of \textsc{Barack Obama}, in Turtle format~\cite{prudhommeaux2014turtle}.},label={lis:obama}]
 @prefix dbr: <http://dbpedia.org/resource/> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -74,7 +74,7 @@ dbr:Barack_Obama
 \end{lstlisting}
 \end{figure}
 
-\Cref{lis:obama} shows some \emph{entity properties} for the entity \textsc{Barack Obama} from DBpedia~\cite{dbpedia_auer_nucleus_2007}. It uses \ac{rdf} following the Turtle~\cite{prudhommeaux2014turtle} syntax and includes types (``dbo:Person'', ``dbo:Politician''), attributes (``dbo:birthName'', ``dbo:birthDate'', ``rdfs:comment''), and relationships with other entities (``dbo:birthPlace'', ``dbo:spouse''). Prefixes are defined to avoid repetitive long IRIs.
+\Cref{lis:obama} shows some \emph{entity properties} for the entity \textsc{Barack Obama} from DBpedia~\cite{dbpedia,lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}. It uses \ac{rdf} following the Turtle~\cite{prudhommeaux2014turtle} syntax and includes types (``dbo:Person'', ``dbo:Politician''), attributes (``dbo:birthName'', ``dbo:birthDate'', ``rdfs:comment''), and relationships with other entities (``dbo:birthPlace'', ``dbo:spouse''). Prefixes are defined to avoid repetitive long IRIs.
 
 Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
 %
@@ -100,6 +100,18 @@ Structured entity knowledge, such as represented in \ac{rdf}, is usually stored 
 
 
 \todo{problem of incompleteness. to introduce the incremental kbp. structured means higher quality. unstructured more information lower quality. how is wikidata curated? and dbpedia? to justify the additional human effort. cerca motivazione da paper di hybrid qa come humaniq.}
+
+Examples of \acp{kb} include Wikidata~\cite{wikidata,vrandevcic2014wikidata}, DBpedia~\cite{lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}, YAGO~\cite{yago4.5_2024,yago4_2020,mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}, and Freebase~\cite{freebase_2008}.
+Wikidata is a free collaborative project~\cite{vrandevcic2014wikidata} containing 119 million entities and 1.65 billion facts as of September 2025~\cite{wikidata_statistics,wikipedia_wikidata}.
+
+The DBpedia \ac{kb} derives from the extraction of structured, multilingual knowledge from Wikipedia and it is accessible using \ac{sw} and linked data technologies~\cite{lehmann2015dbpedia}. In 2015 it contained 1.46 billion facts~\cite{lehmann2015dbpedia}.
+
+YAGO, since its version 4~\cite{yago4_2020}, aims to address the weaknesses of Wikidata establishing certain guarantees for its data quality, although achieving these guarantees required some manual intervention~\cite{yago4.5_2024}. In its latest reslease (4.5), it combines Wikidata instance data with the ontology Schema.org, additionally improved by the Wikidata taxonomy~\cite{yago4.5_2024}.
+
+Freebase was an open and collaborative knowledge base publicly launched in 2007. It was used as the open core of the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}, until it was closed and migrated to Wikidata~\cite{from_freebase_to_wikidata}.
+More than 3 billion facts and almost 50 million entities were stored in Freebase as of 2015~\cite{from_freebase_to_wikidata}.
+
+
 
 \subsection{Structured or Unstructured? The Web versus Knowledge Bases}
 \todo{can be expanded and called properties of Kbs}

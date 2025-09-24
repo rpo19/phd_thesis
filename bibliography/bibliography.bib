@@ -728,11 +728,44 @@ pages="722--735",
 isbn="978-3-540-76298-0"
 }
 
+@article{dbpedua_bizer_2009,
+title = {DBpedia - A crystallization point for the Web of Data},
+journal = {Journal of Web Semantics},
+volume = {7},
+number = {3},
+pages = {154-165},
+year = {2009},
+note = {The Web of Data},
+issn = {1570-8268},
+doi = {https://doi.org/10.1016/j.websem.2009.07.002},
+url = {https://www.sciencedirect.com/science/article/pii/S1570826809000225},
+author = {Christian Bizer and Jens Lehmann and Georgi Kobilarov and Sören Auer and Christian Becker and Richard Cyganiak and Sebastian Hellmann},
+keywords = {Web of Data, Linked Data, Knowledge extraction, Wikipedia, RDF},
+}
+
+@article{lehmann2015dbpedia,
+  title={Dbpedia--a large-scale, multilingual knowledge base extracted from wikipedia},
+  author={Lehmann, Jens and Isele, Robert and Jakob, Max and Jentzsch, Anja and Kontokostas, Dimitris and Mendes, Pablo N and Hellmann, Sebastian and Morsey, Mohamed and Van Kleef, Patrick and Auer, S{\"o}ren and others},
+  journal={Semantic web},
+  volume={6},
+  number={2},
+  pages={167--195},
+  year={2015},
+  publisher={SAGE Publications Sage UK: London, England}
+}
+
 @online{wikipedia,
   author  = {{Wikimedia Foundation}},
   title   = {Wikipedia},
   url     = {https://www.wikipedia.org/},
   urldate = {2025-08-25},
+}
+
+@online{wikipedia:wikipedia,
+  author  = {{Wikimedia Foundation}},
+  title   = {Wikipedia},
+  url     = {https://en.wikipedia.org/wiki/Wikipedia},
+  urldate = {2025-09-24},
 }
 
 @online{wikidata,
@@ -830,6 +863,24 @@ numpages = {4},
 keywords = {tuple store, semantic network, collaborative systems},
 location = {Vancouver, Canada},
 series = {SIGMOD '08}
+}
+
+@inproceedings{from_freebase_to_wikidata,
+author = {Pellissier Tanon, Thomas and Vrande\v{c}i\'{c}, Denny and Schaffert, Sebastian and Steiner, Thomas and Pintscher, Lydia},
+title = {From Freebase to Wikidata: The Great Migration},
+year = {2016},
+isbn = {9781450341431},
+publisher = {International World Wide Web Conferences Steering Committee},
+kaddress = {Republic and Canton of Geneva, CHE},
+kurl = {https://doi.org/10.1145/2872427.2874809},
+doi = {10.1145/2872427.2874809},
+abstract = {Collaborative knowledge bases that make their data freely available in a machine-readable form are central for the data strategy of many projects and organizations. The two major collaborative knowledge bases are Wikimedia's Wikidata and Google's Freebase. Due to the success of Wikidata, Google decided in 2014 to offer the content of Freebase to the Wikidata community. In this paper, we report on the ongoing transfer efforts and data mapping challenges, and provide an analysis of the effort so far. We describe the Primary Sources Tool, which aims to facilitate this and future data migrations. Throughout the migration, we have gained deep insights into both Wikidata and Freebase, and share and discuss detailed statistics on both knowledge bases.},
+booktitle = {Proceedings of the 25th International Conference on World Wide Web},
+pages = {1419–1428},
+numpages = {10},
+keywords = {wikidata, semantic web, freebase, crowdsourcing systems},
+location = {Montr\'{e}al, Qu\'{e}bec, Canada},
+series = {WWW '16}
 }
 
 @article{sawant_neural_kg_web_2016,
@@ -2659,4 +2710,136 @@ numpages = {10},
 keywords = {entity linking, interpretation finding, query understanding, semantic mapping},
 location = {Northampton, Massachusetts, USA},
 series = {ICTIR '15}
+}
+
+@ARTICLE{entity_linking_with_kb_2015,
+  author={Shen, Wei and Wang, Jianyong and Han, Jiawei},
+  journal={IEEE Transactions on Knowledge and Data Engineering}, 
+  title={Entity Linking with a Knowledge Base: Issues, Techniques, and Solutions}, 
+  year={2015},
+  volume={27},
+  number={2},
+  pages={443-460},
+  keywords={Joining processes;Knowledge based systems;Encyclopedias;Internet;Electronic publishing;Couplings;Entity linking;entity disambiguation;knowledge base},
+  doi={10.1109/TKDE.2014.2327028}}
+
+@misc{Wikipedia:SizeOfWikipedia,
+  author       = {{Wikipedia contributors}},
+  title        = {Wikipedia: Size of Wikipedia},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Wikipedia:Size_of_Wikipedia}},
+  note         = {Accessed: 2025-09-24},
+  year         = {2025}
+}
+
+@misc{wikidata_statistics,
+  author       = {{Wikidata contributors}},
+  title        = {Wikidata: Statistics},
+  howpublished = {\url{https://www.wikidata.org/wiki/Wikidata:Statistics}},
+  note         = {Accessed: 2025-09-24},
+  year         = {2025}
+}
+
+@misc{wikipedia_wikidata,
+  author       = {{Wikipedia contributors}},
+  title        = {Wikidata},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Wikidata}},
+  note         = {Accessed: 2025-09-24},
+  year         = {2025}
+}
+
+@inproceedings{yago4.5_2024,
+author = {Suchanek, Fabian M. and Alam, Mehwish and Bonald, Thomas and Chen, Lihu and Paris, Pierre-Henri and Soria, Jules},
+title = {YAGO 4.5: A Large and Clean Knowledge Base with a Rich Taxonomy},
+year = {2024},
+isbn = {9798400704314},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3626772.3657876},
+doi = {10.1145/3626772.3657876},
+abstract = {Knowledge Bases (KBs) find applications in many knowledge-intensive tasks and, most notably, in information retrieval. Wikidata is one of the largest public general-purpose KBs. Yet, its collaborative nature has led to a convoluted schema and taxonomy. The YAGO~4 KB cleaned up the taxonomy by incorporating the ontology of Schema.org, resulting in a cleaner structure amenable to automated reasoning. However, it also cut away large parts of the Wikidata taxonomy, which is essential for information retrieval. In this paper, we extend YAGO~4 with a large part of the Wikidata taxonomy -- while respecting logical constraints and the distinction between classes and instances. This yields YAGO~4.5, a new, logically consistent version of YAGO that adds a rich layer of informative classes. An intrinsic and an extrinsic evaluation show the value of the new resource.},
+booktitle = {Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+pages = {131–140},
+numpages = {10},
+keywords = {knowledge bases, knowledge graphs, taxonomies, yago},
+location = {Washington DC, USA},
+series = {SIGIR '24}
+}
+
+@inproceedings{yago2s_demo_2013,
+author = {Biega, Joanna and Kuzey, Erdal and Suchanek, Fabian M.},
+title = {Inside YAGO2s: a transparent information extraction architecture},
+year = {2013},
+isbn = {9781450320382},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2487788.2487935},
+doi = {10.1145/2487788.2487935},
+abstract = {YAGO [9, 6] is one of the largest public ontologies constructed by information extraction. In a recent refactoring called YAGO2s, the system has been given a modular and completely transparent architecture. In this demo, users can see how more than 30 individual modules of YAGO work in parallel to extract facts, to check facts for their correctness, to deduce facts, and to merge facts from different sources. A GUI allows users to play with different input files, to trace the provenance of individual facts to their sources, to change deduction rules, and to run individual extractors. Users can see step by step how the extractors work together to combine the individual facts to the coherent whole of the YAGO ontology.},
+booktitle = {Proceedings of the 22nd International Conference on World Wide Web},
+pages = {325–328},
+numpages = {4},
+keywords = {yago, ontologies, information extraction},
+location = {Rio de Janeiro, Brazil},
+series = {WWW '13 Companion}
+}
+
+@article{yago2_2013,
+title = {YAGO2: A spatially and temporally enhanced knowledge base from Wikipedia},
+journal = {Artificial Intelligence},
+volume = {194},
+pages = {28-61},
+year = {2013},
+note = {Artificial Intelligence, Wikipedia and Semi-Structured Resources},
+issn = {0004-3702},
+doi = {https://doi.org/10.1016/j.artint.2012.06.001},
+url = {https://www.sciencedirect.com/science/article/pii/S0004370212000719},
+author = {Johannes Hoffart and Fabian M. Suchanek and Klaus Berberich and Gerhard Weikum},
+keywords = {Ontologies, Knowledge bases, Spatio-temporal facts, Information extraction},
+abstract = {We present YAGO2, an extension of the YAGO knowledge base, in which entities, facts, and events are anchored in both time and space. YAGO2 is built automatically from Wikipedia, GeoNames, and WordNet. It contains 447 million facts about 9.8 million entities. Human evaluation confirmed an accuracy of 95% of the facts in YAGO2. In this paper, we present the extraction methodology, the integration of the spatio-temporal dimension, and our knowledge representation SPOTL, an extension of the original SPO-triple model to time and space.}
+}
+
+@inproceedings{mahdisoltani2013yago3,
+  title={Yago3: A knowledge base from multilingual wikipedias},
+  author={Mahdisoltani, Farzaneh and Biega, Joanna and Suchanek, Fabian M},
+  booktitle={CIDR},
+  year={2013}
+}
+
+@inproceedings{yago_core_2007,
+author = {Suchanek, Fabian M. and Kasneci, Gjergji and Weikum, Gerhard},
+title = {Yago: a core of semantic knowledge},
+year = {2007},
+isbn = {9781595936547},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1242572.1242667},
+doi = {10.1145/1242572.1242667},
+booktitle = {Proceedings of the 16th International Conference on World Wide Web},
+pages = {697–706},
+numpages = {10},
+keywords = {wikipedia, WordNet},
+location = {Banff, Alberta, Canada},
+series = {WWW '07}
+}
+
+@InProceedings{yago4_2020,
+author="Pellissier Tanon, Thomas
+and Weikum, Gerhard
+and Suchanek, Fabian",
+editor="Harth, Andreas
+and Kirrane, Sabrina
+and Ngonga Ngomo, Axel-Cyrille
+and Paulheim, Heiko
+and Rula, Anisa
+and Gentile, Anna Lisa
+and Haase, Peter
+and Cochez, Michael",
+title="YAGO 4: A Reason-able Knowledge Base",
+booktitle="The Semantic Web",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="583--596",
+abstract="YAGO is one of the large knowledge bases in the Linked Open Data cloud. In this resource paper, we present its latest version, YAGO 4, which reconciles the rigorous typing and constraints of schema.org with the rich instance data of Wikidata. The resulting resource contains 2 billion type-consistent triples for 64 Million entities, and has a consistent ontology that allows semantic reasoning with OWL 2 description logics.",
+isbn="978-3-030-49461-2"
 }

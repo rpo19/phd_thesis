@@ -1,7 +1,7 @@
 \subsection{Named Entity Linking}
 \begin{definition}
     [Named Entity Linking (NEL)]
-    \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entries in a \acf{kr}, such as Wikipedia, or to entities in a \ac{kb}, such as Wikidata~\cite{entityorientedsearch2018balog,jr3}.
+    \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or \ac{kb}~\cite{entityorientedsearch2018balog,jr3}.
 \end{definition}
 
 
@@ -11,22 +11,33 @@ In the second case, the mentions ``Barack Obama'' and ``President Obama'' should
 Similarly to \ac{ner}, it is part of \ac{ie}, contributing to \acl{sta}, \acl{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \ac{kr} allows to create clickable hyperlinks that let users browse directly to entity pages (e.g., Wikipedia or Wikidata).
 Furthermore, in entity-based search applications, \ac{nel} enables more powerful facets and filters based on the entries in the \ac{kb} instead of on the mention surface forms.
 
-Other applications of \ac{nel} are towards \acl{qa} and \acl{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \ac{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
+\ac{nel} is also applied in \acl{qa} and \acl{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \ac{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
 \todo{also ner is probably useful for ir}
 
 \todo{check if compliant with kb definition}
-Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kb} $KB = \{e_1, e_2, \ldots\}$ containing entities with unique identifiers and descriptions, a \ac{nel} system produces a mapping:
+Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kr} $KR = \{e_1, e_2, \ldots\}$ containing entities, a \ac{nel} system produces a mapping:
 \begin{equation}
-f: M \to KB \cup \{\texttt{NIL}\},
+f: M \to KR \cup \{\texttt{NIL}\},
 \end{equation}
-where \texttt{NIL} denotes that the mention does not correspond to any entry in the knowledge base.  
-For example, given the sentence ``Barack Obama was born in Hawaii.'' and the mention ``Barack Obama'', the system should map it to the entity \texttt{Q76} (\texttt{Barack Obama}) in Wikidata.
+where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr}.  
+For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Mario Rossi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
 
-Traditionally, \ac{nel} approaches have been decomposed into two main steps~\cite{shen2015entitylinking}:
+Traditionally, \ac{nel} have been addressed by decomposing the task into two main steps~\cite{entity_linking_with_kb_2015}:
 \begin{enumerate}
-    \item \textbf{Candidate Generation}: retrieving a set of possible entities from the \ac{kb} for a given mention, often based on lexical similarity or alias tables.
-    \item \textbf{Candidate Ranking}: selecting the most likely entity from the candidates, based on local context, global coherence, and entity popularity.
+    \item \emph{candidate generation}: retrieving a limited (e.g., 100~\cite{blink}) set of possible entities from the \ac{kb} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
+    \item \emph{candidate ranking}: ranking, or re-ranking if a preliminary ranking is available~\cite{blink}, the candidate entities to select the best match. This step can be performed with powerful but resource-intensive methods that are prohibitive to apply to the entire \ac{kb}~\cite{blink}.
 \end{enumerate}
+
+Pre-deep learning approaches for \ac{nel} relied on dictionaries, acronym expansion, or Web search engines for the candidate retrieval phase~\cite{entity_linking_with_kb_2015}.
+For instance, dictionaries can be created from Wikipedia, leveraging redirect and disambiguation pages, that---respectively---can be used for entities aliases, to obtain a list of the entities sharing the same name~\cite{entity_linking_with_kb_2015}.
+The expansion of acronyms served to augment the mention surface form for matching with dictionaries or search engines~\cite{entity_linking_with_kb_2015}. For example, the mention ``PSG'' can be expanded to ``Paris Saint-Germain'' to facilitate linking to the corresponding entity in a \ac{kb}. Web search engines, such as Google (filtering for Wikipedia pages only) or the Wikipedia search engine, have been used to retrieve candidate entities by querying them with the mention in the context and using the top-ranked resulting pages as candidate entities~\cite{entity_linking_with_kb_2015}.
+
+For the ranking step, instead, both supervised and unsepervised methods have been used, either considering the mentions to link as independent or jointly disambiguating mentions in a document to exploit coherence among them~\cite{entity_linking_with_kb_2015}. These methods used a variety of features, including string similarity between the mention and entity names, entity popularity (e.g., \texttt{Lisbon (1956 film)} is less popular than \texttt{Lisbon, Capital of Portugal}), the consistency of the entity types with the \ac{ner} labels, the textual context, or measures of coherence among entities linked in the same document~\cite{entity_linking_with_kb_2015}.
+
+Some approaches treated \ac{nel} as a binary classification problem, where each candidate entity is classified as correct or incorrect for a given mention~\cite{entity_linking_with_kb_2015}. Other methods ranked candidates using learning-to-rank algorithm or by calculating mention-entity similarities using training-free vectorial representations~\cite{entity_linking_with_kb_2015}. To jointly link multiple entities exploiting coherence, probabilistic graphical models and graph-based methods have been employed~\cite{entity_linking_with_kb_2015}.
+\todo{better to add also citing lists of approaches from the survey}
+
+\todo{continue here with dl approaches.}
 
 Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
 With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
