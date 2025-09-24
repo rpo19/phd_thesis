@@ -39,8 +39,20 @@ Some approaches treated \ac{nel} as a binary classification problem, where each 
 
 \todo{continue here with dl approaches.}
 
+\ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training. The extension of \ac{nel} to generalize to entities unseen at training-time---for instance, by learning to represent new entities given a brief textual description~\cite{logeswaran-etal-2019-zero,blink}---is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero}.
+
+Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{} or attention between mentions and candidate entities~\cite{}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end2end} and later self-attention~\cite{}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{}.
+
+With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{}, such as TransE~\cite{}.\todo{describe briefly here or before}
+Other models, instead, rely on information like entity descriptions and entity types~\cite{gupta-etal-2017-entity}, with some using the dense embeddings also at retrieval time with efficient approximate nearest neighbor search methods~\cite{gillick-etal-2019-learning,blink}.
+
+\todo{biencoder crossencoder paradigm. formalization probabilistic. dot-product and learning /loss function}
+\todo{continue and add recent trends and llms}
+
 Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
 With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
+
+
 
 Recent works explore the use of \acp{llm} for \ac{nel}, where entity linking is framed as text generation or retrieval-augmented tasks~\cite{shen2023large,poerner2020bertentitylinking}. For example, prompting an \ac{llm} to output a \texttt{Wikidata ID} or a canonical name, or integrating \ac{kb} lookups through retrieval-augmented generation. These approaches show promising results, especially for zero-shot or low-resource domains, but share the challenges of high computational costs and prompt sensitivity already discussed for \ac{ner}.
 

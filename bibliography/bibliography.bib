@@ -2843,3 +2843,74 @@ pages="583--596",
 abstract="YAGO is one of the large knowledge bases in the Linked Open Data cloud. In this resource paper, we present its latest version, YAGO 4, which reconciles the rigorous typing and constraints of schema.org with the rich instance data of Wikidata. The resulting resource contains 2 billion type-consistent triples for 64 Million entities, and has a consistent ontology that allows semantic reasoning with OWL 2 description logics.",
 isbn="978-3-030-49461-2"
 }
+
+@inproceedings{logeswaran-etal-2019-zero,
+    title = "Zero-Shot Entity Linking by Reading Entity Descriptions",
+    author = "Logeswaran, Lajanugen  and
+      Chang, Ming-Wei  and
+      Lee, Kenton  and
+      Toutanova, Kristina  and
+      Devlin, Jacob  and
+      Lee, Honglak",
+    editor = "Korhonen, Anna  and
+      Traum, David  and
+      M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1335/",
+    doi = "10.18653/v1/P19-1335",
+    pages = "3449--3460",
+    abstract = "We present the zero-shot entity linking task, where mentions must be linked to unseen entities without in-domain labeled data. The goal is to enable robust transfer to highly specialized domains, and so no metadata or alias tables are assumed. In this setting, entities are only identified by text descriptions, and models must rely strictly on language understanding to resolve the new entities. First, we show that strong reading comprehension models pre-trained on large unlabeled data can be used to generalize to unseen entities. Second, we propose a simple and effective adaptive pre-training strategy, which we term domain-adaptive pre-training (DAP), to address the domain shift problem associated with linking unseen entities in a new domain. We present experiments on a new dataset that we construct for this task and show that DAP improves over strong pre-training baselines, including BERT. The data and code are available at \url{https://github.com/lajanugen/zeshel}."
+}
+
+@inproceedings{kar2018task,
+  title={Task-specific representation learning for web-scale entity disambiguation},
+  author={Kar, Rijula and Reddy, Susmija and Bhattacharya, Sourangshu and Dasgupta, Anirban and Chakrabarti, Soumen},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={32},
+  number={1},
+  year={2018}
+}
+
+@inproceedings{gupta-etal-2017-entity,
+    title = "Entity Linking via Joint Encoding of Types, Descriptions, and Context",
+    author = "Gupta, Nitish  and
+      Singh, Sameer  and
+      Roth, Dan",
+    editor = "Palmer, Martha  and
+      Hwa, Rebecca  and
+      Riedel, Sebastian",
+    booktitle = "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing",
+    month = sep,
+    year = "2017",
+    address = "Copenhagen, Denmark",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D17-1284/",
+    doi = "10.18653/v1/D17-1284",
+    pages = "2681--2690",
+}
+
+@inproceedings{gillick-etal-2019-learning,
+    title = "Learning Dense Representations for Entity Retrieval",
+    author = "Gillick, Daniel  and
+      Kulkarni, Sayali  and
+      Lansing, Larry  and
+      Presta, Alessandro  and
+      Baldridge, Jason  and
+      Ie, Eugene  and
+      Garcia-Olano, Diego",
+    editor = "Bansal, Mohit  and
+      Villavicencio, Aline",
+    booktitle = "Proceedings of the 23rd Conference on Computational Natural Language Learning (CoNLL)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/K19-1049/",
+    doi = "10.18653/v1/K19-1049",
+    pages = "528--537",
+    abstract = "We show that it is feasible to perform entity linking by training a dual encoder (two-tower) model that encodes mentions and entities in the same dense vector space, where candidate entities are retrieved by approximate nearest neighbor search. Unlike prior work, this setup does not rely on an alias table followed by a re-ranker, and is thus the first fully learned entity retrieval model. We show that our dual encoder, trained using only anchor-text links in Wikipedia, outperforms discrete alias table and BM25 baselines, and is competitive with the best comparable results on the standard TACKBP-2010 dataset. In addition, it can retrieve candidates extremely fast, and generalizes well to a new dataset derived from Wikinews. On the modeling side, we demonstrate the dramatic value of an unsupervised negative mining algorithm for this task."
+}
