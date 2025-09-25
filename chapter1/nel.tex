@@ -37,28 +37,29 @@ For the ranking step, instead, both supervised and unsepervised methods have bee
 Some approaches treated \ac{nel} as a binary classification problem, where each candidate entity is classified as correct or incorrect for a given mention~\cite{entity_linking_with_kb_2015}. Other methods ranked candidates using learning-to-rank algorithm or by calculating mention-entity similarities using training-free vectorial representations~\cite{entity_linking_with_kb_2015}. To jointly link multiple entities exploiting coherence, probabilistic graphical models and graph-based methods have been employed~\cite{entity_linking_with_kb_2015}.
 \todo{better to add also citing lists of approaches from the survey}
 
-\todo{continue here with dl approaches.}
-
 \ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training. The extension of \ac{nel} to generalize to entities unseen at training-time---for instance, by learning to represent new entities given a brief textual description~\cite{logeswaran-etal-2019-zero,blink}---is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero}.
 
-Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{} or attention between mentions and candidate entities~\cite{}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end2end} and later self-attention~\cite{}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{}.
+Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end2end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
 
-With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{}, such as TransE~\cite{}.\todo{describe briefly here or before}
+With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, such as TransE~\cite{transe_2013}.\todo{describe briefly here or before}
 Other models, instead, rely on information like entity descriptions and entity types~\cite{gupta-etal-2017-entity}, with some using the dense embeddings also at retrieval time with efficient approximate nearest neighbor search methods~\cite{gillick-etal-2019-learning,blink}.
 
 \todo{biencoder crossencoder paradigm. formalization probabilistic. dot-product and learning /loss function}
+\todo{describe blink and how it works (mlm), also genre clm}
+\todo{genre, genie, extend, constrained, llms}
 \todo{continue and add recent trends and llms}
+\todo{add recent advancements: refined, genie?, genre, rexel, amazon paper..., bela}
 
-Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
-With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
+% Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
+% With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
 
 
 
-Recent works explore the use of \acp{llm} for \ac{nel}, where entity linking is framed as text generation or retrieval-augmented tasks~\cite{shen2023large,poerner2020bertentitylinking}. For example, prompting an \ac{llm} to output a \texttt{Wikidata ID} or a canonical name, or integrating \ac{kb} lookups through retrieval-augmented generation. These approaches show promising results, especially for zero-shot or low-resource domains, but share the challenges of high computational costs and prompt sensitivity already discussed for \ac{ner}.
+% Recent works explore the use of \acp{llm} for \ac{nel}, where entity linking is framed as text generation or retrieval-augmented tasks~\cite{shen2023large,poerner2020bertentitylinking}. For example, prompting an \ac{llm} to output a \texttt{Wikidata ID} or a canonical name, or integrating \ac{kb} lookups through retrieval-augmented generation. These approaches show promising results, especially for zero-shot or low-resource domains, but share the challenges of high computational costs and prompt sensitivity already discussed for \ac{ner}.
 
-\todo{add recent advancements: refined, genie?, genre, rexel, amazon paper...}
 
-Finally, several libraries support \ac{nel}, including DBpedia Spotlight~\cite{mendes2011dbpedia}, BLINK~\cite{wu2020blink}, REL~\cite{van2020rel}, and spaCy’s \texttt{EntityLinker} component~\cite{honnibal2020spacy}. These frameworks provide ready-to-use linking pipelines that combine candidate generation and ranking, and can be fine-tuned for domain-specific applications.
+% Finally, several libraries support \ac{nel}, including DBpedia Spotlight~\cite{mendes2011dbpedia}, BLINK~\cite{wu2020blink}, REL~\cite{van2020rel}, and spaCy's \texttt{EntityLinker} component~\cite{honnibal2020spacy}. These frameworks provide ready-to-use linking pipelines that combine candidate generation and ranking, and can be fine-tuned for domain-specific applications.
+% \todo{how does dbpedia spotlight work?}
 
 
 

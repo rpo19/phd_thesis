@@ -2888,3 +2888,228 @@ isbn="978-3-030-49461-2"
     pages = "528--537",
     abstract = "We show that it is feasible to perform entity linking by training a dual encoder (two-tower) model that encodes mentions and entities in the same dense vector space, where candidate entities are retrieved by approximate nearest neighbor search. Unlike prior work, this setup does not rely on an alias table followed by a re-ranker, and is thus the first fully learned entity retrieval model. We show that our dual encoder, trained using only anchor-text links in Wikipedia, outperforms discrete alias table and BM25 baselines, and is competitive with the best comparable results on the standard TACKBP-2010 dataset. In addition, it can retrieve candidates extremely fast, and generalizes well to a new dataset derived from Wikinews. On the modeling side, we demonstrate the dramatic value of an unsupervised negative mining algorithm for this task."
 }
+
+@inproceedings{yamada-etal-2022-global,
+    title = "Global Entity Disambiguation with {BERT}",
+    author = "Yamada, Ikuya  and
+      Washio, Koki  and
+      Shindo, Hiroyuki  and
+      Matsumoto, Yuji",
+    editor = "Carpuat, Marine  and
+      de Marneffe, Marie-Catherine  and
+      Meza Ruiz, Ivan Vladimir",
+    booktitle = "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jul,
+    year = "2022",
+    address = "Seattle, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.naacl-main.238/",
+    doi = "10.18653/v1/2022.naacl-main.238",
+    pages = "3264--3271",
+    abstract = "We propose a global entity disambiguation (ED) model based on BERT. To capture global contextual information for ED, our model treats not only words but also entities as input tokens, and solves the task by sequentially resolving mentions to their referent entities and using resolved entities as inputs at each step. We train the model using a large entity-annotated corpus obtained from Wikipedia. We achieve new state-of-the-art results on five standard ED datasets: AIDA-CoNLL, MSNBC, AQUAINT, ACE2004, and WNED-WIKI. The source code and model checkpoint are available at \url{https://github.com/studio-ousia/luke}."
+}
+
+@inproceedings{francis-landau-etal-2016-capturing,
+    title = "Capturing Semantic Similarity for Entity Linking with Convolutional Neural Networks",
+    author = "Francis-Landau, Matthew  and
+      Durrett, Greg  and
+      Klein, Dan",
+    editor = "Knight, Kevin  and
+      Nenkova, Ani  and
+      Rambow, Owen",
+    booktitle = "Proceedings of the 2016 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jun,
+    year = "2016",
+    address = "San Diego, California",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N16-1150/",
+    doi = "10.18653/v1/N16-1150",
+    pages = "1256--1261"
+}
+
+@inproceedings{nguyen-etal-2016-joint,
+    title = "Joint Learning of Local and Global Features for Entity Linking via Neural Networks",
+    author = "Nguyen, Thien Huu  and
+      Fauceglia, Nicolas  and
+      Rodriguez Muro, Mariano  and
+      Hassanzadeh, Oktie  and
+      Massimiliano Gliozzo, Alfio  and
+      Sadoghi, Mohammad",
+    editor = "Matsumoto, Yuji  and
+      Prasad, Rashmi",
+    booktitle = "Proceedings of {COLING} 2016, the 26th International Conference on Computational Linguistics: Technical Papers",
+    month = dec,
+    year = "2016",
+    address = "Osaka, Japan",
+    publisher = "The COLING 2016 Organizing Committee",
+    url = "https://aclanthology.org/C16-1218/",
+    pages = "2310--2320",
+    abstract = "Previous studies have highlighted the necessity for entity linking systems to capture the local entity-mention similarities and the global topical coherence. We introduce a novel framework based on convolutional neural networks and recurrent neural networks to simultaneously model the local and global features for entity linking. The proposed model benefits from the capacity of convolutional neural networks to induce the underlying representations for local contexts and the advantage of recurrent neural networks to adaptively compress variable length sequences of predictions for global constraints. Our evaluation on multiple datasets demonstrates the effectiveness of the model and yields the state-of-the-art performance on such datasets. In addition, we examine the entity linking systems on the domain adaptation setting that further demonstrates the cross-domain robustness of the proposed model."
+}
+
+@inproceedings{sorokin-gurevych-2018-mixing,
+    title = "Mixing Context Granularities for Improved Entity Linking on Question Answering Data across Entity Categories",
+    author = "Sorokin, Daniil  and
+      Gurevych, Iryna",
+    editor = "Nissim, Malvina  and
+      Berant, Jonathan  and
+      Lenci, Alessandro",
+    booktitle = "Proceedings of the Seventh Joint Conference on Lexical and Computational Semantics",
+    month = jun,
+    year = "2018",
+    address = "New Orleans, Louisiana",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/S18-2007/",
+    doi = "10.18653/v1/S18-2007",
+    pages = "65--75",
+    abstract = "The first stage of every knowledge base question answering approach is to link entities in the input question. We investigate entity linking in the context of question answering task and present a jointly optimized neural architecture for entity mention detection and entity disambiguation that models the surrounding context on different levels of granularity. We use the Wikidata knowledge base and available question answering datasets to create benchmarks for entity linking on question answering data. Our approach outperforms the previous state-of-the-art system on this data, resulting in an average 8{\%} improvement of the final score. We further demonstrate that our model delivers a strong performance across different entity categories."
+}
+
+@inproceedings{sun-etal-2015-modeling,
+author = {Sun, Yaming and Lin, Lei and Tang, Duyu and Yang, Nan and Ji, Zhenzhou and Wang, Xiaolong},
+title = {Modeling mention, context and entity with neural networks for entity disambiguation},
+year = {2015},
+isbn = {9781577357384},
+publisher = {AAAI Press},
+abstract = {Given a query consisting of a mention (name string) and a background document, entity disambiguation calls for linking the mention to an entity from reference knowledge base like Wikipedia. Existing studies typically use hand-crafted features to represent mention, context and entity, which is laborintensive and weak to discover explanatory factors of data. In this paper, we address this problem by presenting a new neural network approach. The model takes consideration of the semantic representations of mention, context and entity, encodes them in continuous vector space and effectively leverages them for entity disambiguation. Specifically, we model variable-sized contexts with convolutional neural network, and embed the positions of context words to factor in the distance between context word and mention. Furthermore, we employ neural tensor network to model the semantic interactions between context and mention. We conduct experiments for entity disambiguation on two benchmark datasets from TAC-KBP 2009 and 2010. Experimental results show that our method yields state-of-the-art performances on both datasets.},
+booktitle = {Proceedings of the 24th International Conference on Artificial Intelligence},
+pages = {1333–1339},
+numpages = {7},
+location = {Buenos Aires, Argentina},
+series = {IJCAI'15}
+}
+
+@inproceedings{ganea-hofmann-2017-deep,
+    title = "Deep Joint Entity Disambiguation with Local Neural Attention",
+    author = "Ganea, Octavian-Eugen  and
+      Hofmann, Thomas",
+    editor = "Palmer, Martha  and
+      Hwa, Rebecca  and
+      Riedel, Sebastian",
+    booktitle = "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing",
+    month = sep,
+    year = "2017",
+    address = "Copenhagen, Denmark",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D17-1277/",
+    doi = "10.18653/v1/D17-1277",
+    pages = "2619--2629",
+    abstract = "We propose a novel deep learning model for joint document-level entity disambiguation, which leverages learned neural representations. Key components are entity embeddings, a neural attention mechanism over local context windows, and a differentiable joint inference stage for disambiguation. Our approach thereby combines benefits of deep learning with more traditional approaches such as graphical models and probabilistic mention-entity maps. Extensive experiments show that we are able to obtain competitive or state-of-the-art accuracy at moderate computational costs."
+}
+
+@inproceedings{le-titov-2019-boosting,
+    title = "Boosting Entity Linking Performance by Leveraging Unlabeled Documents",
+    author = "Le, Phong  and
+      Titov, Ivan",
+    editor = "Korhonen, Anna  and
+      Traum, David  and
+      M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1187/",
+    doi = "10.18653/v1/P19-1187",
+    pages = "1935--1945",
+    abstract = "Modern entity linking systems rely on large collections of documents specifically annotated for the task (e.g., AIDA CoNLL). In contrast, we propose an approach which exploits only naturally occurring information: unlabeled documents and Wikipedia. Our approach consists of two stages. First, we construct a high recall list of candidate entities for each mention in an unlabeled document. Second, we use the candidate lists as weak supervision to constrain our document-level entity linking model. The model treats entities as latent variables and, when estimated on a collection of unlabelled texts, learns to choose entities relying both on local context of each mention and on coherence with other entities in the document. The resulting approach rivals fully-supervised state-of-the-art systems on standard test sets. It also approaches their performance in the very challenging setting: when tested on a test set sampled from the data used to estimate the supervised systems. By comparing to Wikipedia-only training of our model, we demonstrate that modeling unlabeled documents is beneficial."
+}
+
+@inproceedings{martins-etal-2019-joint,
+    title = "Joint Learning of Named Entity Recognition and Entity Linking",
+    author = "Martins, Pedro Henrique  and
+      Marinho, Zita  and
+      Martins, Andr{\'e} F. T.",
+    editor = "Alva-Manchego, Fernando  and
+      Choi, Eunsol  and
+      Khashabi, Daniel",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-2026/",
+    doi = "10.18653/v1/P19-2026",
+    pages = "190--196",
+    abstract = "Named entity recognition (NER) and entity linking (EL) are two fundamentally related tasks, since in order to perform EL, first the mentions to entities have to be detected. However, most entity linking approaches disregard the mention detection part, assuming that the correct mentions have been previously detected. In this paper, we perform joint learning of NER and EL to leverage their relatedness and obtain a more robust and generalisable system. For that, we introduce a model inspired by the Stack-LSTM approach. We observe that, in fact, doing multi-task learning of NER and EL improves the performance in both tasks when comparing with models trained with individual objectives. Furthermore, we achieve results competitive with the state-of-the-art in both NER and EL."
+}
+
+@InProceedings{moreno_combining_word_entity_embeddings_2017,
+author="Moreno, Jose G.
+and Besan{\c{c}}on, Romaric
+and Beaumont, Romain
+and D'hondt, Eva
+and Ligozat, Anne-Laure
+and Rosset, Sophie
+and Tannier, Xavier
+and Grau, Brigitte",
+editor="Blomqvist, Eva
+and Maynard, Diana
+and Gangemi, Aldo
+and Hoekstra, Rinke
+and Hitzler, Pascal
+and Hartig, Olaf",
+title="Combining Word and Entity Embeddings for Entity Linking",
+booktitle="The Semantic Web",
+year="2017",
+publisher="Springer International Publishing",
+address="Cham",
+pages="337--352",
+abstract="The correct identification of the link between an entity mention in a text and a known entity in a large knowledge base is important in information retrieval or information extraction. The general approach for this task is to generate, for a given mention, a set of candidate entities from the base and, in a second step, determine which is the best one. This paper proposes a novel method for the second step which is based on the joint learning of embeddings for the words in the text and the entities in the knowledge base. By learning these embeddings in the same space we arrive at a more conceptually grounded model that can be used for candidate selection based on the surrounding context. The relative improvement of this approach is experimentally validated on a recent benchmark corpus from the TAC-EDL 2015 evaluation campaign.",
+isbn="978-3-319-58068-5"
+}
+
+@article{yamada-etal-2017-learning,
+    title = "Learning Distributed Representations of Texts and Entities from Knowledge Base",
+    author = "Yamada, Ikuya  and
+      Shindo, Hiroyuki  and
+      Takeda, Hideaki  and
+      Takefuji, Yoshiyasu",
+    editor = "Lee, Lillian  and
+      Johnson, Mark  and
+      Toutanova, Kristina",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "5",
+    year = "2017",
+    address = "Cambridge, MA",
+    publisher = "MIT Press",
+    url = "https://aclanthology.org/Q17-1028/",
+    doi = "10.1162/tacl_a_00069",
+    pages = "397--411",
+    abstract = "We describe a neural network model that jointly learns distributed representations of texts and knowledge base (KB) entities. Given a text in the KB, we train our proposed model to predict entities that are relevant to the text. Our model is designed to be generic with the ability to address various NLP tasks with ease. We train the model using a large corpus of texts and their entity annotations extracted from Wikipedia. We evaluated the model on three important NLP tasks (i.e., sentence textual similarity, entity linking, and factoid question answering) involving both unsupervised and supervised settings. As a result, we achieved state-of-the-art results on all three of these tasks. Our code and trained models are publicly available for further academic research."
+}
+
+@InProceedings{pnel_pointer_network_based_end_to_end_entity_linking_2020,
+author="Banerjee, Debayan
+and Chaudhuri, Debanjan
+and Dubey, Mohnish
+and Lehmann, Jens",
+editor="Pan, Jeff Z.
+and Tamma, Valentina
+and d'Amato, Claudia
+and Janowicz, Krzysztof
+and Fu, Bo
+and Polleres, Axel
+and Seneviratne, Oshani
+and Kagal, Lalana",
+title="PNEL: Pointer Network Based End-To-End Entity Linking over Knowledge Graphs",
+booktitle="The Semantic Web -- ISWC 2020",
+year="2020",
+publisher="Springer International Publishing",
+address="Cham",
+pages="21--38",
+abstract="Question Answering systems are generally modelled as a pipeline consisting of a sequence of steps. In such a pipeline, Entity Linking (EL) is often the first step. Several EL models first perform span detection and then entity disambiguation. In such models errors from the span detection phase cascade to later steps and result in a drop of overall accuracy. Moreover, lack of gold entity spans in training data is a limiting factor for span detector training. Hence the movement towards end-to-end EL models began where no separate span detection step is involved. In this work we present a novel approach to end-to-end EL by applying the popular Pointer Network model, which achieves competitive performance. We demonstrate this in our evaluation over three datasets on the Wikidata Knowledge Graph.",
+isbn="978-3-030-62419-4"
+}
+
+@inproceedings{transe_2013,
+ author = {Bordes, Antoine and Usunier, Nicolas and Garcia-Duran, Alberto and Weston, Jason and Yakhnenko, Oksana},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {C.J. Burges and L. Bottou and M. Welling and Z. Ghahramani and K.Q. Weinberger},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Translating Embeddings for Modeling Multi-relational Data},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2013/file/1cecc7a77928ca8133fa24680a88d2f9-Paper.pdf},
+ volume = {26},
+ year = {2013}
+}
