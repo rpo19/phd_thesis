@@ -3,6 +3,36 @@
     [Named Entity Recognition (NER)]
     \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}.
 \end{definition}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\small
+\PERSON{Mario Rossi}, residing in \LOCATION{Turin} \texttt{[...]} -- plaintiff\\
+and\\
+\PERSON{Carlo Neri}, residing in \LOCATION{Milan} \texttt{[...]} -- defendant\\
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813 c.c.} \texttt{[...]}
+\subcaption{\ac{ner} on a judgment}
+\label{fig:extract-ner-judgment}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\small
+\DATE{[2025-07-28 -- 14:15]} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?
+\DATE{[2025-07-29 -- 08:45]} \PERSON{Mario Rossi}: \textit{[Voice message -- 2 min 14 sec]}
+\quad \textit{Transcription:}\\
+\quad \texttt{[...]} better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\subcaption{\ac{ner} on chat logs}
+\label{fig:extract-ner-chat}
+\end{minipage}
+\caption{\Ac{ner} application for \acl{sta} with entity highlights and labels.}
+\label{fig:extracts-ner}
+\end{figure}
+
+An example application of \ac{ner} on legal judgments and chat logs is shown in Figure~\ref{fig:extracts-ner}, where entities such as persons, locations, dates, monetary values, and legal references are identified and classified.
+
+
 While traditionally focused on entities like persons, organizations, and locations, \ac{ner} systems have been applied for recognizing wide range of entity types, such as dates, monetary values~\cite{muc6_overview_1995}, biomedical entities~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023}, legal references~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish}, and more~\cite{entityorientedsearch2018balog}. The \ac{nlp} community manifested interest in extending the types of entities recognized, proposing hundreds of entity types~\cite{sekine2002extended_150ner_types,sekine2004definition_200ner_types,yosef-etal-2012-hyena} and introducing the \emph{fine-grained entity typing} field, which aims to classify entities into a larger set of more specific categories~\cite{fget_review_2023}.
 
 \todo{maybe remove the repetition useful for sta and kbp as ie}
@@ -74,33 +104,6 @@ For further information on recent advancements, refer to \textcite{keraghel2024r
 
 Finally, several ready-to-use libraries exist for \ac{ner}, such as spaCy~\cite{honnibal2020spacy}, Flair~\cite{akbik2019flair}, Stanza~\cite{qi2020stanza}, Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, and Transformers~\cite{wolf-etal-2020-transformers}. These libraries provide pre-trained models for multiple languages, and can be easily integrated into applications. For instance, spaCy offers efficient and accurate \ac{ner} models that can be fine-tuned on custom datasets~\cite{honnibal2020spacy}. Its models are based on a transition-based parser~\cite{AliEtAl2023UnintendedMemorization} that maps structured prediction tasks, such as \ac{ner} and dependency parsing, into a sequence of state transitions~\cite{lample-etal-2016-neural}. The underlying architecture combines multiple subnetworks. The tok2vec component encodes tokens into embeddings enriched with sub-word features (e.g., prefixes, suffixes, or shapes such as ``xxxXx'' for ``spaCy'') using a CNN-based encoder. A lower subnet then constructs representations for each token by combining these features, while an optional upper feed-forward network refines the representation to predict action scores. When the upper network is not used, the lower subnet directly produces the scores~\cite{AliEtAl2023UnintendedMemorization}.
 
-\begin{figure}[htbp]
-\centering
-\begin{minipage}[t]{0.48\linewidth}
-\small
-\PERSON{Mario Rossi}, residing in \LOCATION{Turin} \texttt{[...]} -- plaintiff\\
-and\\
-\PERSON{Carlo Neri}, residing in \LOCATION{Milan} \texttt{[...]} -- defendant\\
-FACTS\\
-The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813 c.c.} \texttt{[...]}
-\subcaption{\ac{ner} on a judgment}
-\label{fig:extract-ner-judgment}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.48\linewidth}
-\small
-\DATE{[2025-07-28 -- 14:15]} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?
-\DATE{[2025-07-29 -- 08:45]} \PERSON{Mario Rossi}: \textit{[Voice message -- 2 min 14 sec]}
-\quad \textit{Transcription:}\\
-\quad \texttt{[...]} better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
-\subcaption{\ac{ner} on chat logs}
-\label{fig:extract-ner-chat}
-\end{minipage}
-\caption{\Ac{ner} application for \acl{sta} with entity highlights and labels.}
-\label{fig:extracts-ner}
-\end{figure}
-
-An example application of \ac{ner} on legal judgments and chat logs is shown in Figure~\ref{fig:extracts-ner}, where entities such as persons, locations, dates, monetary values, and legal references are identified and classified.
 
 
 

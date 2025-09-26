@@ -4,6 +4,37 @@
     \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or \ac{kb}~\cite{entityorientedsearch2018balog,jr3}.
 \end{definition}
 
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\linewidth}
+\small
+\NELPerson{Mario Rossi}{}{\NIL}
+, residing in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} \texttt{[...]} -- plaintiff\\
+and\\
+\NELPerson{Carlo Neri}{}{\NIL}
+, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
+FACTS\\
+The plaintiff summoned the defendant to court, alleging that on \NELDate{January 10, 2023} he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
+\subcaption{\ac{nel} on a judgment}
+\label{fig:extract-nel-judgment}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\small
+\NELDate{[2025-07-28 -- 14:15]} \NELPerson{Luca Bianchi}{}{\NIL} Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://en.wikipedia.org/wiki/Piazza_Vittorio_Veneto}{\WikiIcon Piazza Vittorio Veneto} in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} or the one by the river?\\
+\NELDate{[2025-07-29 -- 08:45]} \NELPerson{Mario Rossi}{}{\NIL} \textit{[Voice message -- 2 min 14 sec]}
+\quad \textit{Transcription:}\\
+\quad \texttt{[...]} better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{}{\NIL} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via_Roma_(Torino)}{\WikiIcon Via Roma 210} near \NELLocation{Porta Susa station}{https://en.wikipedia.org/wiki/Torino_Porta_Susa_railway_station}{\WikiIcon Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\subcaption{\ac{nel} on chat logs}
+\label{fig:extract-nel-chat-logs}
+\end{minipage}
+\caption{\Ac{nel} application for \acl{sta} with clickable links.}
+\label{fig:extracts-nel-new}
+\end{figure}
+
+An example of \ac{nel} applied the fictional legal judgement and chat is available in \Cref{fig:extracts-nel-new}. 
+
+
 
 While \ac{ner} identifies spans of text that correspond to named entities (e.g., ``Barack Obama''), \ac{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \ac{kr} (e.g., the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity. For example, in the first case, the mention ``Lisbon'' may refer to Lisbon, Capital of Portugal\footnote{\url{https://www.wikidata.org/entity/Q597}} or to the movie Lisbon (1956 film)\footnote{\url{https://www.wikidata.org/entity/Q3203631}}. Furthermore, ambiguity can arise also for entities with the same type, such as Lisbon, Connecticut\footnote{\url{https://en.wikipedia.org/wiki/Lisbon,_Connecticut}}, or the other cities named ``Lisbon''\footnote{\url{https://en.wikipedia.org/wiki/Lisbon_(disambiguation)}}.
 In the second case, the mentions ``Barack Obama'' and ``President Obama'' should both be linked to the entity Barack Obama, Former US President\footnote{\url{https://www.wikidata.org/entity/Q76}}.
@@ -53,7 +84,7 @@ Other models, instead, propose the use of entity typing information for \ac{nel}
 A notable architecture is composed of a bi-encoder and a cross-encoder~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
 
 The \emph{bi-encoder} independently encodes the mention (in context) and each candidate entity (e.g., using title and a brief textual description) into dense embeddings~\cite{blink,Humeau2020Poly-encoders}. A similarity measure between mention and entity can be computed using dot-product or cosine similarity over the vectors.
-This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via approximate nearest neighbor search algorithms, such as HNSW~\cite{hnsw_2020}.
+This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via approximate nearest neighbor search algorithms, such as HNSW~\cite{hnsw_2020}, whose retrieval times scales logarithmically with respect to the \ac{kr} size.
 
 The \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, e.g., to 100 candidates per mention~\cite{blink}. 
 
@@ -126,10 +157,24 @@ The cross-encoder is typically trained with the same objective as the bi-encoder
 
 
 
+Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{barba-etal-2022-extend,procopio-etal-2023-entity,entqa} or text-generations tasks~\cite{genre}.
+\textcite{procopio-etal-2023-entity} models the entity ranking phase of \ac{nel} as an extractive \acl{qa} task, i.e., when a question and a passage is given and the answer is \say{extracted} from the passage as is. This task can be performed by identifying a start token and an end token that mark the beginning and end of the answer~\cite{barba-etal-2022-extend}.
+For \textcite{procopio-etal-2023-entity}, the input sequence given to the transformer for linking ``Metropolis'' appear as follows.
+\begin{lstlisting}
+After a long fight Superman saved [M*@$_s$@*] Metropolis [M*@$_e$@*] [SEP]
+Metropolis (1927 film) [E*@$_s$@*] Metropolis-Hasting algorithm [E*@$_s$@*] Metropolis (comics)
+\end{lstlisting}
+The mention to link is surrounded by the two custom tokens $M_s$ and $M_e$, the entity titles are listed after a \texttt{SEP} and divided by another custom token $E_s$ (\textcite{procopio-etal-2023-entity} additionally added a brief textual description for each entity). The model is trained as an extractive \ac{qa} system to select a starting token and an end token for the answer, which in this case represent an entity to link~\cite{barba-etal-2022-extend}.
 
-\todo{bi cross encoder figure}
+Compared to the cross-encoder this formulation passes multiple candidate entities in a sigle forward pass, reducing the computational costs and allowing both mention-entity and entity-entity interactions.
+However, while the authors use the LongFormer~\cite{beltagy2020longformerlongdocumenttransformer}---a transformer with a modified self-attention mechanism that scales linearly with the input sequence length---this approach is suitable for candidate entity ranking and still prohibitive for candidate entity generation with million-entities \ac{kr}. 
 
-Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{extend,extend2,entqa} or text-generations tasks~\cite{genre}.
+
+\todo{genre}
+
+
+
+\todo{how are they separated?}
 
 \textcite{extend} .... %still a ranking problem? yes probably
 
@@ -171,34 +216,6 @@ emerging entity detection~\cite{farber_emergin_entity_2016}
 
 
 
-\begin{figure}[htbp]
-\centering
-\begin{minipage}[t]{0.48\linewidth}
-\small
-\NELPerson{Mario Rossi}{}{\NIL}
-, residing in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} \texttt{[...]} -- plaintiff\\
-and\\
-\NELPerson{Carlo Neri}{}{\NIL}
-, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
-FACTS\\
-The plaintiff summoned the defendant to court, alleging that on \NELDate{January 10, 2023} he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
-\subcaption{\ac{nel} on a judgment}
-\label{fig:extract-nel-judgment}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.48\linewidth}
-\small
-\NELDate{[2025-07-28 -- 14:15]} \NELPerson{Luca Bianchi}{}{\NIL} Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://en.wikipedia.org/wiki/Piazza_Vittorio_Veneto}{\WikiIcon Piazza Vittorio Veneto} in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} or the one by the river?\\
-\NELDate{[2025-07-29 -- 08:45]} \NELPerson{Mario Rossi}{}{\NIL} \textit{[Voice message -- 2 min 14 sec]}
-\quad \textit{Transcription:}\\
-\quad \texttt{[...]} better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{}{\NIL} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via_Roma_(Torino)}{\WikiIcon Via Roma 210} near \NELLocation{Porta Susa station}{https://en.wikipedia.org/wiki/Torino_Porta_Susa_railway_station}{\WikiIcon Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
-\subcaption{\ac{nel} on chat logs}
-\label{fig:extract-nel-chat-logs}
-\end{minipage}
-\caption{\Ac{nel} application for \acl{sta} with clickable links.}
-\label{fig:extracts-nel-new}
-\end{figure}
-\todo{migliora. potrei usare logowikipedia/Torino,... e magari link a leggi per articoli. vedi paper con statale}
 
 
 \subsection{NIL Prediction}
