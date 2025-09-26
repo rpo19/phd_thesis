@@ -42,13 +42,56 @@ Some approaches treated \ac{nel} as a binary classification problem, where each 
 Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end2end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
 
 With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, such as TransE~\cite{transe_2013}.\todo{describe briefly here or before}
-Other models, instead, rely on information like entity descriptions and entity types~\cite{gupta-etal-2017-entity}, with some using the dense embeddings also at retrieval time with efficient approximate nearest neighbor search methods~\cite{gillick-etal-2019-learning,blink}.
+Other models, instead, propose the use of entity typing information for \ac{nel}~\cite{gupta-etal-2017-entity,khalife-vazirgiannis-2019-scalable,Raiman_Raiman_2018,Onoe_Durrett_2020,Heist2023nastylinker}, with some using the dense embeddings also at retrieval time with efficient approximate nearest neighbor search methods~\cite{gillick-etal-2019-learning,blink}.
 
 \todo{biencoder crossencoder paradigm. formalization probabilistic. dot-product and learning /loss function}
 \todo{describe blink and how it works (mlm), also genre clm}
 \todo{genre, genie, extend, constrained, llms}
 \todo{continue and add recent trends and llms}
 \todo{add recent advancements: refined, genie?, genre, rexel, amazon paper..., bela}
+
+A notable architecture is the use of bi-encoders and cross-encoders~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
+
+The \emph{bi-encoder} independently encodes the mention (in context) and each candidate entity (e.g., using title and a brief textual description) into dense embeddings~\cite{blink,Humeau2020Poly-encoders}. A similarity measure between mention and entity can be computed using dot-product or cosine similarity over the vectors.
+This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via approximate nearest neighbor search algorithms, such as HNSW~\cite{hnsw_2020}.
+
+The \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, e.g., to 100 candidates per mention~\cite{blink}. 
+
+\todo{training formulas}
+Formally, the bi-encoder....
+
+The cross-encoder, instead, can be formalized...
+
+\todo{bi cross encoder figure}
+
+Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{extend,extend2,entqa} or text-generations tasks~\cite{genre}.
+
+\textcite{extend} .... %still a ranking problem? yes probably
+
+\textcite{genre} ....
+
+\todo{end-to-end entity linking}
+
+% retriever reader relik (also mention detection) orlando-etal-2024-relik
+Some approache model \ac{nel} from \ac{qa}~\cite{zhang2022entqa}, extend
+
+While more recent approaches continue to use a bi-encoder architecture~\cite{}\todo{verify}, they often avoid cross-encoders and address efficient end-to-end entity linking~\cite{}.\todo{verify}
+
+% The bi-encoder can be trained using contrastive learning objectives to maximize the similarity between correct mention-entity pairs while minimizing it for incorrect pairs~\cite{gillick-etal-2019-learning,blink}.
+
+
+
+% , which are then compared using a similarity function, such as the dot product or cosine similarity~\cite{gillick-etal-2019-learning,blink}. This allows for efficient retrieval of candidate entities using approximate nearest neighbor search techniques~\cite{gillick-etal-2019-learning,blink}. The bi-encoder can be trained using contrastive learning objectives to maximize the similarity between correct mention-entity pairs while minimizing it for incorrect pairs~\cite{gillick-etal-2019-learning,blink}.
+
+% cross encoder trend is fading away
+% remember to cite usbeck moller2024entity
+
+
+
+
+In the bi-encoder setup, mentions and entities are encoded separately, allowing for efficient pre-computation of entity embeddings and fast retrieval using approximate nearest neighbor search~\cite{gillick-etal-2019-learning,blink}. Conversely, cross-encoders jointly encode the mention and each candidate entity, enabling more fine-grained interactions at the cost of increased computational overhead~\cite{yamada-etal-2022-global}. Some systems combine both approaches by first using a bi-encoder for candidate retrieval followed by a cross-encoder for re-ranking~\cite{blink}.
+
+emerging entity detection~\cite{farber_emergin_entity_2016}
 
 % Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
 % With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
