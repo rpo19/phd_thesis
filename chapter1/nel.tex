@@ -50,17 +50,82 @@ Other models, instead, propose the use of entity typing information for \ac{nel}
 \todo{continue and add recent trends and llms}
 \todo{add recent advancements: refined, genie?, genre, rexel, amazon paper..., bela}
 
-A notable architecture is the use of bi-encoders and cross-encoders~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
+A notable architecture is composed of a bi-encoder and a cross-encoder~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
 
 The \emph{bi-encoder} independently encodes the mention (in context) and each candidate entity (e.g., using title and a brief textual description) into dense embeddings~\cite{blink,Humeau2020Poly-encoders}. A similarity measure between mention and entity can be computed using dot-product or cosine similarity over the vectors.
 This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via approximate nearest neighbor search algorithms, such as HNSW~\cite{hnsw_2020}.
 
 The \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, e.g., to 100 candidates per mention~\cite{blink}. 
 
-\todo{training formulas}
-Formally, the bi-encoder....
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/bi-cross-encoders-blink.png}
+    \caption{Bi-encoder and cross-encoder architectures. Figure from \textcite{blink}. 
+    The bi-encoder encodes mentions and entities independently, enabling fast retrieval. 
+    The cross-encoder jointly encodes mention-entity pairs, allowing richer interactions at the cost of higher inference time.}
+    \label{fig:bi-cross-encoders}
+\end{figure}
 
-The cross-encoder, instead, can be formalized...
+\Cref{fig:bi-cross-encoders} exemplifies the functioning of the bi-encoder and cross-encoder architectures.
+
+\todo{training formulas}
+Formally, the bi-encoder is composed of two networks, one for encoding mentions $T_m$, and one for encoding entities $T_e$. When using a transformer like BERT~\cite{devlin-etal-2019-bert}, as in \textcite{blink}, the output consists of a vector for each input token and requires a $red(.)$ function to reduce it to a single embedding for the entire input~\cite{blink,Humeau2020Poly-encoders}. Example functions are averaging the output embeddings or considering the embedding from the \texttt{CLS} token~\cite{Humeau2020Poly-encoders}, i.e., a special token whose representation from the last layer is used as an aggregate representation of the entire input sentence~\cite{devlin-etal-2019-bert}.
+Thus, the mention and entity embeddings are obtained as follows.
+\begin{equation}
+    y_m = red(T_m(m)),
+\end{equation}
+\begin{equation}
+    y_e = red(T_e(e)).
+\end{equation}
+Where the input $m$ and $e$ include, respectively, mention and entity information that can be concatenated using ad-hoc tokens. The input formats used in \textcite{blink} are
+\begin{equation}
+    x_m = \texttt{[CLS]} \;\text{context}_{\text{left}} \;\texttt{[M}_\texttt{s}\texttt{]} \;\text{mention} \;\texttt{[M}_\texttt{e}\texttt{]} \;\text{context}_{\text{right}} \;\texttt{[SEP]},
+\end{equation}
+\begin{equation}
+    x_e = \texttt{[CLS]} \;\text{title} \;\texttt{[ENT]} \;\text{description} \;\texttt{[SEP]}.
+\end{equation}
+\texttt{CLS} and \texttt{SEP} are special BERT tokens that are always added at the beginning and at the end of the input sequence. $\;\texttt{[M}_\texttt{s}\texttt{]}$, $\;\texttt{[M}_\texttt{e}\texttt{]}$, and \texttt{[ENT]} are custom tokens for marking, in order, the start of the mention (for distinguishing mention and context tokens), the end of the mention, and the start of the entity description (dividing it from the entity title).
+For additionally exploiting typing information, \textcite{Heist2023nastylinker} included, in both templates, a single token after the \texttt{CLS} representing the mention and entity types.
+
+A first matching score from the bi-encoder can be calculated as the similarity between the two embeddings, e.g., using the \emph{dot-product}:
+\begin{equation}
+s^{bi}_{m,e} = y_m \cdot y_e
+\end{equation}
+
+The bi-encoder networks are trained to maximize the score of the correct mention-entity pair with respect to the remaining entitie in the batch~\cite{blink}. The batches can be randomly sampled or created with \emph{hard negatives}, e.g., the ten highest scored entities to $m$ that are not the correct entity to which $m$ refers~\cite{blink}. The loss function for a mention-entity pair $(m_i, e_i)$ appears as follows~\cite{blink}:
+\begin{equation}
+\mathcal{L}(m_i, e_i) = -s(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s(m_i, e_j) \big)
+\end{equation}
+
+% cross
+
+The cross-encoder, instead, can be formalized as a single transformer network $T_{ce}$ that jointly encodes the mention $m$ and the entity $e$ in the same input sequence~\cite{blink,Humeau2020Poly-encoders,logeswaran-etal-2019-zero}. 
+In this case, the input is constructed by concatenating the mention context with the entity candidate, separated by the \texttt{SEP} token, as follows:
+\begin{equation}
+    x = \texttt{[CLS]} \; x_m \; \texttt{[SEP]} \; x_e \; \texttt{[SEP]}.
+\end{equation}
+The transformer $T_{ce}$ processes the entire sequence and produces contextualized representations for all tokens, that is transformed in a single representation from the $red(.)$ function.
+\begin{equation}
+    y_{ce} = red(T_{ce}(x)).
+\end{equation}
+
+% Unlike the bi-encoder, the cross-encoder does not embed mentions and entities independently. 
+% Instead, all input tokens are attended to jointly, which allows the model to capture fine-grained interactions between the mention and the candidate entity description. 
+% This generally leads to higher accuracy, but at the cost of increased computational complexity, since each mention-entity pair must be encoded together during inference~\cite{blink,Humeau2020Poly-encoders}. 
+
+The similarity score is directly computed as a function of the cross-encoder representation, for instance using a linear projection~\cite{blink}:
+\begin{equation}
+    s^{ce}_{m,e} = W \cdot y_{ce} + b,
+\end{equation}
+where $W$ and $b$ are trainable parameters. 
+The cross-encoder is typically trained with the same objective as the bi-encoder, namely maximizing the score of the correct mention-entity pair over negatives within the batch.
+% \begin{equation}
+% \mathcal{L}^{ce}(m_i, e_i) = -s^{ce}(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s^{ce}(m_i, e_j) \big).
+% \end{equation}
+
+
+
+
 
 \todo{bi cross encoder figure}
 
