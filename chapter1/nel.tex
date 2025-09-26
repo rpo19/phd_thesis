@@ -157,7 +157,7 @@ The cross-encoder is typically trained with the same objective as the bi-encoder
 
 
 
-Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{barba-etal-2022-extend,procopio-etal-2023-entity,entqa} or text-generations tasks~\cite{genre}.
+Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{barba-etal-2022-extend,procopio-etal-2023-entity,zhang2022entqa} or text-generations tasks~\cite{decao2021autoregressive}.
 \textcite{procopio-etal-2023-entity} models the entity ranking phase of \ac{nel} as an extractive \acl{qa} task, i.e., when a question and a passage is given and the answer is \say{extracted} from the passage as is. This task can be performed by identifying a start token and an end token that mark the beginning and end of the answer~\cite{barba-etal-2022-extend}.
 For \textcite{procopio-etal-2023-entity}, the input sequence given to the transformer for linking ``Metropolis'' appear as follows.
 \begin{lstlisting}
@@ -169,16 +169,20 @@ The mention to link is surrounded by the two custom tokens $M_s$ and $M_e$, the 
 Compared to the cross-encoder this formulation passes multiple candidate entities in a sigle forward pass, reducing the computational costs and allowing both mention-entity and entity-entity interactions.
 However, while the authors use the LongFormer~\cite{beltagy2020longformerlongdocumenttransformer}---a transformer with a modified self-attention mechanism that scales linearly with the input sequence length---this approach is suitable for candidate entity ranking and still prohibitive for candidate entity generation with million-entities \ac{kr}. 
 
+The text-generation modeling~\cite{decao2021autoregressive}, instead, addressed \emph{end-to-end} \ac{nel}, namely the extension of entity linking that jointly detects entity mentions from text (mention detection) and links them to a \ac{kr}~\cite{kolitsas-etal-2018-end}. A \ac{clm} receives an input text and rewrites it token-by-token. At each generation the model is allowed to either
+\begin{itemize}
+    \item generate the next token from the input text,
+    \item start an entity mention.
+\end{itemize}
+When inside an enity mention and after repeating the mentions tokens, the models performs \ac{nel} by generating an entity title. To ensure the generated titles exists the authors use \emph{constrained generation}---a technique that reduce the search space of a generative model, allowing only certain sequences---bounded to a prefix tree containing Wikipedia entity titles~\cite{decao2021autoregressive}. In this way, previous links, which remaining part of the context windows of the \ac{clm}, can be exploited as contextual information for future links. Furthermore, this approach does not require to store and load in memory a large number of embeddings, saving tens of memory---for instance, \textcite{blink} requires more than 30GB of memory~\cite{decao2021autoregressive}.\todo{constrained generation is expanded later}
 
-\todo{genre}
 
-
+\todo{recent trends, bela, rexel , refined, relik??}
+\todo{nil pred}
+\todo{something on clustering tooo}
 
 \todo{how are they separated?}
 
-\textcite{extend} .... %still a ranking problem? yes probably
-
-\textcite{genre} ....
 
 \todo{end-to-end entity linking}
 
