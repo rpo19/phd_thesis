@@ -2676,3 +2676,145 @@ numpages = {13}
     doi = "10.18653/v1/K18-1050",
     pages = "519--529",
 }
+
+@misc{plekhanov2023multilingualendendentity,
+      title={Multilingual End to End Entity Linking}, 
+      author={Mikhail Plekhanov and Nora Kassner and Kashyap Popat and Louis Martin and Simone Merello and Borislav Kozlovskii and Frédéric A. Dreyer and Nicola Cancedda},
+      year={2023},
+      eprint={2306.08896},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2306.08896}, 
+}
+
+@inproceedings{ayoola-etal-2022-refined,
+    title = "{R}e{F}in{ED}: An Efficient Zero-shot-capable Approach to End-to-End Entity Linking",
+    author = "Ayoola, Tom  and
+      Tyagi, Shubhi  and
+      Fisher, Joseph  and
+      Christodoulopoulos, Christos  and
+      Pierleoni, Andrea",
+    editor = "Loukina, Anastassia  and
+      Gangadharaiah, Rashmi  and
+      Min, Bonan",
+    booktitle = "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies: Industry Track",
+    month = jul,
+    year = "2022",
+    address = "Hybrid: Seattle, Washington + Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.naacl-industry.24/",
+    doi = "10.18653/v1/2022.naacl-industry.24",
+    pages = "209--220",
+    abstract = "We introduce ReFinED, an efficient end-to-end entity linking model which uses fine-grained entity types and entity descriptions to perform linking. The model performs mention detection, fine-grained entity typing, and entity disambiguation for all mentions within a document in a single forward pass, making it more than 60 times faster than competitive existing approaches. ReFinED also surpasses state-of-the-art performance on standard entity linking datasets by an average of 3.7 F1. The model is capable of generalising to large-scale knowledge bases such as Wikidata (which has 15 times more entities than Wikipedia) and of zero-shot entity linking. The combination of speed, accuracy and scale makes ReFinED an effective and cost-efficient system for extracting entities from web-scale datasets, for which the model has been successfully deployed."
+}
+
+@inproceedings{bouziani-etal-2024-rexel,
+    title = "{REXEL}: An End-to-end Model for Document-Level Relation Extraction and Entity Linking",
+    author = "Bouziani, Nacime  and
+      Tyagi, Shubhi  and
+      Fisher, Joseph  and
+      Lehmann, Jens  and
+      Pierleoni, Andrea",
+    editor = "Yang, Yi  and
+      Davani, Aida  and
+      Sil, Avi  and
+      Kumar, Anoop",
+    booktitle = "Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 6: Industry Track)",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.naacl-industry.11/",
+    doi = "10.18653/v1/2024.naacl-industry.11",
+    pages = "119--130",
+    abstract = "Extracting structured information from unstructured text is critical for many downstream NLP applications and is traditionally achieved by $\textit{closed information extraction}$ (cIE). However, existing approaches for cIE suffer from two limitations: $\textit{(i)}$ they are often pipelines which makes them prone to error propagation, and/or $\textit{(ii)}$ they are restricted to sentence level which prevents them from capturing long-range dependencies and results in expensive inference time. We address these limitations by proposing REXEL, a highly efficient and accurate model for the joint task of document level cIE (DocIE). REXEL performs mention detection, entity typing, entity disambiguation, coreference resolution and document-level relation classification in a single forward pass to yield facts fully linked to a reference knowledge graph. It is on average 11 times faster than competitive existing approaches in a similar setting and performs competitively both when optimised for any of the individual sub-task and a variety of combinations of different joint tasks, surpassing the baselines by an average of more than 6 F1 points. The combination of speed and accuracy makes REXEL an accurate cost-efficient system for extracting structured information at web-scale. We also release an extension of the DocRED dataset to enable benchmarking of future work on DocIE, which will be available at https://github.com/amazon-science/e2e-docie."
+}
+
+@article{RYNKIEWICZ2025112185,
+title = {Universal entity linking},
+journal = {Engineering Applications of Artificial Intelligence},
+volume = {161},
+pages = {112185},
+year = {2025},
+issn = {0952-1976},
+doi = {https://doi.org/10.1016/j.engappai.2025.112185},
+url = {https://www.sciencedirect.com/science/article/pii/S0952197625021931},
+author = {Adam Aron Rynkiewicz and Raul Palma and Piotr Formanowicz},
+keywords = {Entity linking, Large Language Model, Wikidata, Text embedding},
+abstract = {Entity linking is a process of connecting mentions of entities in a document to corresponding entries in a knowledge base. Traditional models for entity linking often require specific fine-tuning to work with knowledge bases other than those they were originally pretrained on, which limits their flexibility and scalability. Building on the concept of entity profile generation, we propose a novel approach that enables entity linking across various knowledge bases without the need for such fine-tuning. Our pipeline leverages a fine-tuned Large Language Model, a generic embedding model, and a vector store to achieve high precision on the TweekiGold and Reuters-128 datasets. Additionally, it demonstrates strong retrieval rates across the TweekiGold, Reuters-128, and ISTEX-1000 Wikidata entity linking datasets. We also illustrate the applicability of our method to other knowledge bases, using the Agrovoc knowledge base as an example. This solution offers a more versatile and scalable approach to entity linking.}
+}
+
+@inproceedings{liu-etal-2024-onenet,
+    title = "{O}ne{N}et: A Fine-Tuning Free Framework for Few-Shot Entity Linking via Large Language Model Prompting",
+    author = "Liu, Xukai  and
+      Liu, Ye  and
+      Zhang, Kai  and
+      Wang, Kehang  and
+      Liu, Qi  and
+      Chen, Enhong",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.756/",
+    doi = "10.18653/v1/2024.emnlp-main.756",
+    pages = "13634--13651",
+    abstract = "Entity Linking (EL) is the process of associating ambiguous textual mentions to specific entities in a knowledge base.Traditional EL methods heavily rely on large datasets to enhance their performance, a dependency that becomes problematic in the context of few-shot entity linking, where only a limited number of examples are available for training. To address this challenge, we present OneNet, an innovative framework that utilizes the few-shot learning capabilities of Large Language Models (LLMs) without the need for fine-tuning. To the best of our knowledge, this marks a pioneering approach to applying LLMs to few-shot entity linking tasks. OneNet is structured around three key components prompted by LLMs: (1) an entity reduction processor that simplifies inputs by summarizing and filtering out irrelevant entities, (2) a dual-perspective entity linker that combines contextual cues and prior knowledge for precise entity linking, and (3) an entity consensus judger that employs a unique consistency algorithm to alleviate the hallucination in the entity linking reasoning.Comprehensive evaluations across seven benchmark datasets reveal that OneNet outperforms current state-of-the-art entity linking methods."
+}
+
+@inproceedings{xiao-etal-2023-instructed,
+    title = "Instructed Language Models with Retrievers Are Powerful Entity Linkers",
+    author = "Xiao, Zilin  and
+      Gong, Ming  and
+      Wu, Jie  and
+      Zhang, Xingyao  and
+      Shou, Linjun  and
+      Jiang, Daxin",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.139/",
+    doi = "10.18653/v1/2023.emnlp-main.139",
+    pages = "2267--2282",
+    abstract = "Generative approaches powered by large language models (LLMs) have demonstrated emergent abilities in tasks that require complex reasoning abilities. Yet the generative nature still makes the generated content suffer from hallucinations, thus unsuitable for entity-centric tasks like entity linking (EL) requiring precise entity predictions over a large knowledge base. We present Instructed Generative Entity Linker (INSGENEL), the first approach that enables casual language models to perform entity linking over knowledge bases. Several methods of equipping language models with EL ability were proposed in this work, including (i) a sequence-to-sequence training EL objective with instruction-tuning, (ii) a novel generative EL framework based on a light-weight potential mention retriever that frees the model from heavy and non-parallelizable decoding, achieving 4$\times$ speedup without compromise on linking metrics. INSGENEL outperforms previous generative alternatives with +6.8 F1 points gain on average, also with a huge advantage in training data efficiency and training compute consumption. In addition, our skillfully-engineered in-context learning (ICL) framework for EL still lags behind INSGENEL significantly, reaffirming that the EL task remains a persistent hurdle for general LLMs."
+}
+
+@misc{touvron2023llamaopenefficientfoundation,
+      title={LLaMA: Open and Efficient Foundation Language Models}, 
+      author={Hugo Touvron and Thibaut Lavril and Gautier Izacard and Xavier Martinet and Marie-Anne Lachaux and Timothée Lacroix and Baptiste Rozière and Naman Goyal and Eric Hambro and Faisal Azhar and Aurelien Rodriguez and Armand Joulin and Edouard Grave and Guillaume Lample},
+      year={2023},
+      eprint={2302.13971},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2302.13971}, 
+}
+
+@inproceedings{zhou-etal-2024-gendecider,
+    title = "{G}en{D}ecider: Integrating ``None of the Candidates'' Judgments in Zero-Shot Entity Linking Re-ranking",
+    author = "Zhou, Kang  and
+      Li, Yuepei  and
+      Wang, Qing  and
+      Qiao, Qiao  and
+      Li, Qi",
+    editor = "Duh, Kevin  and
+      Gomez, Helena  and
+      Bethard, Steven",
+    booktitle = "Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 2: Short Papers)",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.naacl-short.22/",
+    doi = "10.18653/v1/2024.naacl-short.22",
+    pages = "239--245",
+    abstract = "We introduce GenDecider, a novel re-ranking approach for Zero-Shot Entity Linking (ZSEL), built on the Llama model. It innovatively detects scenarios where the correct entity is not among the retrieved candidates, a common oversight in existing re-ranking methods. By autoregressively generating outputs based on the context of the entity mention and the candidate entities, GenDecider significantly enhances disambiguation, improving the accuracy and reliability of ZSEL systems, as demonstrated on the benchmark ZESHEL dataset. Our code is available at https://github.com/kangISU/GenDecider."
+}
