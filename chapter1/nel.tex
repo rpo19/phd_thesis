@@ -181,55 +181,21 @@ Notably, \textcite{ayoola-etal-2022-refined} is also able to perform \emph{NIL p
 
 None of the \ac{nel} approaches mentioned above uses billion-sized \aclp{llm}.
 Some approaches use \acp{llm} to create entity profiles~\cite{RYNKIEWICZ2025112185}, for enriching the mention representation with a generated description representation, and afterwards use a \say{tradional} nearest enighbor search for linking. \textcite{xiao-etal-2023-instructed} uses constrained generation to assign entity names to the mentions, similarly to \cite{decao2021autoregressive}, with bigger models such as LLaMA 7B~\cite{touvron2023llamaopenefficientfoundation} fine-tuned for the task. 
-\textcite{zhou-etal-2024-gendecider} fine-tunes \acp{llm}, including LLaMA 2~\cite{touvron2023llama2openfoundation} for the re-ranking phase that is performed by providing mention, context, and candidate entities for asking the model to select the best candidate or ``None of the Candidates'' for NIL prediction. 
+\textcite{zhou-etal-2024-gendecider} fine-tunes \acp{llm}, including LLaMA 2~\cite{touvron2023llama2openfoundation} for the re-ranking phase that is performed by providing mention, context, and candidate entities for asking the model to select the correct candidate or ``None of the Candidates''. 
 \textcite{liu-etal-2024-onenet} rely on prompting and \ac{icl}, instructing the \ac{llm} to perform \ac{el} by providing a prompt with the mention in the context and a list of candidates asking it to select the correct one.
-However, these approaches do not target efficiency---with the exception of \textcite{xiao-etal-2023-instructed} that tries to reduce the calls to the generative model---and are not able to perform \ac{nel} over an entire document in a single forward pass.\todo{maybe add something about accuracy now} 
-\todo{chatel}
+\textcite{ding-etal-2024-chatel} propose a three-step process, where the candidate generation is performed using priors and \textcite{blink}, retrieving ten candidates. Afterwards, they prompt an \ac{llm} to augment the candidates by answering the question ``What does [mention] represent?''. Finally, the \ac{llm} is instructed to select the correct entity among the ten candidates or ``None of the entity match''.
+\textcite{geng-etal-2023-grammar} employed constrained generation with task-specific grammars for guiding \acp{llm} to perform \ac{nlp} tasks, including the ranking phase of \ac{nel}, without fine-tuning.
+While these approaches achieved performance improvements in terms of accuracy~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed} or greated adaptability to different domains without fine-tuning~\cite{ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed}, they do not target efficiency---with the exception of \textcite{xiao-etal-2023-instructed} that tries to reduce the calls to the generative model---and are not able to perform \ac{nel} over an entire document in a single forward pass.
 
-%chatel %Universal entity linking %Entity Linking for Wikidata using Large Language Models and Wikipedia Links %Instructed Language Models with Retrievers Are Powerful Entity Linkers %insgenel %gendecider (nil)
+
+
+\todo{chatel has a good overview of llms for ie}
+\todo{llm for ie has a good overview of constrained generation approaches}
 
 \todo{recent trends, bela, rexel , refined, relik??}
 \todo{rexel at the end as multitask model}
 \todo{nil pred}
 \todo{something on clustering tooo}
-
-\todo{how are they separated?}
-
-
-\todo{end-to-end entity linking}
-
-% retriever reader relik (also mention detection) orlando-etal-2024-relik
-Some approache model \ac{nel} from \ac{qa}~\cite{zhang2022entqa}, extend
-
-While more recent approaches continue to use a bi-encoder architecture~\cite{}\todo{verify}, they often avoid cross-encoders and address efficient end-to-end entity linking~\cite{}.\todo{verify}
-
-% The bi-encoder can be trained using contrastive learning objectives to maximize the similarity between correct mention-entity pairs while minimizing it for incorrect pairs~\cite{gillick-etal-2019-learning,blink}.
-
-
-
-% , which are then compared using a similarity function, such as the dot product or cosine similarity~\cite{gillick-etal-2019-learning,blink}. This allows for efficient retrieval of candidate entities using approximate nearest neighbor search techniques~\cite{gillick-etal-2019-learning,blink}. The bi-encoder can be trained using contrastive learning objectives to maximize the similarity between correct mention-entity pairs while minimizing it for incorrect pairs~\cite{gillick-etal-2019-learning,blink}.
-
-% cross encoder trend is fading away
-% remember to cite usbeck moller2024entity
-
-
-
-
-In the bi-encoder setup, mentions and entities are encoded separately, allowing for efficient pre-computation of entity embeddings and fast retrieval using \ac{ann} search~\cite{gillick-etal-2019-learning,blink}. Conversely, cross-encoders jointly encode the mention and each candidate entity, enabling more fine-grained interactions at the cost of increased computational overhead~\cite{yamada-etal-2022-global}. Some systems combine both approaches by first using a bi-encoder for candidate retrieval followed by a cross-encoder for re-ranking~\cite{blink}.
-
-emerging entity detection~\cite{farber_emergin_entity_2016}
-
-% Early \ac{nel} systems relied heavily on manually curated lexicons, surface-form matching, and heuristics. Later approaches incorporated machine learning models with features such as context similarity, entity popularity, and coherence across mentions~\cite{ratinov2011localglobal}.  
-% With deep learning, embeddings of mentions and entities in a shared vector space enabled more robust disambiguation~\cite{yamada2016joint,kolitsas-etal-2018-end2end}. State-of-the-art models leverage transformer-based encoders (e.g., BERT, RoBERTa) to jointly model mention context and candidate entity descriptions~\cite{wu2020scibertnel,logeswaran2019zero}.
-
-
-
-% Recent works explore the use of \acp{llm} for \ac{nel}, where entity linking is framed as text generation or retrieval-augmented tasks~\cite{shen2023large,poerner2020bertentitylinking}. For example, prompting an \ac{llm} to output a \texttt{Wikidata ID} or a canonical name, or integrating \ac{kb} lookups through retrieval-augmented generation. These approaches show promising results, especially for zero-shot or low-resource domains, but share the challenges of high computational costs and prompt sensitivity already discussed for \ac{ner}.
-
-
-% Finally, several libraries support \ac{nel}, including DBpedia Spotlight~\cite{mendes2011dbpedia}, BLINK~\cite{wu2020blink}, REL~\cite{van2020rel}, and spaCy's \texttt{EntityLinker} component~\cite{honnibal2020spacy}. These frameworks provide ready-to-use linking pipelines that combine candidate generation and ranking, and can be fine-tuned for domain-specific applications.
-% \todo{how does dbpedia spotlight work?}
-
 
 
 
