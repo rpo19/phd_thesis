@@ -1,28 +1,25 @@
 \subsection{NIL Prediction}
 
 \begin{definition}[NIL Prediction]
-    
+    Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ referes to an entity that does not exist in the \ac{kr}~\cite{entity_linking_with_kb_2015}. 
 \end{definition}
 
-The task that detects when a mention refers to an entity that is not present in a \ac{kr} has been referred to as \emph{NIL}
+According to some work \emph{NIL} stands for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 
-Unfortunately, the NIL prediction task is often ignored by \acrshort{nel}
-systems that tend to omit NIL mentions from the datasets when evaluating and
-eventually leave this task to future works. Indeed, out of the 38 approaches
-compared by the survey \citet{sevgili2021neural} only 8 included NIL prediction.
+This task has also been called with different names: ``unlinkable mention prediction''~\cite{entity_linking_with_kb_2015}, ``out-of-knowledge-Base mention discovery''~\cite{dong_reveal_the_unknown_2023}, ``out-of-knowledge-graph entity detection''~\cite{moller2024entity}, ``unknwon entity discovery''~\cite{kassner-etal-2022-edin}, and ``emerging entity discovery''~\cite{hoffart_discovering_emergin_entities_2014}.
+
+\textcite{zhou-etal-2024-gendecider} distinguishes between NIL prediction and ``none of the candidates'' detection, arguing that \emph{NIL} means the referred entity is not in the \ac{kr}, while ``none of the candidates'' means the referred entity has not been retrieved without assuming it is not present in the \ac{kr}. However, in practise, NIL prediction is often performed by predicting whether the top-ranked entity, returned by the \ac{nel} ranking step, is correct or not~\cite{entity_linking_with_kb_2015}. It is impractical and prohibitive to compare a mention with every entity in a \ac{kr} for ensuring the mentions is NIL. Thus, in this work, we consider the preactical assumption that if a mention does not refer to the top-ranked candidate(s), returned by the \ac{nel} system, the mention is NIL. Under this assumption there is no difference between NIL prediction and none-of-the-candidates prediction.
+
+NIL prediction has frequently been overlooked in \acrshort{nel}
+systems, as many approaches exclude NIL mentions from their evaluation datasets and
+eventually leave this task to future works. In fact, among the 38 approaches\todo{verify the published version}
+compared by the survey \citet{Sevgili2022NeuralEL} only 8 addressed NIL prediction.
 
 % dico che le TAC hanno dato importanza al NIL
-However, the TAC\footnote{\url{https://tac.nist.gov/}} (Text Analysis
-Conference) included NIL prediction in its \acrshort{kbp} track starting from
-2009 \cite{mcnamee2009overview}, and since 2011 it is required to cluster
-together those NIL mentions that refer to the same entity \cite{ji2011tac}. This
-conference is organized by the NIST\footnote{\url{https://www.nist.gov/}} to
-encourage research in \acrshort{nlp} and related applications by providing a
-large test collection and common evaluation procedures. Since 2008 several TAC
-editions took place, one per year, stimulating various research works that
-treated the NIL prediction task, some of them giving it more focus than others.
-
-% now summarize the approaches used by different papers
+The origins of the task can be traced to the TAC\footnote{\url{https://tac.nist.gov/}} (Text Analysis
+Conference), which introduced NIL prediction in its \acrshort{kbp} track starting from
+2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster
+together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \acrshort{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
 
 
 

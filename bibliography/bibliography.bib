@@ -2849,3 +2849,57 @@ abstract = {Entity linking is a process of connecting mentions of entities in a 
     pages = "3086--3097",
     abstract = "Entity Linking (EL) is an essential and challenging task in natural language processing that seeks to link some text representing an entity within a document or sentence with its corresponding entry in a dictionary or knowledge base. Most existing approaches focus on creating elaborate contextual models that look for clues the words surrounding the entity-text to help solve the linking problem. Although these fine-tuned language models tend to work, they can be unwieldy, difficult to train, and do not transfer well to other domains. Fortunately, Large Language Models (LLMs) like GPT provide a highly-advanced solution to the problems inherent in EL models, but simply naive prompts to LLMs do not work well. In the present work, we define ChatEL, which is a three-step framework to prompt LLMs to return accurate results. Overall the ChatEL framework improves the average F1 performance across 10 datasets by more than 2{\%}. Finally, a thorough error analysis shows many instances with the ground truth labels were actually incorrect, and the labels predicted by ChatEL were actually correct. This indicates that the quantitative results presented in this paper may be a conservative estimate of the actual performance. All data and code are available as an open-source package on GitHub at https://github.com/yifding/In{\_}Context{\_}EL."
 }
+@article{ILIEVSKI2020100565,
+title = {The role of knowledge in determining identity of long-tail entities},
+journal = {Journal of Web Semantics},
+volume = {61-62},
+pages = {100565},
+year = {2020},
+issn = {1570-8268},
+doi = {https://doi.org/10.1016/j.websem.2020.100565},
+url = {https://www.sciencedirect.com/science/article/pii/S1570826820300123},
+author = {Filip Ilievski and Eduard Hovy and Piek Vossen and Stefan Schlobach and Qizhe Xie},
+keywords = {Long-tail entities, NIL clustering, Knowledge-based completion},
+abstract = {Identifying entities in text is an important step of semantic analysis. Some entity mentions comprise a name or description, but many include no information that identifies them in the system’s knowledge resources, which means that their identity cannot be established through traditional disambiguation. Consequently, such NIL (not in lexicon) entities have received little attention in entity linking systems and tasks so far. However, given the non-redundancy of knowledge on NIL entities, their lack of frequency priors, their potentially extreme ambiguity, and their numerousness, they constitute an important class of long-tail entities and pose a great challenge for state-of-the-art systems. In this paper, we describe a method for imputing identifying knowledge to NILs from generalized characteristics. We enrich the locally extracted information with profile models that rely on background knowledge in Wikidata. We describe and implement two profiling machines using state-of-the-art neural models. We evaluate their intrinsic behavior and their impact on the task of determining the identity of NIL entities.}
+}
+
+@misc{cambridge_nil,
+  title        = {Nil},
+  author       = {{Cambridge Dictionary}},
+  year         = {2025},
+  note         = {Accessed September 28, 2025},
+  url          = {https://dictionary.cambridge.org/dictionary/english/nil}
+}
+
+@inproceedings{hoffart_discovering_emergin_entities_2014,
+author = {Hoffart, Johannes and Altun, Yasemin and Weikum, Gerhard},
+title = {Discovering emerging entities with ambiguous names},
+year = {2014},
+isbn = {9781450327442},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2566486.2568003},
+doi = {10.1145/2566486.2568003},
+abstract = {Knowledge bases (KB's) contain data about a large number of people, organizations, and other entities. However, this knowledge can never be complete due to the dynamics of the ever-changing world: new companies are formed every day, new songs are composed every minute and become of interest for addition to a KB. To keep up with the real world's entities, the KB maintenance process needs to continuously discover newly emerging entities in news and other Web streams. In this paper we focus on the most difficult case where the names of new entities are ambiguous. This raises the technical problem to decide whether an observed name refers to a known entity or represents a new entity. This paper presents a method to solve this problem with high accuracy. It is based on a new model of measuring the confidence of mapping an ambiguous mention to an existing entity, and a new model of representing a new entity with the same ambiguous name as a set of weighted keyphrases. The method can handle both Wikipedia-derived entities that typically constitute the bulk of large KB's as well as entities that exist only in other Web sources such as online communities about music or movies. Experiments show that our entity discovery method outperforms previous methods for coping with out-of-KB entities (called unlinkable in entity linking).},
+booktitle = {Proceedings of the 23rd International Conference on World Wide Web},
+pages = {385–396},
+numpages = {12},
+keywords = {emerging entity discovery, entity disambiguation, knowledge base population},
+location = {Seoul, Korea},
+series = {WWW '14}
+}
+
+@inproceedings{ji2011tac,
+  author = {Ji, Heng and Grishman, Ralph},
+  year   = {2011},
+  month  = {01},
+  title  = {Overview of the TAC2011 Knowledge Base Population Track}
+}
+
+@inproceedings{mcnamee2009overview,
+  title     = {Overview of the TAC 2009 knowledge base population track},
+  author    = {McNamee, Paul and Dang, Hoa Trang},
+  booktitle = {Text Analysis Conference (TAC)},
+  volume    = {17},
+  year      = {2009}
+}
