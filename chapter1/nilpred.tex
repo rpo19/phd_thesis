@@ -1,4 +1,5 @@
 \subsection{NIL Prediction}
+\todo{maybe join with clustering}
 
 \begin{definition}[NIL Prediction]
     Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ referes to an entity that does not exist in the \ac{kr}~\cite{entity_linking_with_kb_2015}. 
@@ -16,38 +17,32 @@ eventually leave this task to future works. In fact, among the 38 approaches\tod
 compared by the survey \citet{Sevgili2022NeuralEL} only 8 addressed NIL prediction.
 
 % dico che le TAC hanno dato importanza al NIL
-The origins of the task can be traced to the TAC\footnote{\url{https://tac.nist.gov/}} (Text Analysis
-Conference), which introduced NIL prediction in its \acrshort{kbp} track starting from
-2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster
-together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \acrshort{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
+Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
+Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} fostered the research in NIL prediction by introducing NIL prediction in its \acf{kbp} track starting from 2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \acrshort{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
+
+Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
+
+\todo{moller paper reviewed a lot of approaches}
+\todo{our contribution}
 
 
+\todo{hoffart}
+\todo{neel challenge}
 
-\acrlong{nel} with NIL prediction is essentially a classification with a reject
-option that consists in NIL or unlinkable. There are four common approaches to
-perform NIL prediction \cite{sevgili2021neural}:
-\begin{enumerate}[leftmargin=1.5cm,label=\textit{NIL\textsubscript{\arabic*}:},ref=\textit{NIL\textsubscript{\arabic*}}]
-    \item \label{nilm-empty-set} Linking to NIL when the candidate generation
-          gives an empty set of candidates.
-    \item \label{nilm-threshold} Setting a threshold for the linking score,
-          below which a mention is considered unlinkable.
-    \item \label{nilm-add-class} Adding a NIL entity to the candidates set, in
-          the ranking phase. Hence a new class is added to a classification
-          problem.
-    \item \label{nilm-binary-clf} Training an additional binary classifier that
-          accepts as input mention-entity pairs possibly with additional
-          features, such as best linking score or information from
-          \acrshort{ner}, and that finally classifies whether a mention is
-          linkable or not.
+\ac{nel} with NIL prediction can be framed as a classification problem with a reject option, which corresponds to NIL. According to \citet{Sevgili2022NeuralEL}, four main strategies are typically used:
+\begin{enumerate}
+\item Assigning NIL whenever candidate generation produces no possible entities.
+\item Applying a threshold to the linking score, below which the mention is treated as unlinkable.
+\item Introducing NIL as an additional candidate during the ranking stage, effectively creating a new class in the classification problem.
+\item Training a separate binary classifier on mention-entity pairs, often with extra features such as the top linking score or \ac{ner} labels, to decide whether a mention is linkable or not.
 \end{enumerate}
-Some publications \cite{Zhang2012TheNE, Rao2013EntityLF} state method
-\ref{nilm-threshold} (threshold) and \ref{nilm-add-class} (additional class) are
-equivalent even though the latter requires no hand-tuning to set the threshold.
 
-Generally, these approaches come inside a pipeline-based system that considers NIL
-prediction and \acrshort{nel} as separate tasks. Some works, in opposition,
-proposed a single joint system to avoid error propagation and to exploit
-inter-task dependencies \cite{fahrni2013hits,martins-etal-2019-joint}.
+Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that methods \ref{nilm-threshold} and \ref{nilm-add-class} are essentially equivalent, although the latter avoids manual threshold tuning.
+
+\todo{add recent studies}
+
+In most cases, these techniques are incorporated into pipeline-based systems that treat NIL prediction and \acrlong{nel} as distinct steps~\cite{}. By contrast, other works have proposed joint models to reduce error propagation and leverage dependencies between the two tasks \cite{fahrni2013hits,martins-etal-2019-joint}.
+
 
 
 \subsection{NIL Clustering}
