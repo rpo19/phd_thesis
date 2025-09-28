@@ -11,25 +11,24 @@ This task has also been called with different names: ``unlinkable mention predic
 
 \textcite{zhou-etal-2024-gendecider} distinguishes between NIL prediction and ``none of the candidates'' detection, arguing that \emph{NIL} means the referred entity is not in the \ac{kr}, while ``none of the candidates'' means the referred entity has not been retrieved without assuming it is not present in the \ac{kr}. However, in practise, NIL prediction is often performed by predicting whether the top-ranked entity, returned by the \ac{nel} ranking step, is correct or not~\cite{entity_linking_with_kb_2015}. It is impractical and prohibitive to compare a mention with every entity in a \ac{kr} for ensuring the mentions is NIL. Thus, in this work, we consider the preactical assumption that if a mention does not refer to the top-ranked candidate(s), returned by the \ac{nel} system, the mention is NIL. Under this assumption there is no difference between NIL prediction and none-of-the-candidates prediction.
 
-NIL prediction has frequently been overlooked in \acrshort{nel}
+NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
 eventually leave this task to future works. In fact, among the 38 approaches\todo{verify the published version}
-compared by the survey \citet{Sevgili2022NeuralEL} only 8 addressed NIL prediction.
+compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL prediction.
 
 % dico che le TAC hanno dato importanza al NIL
 Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
-Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} fostered the research in NIL prediction by introducing NIL prediction in its \acf{kbp} track starting from 2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \acrshort{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
+Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} fostered the research in NIL prediction by introducing NIL prediction in its \acf{kbp} track starting from 2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \ac{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
 
 Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
+\todo{neel challenge}
 
 \todo{moller paper reviewed a lot of approaches}
 \todo{our contribution}
 
 
-\todo{hoffart}
-\todo{neel challenge}
 
-\ac{nel} with NIL prediction can be framed as a classification problem with a reject option, which corresponds to NIL. According to \citet{Sevgili2022NeuralEL}, four main strategies are typically used:
+\ac{nel} with NIL prediction can be framed as a classification problem with a reject option, which corresponds to NIL. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
 \begin{enumerate}
 \item Assigning NIL whenever candidate generation produces no possible entities.
 \item Applying a threshold to the linking score, below which the mention is treated as unlinkable.
@@ -41,7 +40,7 @@ Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that methods \ref{nilm
 
 \todo{add recent studies}
 
-In most cases, these techniques are incorporated into pipeline-based systems that treat NIL prediction and \acrlong{nel} as distinct steps~\cite{}. By contrast, other works have proposed joint models to reduce error propagation and leverage dependencies between the two tasks \cite{fahrni2013hits,martins-etal-2019-joint}.
+In most cases, these techniques are incorporated into pipeline-based systems that treat NIL prediction and \ac{nel} as distinct steps~\cite{}. By contrast, other works have proposed joint models to reduce error propagation and leverage dependencies between the two tasks \cite{fahrni2013hits,martins-etal-2019-joint}.
 
 
 
