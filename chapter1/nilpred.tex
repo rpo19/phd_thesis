@@ -1,0 +1,59 @@
+\subsection{NIL Prediction}
+
+\begin{definition}[NIL Prediction]
+    
+\end{definition}
+
+The task that detects when a mention refers to an entity that is not present in a \ac{kr} has been referred to as \emph{NIL}
+
+Unfortunately, the NIL prediction task is often ignored by \acrshort{nel}
+systems that tend to omit NIL mentions from the datasets when evaluating and
+eventually leave this task to future works. Indeed, out of the 38 approaches
+compared by the survey \citet{sevgili2021neural} only 8 included NIL prediction.
+
+% dico che le TAC hanno dato importanza al NIL
+However, the TAC\footnote{\url{https://tac.nist.gov/}} (Text Analysis
+Conference) included NIL prediction in its \acrshort{kbp} track starting from
+2009 \cite{mcnamee2009overview}, and since 2011 it is required to cluster
+together those NIL mentions that refer to the same entity \cite{ji2011tac}. This
+conference is organized by the NIST\footnote{\url{https://www.nist.gov/}} to
+encourage research in \acrshort{nlp} and related applications by providing a
+large test collection and common evaluation procedures. Since 2008 several TAC
+editions took place, one per year, stimulating various research works that
+treated the NIL prediction task, some of them giving it more focus than others.
+
+% now summarize the approaches used by different papers
+
+
+
+\acrlong{nel} with NIL prediction is essentially a classification with a reject
+option that consists in NIL or unlinkable. There are four common approaches to
+perform NIL prediction \cite{sevgili2021neural}:
+\begin{enumerate}[leftmargin=1.5cm,label=\textit{NIL\textsubscript{\arabic*}:},ref=\textit{NIL\textsubscript{\arabic*}}]
+    \item \label{nilm-empty-set} Linking to NIL when the candidate generation
+          gives an empty set of candidates.
+    \item \label{nilm-threshold} Setting a threshold for the linking score,
+          below which a mention is considered unlinkable.
+    \item \label{nilm-add-class} Adding a NIL entity to the candidates set, in
+          the ranking phase. Hence a new class is added to a classification
+          problem.
+    \item \label{nilm-binary-clf} Training an additional binary classifier that
+          accepts as input mention-entity pairs possibly with additional
+          features, such as best linking score or information from
+          \acrshort{ner}, and that finally classifies whether a mention is
+          linkable or not.
+\end{enumerate}
+Some publications \cite{Zhang2012TheNE, Rao2013EntityLF} state method
+\ref{nilm-threshold} (threshold) and \ref{nilm-add-class} (additional class) are
+equivalent even though the latter requires no hand-tuning to set the threshold.
+
+Generally, these approaches come inside a pipeline-based system that considers NIL
+prediction and \acrshort{nel} as separate tasks. Some works, in opposition,
+proposed a single joint system to avoid error propagation and to exploit
+inter-task dependencies \cite{fahrni2013hits,martins-etal-2019-joint}.
+
+
+\subsection{NIL Clustering}
+\subsection{coreference resolution}
+\todo{what did LLMs change?}
+\subsection{Human-in-the-Loop}
