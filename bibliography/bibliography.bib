@@ -5,13 +5,28 @@
   year          = "2020",
   publisher     = "Association for Computational Linguistics"
 }
+
 @inproceedings{kassner-etal-2022-edin,
-  title         = "{EDIN}: An End-to-end Benchmark and Pipeline for Unknown Entity Discovery and Indexing",
-  author        = "Kassner, Nora  and Petroni, Fabio  and Plekhanov, Mikhail  and Riedel, Sebastian  and Cancedda, Nicola",
-  month         = dec,
-  year          = "2022",
-  publisher     = "Association for Computational Linguistics"
+    title = "{EDIN}: An End-to-end Benchmark and Pipeline for Unknown Entity Discovery and Indexing",
+    author = "Kassner, Nora  and
+      Petroni, Fabio  and
+      Plekhanov, Mikhail  and
+      Riedel, Sebastian  and
+      Cancedda, Nicola",
+    editor = "Goldberg, Yoav  and
+      Kozareva, Zornitsa  and
+      Zhang, Yue",
+    booktitle = "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2022",
+    address = "Abu Dhabi, United Arab Emirates",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.emnlp-main.593/",
+    doi = "10.18653/v1/2022.emnlp-main.593",
+    pages = "8659--8673",
 }
+
+
 @inproceedings{Heist2023nastylinker,
   author        = "Heist, Nicolas and Paulheim, Heiko",
   keditor       = "Pesquita, Catia and Jimenez-Ruiz, Ernesto and McCusker, Jamie and Faria, Daniel and Dragoni, Mauro and Dimou, Anastasia and Troncy, Raphael and Hertling, Sven",
@@ -1359,7 +1374,6 @@
 }
 @incollection{firth1957,
   author        = {Firth, John Rupert},
-  title         = {A Synopsis of Linguistic Theory 1930--1955},
   booktitle     = {Studies in Linguistic Analysis},
   publisher     = {Philological Society},
   year          = {1957}
@@ -2705,7 +2719,6 @@ numpages = {13}
     url = "https://aclanthology.org/2022.naacl-industry.24/",
     doi = "10.18653/v1/2022.naacl-industry.24",
     pages = "209--220",
-    abstract = "We introduce ReFinED, an efficient end-to-end entity linking model which uses fine-grained entity types and entity descriptions to perform linking. The model performs mention detection, fine-grained entity typing, and entity disambiguation for all mentions within a document in a single forward pass, making it more than 60 times faster than competitive existing approaches. ReFinED also surpasses state-of-the-art performance on standard entity linking datasets by an average of 3.7 F1. The model is capable of generalising to large-scale knowledge bases such as Wikidata (which has 15 times more entities than Wikipedia) and of zero-shot entity linking. The combination of speed, accuracy and scale makes ReFinED an effective and cost-efficient system for extracting entities from web-scale datasets, for which the model has been successfully deployed."
 }
 
 @inproceedings{bouziani-etal-2024-rexel,
@@ -2860,7 +2873,6 @@ doi = {https://doi.org/10.1016/j.websem.2020.100565},
 url = {https://www.sciencedirect.com/science/article/pii/S1570826820300123},
 author = {Filip Ilievski and Eduard Hovy and Piek Vossen and Stefan Schlobach and Qizhe Xie},
 keywords = {Long-tail entities, NIL clustering, Knowledge-based completion},
-abstract = {Identifying entities in text is an important step of semantic analysis. Some entity mentions comprise a name or description, but many include no information that identifies them in the system’s knowledge resources, which means that their identity cannot be established through traditional disambiguation. Consequently, such NIL (not in lexicon) entities have received little attention in entity linking systems and tasks so far. However, given the non-redundancy of knowledge on NIL entities, their lack of frequency priors, their potentially extreme ambiguity, and their numerousness, they constitute an important class of long-tail entities and pose a great challenge for state-of-the-art systems. In this paper, we describe a method for imputing identifying knowledge to NILs from generalized characteristics. We enrich the locally extracted information with profile models that rely on background knowledge in Wikidata. We describe and implement two profiling machines using state-of-the-art neural models. We evaluate their intrinsic behavior and their impact on the task of determining the identity of NIL entities.}
 }
 
 @misc{cambridge_nil,
@@ -2961,28 +2973,45 @@ series = {WWW '16 Companion}
   year={2010}
 }
 
-@article{Zhang2012TheNE,
+@inproceedings{Zhang2012TheNE,
   title   = {The NLPRIR Entity Linking System at TAC 2012},
   author  = {Tao Zhang and Kang Liu and Jun Zhao},
-  journal = {Theory and Applications of Categories},
-  year    = {2012}
+  year    = {2012},
+  booktitle    = {Proceedings of the Fifth Text Analysis Conference (TAC 2012)},
+  address      = {Gaithersburg, Maryland, USA},
+  month        = nov,
+  publisher    = {NIST},
+  url = {https://www.nist.gov/tac/publications/2012/participant.papers/nlprir.proceedings.pdf}
 }
 
-@inproceedings{Rao2013EntityLF,
-  title     = {Entity Linking: Finding Extracted Entities in a Knowledge Base},
-  author    = {D. Rao and P. McNamee and Mark Dredze},
-  booktitle = {Multi-source, Multilingual Information Extraction and Summarization},
-  year      = {2013}
+@Inbook{Rao2013EntityLF,
+author="Rao, Delip
+and McNamee, Paul
+and Dredze, Mark",
+editor="Poibeau, Thierry
+and Saggion, Horacio
+and Piskorski, Jakub
+and Yangarber, Roman",
+title="Entity Linking: Finding Extracted Entities in a Knowledge Base",
+bookTitle="Multi-source, Multilingual Information Extraction and Summarization",
+year="2013",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="93--115",
+isbn="978-3-642-28569-1",
+doi="10.1007/978-3-642-28569-1_5",
+url="https://doi.org/10.1007/978-3-642-28569-1_5"
 }
 
-@inproceedings{fahrni2013hits,
+
+@inproceedings{Fahrni2013hits,
   author    = {Angela Fahrni and
                Benjamin Heinzerling and
                Thierry G{\"{o}}ckel and
                Michael Strube},
   title     = {HITS' Monolingual and Cross-lingual Entity Linking System at {TAC}
                2013},
-  booktitle = {Proceedings of the Sixth Text Analysis Conference, {TAC} 2013, Gaithersburg,
+  booktitle = {Proceedings of the 6th Text Analysis Conference, {TAC} 2013, Gaithersburg,
                Maryland, USA, November 18-19, 2013},
   publisher = {{NIST}},
   year      = {2013},
@@ -3007,11 +3036,13 @@ series = {WWW '16 Companion}
   abstract  = {Named entity recognition (NER) and entity linking (EL) are two fundamentally related tasks, since in order to perform EL, first the mentions to entities have to be detected. However, most entity linking approaches disregard the mention detection part, assuming that the correct mentions have been previously detected. In this paper, we perform joint learning of NER and EL to leverage their relatedness and obtain a more robust and generalisable system. For that, we introduce a model inspired by the Stack-LSTM approach. We observe that, in fact, doing multi-task learning of NER and EL improves the performance in both tasks when comparing with models trained with individual objectives. Furthermore, we achieve results competitive with the state-of-the-art in both NER and EL.}
 }
 
-@article{Yang2017TheTS,
+@inproceedings{Yang2017TheTS,
   title   = {The {TAI} System for Trilingual Entity Discovery and Linking Track in TAC KBP 2017},
   author  = {Tao Yang and Dong Du and F. Zhang},
-  journal = {Theory and Applications of Categories},
-  year    = {2017}
+  year    = {2017},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.TAI.proceedings.pdf},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
 }
 
 @inproceedings{moreno_sw_2017_combining,
@@ -3049,26 +3080,37 @@ and Hartig, Olaf},
 }
 
 @article{BernierColborne2017CRIMsSF,
-  title   = {{CRIM}'s Systems for the Tri-lingual Entity Detection and Linking Task},
-  author  = {Gabriel Bernier-Colborne and Caroline Barri{\`e}re and P. M{\'e}nard},
-  journal = {Theory and Applications of Categories},
-  year    = {2017}
+  year    = {2017},
 }
 
-@article{Li2017AHM,
+@inproceedings{BernierColborne2017CRIMsSF,
+  title   = {{CRIM}'s Systems for the Tri-lingual Entity Detection and Linking Task},
+  author  = {Gabriel Bernier-Colborne and Caroline Barri{\`e}re and P. M{\'e}nard},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  year      = {2017},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.CRIM.proceedings.pdf}
+}
+
+
+@inproceedings{Li2017AHM,
   title   = {A Hybrid Model for Trilingual Entity Detection and Linking Tasks at TAC KBP 2017},
   author  = {Zhenzhen Li and Qun Zhang and Ting Li and Jun Xu and Dawei Feng},
-  journal = {Theory and Applications of Categories},
-  year    = {2017}
+  year    = {2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.NUDT_PDL2017.proceedings.pdf}
 }
 
 @article{Jiang2017SRCBED,
   title   = {{SRCB} Entity Discovery and Linking (EDL) and Event Nugget Systems for TAC 2017},
   author  = {Shanshan Jiang and Yihan Li and Tianyi Qin and Qian Meng and Bin Dong},
-  journal = {Theory and Applications of Categories},
-  year    = {2017}
+  year    = {2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  year      = {2017},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.srcb.proceedings.pdf}
 }
-
 
 @article{klang2019overview,
   author    = {Marcus Klang and
@@ -3097,7 +3139,7 @@ and Hartig, Olaf},
   author    = {P. Paikens and G. Barzdins and A. Mendes and D. Ferreira and S. Broscheit and M. S. C. Almeida and S. Miranda and D. Nogueira and P. Balage and A. F. T. Martins},
   title     = {SUMMA at TAC Knowledge Base Population Task 2016},
   year      = 2017,
-  booktitle = {Proceedings of the 9th Text Analysis Conference (TAC)},
+  booktitle = {Proceedings of the 9th Text Analysis Conference (TAC 2016)},
   url       = {https://tac.nist.gov/publications/2016/participant.papers/TAC2016.summa.proceedings.pdf}
 }
 
@@ -3115,47 +3157,55 @@ and Hartig, Olaf},
   year      = {2013}
 }
 
-@article{Byrne2013UCDIA,
+@inproceedings{Byrne2013UCDIA,
   title   = {UCD IIRG at TAC KBP 2013},
   author  = {L. Byrne and Caroline Fenlon and J. Dunnion},
-  journal = {Theory and Applications of Categories},
-  year    = {2013}
+  year    = {2013},
+  url = {https://tac.nist.gov/publications/2013/participant.papers/IIRG.TAC2013.proceedings.pdf},
+  booktitle    = {Proceedings of the 6th Text Analysis Conference (TAC 2013)},
+  publisher = {NIST}
 }
 
 @inproceedings{huang2013msr,
   title     = {The MSR. KM System for Entity Linking at TAC 2013.},
   author    = {Huang, Xiaojiang and Cao, Yunbo and Lin, Chin-Yew and Huang, Danqing},
-  booktitle = {TAC},
-  year      = {2013}
+  booktitle    = {Proceedings of the 6th Text Analysis Conference (TAC 2013)},
+  year      = {2013},
+  url = {https://tac.nist.gov/publications/2013/presentations/KBP2013_EL_MS_MLI.presentation.pdf},
+  publisher = {NIST}
 }
 
 @article{Pink2013SYDNEYCA,
   title   = {SYDNEY CMCRC at TAC 2013},
   author  = {Glen Pink and Andrew Naoum and Will Radford and Will Cannings and J. Nothman and Daniel Tse and J. Curran},
-  journal = {Theory and Applications of Categories},
-  year    = {2013}
+  year    = {2013},
+  booktitle    = {Proceedings of the 6th Text Analysis Conference (TAC 2013)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2013/participant.papers/SYDNEY_CMCRC.TAC2013.proceedings.pdf}  
 }
 
 @inproceedings{barrena2013ubc,
   title     = {UBC Entity Linking at TAC-KBP 2013: random forests for high accuracy.},
   author    = {Barrena, Ander and Agirre, Eneko and Soroa, Aitor},
-  booktitle = {TAC},
-  year      = {2013}
+  year      = {2013},
+  booktitle    = {Proceedings of the 6th Text Analysis Conference (TAC 2013)},
+  publisher = {NIST},
+  url = {https://www.nist.gov/tac/publications/2013/participant.papers/UBC.TAC2013.proceedings.pdf}
 }
 
 @inproceedings{dalton2013umass,
   title     = {UMass CIIR at TAC KBP 2013 Entity Linking: Query Expansion using Urban Dictionary.},
   author    = {Dalton, Jeffrey and Dietz, Laura},
-  booktitle = {TAC},
-  year      = {2013}
+  year      = {2013},
+  booktitle    = {Proceedings of the 6th Text Analysis Conference (TAC 2013)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2013/participant.papers/UMass_CIIR.TAC2013.proceedings.pdf}
 }
 
 @inproceedings{zhou2013description,
   author    = {Jie Zhou and
                Yaoyi Xi},
   title     = {A Description of ZZ{\_}INFO{\_}TECH System at {KBP} 2013},
-  booktitle = {Proceedings of the Sixth Text Analysis Conference, {TAC} 2013, Gaithersburg,
-               Maryland, USA, November 18-19, 2013},
   year      = {2013},
   url       = {https://tac.nist.gov/publications/2013/participant.papers/ZZ\_INFO\_TECH.TAC2013.proceedings.pdf},
   timestamp = {Tue, 20 Aug 2019 13:25:21 +0200},
@@ -3163,11 +3213,14 @@ and Hartig, Olaf},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@article{Fahrni2012HITSMA,
+@inproceedings{Fahrni2012HITSMA,
   title   = {HITS' Monolingual and Cross-lingual Entity Linking System at TAC 2012: A Joint Approach},
   author  = {Angela Fahrni and Thierry G{\"o}ckel and M. Strube},
-  journal = {Theory and Applications of Categories},
-  year    = {2012}
+  year    = {2012},
+  url = {https://tac.nist.gov/publications/2012/participant.papers/HITS.proceedings.pdf},
+  booktitle    = {Proceedings of the Fifth Text Analysis Conference (TAC 2012)},
+  month        = nov,
+  publisher    = {NIST},
 }
 
 @inproceedings{monahan2012lorify,
@@ -3263,10 +3316,10 @@ isbn="978-981-15-1956-7"
 @inproceedings{cassidy2011cuny,
 author       = {Cassidy, Taylor and Chen, Zheng and Artiles, Javier and Ji, Heng and Deng, Hongbo and Ratinov, Lev-Arie and Han, Jiawei and Roth, Dan and Zheng, Jing},
 title        = {CUNY-UIUC-SRI TAC-KBP2011 Entity Linking System Description},
-booktitle    = {Proceedings of the Fourth Text Analysis Conference (TAC 2011)},
 year         = {2011},
 address      = {Gaithersburg, Maryland, USA},
 month        = nov,
+booktitle    = {Proceedings of the Fourth Text Analysis Conference (TAC 2011)},
 publisher    = {NIST},
 url          = {https://blender.cs.illinois.edu/paper/el2011.pdf}
 }
@@ -3309,83 +3362,185 @@ url          = {https://staff.fnwi.uva.nl/m.derijke/wp-content/papercite-data/pd
     pages = "20--25",
 }
 
-@article{simone_15,
+@inproceedings{simone_15,
   title={{CMU} System for Entity Discovery and Linking at {TAC}-{KBP} 2015},
   author={Nicolas Rodolfo Fauceglia and Yiu-Chang Lin and Xuezhe Ma and Eduard H. Hovy},
-  journal={Theory and Applications of Categories},
-  year={2015}
+  year={2015},
+  booktitle    = {Proceedings of the 8th Text Analysis Conference (TAC 2015)},
+  publisher = {NIST},
+  url = {http://www.cs.cmu.edu/~xuezhem/publications/TAC2015.pdf}
 }
 
 @inproceedings{simone_24,
   title={Cross-Lingual Cross-Document Coreference with Entity Linking},
   author={Sean Monahan and John Lehmann and Timothy Nyberg and Jesse Plymale and Arnold Jung},
-  journal={Theory and Applications of Categories},
-  year={2011}
+  year={2011},
+  booktitle    = {Proceedings of the Fourth Text Analysis Conference (TAC 2011)},
+  publisher    = {NIST},
+  url = {https://tac.nist.gov/publications/2011/participant.papers/lcc.proceedings.pdf}
 }
-@article{simone_27,
+@inproceedings{simone_27,
   title={{SRCB} Entity Discovery and Linking ({EDL}) and Event Nugget Systems for {TAC} 2017},
   author={Shanshan Jiang and Yihan Li and Tianyi Qin and Qian Meng and Bin Dong},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.srcb.proceedings.pdf}
 }
 @inproceedings{simone_31,
   title={GAIA at SM-KBP 2019 - A Multi-media Multi-lingual Knowledge Extraction and Hypothesis Generation System},
   author={Manling Li and Ying Lin and Ananya Subburathinam and Spencer Whitehead and Xiaoman Pan and Di Lu and Qingyun Wang and Tongtao Zhang and Lifu Huang and Heng Ji and Alireza Zareian and Hassan Akbari and Brian Chen and Bo Wu and Emily Allaway and Shih-Fu Chang and Kathleen McKeown and Yixiang Yao and Jennifer Chen and Eric J Berquist and Kexuan Sun and Xujun Peng and Ryan Gabbard and Marjorie Freedman and Pedro A. Szekely and T. K. Satish Kumar and Arka Sadhu and Ram Nevatia and Miguel E. Rodr{\'i}guez and Yifan Wang and Yang Bai and Ali Sadeghian and Daisy Zhe Wang},
-  booktitle={TAC},
-  year={2019}
+  booktitle = {Proceedings of the 12th Text Analysis Conference (TAC 2019)},
+  publisher = {NIST},
+  year={2019},
+  url = {https://blender.cs.illinois.edu/paper/gaia_smkbp_2019.pdf}
 }
 
-@article{simone_33,
+@inproceedings{simone_33,
   title={The Open Knowledge System for {TAC} {KBP} 2017},
   author={Zixuan Li and Yunqi Qiu and Fan Yang and Xiaolong Jin and Yuanzhuo Wang and Yantao Jia and Haoran Yan and Kailin Zhao and Jialin Su},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.ICTCAS_OKN.proceedings.pdf}
 }
 
 @inproceedings{simone_38,
   title = {{CMU} System for Entity Discovery and Linking at {TAC}-{KBP} 2017},
   author = {Xuezhe Ma and Nicolas R. Fauceglia and Yiu-Chang Lin and Eduard H. Hovy},
   year = {2017},
-  researchr = {https://researchr.org/publication/MaFLH17},
-  cites = {0},
-  citedby = {0},
-  booktitle = {TAC 2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.CMUCS_EDL.proceedings.pdf}
 }
-@article{simone_63,
+@inproceedings{simone_63,
   title={Adept Automatic Knowledge Discovery System for Cold Start Knowledge Base Population},
   author={Manaj Srivastava and David Trupiano and David Akodes and Ilana Heintz and Hannah Provenza and Bonan Min and Jay DeYoung and Lance A. Ramshaw and Roger Bock},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.A2KD_Adept.proceedings.pdf}
 }
 @inproceedings{simone_65,
-author = {Tan, Yongmei and Zheng, Di and Li, Maolin and Wang, Xiaojie},
-year = {2015},
-pages = {},
-title = {BUPTTeam Participation at TAC 2015 Knowledge Base Population}
+  author = {Tan, Yongmei and Zheng, Di and Li, Maolin and Wang, Xiaojie},
+  year = {2015},
+  title = {BUPTTeam Participation at TAC 2015 Knowledge Base Population},
+  booktitle    = {Proceedings of the 8th Text Analysis Conference (TAC 2015)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2016/participant.papers/TAC2016.BUPTTeam.proceedings.pdf}
 }
 
 
-@article{simone_67,
+@inproceedings{simone_67,
   title={The {ZHI-EDL} System for Entity Discovery and Linking at {TAC} {KBP} 2017},
   author={Siliang Tang and Yankun Ren and Xiyuan Yang and Dan Liu and Guoping Hu and Fei Wu and Yueting Zhuang},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.rise_dcd_zju.proceedings.pdf}
 }
-@article{simone_68,
+
+@inproceedings{simone_68,
   title={The {TAI} System for Trilingual Entity Discovery and Linking Track in {TAC} {KBP} 2017},
   author={Tao Yang and Dong Du and Feng Zhang},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.TAI.proceedings.pdf}
 }
-@article{simone_73,
+@inproceedings{simone_73,
   title={FOFE-based Deep Neural Networks for Entity Discovery and Linking},
   author={Mingbin Xu and Nargiza Nosirova and Kelvin Jiang and Feng Wei and Hui Jiang},
-  journal={Theory and Applications of Categories},
-  year={2017}
+  year={2017},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+  url = {https://tac.nist.gov/publications/2017/participant.papers/TAC2017.YorkNRM.proceedings.pdf}
 }
-@article{simone_77,
+@inproceedings{simone_77,
   title={{GWU} English {TAC-KBP} {EL} Diagnostic Task with Name Mention},
   author={Ayah Zirikly and Mona T. Diab and Yassine Benajiba},
-  journal={Theory and Applications of Categories},
-  year={2015}
+  year={2015},
+  url = {https://tac.nist.gov/publications/2015/participant.papers/TAC2015.GWU.proceedings.pdf},
+  booktitle = {Proceedings of the 10th Text Analysis Conference (TAC 2017)},
+  publisher = {NIST},
+}
+
+@article{rizzo2017lessons,
+  title={Lessons learnt from the Named Entity rEcognition and Linking (NEEL) challenge series: Emerging Trends in Mining Semantics from Tweets},
+  author={Rizzo, Giuseppe and Pereira, Bianca and Varga, Andrea and Van Erp, Marieke and Cano Basave, Amparo Elizabeth},
+  journal={Semantic Web},
+  volume={8},
+  number={5},
+  pages={667--700},
+  year={2017},
+  publisher={SAGE Publications Sage UK: London, England}
+}
+
+@inproceedings{nilk_dataset_2022,
+author = {Iurshina, Anastasiia and Pan, Jiaxin and Boutalbi, Rafika and Staab, Steffen},
+title = {NILK: Entity Linking Dataset Targeting NIL-linking Cases},
+year = {2022},
+isbn = {9781450392365},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3511808.3557659},
+doi = {10.1145/3511808.3557659},
+booktitle = {Proceedings of the 31st ACM International Conference on Information \& Knowledge Management},
+pages = {4069–4073},
+numpages = {5},
+keywords = {wikidata, nil-mentions, entity linking, datasets},
+location = {Atlanta, GA, USA},
+series = {CIKM '22}
+}
+
+@inproceedings{agarwal-etal-2022-entity,
+    title = "Entity Linking via Explicit Mention-Mention Coreference Modeling",
+    author = "Agarwal, Dhruv  and
+      Angell, Rico  and
+      Monath, Nicholas  and
+      McCallum, Andrew",
+    editor = "Carpuat, Marine  and
+      de Marneffe, Marie-Catherine  and
+      Meza Ruiz, Ivan Vladimir",
+    booktitle = "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jul,
+    year = "2022",
+    address = "Seattle, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.naacl-main.343/",
+    doi = "10.18653/v1/2022.naacl-main.343",
+    pages = "4644--4658",
+}
+
+@inproceedings{tempel_2022,
+ author = {Zaporojets, Klim and Kaffee, Lucie-Aim\'{e}e and Deleu, Johannes and Demeester, Thomas and Develder, Chris and Augenstein, Isabelle},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {S. Koyejo and S. Mohamed and A. Agarwal and D. Belgrave and K. Cho and A. Oh},
+ pages = {1850--1866},
+ publisher = {Curran Associates, Inc.},
+ title = {TempEL: Linking Dynamically Evolving and Newly Emerging Entities},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2022/file/0c3464f16c854d395b880cf9e7bcaf2f-Paper-Datasets_and_Benchmarks.pdf},
+ volume = {35},
+ year = {2022}
+}
+
+@inproceedings{zhu-etal-2023-learn,
+    title = "Learn to Not Link: Exploring {NIL} Prediction in Entity Linking",
+    author = "Zhu, Fangwei  and
+      Yu, Jifan  and
+      Jin, Hailong  and
+      Hou, Lei  and
+      Li, Juanzi  and
+      Sui, Zhifang",
+    editor = "Rogers, Anna  and
+      Boyd-Graber, Jordan  and
+      Okazaki, Naoaki",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2023",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-acl.690/",
+    doi = "10.18653/v1/2023.findings-acl.690",
+    pages = "10846--10860",
 }

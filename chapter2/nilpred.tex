@@ -19,19 +19,68 @@ This task has also been called with different names: ``unlinkable mention predic
 For addressing the incompleteness problem of \acp{kr}, once identified, NIL mentions that refer to the same NIL entity can be clustered to gather more contextual information, useful for representing the new entity. Indeed, \textcite{kassner-etal-2022-edin} achieved better results when constructing the entity representation from clusters of NIL mentions with respect to just using individual NIL mentions.
 
 \begin{definition}[NIL Clustering]
-    \empth{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
+    \emph{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
 \end{definition}
 
 NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
-eventually leave this task to future works. In fact, among the 38 approaches\todo{verify the published version}
+eventually leave this task to future work~\cite{blink}. In fact, among the 38 approaches\todo{verify the published version}
 compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL prediction. \todo{update for clustering too}
 
 % dico che le TAC hanno dato importanza al NIL
 Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
 Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} fostered the research in NIL prediction by introducing NIL prediction in its \acf{kbp} track starting from 2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \ac{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
 
-Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
+Also, from the 2015 edition, NIL prediction and NIL clustering have been included in the Named Entity rEcognition and Linking (NEEL) challenge~\cite{rizzo2017lessons}, a challenge focusing on microposts, i.e., posts from social media platforms such as x.com\footnote{\url{https://x.com/}}.
+
+
+%% nil pred
+
+\ac{nel} with NIL prediction can be framed as a classification problem with a reject option, which corresponds to NIL. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
+\begin{enumerate}
+\item Assigning NIL whenever candidate generation produces no possible entities.
+\item Applying a threshold to the linking score, below which the mention is treated as unlinkable.
+\item Introducing NIL as an additional candidate during the ranking stage, effectively creating a new class in the classification problem.
+\item Training a separate binary classifier on mention-entity pairs, often with extra features such as the top linking score or \ac{ner} labels, to decide whether a mention is linkable or not.
+\end{enumerate}
+
+Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that methods \ref{nilm-threshold} and \ref{nilm-add-class} are essentially equivalent, although the latter avoids manual threshold tuning.
+
+%% nil approaches
+Several approaches to NIL prediction have been proposed across the years.
+Joint approaches to \ac{ner}, \ac{nel}, and NIL prediction have been proposed. \textcite{martins-etal-2019-joint} used an LSTM-based model to perform NER, NEL, and NIL prediction jointly. Earlier, \textcite{Fahrni2012HITSMA,Fahrni2013hits} jointly performed NEL, NIL prediction, and NIL clustering.
+
+Threshold-based methods are also common. Systems in TAC 2017, such as those by \cite{BernierColborne2017CRIMsSF,Jiang2017SRCBED}, follow this approach, as do earlier works \cite{tan2015buptteam,Byrne2013UCDIA,huang2013msr,dalton2013umass}. These systems typically apply a score threshold to decide when a mention should be assigned NIL.
+
+Another strategy is to add NIL as an additional class~\cite{Broscheit_2019,Rao2013EntityLF,Li2017AHM,klang2019overview,chen2013casia,barrena2013ubc,zhang2012nlprir,mcnamee2011cross}. For example, \textcite{Broscheit_2019} relied on BERT with a classification layer.
+
+Binary classification approaches have also been widely studied~\cite{moreno_combining_word_entity_embeddings_2017,Yang2017TheTS,yang2013buptteam,Pink2013SYDNEYCA,zhou2013description,monahan2012lorify}. Some methods leveraged additional statistical or score-based features. \textcite{Yang2017TheTS}, for instance, incorporated the second-best candidate’s score and the standard deviation of the top-$k$ scores.
+
+Finally, some systems rely on alternative methods. For example, \textcite{Paikens-EtAl:2017:TAC-KBP} used estimated coherence scores between the linked entities in the document.
+\todo{add methods from moller}
+
+% Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
+
+%%
+
+More recently, since 2022, the interest in NIL prediction has motivated multiple studies to enable the popular \ac{nel} approach BLINK~\cite{blink} for NIL prediction~\cite{ijckg2022,kassner-etal-2022-edin,Heist2023nastylinker,zhu-etal-2023-learn}.
+
+\textcite{ijckg2022}---that is one of the contributions of my Ph.D., and is better detailed in \Cref{ijckg2022}---proposed a benchmark dataset, an evaluation procedure, and a baseline pipeline for \emph{incremental \acl{nel}}. In this scenario, given $N$ batches of textual documents $b_0..b_N$, corresponding to $N$ time-steps, and an initial \ac{kr} $KR_0$, each time a batch of documents $b_k$ is processed, the identified NIL entities are added to the \ac{kr} $KR_{k+1}$, which will be used as the refernce \ac{kr} when processing the batch $b_{k+1}$.
+
+Similarly, \textcite{kassner-etal-2022-edin} propose a dataset derived from Wikipedia and newspapers data, divided into two parts. The first part contains the documents exising before a time $t$, while the second the documents created after. The authors also proposed a pipeline-based system for incremental \acl{nel}.
+
+% main entity linking approach also include nil 
+\cite{ayoola-etal-2022-refined}
+
+% targeting NIL
+\cite{nilk_dataset_2022,agarwal-etal-2022-entity,tempel_2022,,dong_reveal_the_unknown_2023,moller2024entity}
+
+% llm based
+\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}
+
+\todo{llm based}
+
+
 \todo{neel challenge}
 
 \todo{trattare insieme nil pred e clustering}
@@ -44,15 +93,7 @@ Advancements in NIL prediction continued also in parallel to the TAC conference~
 
 
 
-\ac{nel} with NIL prediction can be framed as a classification problem with a reject option, which corresponds to NIL. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
-\begin{enumerate}
-\item Assigning NIL whenever candidate generation produces no possible entities.
-\item Applying a threshold to the linking score, below which the mention is treated as unlinkable.
-\item Introducing NIL as an additional candidate during the ranking stage, effectively creating a new class in the classification problem.
-\item Training a separate binary classifier on mention-entity pairs, often with extra features such as the top linking score or \ac{ner} labels, to decide whether a mention is linkable or not.
-\end{enumerate}
 
-Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that methods \ref{nilm-threshold} and \ref{nilm-add-class} are essentially equivalent, although the latter avoids manual threshold tuning.
 
 \todo{add recent studies}
 
