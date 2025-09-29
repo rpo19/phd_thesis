@@ -1,20 +1,31 @@
-\subsection{NIL Prediction}
+\subsection{Incremental Entity Extraction}
 \todo{maybe join with clustering}
+\todo{incremental kbp}
+
+As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb}\todo{ensure also kr are incomplete in sec:incompleteness} suffer from incompletess, and one of the use of \ac{ie} is to populate them (\acf{kbp})~\cite{entityorientedsearch2018balog}, for instance, with new movies extracted from newspapers.
+
+The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where \emph{NIL} may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 
 \begin{definition}[NIL Prediction]
-    Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ referes to an entity that does not exist in the \ac{kr}~\cite{entity_linking_with_kb_2015}. 
+    Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ referes to an entity that does not exist in the \ac{kr}, i.e., a \emph{NIL entity}~\cite{entity_linking_with_kb_2015}. 
 \end{definition}
-
-According to some work \emph{NIL} stands for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
+Through this work we will also speak of \emph{NIL mentions}, referring to mentions of NIL entities. 
 
 This task has also been called with different names: ``unlinkable mention prediction''~\cite{entity_linking_with_kb_2015}, ``out-of-knowledge-Base mention discovery''~\cite{dong_reveal_the_unknown_2023}, ``out-of-knowledge-graph entity detection''~\cite{moller2024entity}, ``unknwon entity discovery''~\cite{kassner-etal-2022-edin}, and ``emerging entity discovery''~\cite{hoffart_discovering_emergin_entities_2014}.
 
 \textcite{zhou-etal-2024-gendecider} distinguishes between NIL prediction and ``none of the candidates'' detection, arguing that \emph{NIL} means the referred entity is not in the \ac{kr}, while ``none of the candidates'' means the referred entity has not been retrieved without assuming it is not present in the \ac{kr}. However, in practise, NIL prediction is often performed by predicting whether the top-ranked entity, returned by the \ac{nel} ranking step, is correct or not~\cite{entity_linking_with_kb_2015}. It is impractical and prohibitive to compare a mention with every entity in a \ac{kr} for ensuring the mentions is NIL. Thus, in this work, we consider the preactical assumption that if a mention does not refer to the top-ranked candidate(s), returned by the \ac{nel} system, the mention is NIL. Under this assumption there is no difference between NIL prediction and none-of-the-candidates prediction.
 
+\todo{definition of NIL clustering}
+For addressing the incompleteness problem of \acp{kr}, once identified, NIL mentions that refer to the same NIL entity can be clustered to gather more contextual information, useful for representing the new entity. Indeed, \textcite{kassner-etal-2022-edin} achieved better results when constructing the entity representation from clusters of NIL mentions with respect to just using individual NIL mentions.
+
+\begin{definition}[NIL Clustering]
+    \empth{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
+\end{definition}
+
 NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
 eventually leave this task to future works. In fact, among the 38 approaches\todo{verify the published version}
-compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL prediction.
+compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL prediction. \todo{update for clustering too}
 
 % dico che le TAC hanno dato importanza al NIL
 Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
@@ -22,6 +33,10 @@ Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} 
 
 Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
 \todo{neel challenge}
+
+\todo{trattare insieme nil pred e clustering}
+
+\todo{controlla chi fa incremental come noi in piu time steps. noi, edin}
 
 \todo{moller paper reviewed a lot of approaches}
 \todo{newer neural / bert based el systems do not target NIL pred, so contribution (better described later in section....)}
