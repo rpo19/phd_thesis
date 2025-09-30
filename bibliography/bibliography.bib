@@ -2608,27 +2608,6 @@ pages = {824–836},
 numpages = {13}
 }
 
-@inproceedings{gillick-etal-2019-learning,
-    title = "Learning Dense Representations for Entity Retrieval",
-    author = "Gillick, Daniel  and
-      Kulkarni, Sayali  and
-      Lansing, Larry  and
-      Presta, Alessandro  and
-      Baldridge, Jason  and
-      Ie, Eugene  and
-      Garcia-Olano, Diego",
-    editor = "Bansal, Mohit  and
-      Villavicencio, Aline",
-    booktitle = "Proceedings of the 23rd Conference on Computational Natural Language Learning (CoNLL)",
-    month = nov,
-    year = "2019",
-    address = "Hong Kong, China",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/K19-1049/",
-    doi = "10.18653/v1/K19-1049",
-    pages = "528--537",
-}
-
 @incollection{moller2024entity,
   title={Entity Linking with Out-of-Knowledge-Graph Entity Detection and Clustering Using Only Knowledge Graphs},
   author={M{\"o}ller, Cedric and Usbeck, Ricardo},
@@ -3605,4 +3584,158 @@ numpages = {6},
 keywords = {arbitrary shape of clusters, clustering algorithms, efficiency on large spatial databases, handling nlj4-275oise},
 location = {Portland, Oregon},
 series = {KDD'96}
+}
+
+@inproceedings{simone_2,
+  title={{KB} Construction and Hypothesis Generation Using {SAMSON}},
+  author={Carl F. Andersen and Drew Wicke and Kyle Tunis and Wheeler Howard and Mark J. Gerken and Dustin Carroll and Cassidy Harless and Cecilia Newell and T. Swift},
+  year={2019},
+  url = {https://tac.nist.gov/publications/2019/participant.papers/TAC2019.SAMSON.proceedings.pdf},
+  booktitle = {Proceedings of the 12th Text Analysis Conference (TAC 2019)},
+  publisher = {NIST},
+}
+
+@inproceedings{fasttext,
+    title = "Advances in Pre-Training Distributed Word Representations",
+    author = "Mikolov, Tomas  and
+      Grave, Edouard  and
+      Bojanowski, Piotr  and
+      Puhrsch, Christian  and
+      Joulin, Armand",
+    editor = "Calzolari, Nicoletta  and
+      Choukri, Khalid  and
+      Cieri, Christopher  and
+      Declerck, Thierry  and
+      Goggi, Sara  and
+      Hasida, Koiti  and
+      Isahara, Hitoshi  and
+      Maegaard, Bente  and
+      Mariani, Joseph  and
+      Mazo, H{\'e}l{\`e}ne  and
+      Moreno, Asuncion  and
+      Odijk, Jan  and
+      Piperidis, Stelios  and
+      Tokunaga, Takenobu",
+    booktitle = "Proceedings of the Eleventh International Conference on Language Resources and Evaluation ({LREC} 2018)",
+    month = may,
+    year = "2018",
+    address = "Miyazaki, Japan",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "https://aclanthology.org/L18-1008/"
+}
+
+@ARTICLE{faiss,
+  author={Johnson, Jeff and Douze, Matthijs and Jégou, Hervé},
+  journal={IEEE Transactions on Big Data}, 
+  title={Billion-Scale Similarity Search with GPUs}, 
+  year={2021},
+  volume={7},
+  number={3},
+  pages={535-547},
+  keywords={Graphics processing units;Quantization (signal);Big Data;Indexing;Task analysis;Random access memory;Similarity search;multimedia databases;indexing methods;graphical processing units},
+  doi={10.1109/TBDATA.2019.2921572}}
+
+
+@misc{RELIC,
+      title={Learning Cross-Context Entity Representations from Text}, 
+      author={Jeffrey Ling and Nicholas FitzGerald and Zifei Shan and Livio Baldini Soares and Thibault Févry and David Weiss and Tom Kwiatkowski},
+      year={2020},
+      eprint={2001.03765},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2001.03765}, 
+}
+
+@inproceedings{streaming_crossdoc_coreference,
+    title = "Benchmarking Scalable Methods for Streaming Cross Document Entity Coreference",
+    author = "Logan IV, Robert L  and
+      McCallum, Andrew  and
+      Singh, Sameer  and
+      Bikel, Dan",
+    editor = "Zong, Chengqing  and
+      Xia, Fei  and
+      Li, Wenjie  and
+      Navigli, Roberto",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-long.364/",
+    doi = "10.18653/v1/2021.acl-long.364",
+    pages = "4717--4731",
+    abstract = "Streaming cross document entity coreference (CDC) systems disambiguate mentions of named entities in a scalable manner via incremental clustering. Unlike other approaches for named entity disambiguation (e.g., entity linking), streaming CDC allows for the disambiguation of entities that are unknown at inference time. Thus, it is well-suited for processing streams of data where new entities are frequently introduced. Despite these benefits, this task is currently difficult to study, as existing approaches are either evaluated on datasets that are no longer available, or omit other crucial details needed to ensure fair comparison. In this work, we address this issue by compiling a large benchmark adapted from existing free datasets, and performing a comprehensive evaluation of a number of novel and existing baseline models. We investigate: how to best encode mentions, which clustering algorithms are most effective for grouping mentions, how models transfer to different domains, and how bounding the number of mentions tracked during inference impacts performance. Our results show that the relative performance of neural and feature-based mention encoders varies across different domains, and in most cases the best performance is achieved using a combination of both approaches. We also find that performance is minimally impacted by limiting the number of tracked mentions."
+}
+
+@article{aida,
+author = {Yosef, Mohamed Amir and Hoffart, Johannes and Bordino, Ilaria and Spaniol, Marc and Weikum, Gerhard},
+title = {AIDA: an online tool for accurate disambiguation of named entities in text and tables},
+year = {2011},
+issue_date = {August 2011},
+publisher = {VLDB Endowment},
+volume = {4},
+number = {12},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3402755.3402793},
+doi = {10.14778/3402755.3402793},
+abstract = {We present AIDA, a framework and online tool for entity detection and disambiguation. Given a natural-language text or a Web table, we map mentions of ambiguous names onto canonical entities like people or places, registered in a knowledge base like DBpedia, Freebase, or YAGO. AIDA is a robust framework centred around collective disambiguation exploiting the prominence of entities, similarity between the context of the mention and its candidates, and the coherence among candidate entities for all mentions. We have developed a Web-based online interface for AIDA where different formats of inputs can be processed on the fly, returning proper entities and showing intermediate steps of the disambiguation process.},
+journal = {Proc. VLDB Endow.},
+month = aug,
+pages = {1450–1453},
+numpages = {4}
+}
+
+@inproceedings{shrimpton-etal-2015-sampling,
+    title = "Sampling Techniques for Streaming Cross Document Coreference Resolution",
+    author = "Shrimpton, Luke  and
+      Lavrenko, Victor  and
+      Osborne, Miles",
+    editor = "Mihalcea, Rada  and
+      Chai, Joyce  and
+      Sarkar, Anoop",
+    booktitle = "Proceedings of the 2015 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = may # "–" # jun,
+    year = "2015",
+    address = "Denver, Colorado",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/N15-1158/",
+    doi = "10.3115/v1/N15-1158",
+    pages = "1391--1396"
+}
+
+@inproceedings{kore50,
+author = {Hoffart, Johannes and Seufert, Stephan and Nguyen, Dat Ba and Theobald, Martin and Weikum, Gerhard},
+title = {KORE: keyphrase overlap relatedness for entity disambiguation},
+year = {2012},
+isbn = {9781450311564},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2396761.2396832},
+doi = {10.1145/2396761.2396832},
+abstract = {Measuring the semantic relatedness between two entities is the basis for numerous tasks in IR, NLP, and Web-based knowledge extraction. This paper focuses on disambiguating names in a Web or text document by jointly mapping all names onto semantically related entities registered in a knowledge base. To this end, we have developed a novel notion of semantic relatedness between two entities represented as sets of weighted (multi-word) keyphrases, with consideration of partially overlapping phrases. This measure improves the quality of prior link-based models, and also eliminates the need for (usually Wikipedia-centric) explicit interlinkage between entities. Thus, our method is more versatile and can cope with long-tail and newly emerging entities that have few or no links associated with them. For efficiency, we have developed approximation techniques based on min-hash sketches and locality-sensitive hashing. Our experiments on semantic relatedness and on named entity disambiguation demonstrate the superiority of our method compared to state-of-the-art baselines.},
+booktitle = {Proceedings of the 21st ACM International Conference on Information and Knowledge Management},
+pages = {545–554},
+numpages = {10},
+keywords = {semantic relatedness, locality-sensitive hashing, entity relatedness, entity disambiguation},
+location = {Maui, Hawaii, USA},
+series = {CIKM '12}
+}
+
+@article{recasens_hovy_2011,
+author = {Recasens, M. and Hovy, E.},
+title = {Blanc: Implementing the rand index for coreference evaluation},
+year = {2011},
+issue_date = {October 2011},
+publisher = {Cambridge University Press},
+address = {USA},
+volume = {17},
+number = {4},
+issn = {1351-3249},
+url = {https://doi.org/10.1017/S135132491000029X},
+doi = {10.1017/S135132491000029X},
+abstract = {This paper addresses the current state of coreference resolution evaluation, in which different measures (notably, MUC, B3, CEAF, and ACE-value) are applied in different studies. None of them is fully adequate, and their measures are not commensurate. We enumerate the desiderata for a coreference scoring measure, discuss the strong and weak points of the existing measures, and propose the BiLateral Assessment of Noun-Phrase Coreference, a variation of the Rand index created to suit the coreference task. The BiLateral Assessment of Noun-Phrase Coreference rewards both coreference and non-coreference links by averaging the F-scores of the two types, does not ignore singletons-the main problem with the MUC score-and does not inflate the score in their presence-a problem with the B3 and CEAF scores. In addition, its fine granularity is consistent over the whole range of scores and affords better discrimination between systems.},
+journal = {Nat. Lang. Eng.},
+month = oct,
+pages = {485–510},
+numpages = {26}
 }

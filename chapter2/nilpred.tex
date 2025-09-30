@@ -1,6 +1,7 @@
-\subsection{Incremental Entity Extraction}
+\subsection{Incremental Entity Linking}
+\label{sec:incrementalel}
 \todo{maybe join with clustering}
-\todo{incremental kbp}
+\todo{incremental kbp picture from paper}
 
 As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb}\todo{ensure also kr are incomplete in sec:incompleteness} suffer from incompletess, and one of the use of \ac{ie} is to populate them (\acf{kbp})~\cite{entityorientedsearch2018balog}, for instance, with new movies extracted from newspapers.
 
@@ -46,7 +47,7 @@ Also, from the 2015 edition, NIL prediction and NIL clustering have been include
 \item Training a separate binary classifier on mention-entity pairs, often with extra features such as the top linking score or \ac{ner} labels, to decide whether a mention is linkable or not.
 \end{enumerate}
 
-Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that methods \ref{nilm-threshold} and \ref{nilm-add-class} are essentially equivalent, although the latter avoids manual threshold tuning.
+Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that the second and the third methods are essentially equivalent, although the latter avoids manual threshold tuning.
 
 %% nil approaches
 Several approaches to NIL prediction have been proposed across the years.

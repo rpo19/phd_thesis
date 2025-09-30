@@ -1,2 +1,582 @@
 \section{Contributin I: Evaluation of Incremental Entity Extraction with Background
 Knowledge and Entity Linking}
+
+This section describes the first contribution of my Ph.D. work, published at the 11th International Joint Conference on Knowledge Graphs
+(IJCKG 2022). In 2022, as described in \Cref{sec:incrementalel}, the advancements in the NIL prediction task were left behind the one in \ac{nel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
+\todo{expand motivation}
+\todo{also add mammotab???}
+
+Motivated by the context and by the relevance of incremental \ac{nel} in real-case scenario---where information is continuously updated---this work brought the following contributions to the research community: 
+\begin{enumerate}
+    \item a general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
+    \item a dataset for incremental \ac{el}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering---created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying our methodology.
+    \item A baseline pipeline, based on the BLINK bi-encoder~\cite{blink}, which additionally supports NIL prediction and clustering.
+    \item Evaluation procedures for incremental \ac{nel}.
+    \item An evaluation of the baseline pipeline on the incremental scenario and a discussion of the main challenges.
+\end{enumerate}
+
+The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component, the procedure to adapt a \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020}, followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges.
+
+\subsection{A Baseline Pipeline for Incremental Entity Extraction}
+
+% model overview
+We propose a pipeline-based system composed by three modules: the NEL, the NIL prediction, and the NIL clustering modules.
+A schema of the pipeline is available in figure \ref{fig:pipeline}: given a mention with its context, the Linking module retrieves the best candidate for linking the mention, then the NIL prediction module detects if the best candidate is correct, in which case the mention is linked to the BG-KB. Otherwise, the mention is NIL and is given, along with all the other NIL mentions found in the current batch, to the NIL clustering module that clusters together those mentions referring to the same new entity. At this point, each cluster corresponds to a new entity to add to the NEW-KB so that it can be retrieved when linking future mentions.
+In this section, we further describe the pipeline components, and we finally discuss the representation of the novel entities. \newline
+% Please notice that, in this asset, we strongly assume that the NEL module provides only rights couples entity-mention, if any: when the NIL predictor claims that the answer of the NEL is wrong, there is no check with other candidates following the first one.
+% This assumption propagates the error of the NEL through the pipeline, although the HITL process may mitigate it.
+
+\subsubsection{Linking}
+%Given a mention with its context and a Knowledge Base, in our case the BG-KB and the NEW-KB combined, the linking module provides the $k$ best candidate entities for linking along with a confidence score for each entity.
+% After call of April 05
+The Linking module is based on the bi-encoder architecture \cite{Humeau2020Poly-encoders,blink,gillick-etal-2019-learning}, which is able to represent mentions (in the context) or entities (with a brief textual description) as dense vectors; at this point the linking score corresponds to the dot-product between mention and entity vectors.
+%requires only a dense vector as a description.
+% that encodes separately the entities or the mentions into vectors in the same space given, respectively, a title and a short textual description or the mentions in the context.
+% At inference time the vector representation of all the entities in the KB can be pre-computed and cached \cite{blink}.
+% The index is composed by a cached version of all the vectors, which can be queried in real time using the dot-product as a similarity score \cite{faiss}.
+
+We use the bi-encoder for both candidate generation (through approximate nearest neighbor) and candidate ranking \cite{blink}.
+%Linking with a bi-encoder essentially consists in calculating the vector representation of the mention and finding the nearest neighbors in the vector space that represent the KB entities.
+%In fact, entities are embedded so that vector similarity is a good criteria to choose which entity to link to a mention.
+%The use of a bi-encoder as candidate generator is well described by %\cite{blink}, which claims to obtain good performance in the retrieval step.
+% dire come risolviamo il problema della descrizione con il bi encoder
+%Taking advantage of the dense representation of the mentions, we are able to obtain a vector for a new entity even without a description.%, in order to obtain an estimation for the real value provided by the description.
+%This process can be seen as the extrapolation of the meaning (of an entity) according to real-world examples.
+In addition, the bi-encoder, behaving as a mapping function from the real-world examples to the vectors cached in the index, does not require any training step neither fine-tuning in case of KB updating (a drop in performance is expected): it is therefore well-suited for \textit{zero-shot NEL} since, as will be seen, from the dense representation it can be inferred the entity meaning in some ways analogue to the human understanding process.
+%The use of a bi-encoder as a full NEL model, instead of a more complex and performing one, can be explained because it requires only a meaningful description of the entity, which can be extrapolated by the context, and does not require, by design, a fine-tuning in case of updating (it is well suited for \textit{zero-shot NEL}).
+%Despite new entities are not well described, in fact, a vector can be extrapolated from examples of use (mentions) and then added to the index.
+%In this way, the process can be compared to the extrapolation of a meaning (of an entity) according to real-world examples.
+
+%\cite{blink} combined a bi-encoder with a cross-encoder \cite{humeau}, as a re-ranker, in their linking system since the latter is able to improve the linking performance.
+%In our pipeline we omit the cross-encoder because it requires a textual description of the entity, which can not be obtained for new ones.
+%A solution could be training a custom \textit{cross-encoder} that given two mentions detects whether they refer to the same entity of not. We leave this improvement to future works.
+% without a description; however this aspect should be further investigated since it is not a trivial task, since there are a lot of unseen entities in the dataset which are included in the KB.
+% @Riccardo anche se ieri ci siamo detti di metterla negli experiments espanderei la sezione approccio e la metterei a parte (prima o dopo dataset), mentre qui andrei solo con gli experiments. Va chiarito perchè non usiamo il cross-encoder
+% @Fede: hai ragione, la finisco e la sposto prima del dataset
+
+In the following experiments, we used the bi-encoder proposed as the candidate generator of BLINK \cite{blink}, available pre-trained on GitHub\footnote{\url{https://github.com/facebookresearch/BLINK}}.
+For the Background KB we used the FAISS \cite{faiss} index based on the August 2019 Wikipedia dump and made available by \cite{blink}, making sure we filter out 
+%after having removed
+those entities we set as NIL for the experiments of section \ref{sec:experiments}.
+Despite BLINK behave worse than RELIC \cite{RELIC, streaming_crossdoc_coreference} on all co-reference resolution tests, we opted for the first one as it is natively suited  for zero-shot NEL.\todo{add relic in el background}
+%As index, we used the same FAISS \cite{faiss} index, previously modified in order to remove the entities which were set as NILs.
+
+% (b) it is divided in two independent steps (candidate retrieval and re-sorting), easily permitting the inclusion of the other modules and (c) it offers a dense representation of the mention, which will be used for clustering.
+% Since the candidate re-ranking step of BLINK (\textit{cross-encoder}) requires a meaningful description of the entity, We opted to remove this step, linking the mention with the most probable entity retrieved in the first step (\textit{bi-encoder}).
+% Otherwise, the linking with new entities added in the previous steps would be impossible.
+%The pipeline, at the end, is so composed:
+%\begin{itemize}
+%    \item bi-encoder (\textit{BLINK's pre-trained})
+%    \item NIL predictor
+%    \item NIL cluster
+%\end{itemize}
+
+\subsubsection{NIL Prediction}
+
+\begin{table}
+    \centering
+\begin{tabular}{lrrr}
+\toprule
+F1 &  NIL &  not-NIL &  $\overline{F1}$  \\
+
+\midrule
+max                               &  15.2 &  82.7 &          48.9 \\
+max, levenshtein, jaccard           &  23.5 &  82.9 &          53.2 \\
+max, stats10, levenshtein, jaccard   &  50.6 &  83.4 &          67.0 \\
+max, secondiff, levenshtein, jaccard &  51.2 &  83.0 &          67.1 \\
+max, secondiff                     &  51.4 &  83.1 &          67.3 \\
+\bottomrule
+\end{tabular}
+    \caption{NIL prediction feature ablation study on the dev set (trained on the train set). \textit{max} is the score of the best candidate, \textit{levenshtein} and \textit{jaccard} are textual similarities between the mention and the entity title, \textit{secondiff} is the difference between the best and the second-best score.}
+    \label{tab:feature_ablation_study}
+\end{table}
+
+%The NIL-prediction module predicts, from the candidate distribution, the correctness of the bi-encoder answer.
+The NIL prediction module predicts, given the candidates provided by the linking module, whether the top-ranked candidate entity is correct or not, without modifying the ranking given by the NEL module. According to this prediction, the mention is respectively linked to the top-ranked entity or set as NIL.
+
+% \paragraph{alternativa}
+% Along with the linking score of the top-ranked candidate we consider additional features for the NIL prediction: the mean, median, and standard deviation of the scores of the top-k candidates, the Levenshtein and Jaccard similarity between the mention and the title of the top-ranked entity, and finally the NER types (PER, LOC, ORG, MISC) of the mention.
+%from the candidate distribution, the correctness of the bi-encoder answer.
+% To do so, a simple logistic regression on some features is applied: in this way, the answer has a score between 0 and 1 that can be used in a \textit{human in the loop} process.
+% If the prediction is \verb|NIL|, the mention is then passed to the NIL clustering step in order to check if there are other mentions of the same entity.
+
+Our model is based on a logistic regression whose input is composed by %extrapolated from the score distribution of the bi-encoder:
+the linking score of the best candidate and the difference between the best and the second-best score. 
+%This model is trained using the training set of our dataset (see Section \ref{sec:dataset}).
+This configuration is the result of an ablation study (Table \ref{tab:feature_ablation_study}) conducted using the train set for training and evaluating on the dev set of our dataset, that is presented in the next section. The study considered, in addition to the score of the best candidate for NEL, the similarity scores derived by Levenshtein distance and Jaccard index of the mention and the best candidate title, and some statistics (mean, median, and standard deviation) of the scores of the top-k candidates (to not consider only the top-1 candidate).
+An additional study has been performed on the AIDA dataset \cite{aida} (in order to avoid overfitting and to obtain information about the entity type), also considering the types of both the mention and the top-ranked entity; this study highlighted that statistics are strongly dependent on the training KB thus not suited for I-NEL (that modifies the KB) and that types can give an important contribution to the NIL prediction, but unfortunately our dataset lacks typing information.
+The output of logistic regression belongs to $[0,1]$ and represents the confidence of the linking between the mention and the best candidate (close to 0 means NIL).
+If the prediction is NIL, the mention is then passed to the NIL clustering step in order to check if there are other mentions of the same entity.
+The scores of the bi-encoder, on which the model in the experiments below relies, are not normalized (dot-product) and strongly depend on the embedding algorithm.
+
+
+\subsubsection{NIL Clustering}
+The NIL clustering module aims to group together the mentions referring to the same entity. %, providing, in addition, a dense representation.
+The process is made by steps, considering both the \textit{surface form} and the embedding of the mentions.
+In this way, the model is not easily fooled by homonyms.
+As a result, for each cluster of mentions we can obtain a representation of the corresponding entity using, for instance, the medoid vector of the cluster.
+% As result, for each cluster of mentions, the medoid vector is extrapolated, providing a description of the entity itself.
+
+%inizio parte greedy
+We considered three different clustering approaches:
+%Below are shown three approaches tried.
+the first, $GNN_B$, uses a greedy nearest neighbor clustering (GNN) algorithm on the dense vectors of the mentions obtained by the bi-encoder. GNN consists in clustering a mention $m$ with all the other mentions whose similarity with $m$ is higher than a predefined threshold. This algorithm combined with different vectorizers obtained promising results in \cite{streaming_crossdoc_coreference}.
+
+The second clustering method, $GNN_F$, relies on GNN but with a feature-based vectorizer. We used the same feature-based vectorizer of \cite{shrimpton-etal-2015-sampling}, which uses character skip
+bigram indicator vectors to encode the surface text,
+and tf-idf vectors to represent contexts.
+% thresholds
+The clustering thresholds for both $GNN_B$ and $GNN_F$ have been calculated so that the number of predicted clusters on the dev dataset approximately
+matches the number of unique entities~\cite{streaming_crossdoc_coreference}.
+
+
+
+
+% \subsubsection{Feature-based / BLINK greedy nearest neighbour}
+% The feature-based greedy nearest neighbour (GreedyF) and the BLINK greedy nearest neighbour (GreedyB) approaches were chosen based on promising result described in \cite{streaming_crossdoc_coreference}.
+% Both these methodologies include a vectorizer: GreedyF uses one based on tf-idf, trained on the dev set of our dataset, while GreedyB uses the biencoder from BLINK. \todo{TF IDF, controllare}. The clustering thresholds have been calculated using binary search similarly to \cite{streaming_crossdoc_coreference}.
+% %the preparatory tasks are two:
+% % \begin{itemize}
+% %     \item fitting a vectorizer using the dev set that will be used to calculate the scores later;
+% %     \item finding a threshold using the binary search algorithm used by \cite{streaming_crossdoc_coreference}.% implementing also an early stopping technique that will be used by the clustering function;
+% % \end{itemize}
+% After the preliminary tasks there are three other steps: mention encoding, calculation of the similarity scores and clustering.
+% In the feature-based approach the mentions are encoded in a way where there is the context composed by the join of the left and the right one and the mention itself. Mention similarity is a linear combination of mention text and contextual similarity as show in \cite{shrimpton-etal-2015-sampling}.
+% In the BLINK approach, the mention encoding and the similarity score are standard as described in \cite{blink}.
+% In both techniques the clusters are calculated starting from the scores of the previous step using a greedy nearest neighbour algorithm by finding its nearest neighbour in the sample, linking the two mentions if the similarity score is above the linking threshold calculated in the preparatory tasks as shown in \cite{shrimpton-etal-2015-sampling}.
+% Lastly, the cluster found at the previous step are merged or split according to the distance between their medoid vectors.
+
+
+%fine parte greedy
+
+The third clustering method, $3Steps$, is a three-steps algorithm \cite{simone_24}: initially the mentions are clustered using their surface form (edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise).
+Then, inside each cluster we apply a hierarchical clustering algorithm, splitting to a predefined threshold, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
+In this way, each cluster from the first step is divided into sub-clusters.
+Finally, semantically similar sub-clusters are merged together, according to the distance between their medoid vectors.
+
+\begin{figure}
+    \centering
+    \includegraphics[
+    width=.25\textwidth,
+    keepaspectratio]
+    %{imgs/pipeline_simple.drawio.png}
+    {images/ijckg/pipeline_simple.png}
+    \caption{Schema of the pipeline.
+    %Given a mention with its context, the Linking module provides the best candidates for linking, then the NIL prediction module checks whether these candidates are correct or if the mention is NIL (refers to an out-of-KB entity). In this latter case, the NIL Clustering module groups together the mentions referring to the same out-of-KB entity and finally this entity is added to the NEW-KB.
+    }
+    \label{fig:pipeline}
+\end{figure}
+% \todo{x @Riccardo}
+% @Fede: l'immagine mi sembra poco chiara nella parte finale in cui le frecce escono dai riquadri LINK & NIL CLUSTER: così sembra che viene aggiornata anche la KG bergamasca (BG-KB), invece non c'è un vero e proprio flusso
+% @ Riccardo la freccia di aggiornamento punta a NEW-KB
+
+
+\paragraph{Novel Entities Representation}
+%New entities, since are not included in the knowledge base, have no meaningful description.
+
+New entities lack a meaningful description that is required by the bi-encoder to represent them. Taking advantage of the dense representation of the mentions, we are able to obtain a vector for a new entity even without a description.
+%, in order to obtain an estimation for the real value provided by the description.
+This process can be seen as to infer the meaning of an entity from real-world examples.
+We tested three possible solutions to represent new entities (that are clusters of NIL mentions):
+\begin{itemize}
+    \item using the vector of the \textit{first} mention encountered;
+    \item using the \textit{medoid} vector of the mentions of the cluster at the time in which it is stored into the KB;
+    \item including in the KB \textit{all} the mentions vectors, as they were different entities.
+\end{itemize}
+
+Table \ref{tab:new_entities_recall} summarizes the performance of the bi-encoder using each one of the three strategies, as well as their time and disk requirements. Tests have been conduced on AIDA for the same reasons of the NIL predictor.
+\begin{table}
+    \centering
+    \caption{Recall results of the linking from scratch experiment (on AIDA \cite{aida}) with retrieval time and disk requirements.
+    %The dataset was changed in order to permit an easier management of the index, since AIDA has a lower number of observations.
+    }
+    \begin{tabular}{l|cccc|ccc}
+         &  R$_{1}$ & R$_{3}$ & R$_{10}$ & R$_{30}$ & \#vectors & time(s) & disk(MB) \\
+         \hline
+         first  & 73.7 & 85.6 & 91.9 & 95.8 &  4022 &  2.4 & 16\\
+         medoid & 79.5 & 91.1 & 95.9 & 98.7 &  4022 &  2.4 & 16\\
+         all    & 93.9 & 96.7 & 98.5 & 99.3 &  18319 &  44.1 & 72
+    \end{tabular}
+    \label{tab:new_entities_recall}
+\end{table}
+% Despite the latter strategy obtains the highest recall values, we decided to use the medoid vector to save computational time (it takes 5\% of the time) and disk space (it requires 22\% of the disk-space): this strategy indeed represents a good trade-off between efficiency %(near real-time use)
+% and effectiveness.
+
+Despite the latter strategy obtains the highest recall values, we decided to use the medoid vector to save resources. In fact it takes 5\% of the time and it requires 22\% of the disk space. This strategy indeed represents a good trade-off between efficiency %(near real-time use)
+and effectiveness.
+
+%\begin{table}
+%    \centering
+%    \caption{Time and disk required by the re-indexing of about 4000 new entities.}
+%    \begin{tabular}{l|ccc}
+%                        & vectors & time (seconds) & size (MB) \\
+%     \hline
+%         first / medoid &  4022 &  2.4 & 16 \\
+%         all            &  18319 &  44.1 & 72
+%    \end{tabular}
+%    \label{tab:updating_cost}
+%\end{table}
+
+% Our preliminary results show that the inclusion of the new entity in the KB can happen in the first batch in which it appears; however other alternatives were not fully explored and should be investigated in future works.
+%In the current asset, the novel entity is included into the KB the first time the NIL clustering algorithms finds it.
+%Other alternatives, such as computing the confidence of the cluster, have not been explored and should be investigated in future works.
+Despite the human intervention,
+%(simulated by evaluating a new batch after having corrected the results of previous batches),
+the problem of finding the better representation for new entities still persists: a validator may annotate an unrepresentative set of mentions for a given entity, since embeddings are not interpretable, introducing a bias in next batches.
+
+\subsection{Transforming a NEL Benchmark into an Incremental Entity Extraction Benchmark}
+
+% comparazione dataset esistenti
+% perché non usare un dataset per KG population standartd?
+% perché a noi non interessano le relazioni tra le entità
+%Since we are not interested in discovering relations between entities but only on identifying new ones and make them automatically linkable in future, we explored standard NEL datasets.
+%However, they do not consider a temporal streaming of documents and most of them have limited focus on the identification of new entities. % \todo{verify or fix since AIDA may be seen as a couter-example: based on documents with NIL mentions (but does not add NIL mentions)} @Fede: this is (now) done, isn't it?
+%Thus, they should be modified in order to include a significant number of new entities and split in batches to be adapted to the incremental extraction scenario. 
+
+In order to test our pipeline in a realistic scenario, the chosen test dataset should be representative of characteristics that we expect to find in the real world. For example, the entity frequency distribution should have a long right-tail: there are a few popular (high-mentioned) entities, while most are not well-known; entities in train and test data should belong to the same domains (domain adaptation is an interesting problem, but is left out of this evaluation); the dataset should be big enough to easily train data-hungry models and to have a test set that can be split into several batches.
+    %: few-shot and zero-shot learning should be investigated separately
+
+The most valuable candidate datasets for being adapted to the incremental scenario are: AIDA \cite{aida}, Zero-shot EL dataset \cite{logeswaran-etal-2019-zero}, KORE50 \cite{kore50}, TACKBP-2010 \cite{ji2010overview}, and WikilinksNED Unseen-Mentions (WNUM) \cite{Onoe_Durrett_2020}.
+In this paper we applied the following methodology to WNUM, because it is the only one freely available with the above mentioned features (e.g., AIDA is smaller than WNUM and has no ground truth on NILs) and uses links to Wikipedia entities, as well as most state-of-the-art NEL algorithms which use Wikipedia as reference KB \cite{blink,decao2021autoregressive,barba-etal-2022-extend}. Observe that even if Wikipedia may be not considered a proper KB, links between Wikipedia and Wikidata or DBpedia exists, in such a way that information about most of Wikipedia entities can be collected from proper KBs. 
+%(avoiding the performance drop of the new domain, which can infer with model estimation).
+In addition, it is designed so that each of the sets (train, dev, test) never contains a mention-entity pair that is present in another set, which is a highly appreciated property for our task.
+
+% costruzione nuovo dataset
+\paragraph{New entities.}
+In order to simulate the presence of new entities, we randomly flag some entities as NILs, preserving the ground truth.
+This process is made in a proportional way with the number of mentions of the entity itself in the train set and so that a certain number of new entities can be chosen arbitrarily.
+For each entity we calculate the score:
+\begin{equation}
+    p_{NIL}(x) = p^\frac{\#x}{M} \hspace{10pt} \in (0, +1]
+\end{equation}
+Where $p$ is the desired percentage of NIL entities (we set it to $p = 0.1$ \cite{agarwal-etal-2022-entity}\todo{verify. here I changed from the arxiv to the published version https://arxiv.org/abs/2109.01242}); $M$ is the median of entity frequencies in the train set (the mean provides inaccurate results due to the presence of a long tail of low-frequencies entities), and $\#x$ is the number of mentions referring to the entity $x$ in the train set.
+This function is demonstrated to be monotonically decreasing, providing a higher number of New Entities which are mentioned only once in the train set, since, conceptually, there are a lot of new entities which are not included due to data quality matters (low mentioned) and a few entities which may become popular (in the meaning of ``high mentioned'') in a small span of time. \newline
+Then, we flag each entity as new (NIL) according to a Bernulli test with probability $p = p_{NIL}$; entities flagged as NILs are removed from the BG-KB, since they become unknown.
+% Then, according to a random sample in the range $[0,1]$ taken from a uniform distribution, each entity is flagged as new (NIL) or not: $U(0, 1) < p_{NIL}(x) \Rightarrow x = NIL$.
+At this point, some mentions of NIL entities are \textit{transplanted} from the train set to the dev and test sets only to increase the number of new entities in these latter sets (see Table \ref{tab:dataset_nils}), obtaining more robust metrics: this step is made randomly so that both dev and test sets have 500 new mentions each.
+Finally, we divide the test set in 10 batches with a stratified sampling on entity frequencies and NILs. Table \ref{tab:dataset_stats_extended} shows several per-batch statistics about the dataset.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Statistics about the dataset before and after the \textit{transplant}.}
+    \label{tab:dataset_nils}
+    \begin{tabular}{l|rl|rl}
+    & mentions & (NIL) & entities & (new) \\
+    \hline
+        train & 2.2M & (25744)  & 86184 & (17957) \\
+        dev   & 10k  & (316)    & 2397  & (61) \\
+        test  & 10k  &(307)     & 2514  & (63) \\
+        \hline
+       train & 2.008M & (25365)  & 81858 & (17619) \\
+       dev   & 100k   & (501)     & 7105 & (214) \\
+       test  & 100k   & (501)     & 6473 & (248) \\
+    \end{tabular}
+\end{table}
+\vspace{-20pt}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Per-batch statistics about the test set: number of mentions, entities, NIL mentions, new entities, and $|Prev~E|$: new entities already found in a previous batch (that should be linked to an entity previously added to the NEW-KB)}
+    \label{tab:dataset_stats_extended}
+\begin{tabular}{l|rrrrrr}
+\toprule
+{} &  $|M|$ &  $|E|$ &  $|NIL~M|$  &    $|NIL~E|$ &  $|Prev~E|$ \\
+\midrule
+$b_0$  &          10k &           2.5k &                 50 &                      37 &                                          - &                                          \\
+$b_1$  &          10k &           2.5k &                 50 &                      35 &                                         12 &                                          \\
+$b_2$  &          10k &           2.5k &                 50 &                      44 &                                         15 &                                          \\
+$b_3$  &          10k &           2.5k &                 50 &                      41 &                                         16 &                                          \\
+$b_4$  &          10k &           2.5k &                 50 &                      38 &                                         10 &                                          \\
+$b_5$  &          10k &           2.5k &                 50 &                      40 &                                         18 &                                          \\
+$b_6$  &          10k &           2.5k &                 51 &                      46 &                                         22 &                                          \\
+$b_7$  &          10k &           2.5k &                 50 &                      41 &                                         19 &                                          \\
+$b_8$  &          10k &           2.5k &                 50 &                      40 &                                         22 &                                          \\
+$b_9$  &          10k &           2.5k &                 50 &                      44 &                                         24 &                                          \\
+$ALL$ &         100k &           6.5k &                501 &                     248 &                                          - &                                          \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[
+        width=.45\textwidth,
+        keepaspectratio]{images/ijckg/dataset_creation}
+    \caption{Construction of the I-NEL dataset from a NEL dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the KB (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
+    \label{fig:evluation_outcome}
+\end{figure}
+
+
+\subsection{Evaluation}
+
+%The evaluation is run in two ways: first on the whole dataset (single-batch) to allow a comparison with other models from literature; then, it is run incrementally on each batch, so that the drop in performance, due to the lack of information provided in the first steps, can be quantified. \newline
+%As far as we know, however, there is no other work which uses the same dataset that train the model reducing the available information in any way: other works should be considered only as a reference for the task difficulty.
+
+%In order to test the model in an incremental way, we trained each component of the pipeline, except for the bi-encoder, on the same data (train \& dev sets) and test them on each batch of the test set, presented one by one.
+% @Riccardo BLINK has not been trained on unseen mentions. But on its own wikipedia-based dataset. we used a pretrained model.
+%The bi-encoder was in fact trained on a dataset based on Wikipedia\cite{blink}: we limit to remove NIL entities from the FAISS index when it retrieves candidates.
+%In fact, the updating process, consisting only in the addition of the new vectors in the index, does not require a train phase, and therefore model weights have a constant value during all the test process: the only component which is modified, guaranteeing an incremental procedure, is the index of entities.
+
+% mostrare challenge dell'incremental
+
+To evaluate the I-NEL we need to consider that, given a mention $m$ that refers to an entity $E$, the correct behavior may depend also on previous batches: in case $E$ is not present in the BG-KB at time $t_i$, $m$ should be classified as $NIL$; but, if one of the previous batches contained a mention of $E$, the system should have already added it to the NEW-KB and therefore $m$ should be linked to $E$.
+Figure \ref{fig:evluation_outcome} summarizes how mentions should be processed according to the entity to which they refer.
+
+The evaluation procedure for the I-NEL task should calculate the overall performance of a given system as well as 
+its specific performance on the subset of mentions that, in each batch, needs to be (a) linked to the BG-KB, (b) classified as NIL, or (c) linked to the NEW-KB (see Figure \ref{fig:evluation_outcome}).
+
+Finally, to better understand the impact of the error propagation between batches, the I-NEL evaluation needs to be comparable with a standard single-batch approach.
+
+\subsubsection{Evaluation Measures} \label{sec:evaluation2}
+The evaluation of an incremental pipeline is not intuitive compared to a single model, since the error propagates not only through the pipeline but also through time (in the meaning of batches).
+%, since the last component has side-effects.
+
+First, we define the measures to evaluate the whole pipeline on the I-NEL task:
+\begin{itemize}
+    \item (a) the ``Link to BG-KB'': the accuracy with the mentions that should be linked to the BG-KB;
+    \item (b) the ``NIL'': the accuracy with the mentions that should be classified as NIL;
+    \item (c) the ``Link to NEW-KB'': the accuracy with the mentions that should be linked to the NEW-KB;
+    \item (d) the ``Overall Accuracy'' as an overall score on all the mentions.
+\end{itemize}
+
+Then, in order to understand how each component of the pipeline behaves for its specific task, we additionally evaluate each module separately:
+\begin{itemize}
+    \item NEL: we calculate $Recall@1$ for the candidate generation task; since the linking is made with the first candidate. Note that this metric coincides with accuracy.
+    \item NIL predictor: we calculate precision, recall, and f1-score of the ``NIL'' class.
+    %Being a strongly unbalanced class, scores are normalized by the support.
+    \item NIL clustering: similar to the co-reference resolution task \cite{streaming_crossdoc_coreference}, we calculate precision, recall, and f1-score of the three metrics $MUC$, $B_3$, and $CEAF_e$. We also provide the average of the f1-scores.
+    %\item Whole pipeline: we calculated results also on the whole output, with separate metrics for ``Link'' (to BG-KB) and ``Link new'' (to the NEW-KB). Results are accompanied to micro-$F_1$ as global score.
+\end{itemize}
+
+The clustering procedure, however, requires some further explanations for the error analysis.
+In particular, remember that after clustering novel entities are added to the KB:
+%a mention which should be linked to an entity added in the NEW-KB is considered correct in future steps if it is linked by the NEL module.
+%If it is labeled as NIL, it is considered wrong.
+%This precaution avoids that goodness scores are maximum in case the NIL clustering presents each mention as a novel entity.
+a mention which refers to an entity previously added in the NEW-KB is treated correctly if linked to that new entity, while labeling it as NIL is an error.
+This precaution avoids obtaining high performance in case the NIL clustering presents each mention as a novel entity.
+
+%In addition, the NIL prediction mitigates NEL errors, since, if the linking is wrong but the NIL predictor classify the result as a NIL entity, despite its presence in the BG-KB, the result of NIL predictor is considered as right.
+%This because NIL entities are not included by definition in the BG-KB and therefore the NEL result is always wrong.
+%Obviously, if the NIL predictor does not classify the mention of a novel entity as NIL, the linking is considered an error.
+
+In addition, the NIL prediction mitigates NEL errors: if the linking is wrong, the NIL predictor would ideally classify the mention as NIL because the entity offered by the linker is not correct, despite the presence of the correct entity in the BG-KB.
+Obviously, if the NIL predictor does not classify the mention of a novel entity as NIL, it is considered as an error.
+
+%Finally, if an entity of the BG-KB presents a false representation given by a false positive of the NIL prediction and clustering, each mention linked to the false representation is considered as wrong.
+%This kind of error can be easily fixed by manually combine the cluster into the ``canonical'' entity representation; however in an end to end pipeline it should be considered as an error.
+
+Finally, if a new entity is erroneously created due to a false positive in the NIL prediction while the correct entity already exists in the BG-KB, each mention linked to this incorrect new entity is considered as an error.
+
+% Evaluation of the single components:
+% \begin{itemize}
+%     \item Linking: Recall@k with k in {1,...} (Recall@1 == Accuracy)
+%     \item NIL Pred: Prec Rec, F1 of the 2 classes NIL and not-NIL. Plus macro,... avg maybe. % this means several metrics for each batch. Reason about "space" requirements, but it is important to show how the system behaves with the "underrepresented" class that is NIL mentions.
+%     \item NIL clustering: Bcubed precision and recall
+% \end{itemize}
+% evaluate single components separately for each batch? YES
+
+% Overall evaluation (Accuracy):
+% \begin{itemize}
+%     \item if not-NIL: correct if linked to correct entity
+%     \item if NIL and not yet added: correct if labeled as NIL (add "and clustered correctly"?)
+%     \item if NIL and added in the previous batches: correct if labeled not-NIL and linked to the/a correct batch that is a batch with more than half coherent (to the input mention) mentions
+%    \item important to provide also clustering metrics. otherwise in case we create of 1-item clusters the linking to a cluster would always be correct.
+% \end{itemize}
+
+% How to evaluate?
+% \begin{itemize}
+%     \item using batches/real case scenario.
+%     \item one-shot: all "documents" available at the beginning/a single big batch
+% \end{itemize}
+
+\subsection{Experiments}
+% \subsection{Training \& Testing}
+% \todo{cambiare}
+To allow the comparison with other models, we decided to test our baselines with the following experiments: the first one
+%trains the NIL prediction model (we use a pre-trained bi-encoder, and the clustering does not require training) on the train set and
+runs the evaluation on the whole test set (\textit{one-pass}), with only one step of clustering; the second experiment, instead,
+%takes the same models, trained in the same way, but
+is an incremental evaluation on the 10 batches of the test set.
+This second experiment is the focus of the present work and simulates the arrival of new documents in the pipeline.
+Note that the evaluation process is different in the two experiments, since the NIL clustering has side-effects: it adds novel entities to the NEW-KB that are linkable in the following batches.
+The first experiment has two main purposes: it provides results comparable with other models in literature %(despite the fact that our model uses a smaller train set and is tested with an higher number of unseen entities) 
+and permits to estimate the drop in performance of the incremental procedure.
+We evaluated the three baselines (that differ in the clustering approach) using these two experimental setup, although in table \ref{tab:superresults} we report only the NIL clustering performance for all the baselines, while the remaining metrics are obtained using the top-performing clustering approach ($3Steps$).
+Finally, we run another experiment, called ''correct``, that corrects the output of previous components before proceeding through the batches and the pipeline, to better study the error-propagation. In able \ref{tab:superresults} we show the ''correct`` performance only of the top-performing pipeline ($3Steps$).
+%Lower performances are, in fact, expected since the clustering process in initial steps has less information about new entities, which may be spoken further.
+
+\begin{figure}
+    \centering
+    \includegraphics[
+    width=.3\textwidth,
+    keepaspectratio]
+    {images/ijckg/experiments_expected.drawio.png}
+    \caption{Schema of the expected outcome of the system, given a mention m referring to an entity E, when (a) E is known ``a priori'', (b) E has already been added while processing the previous batches, (c) E is not in the KB.}
+    \label{fig:evluation_outcome}
+\end{figure}
+
+\subsection{Results}
+In order to investigate which component of the pipeline has a stronger contribute to the final error, we analyzed each component one by one.
+% COMMENTO:
+% il link alle nuove entità cala dopo il quinto batch, abbassando il livello totale delle performance
+% questo perché le rappresentazioni delle nuove entità sono sub-ottimali rispetto alla distribuzione.
+% le performance totali sono migliori, nel senso che non "degenerano" andando avanti con l'aggiungere entità all'indice
+
+The results of the most relevant experiments are reported in table \ref{tab:superresults}.
+We can see that the performance of the NEL module is competitive compared to more complex models of state of the art: in particular, GENRE \cite{decao2021autoregressive} obtains a $R@1_{total} = 74.7$ and $R@1_{unseen} = 70.4$, which are quite similar to ours (excluding error propagation).
+%Results are not compared against other models to prevent the temptation of a direct comparison, regardless dataset modifications (as described above) and the different task (which, in our case, is incremental through time).
+The drop in performance, as expected, is due to the error propagation in the incremental procedure and not to a poor NEL model. Indeed, in the ``correct'' experiment, there is no performance drop caused by the error propagation.
+
+% Being a binary classification, the NIL predictor performance is measured with precision and recall,
+% TODO ENSURE (normalized by the support)
+%As shown in table \ref{scores:nil_predictor}.
+The NIL prediction component, despite the high precision, yields a high number of false negatives (entities that are predicted to be in the KB while they were new).
+A low recall translates in a low number of false NILs, which drastically decreases the error propagation through time.
+
+
+
+With respect to the NIL clustering, analyzing and well understanding this component is fundamental, since it has side effects that propagate through following steps, and therefore presents different results if run one batch by one or on a single pass.
+Among the evaluated approaches the top-performing one is the $3Steps$; the reason could be that this method exploit a combination of lexical and semantic similarities between the mentions, while the other two ($GNN_B$ and $GNN_F$) only exploit semantic dense representations.
+% Results, as expected, are higher in the single-pass experiment than in the incremental one: this is due to the propagation of error through time in the index updating.
+% In fact, the high B3 Recall is due to the high frequencies of single-mentioned entities in the dataset which are presented to the NIL clustering component (remember that the function that assigns NIL values is a decreasing monotonous function).
+% This translates in a high number of clusters correctly composed by a single mention.
+% Having a suboptimal representation of those entities, which is given by a single observation and not by a textual description or more examples, the index begins suffering due to data quality problems.
+
+The NIL predictor introduces two critical problems in the pipeline: false positives of the NIL predictor propagate errors through batches causing the NEW-KB to be full of redundant representations of the same entities; on the other hand, when NIL mentions are erroneously identified as not-NIL, the pipeline misses mentions useful to represent a new entity.
+For this reason, to mitigate error propagation through time, it is preferable to achieve higher precision than higher recall.
+% This happens since the surface form, varies between train and test set \cite{Onoe_Durrett_2020}
+% Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the NEL process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
+To visualize an overview of the process, figure \ref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected.
+A higher precision translates in a lower number of clusters, for the most representing novel entities; while a higher recall translates in a higher number of false representations of entities already included in the BG-KB.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/ijckg/clusters.png}
+    \caption{The absolute frequency of clusters by size (the points) vs the expected values (the curve) from the test-set.}
+    \label{fig:clusters}
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%% NEWWW
+% incremental_3step
+\begin{table*}
+    \centering
+\begin{tabular}{llrrrrrrrrrrrr}
+\toprule
+{} &   $b_0$  &     $b_1$  &     $b_2$  &     $b_3$  &     $b_4$  &     $b_5$  &     $b_6$  &     $b_7$  &     $b_8$  &     $b_9$  &     $\overline{b}$ & one-pass \\
+% \midrule
+% % Three step    &&&&&&&&&&&& \\
+\hline
+\textbf{NEL} &&&&&&&&&&&&& \\
+R@1          &  72.64 &  62.03 &  55.43 &  51.68 &  46.53 &  45.02 &  41.71 &  40.56 &  39.03 &  38.39 &  49.30 & 72.91 \\
+\hline
+\textbf{NIL Pred} &&&&&&&&&&&&& \\
+P            &  65.16 &  66.25 &  70.55 &  74.30 &  78.92 &  78.64 &  80.00 &  79.53 &  81.38 &  81.96 &  75.67 & 64.01 \\
+R            &  46.74 &  30.51 &  30.55 &  31.47 &  33.59 &  34.14 &  34.32 &  34.21 &  35.79 &  36.10 &  34.74 & 46.06 \\
+F1           &  54.43 &  41.78 &  42.63 &  44.22 &  47.13 &  47.61 &  48.04 &  47.84 &  49.71 &  50.12 &  47.35 & 53.57 \\
+\hline
+% % & NIL Clust    &&&&&&&&&&&& \\
+% % & Three step    &&&&&&&&&&&& \\
+% \multicolumn{12}{l}{\textbf{NIL Clust:} comparison among $3Steps$, $GNN_B$, $GNN_F$: best results highlighted in bold}  \\
+% $3Steps$ & MUC F1       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
+% & B3 F1        &  \textbf{97.43} &  \textbf{97.07} & \textbf{96.73} &  \textbf{96.25} &  \textbf{96.48} &  \textbf{96.66} &  \textbf{96.11} &  \textbf{97.14} &  \textbf{95.79} &  \textbf{96.55} &  \textbf{96.62} & \textbf{94.36} \\
+% & CEAF F1      &  \textbf{95.16} &  \textbf{94.43} &  \textbf{93.10} &  \textbf{93.02} &  \textbf{92.56} &  \textbf{93.15} &  \textbf{92.38} &  \textbf{93.35} &  \textbf{92.49} &  \textbf{93.26} &  \textbf{93.29} & \textbf{82.27} \\
+% & $\overline{F1}$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
+% \hline
+% % & Greedy    &&&&&&&&&&&& \\
+% $GNN_B$ & MUC F1       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
+% & B3 F1        &  91.33 &  90.12 &  89.07 &  90.34 &  90.92 &  90.74 &  90.36 &  91.69 &  91.72 &  91.92 &  90.82 & 86.46 \\
+% & CEAF F1      &  84.96 &  83.94 &  80.62 &  81.65 &  80.95 &  81.58 &  80.77 &  82.57 &  81.38 &  81.14 & 81.96  & 64.61  \\
+% & $\overline{F1}$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
+% \hline
+% % & Feature    &&&&&&&&&&&& \\
+% $GNN_F$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
+% & B3 F1        &  71.66 &  65.16 &  58.68 &  56.80 &  55.03 &  54.78 &  53.31 &  54.40 &  51.89 &  51.16 &  57.29 & 48.83 \\
+% & CEAF F1      &  62.72 &  56.91 &  49.09 &  47.01 &  44.90 &  44.60 &  43.24 &  44.22 &  41.66 &  40.46 &  47.48 & 35.89 \\
+% & $\overline{F1}$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
+% \hline
+\textbf{Correct} &&&&&&&&&&&& \\
+\textbf{NEL} & R@1          &   72.64 &  72.11 &   72.24 &   72.79 &  72.26 &  73.13 &   71.71 &   72.77 &  71.87 &   72.28 &  72.38 & \\
+\hline
+\textbf{Overall} \\
+(a) Link & 66 & 56 & 50 & 46 & 42 & 40 & 37 & 35 & 34 & 33 & 44 & \\ 
+(b) NIL & 42 & 38 & 51 & 32 & 60 & 50 & 41 & 47 & 44 & 38 & 44 & \\ 
+(c) Link New & n/a* & 36 & 77 & 69 & 73 & 70 & 71 & 85 & 70 & 62 & 61 & \\ 
+(d) Overall Acc & 66 & 56 & 50 & 46 & 42 & 40 & 37 & 35 & 34 & 34 & 44 & \\ 
+% \hline
+% \textbf{Correct} &&&&&&&&&&&& \\
+% \textbf{NEL} & R@1          &   72.64 &  72.11 &   72.24 &   72.79 &  72.26 &  73.13 &   71.71 &   72.77 &  71.87 &   72.28 &  72.38 & \\
+% \hline
+% \textbf{NIL Pred} & P            &   55.43 &  55.17 &   54.87 &   54.26 &  55.52 &  55.61 &   55.96 &   56.21 &  55.83 &   54.38 &  55.32 & \\
+% & R            &   43.32 &  42.43 &   45.47 &   43.02 &  43.57 &  43.44 &   42.22 &   44.91 &  42.30 &   43.08 &  43.38 & \\
+% & F1           &   48.63 &  47.97 &   49.73 &   47.99 &  48.83 &  48.78 &   48.13 &   49.93 &  48.13 &   48.08 &  48.62 & \\
+% \hline
+% \textbf{NIL Clust} & MUC F1       &  100.00 &  80.00 &    - &  100.00 &  66.67 &  66.67 &    - &  100.00 &   - &    - &  51.33 & \\
+% $3Steps$ & B3 F1        &  100.00 &  97.26 &  100.00 &  100.00 &  95.65 &  97.78 &  100.00 &  100.00 &  97.14 &  100.00 &  98.78 & \\
+% & CEAF F1      &  100.00 &  96.89 &  100.00 &  100.00 &  94.53 &  96.12 &  100.00 &  100.00 &  95.24 &  100.00 &  98.28 & \\
+% & $\overline{F1}$       &  100.00 &  91.38 &   66.67 &  100.00 &  85.62 &  86.86 &   66.67 &  100.00 &  64.13 &   66.67 &  82.80 & \\
+\bottomrule
+\end{tabular}
+    \caption{Evaluation results: \textit{NEL}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the $3Steps$ clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. "-" represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \label{tab:superresults}
+\end{table*}
+
+Those errors could be mitigated by a HITL process, which merges clusters representing the same entities (fixing errors of the NIL predictor) or splits a cluster, removing wrong mentions.
+
+
+\subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
+The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on NEL results, as shown in table \ref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass experiment and with the ''correct`` experiment, while they deteriorate in the following batches.
+
+% hitl
+
+
+%Results obtained in this work show that the approach is promising, using pre-trained neural networks, but can be further improved by the addition of new modules and improvements of existing ones.
+
+%In particular, as already described above, a transformer-based model able to distinguish between mention-mention could significantly improve performances of the whole pipeline, with both a re-ranking of the candidates and providing a better distance score during NIL clustering.
+% In addition, it can be used also as a distance score between mentions in order to cluster them in the NIL clustering step.
+%This module, however, increases the whole complexity and computational cost at inference time, losing the interactivity of the pipeline.
+
+As previously explained, a major source of errors came from the false positives introduced by the management of NILs, suggesting that effective NIL prediction is an important challenge for the I-NEL task; in fact, low precision leads to the introduction of error into the pipeline and, therefore, to performance deterioration. % even if the classifier obtains relatively high precision levels (see table \ref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
+
+%In addition, the NIL predictor, which at the moment uses a logistic regression, may be improved by the use of linear transformations, since the use of non-linear and more complex models (such as random forest) offer no better results.
+%A future version may include more features, based on candidates distribution, as well as a standardization layer so that it can be pre-trained on a different dataset.
+%All those improvements however are not trivial both to train and test in order to obtain a model not based on dataset scores.
+
+% challenge and future work
+
+Finally, in our experiments, we use a single vector for novel entity representation: the medoid obtained from the clusters of the NIL mentions. Evidence (see Table \ref{tab:new_entities_recall}) show that this method is sub-optimal, despite being more efficient.
+The problem of how to represent new entities, for instance using more than one vector per cluster or with different strategies (e.g. bounding-boxes), is another important challenge in the I-NEL task that is worth studying in order to find a better compromise between effectiveness and efficiency. We leave this exploration to future works.
+% future work
+Also the problem of deciding when to update the KB is quite interesting (the index is now updated after having processed the first batch in which the new mention appears): it may be the case that collecting more observations of a new entity is necessary to obtain a good representation, possibly considering a confidence score.
+This aspect was ignored at the moment since it is highly correlated to the long-tail entities problem (in the meaning of ``mentioned few times''): in fact the dataset was modified in order to add a high number of new entities mentioned only once.
+Finding a good trade-off between getting useful representations and handle entities mentioned only once, is an interesting problem for future work.
+
+% \begin{enumerate}
+%     \item Improve NIL prediction.
+%     \item Improve NIL clustering.
+%     \item Further investigate on how the system behaves with long-tailed entities.
+% \end{enumerate}
+
+
+\subsection{Conclusion}
+In this work, we introduce the task of incremental NEL (I-NEL), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
+%&The purpose of the task is to reduce the human effort in updating existing KBs, automatically obtaining a representation of novel entities.
+
+% The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
+Our experiments show that a main challenge for I-NEL is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, i.e., entities not in the background KB and added to the NEW-KB in previous batches. 
+Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
+%A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
+%, obtaining worse and worse performance.
+% We presented our work as a strong baseline for the task of Incremental NEL (INEL), providing a modification of a ``static'' dataset \cite{Onoe_Durrett_2020} with a canonical order for data ingestion.
+Indeed, the performance of the NEL component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental NEL is NIL prediction.      
+%used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
+
+% \todo{future works}
+Future works include the application of our methodology to generate incremental versions of more datasets. In addition, we plan to elaborate on methods to address the main challenges found in I-NEL, especially in relation to the management of novel entities (NIL prediction and NIL mention representation).  
+%, and deeper studies to improve novel entities representation.
+% and additional studies on when to add a new entity to the KB.
+
+The dataset, the source code of the procedure to create it, and the code for the evaluation are openly available at \url{https://github.com/rpo19/Incremental-Entity-Extraction/}.
