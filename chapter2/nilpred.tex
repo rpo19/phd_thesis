@@ -21,6 +21,8 @@ For addressing the incompleteness problem of \acp{kr}, once identified, NIL ment
 \begin{definition}[NIL Clustering]
     \emph{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
 \end{definition}
+\todo{relation with coreference resolution }
+This task is closely related to \emph{coreference resolution}, the task that identifies whether two mentions corefer---i.e., they refer to the same entity~\cite{jm3}. However, coreference resolution typically addresses anaphoric expressions as well~\cite{jm3}, for instance by grouping pronouns together with their corresponding explicit mentions.
 
 NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
@@ -57,7 +59,12 @@ Another strategy is to add NIL as an additional class~\cite{Broscheit_2019,Rao20
 Binary classification approaches have also been widely studied~\cite{moreno_combining_word_entity_embeddings_2017,Yang2017TheTS,yang2013buptteam,Pink2013SYDNEYCA,zhou2013description,monahan2012lorify}. Some methods leveraged additional statistical or score-based features. \textcite{Yang2017TheTS}, for instance, incorporated the second-best candidate’s score and the standard deviation of the top-$k$ scores.
 
 Finally, some systems rely on alternative methods. For example, \textcite{Paikens-EtAl:2017:TAC-KBP} used estimated coherence scores between the linked entities in the document.
-\todo{add methods from moller}
+\todo{eventually add methods from moller. e.g. the ones using web search}
+
+\todo{same for clustering. moller is useful here too. review 7-15 from moller and from ijckg}
+\todo{better check and rephrase. include something from moller}
+In the context of NIL clustering, several basic models \cite{simone_15,simone_33,simone_73,simone_68,simone_27,simone_67,simone_38,simone_65,simone_63,simone_31} tackle the task by comparing surface forms directly, often relying on fuzzy similarity measures such as Jaccard or edit distance, or on handcrafted rules (e.g., for handling acronyms). Other methods \cite{simone_77,simone_65,simone_33} employ unsupervised or supervised learning with task-specific features to form clusters. Alternative strategies \cite{simone_2} leverage embedding-based approaches, such as FastText \cite{fasttext} or custom Word2Vec models \cite{simone_6} developed for languages lacking pretrained resources. A different line of work \cite{simone_24} proposes a three-step procedure: mentions are first grouped by surface form, then split using a bag-of-words representation of documents, and finally re-merged according to the centroid distance between sub-clusters.
+
 
 % Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
 
@@ -92,6 +99,8 @@ An alternative approach is suggested by \textcite{Gu_Qu_Wang_Huai_Yuan_Gui_2021}
 
 % llm based
 With respect to \ac{llm}-based approaches~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}, they perform NIL prediction in the candidate ranking step of \ac{nel} by mapping the task to a multi-choice question answering problem\todo{extend this categorization to el and nil pred}, including the NIL option, in the form of ``None of the Candidates'' and ``None of the entity match'', respectively.
+
+\todo{mention logan benchmarking for clustering. it is used in edin so inseert it in the middle}
 
 
 \todo{trattare insieme nil pred e clustering}
