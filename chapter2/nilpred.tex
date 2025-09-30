@@ -80,8 +80,14 @@ Still in 2022, \textcite{ayoola-etal-2022-refined} proposed ReFinED, ``an effici
 
 Also \textcite{Heist2023nastylinker} proposed a NIL-prediction aware \ac{nel} method, based on the dual encoder architecture~\cite{blink}, that uses a clustering phase, followed by a conflict resolution phase, to identify NIL entities as clusters without entities from the \ac{kr}. They evaluate on the NILK~\cite{nilk_dataset_2022} dataset.
 
+\textcite{agarwal-etal-2022-entity} method involves building a graph whose nodes correspond to mention and entities. The edges are weighted according to the mention-mention or mention-entity similarity, calculated using bi-encoder embeddings. Next, edges are pruned with heuristics that maintain the validity of contraints, e.g., a cluster contains at most one entity.
+
+\textcite{dong_reveal_the_unknown_2023} propose another extension of the dual encoder architecture of \textcite{blink} for NIL prediction\todo{}
+
+\textcite{Gu_Qu_Wang_Huai_Yuan_Gui_2021} mircopost similar to extend \todo{check}
+
 % targeting NIL
-\cite{agarwal-etal-2022-entity,dong_reveal_the_unknown_2023,moller2024entity}
+\cite{dong_reveal_the_unknown_2023,moller2024entity}
 % arborescense, blinkout, ?
 
 % llm based
