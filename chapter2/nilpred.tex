@@ -63,24 +63,26 @@ Finally, some systems rely on alternative methods. For example, \textcite{Paiken
 
 %%
 
-More recently, since 2022, the interest in NIL prediction has motivated multiple studies to enable the popular \ac{nel} approach BLINK~\cite{blink} for NIL prediction~\cite{ijckg2022,kassner-etal-2022-edin,Heist2023nastylinker,zhu-etal-2023-learn}.
+More recently, since 2022, the interest in NIL prediction has motivated multiple studies to improve the popular dual-encoder (bi-encoder and cross-encoder) \ac{nel} approach~\cite{blink} for NIL prediction~\cite{ijckg2022,kassner-etal-2022-edin,aydin-etal-2022-find,Heist2023nastylinker,zhu-etal-2023-learn}.
 
 \textcite{ijckg2022}---that is one of the contributions of my Ph.D., and is better detailed in \Cref{ijckg2022}---proposed a benchmark dataset, an evaluation procedure, and a baseline pipeline for \emph{incremental \acl{nel}}. In this scenario, given $N$ batches of textual documents $b_0..b_N$, corresponding to $N$ time-steps, and an initial \ac{kr} $KR_0$, each time a batch of documents $b_k$ is processed, the identified NIL entities are added to the \ac{kr} $KR_{k+1}$, which will be used as the refernce \ac{kr} when processing the batch $b_{k+1}$.
 
-Similarly, \textcite{kassner-etal-2022-edin} propose a dataset derived from Wikipedia and newspapers data, divided into two parts. The first part contains the documents exising before a time $t$, while the second the documents created after. The authors also proposed a pipeline-based system for incremental \acl{nel}.
+Similarly, \textcite{kassner-etal-2022-edin} propose a dataset derived from Wikipedia and newspapers data, divided into two parts. The first part contains the documents exising before a time $t$, while the second the documents created after. The authors also proposed a pipeline-based system for end-to-end incremental \acl{nel}, based on the bi-encoder. They use a threshold for NIL prediction and cluster all the identified mentions (including the non-NIL ones) together with the entities from the \ac{kr}, based on embeddings similarities and thresholds. The clusters without entities from the \ac{kr} corresponds to NIL entities.
 
-Other datasets have been proposed for ...~\cite{nilk_dataset_2022,tempel_2022}.
-\textcite{nilk_dataset_2022}. \textcite{tempel_2022} proposal is composed of ten yearly snapshots of Wikipedia from 2013 to 2022. NILK~\cite{nilk_dataset_2022} instead considers Wikidata as the reference \ac{kb}, using English Wikipedia for the  and is composed of two snapshots: Wikidata 2017 and 2022. 
-
-... wikipedia wikidata
-
-.... Wikipedia, ten snapshots from 2013 to 2022.
+Other two datasets have been proposed for incremental \ac{nel} in 2022~\cite{tempel_2022,nilk_dataset_2022}.
+\textcite{tempel_2022} proposal is composed of ten yearly snapshots of Wikipedia from 2013 to 2022. NILK~\cite{nilk_dataset_2022} instead considers Wikidata as the reference \ac{kb}, using English Wikipedia for the and is composed of two snapshots: Wikidata 2017 and 2022.
 
 % main entity linking approach also include nil 
-\cite{ayoola-etal-2022-refined}
+Still in 2022, \textcite{ayoola-etal-2022-refined} proposed ReFinED, ``an efficient zero-shot-capable approach to end-to-end \ac{nel}'', based on the bi-encoder architecture, and additionally able to perform NIL prediction. However, NIL prediction was not studied in the evaluation.
+\textcite{aydin-etal-2022-find} studied \ac{el} with NIL prediction in the funding domain, to better aid funding organization in tracking the outcome of their expenses.\todo{avoid repetitions with nel}
+
+\textcite{zhu-etal-2023-learn} proposed both a dataset and an improvement of the dual encoder \ac{nel} architecture, which performs NIL prediction applying a threshold on the mention-entity similarity. The dataset is created starting from the aliases of ambiguous seed entities and taking Wikipedia extracts mentioning the aliases balancing between when the mention is a hyperlink and when not. This because the author want to distinguish between NIL entities and ``non-entity phrases'', i.e., common phrases usually not considered entities, such as ``the householder''~\cite{zhu-etal-2023-learn}. About 10,000 entries were collected and manually annotated.
+
+Also \textcite{Heist2023nastylinker} proposed a NIL-prediction aware \ac{nel} method, based on the dual encoder architecture~\cite{blink}, that uses a clustering phase, followed by a conflict resolution phase, to identify NIL entities as clusters without entities from the \ac{kr}. They evaluate on the NILK~\cite{nilk_dataset_2022} dataset.
 
 % targeting NIL
-\cite{nilk_dataset_2022,agarwal-etal-2022-entity,tempel_2022,,dong_reveal_the_unknown_2023,moller2024entity}
+\cite{agarwal-etal-2022-entity,dong_reveal_the_unknown_2023,moller2024entity}
+% arborescense, blinkout, ?
 
 % llm based
 \cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}
