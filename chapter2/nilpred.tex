@@ -82,41 +82,22 @@ Also \textcite{Heist2023nastylinker} proposed a NIL-prediction aware \ac{nel} me
 
 \textcite{agarwal-etal-2022-entity} method involves building a graph whose nodes correspond to mention and entities. The edges are weighted according to the mention-mention or mention-entity similarity, calculated using bi-encoder embeddings. Next, edges are pruned with heuristics that maintain the validity of contraints, e.g., a cluster contains at most one entity.
 
-\textcite{dong_reveal_the_unknown_2023} propose another extension of the dual encoder architecture of \textcite{blink} for NIL prediction\todo{}
+\textcite{dong_reveal_the_unknown_2023} propose another extension of the dual encoder architecture of \textcite{blink} for NIL prediction. The authors add a NIL entity to the \ac{kr} described by ``It is a NIL option'' and use it with both bi-encoder and cross-encoder---including it in top-k entity retrieved, if not present, before the cross-encoder step. They add an additional linear layer to the cross-encoder with a sigmoid function to compute a NIL probability score and jointly train the cross-encoder for \ac{nel} and NIL prediction. Finally, they experiment different strategies for building NIL-aware datasets, namely manual labeling, pruning---which implies removing a portion of entities, labeling their mentions to NIL---or \ac{kr} versioning---based on snapshots of the same \ac{kr}, taken at different times.
 
-\textcite{Gu_Qu_Wang_Huai_Yuan_Gui_2021} mircopost similar to extend \todo{check}
+\todo{improve this review with some categorization,... not just a mere drop of summaries}
 
-% targeting NIL
-\cite{dong_reveal_the_unknown_2023,moller2024entity}
-% arborescense, blinkout, ?
+\textcite{moller2024entity} addressed both NIL prediction and clustering focusing on Wikidata and combining the bi-encoder architecure with knowledge graph embeddings (TransE~\cite{transe_2013}). They retrieve a set of 100 candidates with TF-IDF and fuzzy search, then they rank them according to a) the mention-entity similarity calculated with bi-encoder embeddings of the mention in context and of the Wikidata entity description, b) popularity of the candidate entity, c) the average similarity with past linkings calculated with TransE entity embeddings. In a second stage, they cluster---with DBSCAN~\cite{dbscan_1996}---the NIL mentions based on the similarities from the mention encoder embeddings and the TransE embeddings combined with a trained linear layer.
+
+An alternative approach is suggested by \textcite{Gu_Qu_Wang_Huai_Yuan_Gui_2021} which focuses on mircoposts and avoids the dual-encoder paradigm. The authors modeled the ranking phase of \ac{nel} with NIL prediction task as multi-choice \acl{qa}, giving the mention with candidate entities with description and the NIL option as input to a BERT model.
 
 % llm based
-\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}
+With respect to \ac{llm}-based approaches~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}, they perform NIL prediction in the candidate ranking step of \ac{nel} by mapping the task to a multi-choice question answering problem\todo{extend this categorization to el and nil pred}, including the NIL option, in the form of ``None of the Candidates'' and ``None of the entity match'', respectively.
 
-\todo{llm based}
-
-
-\todo{neel challenge}
 
 \todo{trattare insieme nil pred e clustering}
 
-\todo{controlla chi fa incremental come noi in piu time steps. noi, edin}
-
-\todo{moller paper reviewed a lot of approaches}
-\todo{newer neural / bert based el systems do not target NIL pred, so contribution (better described later in section....)}
-\todo{our contribution}
 
 
 
 
 
-\todo{add recent studies}
-
-In most cases, these techniques are incorporated into pipeline-based systems that treat NIL prediction and \ac{nel} as distinct steps~\cite{}. By contrast, other works have proposed joint models to reduce error propagation and leverage dependencies between the two tasks \cite{fahrni2013hits,martins-etal-2019-joint}.
-
-
-
-\subsection{NIL Clustering}
-\subsection{coreference resolution}
-\todo{what did LLMs change?}
-\subsection{Human-in-the-Loop}
