@@ -4,9 +4,9 @@ Semantic Table Interpretation}
 
 
 The increased interest in the \ac{sti} has led to the construction of several datasets (gold standards) in the last decade. As it will be better described later, these datasets often include only a part of the characteristics of Web tables 
-(\eg small tables with few mentions, easy to annotate semantically~\cite{Zhang2020}).
+(e.g., small tables with few mentions, easy to annotate semantically~\cite{Zhang2020}).
 
-As a consequence, we created a new dataset, \mammotab, composed of {\numprint{980254}} tables extracted from {\numprint{21149260}} Wikipedia pages and annotated through Wikidata. The number and the different features of the tables make \mammotab a good resource for testing and/or training \ac{sti} approaches. In particular, because of its dimension \mammotab is a useful tool to train data-hungry models, which require a vast amount of data (\eg entity linking systems based on large language models).
+As a consequence, we created a new dataset, \mammotab, composed of {\numprint{980254}} tables extracted from {\numprint{21149260}} Wikipedia pages and annotated through Wikidata. The number and the different features of the tables make \mammotab a good resource for testing and/or training \ac{sti} approaches. In particular, because of its dimension \mammotab is a useful tool to train data-hungry models, which require a vast amount of data (e.g., entity linking systems based on large language models).
 
 The rest of the paper is organised as follows. Section \ref{sec:dataset} will present a brief analysis of the state-of-the-art related datasets used in the context of the \ac{sti}. Subsequently, \mammotab is described (Section \ref{sec:the-mammotab-dataset}), its characteristics are listed (Section \ref{sec:dataset-profile}), and the pipeline used for its implementation is presented (Section \ref{sec:implemetation}). The evaluation is depicted in Section \ref{sec:evaluation} through a state-of-the-art \ac{sti} approach.
 
@@ -14,17 +14,17 @@ The rest of the paper is organised as follows. Section \ref{sec:dataset} will pr
 \todo{update}
 \label{sec:dataset}
 
-Although several approaches deal with semantic annotations on tabular data, there are limited \ac{gss} for assessing the quality of these annotations. The main ones are T2Dv2, Limaye, Musicbrainz, IMDB, Taheryan, Tough Table and SemTab. Table \ref{table:stats-gss} shows statistics for the \ac{gss}.
+Although several approaches deal with semantic annotations on tabular data, there are limited \acp{gs} for assessing the quality of these annotations. The main ones are T2Dv2, Limaye, Musicbrainz, IMDB, Taheryan, Tough Table and SemTab. Table \ref{table:stats-gss} shows statistics for the \acp{gs}.
 
-\input{table_datasets}
+\input{table/table_datasets}
 
 An excellent \ac{sti} approach must consider and adequately balance the different features of a table (or a set of tables). The annotation involves several key challenges: 
 i) \textit{disambiguation}: the class of the entities described in a table are not known in advance, and those entities may correspond to more than one class in the \ac{kg}.
 ii) \textit{homonymy}: this issue is related to the presence of different entities with the same name and class.
-iii) \textit{matching}: the mention in the table may be syntactically different from the label of the entity in a \ac{kg} (\ie use of acronyms, aliases and typos).
+iii) \textit{matching}: the mention in the table may be syntactically different from the label of the entity in a \ac{kg} (i.e., use of acronyms, aliases and typos).
 iv) \textit{NIL-mentions}: the approach must also consider strings that refer to entities for which a representation has not yet been created within the \ac{kg}, namely NIL-mentions. 
 v) \textit{literal and named-entity}: in a table, there can be columns that contain named-entity mentions (NE-column) and columns containing strings (L-column).
-vi) \textit{missing context}: it is often easier to extract the context from textual documents than from tables due to the amount of content to be processed. For instance, the header (\ie the first row of a table) which usually contains descriptive attributes for the columns, may or may not be present.
+vi) \textit{missing context}: it is often easier to extract the context from textual documents than from tables due to the amount of content to be processed. For instance, the header (i.e., the first row of a table) which usually contains descriptive attributes for the columns, may or may not be present.
 vii) \textit{amount of data}: the approach must consider large tables with many rows and columns, and tables with very few mentions.
 viii) \textit{different domains}: the tables within a set can belong to very general or specific domains. \mammotab has been designed to cover all these cases, making it a resource for evaluating or training \ac{sti} approaches.
 
@@ -35,7 +35,7 @@ Some pipelines for extracting tables from Wikipedia have been presented in the s
 \label{sec:the-mammotab-dataset}
 
 The annotations inside \mammotab are based on Wikidata v. 20220520 and are provided following the structure used by the SemTab challenge. One table is stored in one CSV file, and each line corresponds to a table row. The target columns for annotation, CTA, and CEA annotations are saved in CSV files. A JSON document has also been created for each Wikipedia page with additional information about the tables extracted by that page (see Listing \ref{lst:structure}). We released \mammotab in Zenodo\footnote{\href{https://zenodo.org/deposit/7014472}{zenodo.org/deposit/7014472}} following the FAIR Guiding Principles\footnote{\href{https://www.nature.com/articles/sdata201618}{www.nature.com/articles/sdata201618}}. The dataset is released under the Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) licence\footnote{\href{https://creativecommons.org/licenses/by-sa/4.0/}{creativecommons.org/licenses/by-sa/4.0/}}.
-\mammotab contains a variety of tables that allow to evaluate approaches considering the challenges previously listed: in the dataset there are tables containing i) entities hard to disambiguate (\eg table id LBJJ1WGD - reactor Clinton)\footnote{\href{https://en.wikipedia.org/wiki/List_of_cancelled_nuclear_reactors_in_the_United_States}{en.wikipedia.org/wiki/List\_of\_cancelled\_nuclear\_reactors\_in\_the\_United\_States}}, ii) cases of homonymy (\eg table id MRBWAAOA - soccer player Michael Jordan)\footnote{\href{https://en.wikipedia.org/wiki/USA_Today_All-USA_high_school_football_team}{en.wikipedia.org/wiki/USA\_Today\_All-USA\_high\_school\_football\_team}}, iii) aliases (table id JCND1XGG - Tom Riddle alias of Lord Voldemort)\footnote{\href{https://en.wikipedia.org/wiki/Christian_Coulson}{en.wikipedia.org/wiki/Christian\_Coulson}}, and iv) NIL-mentions (\eg table id MSTBGKPR - KKOP-LP Wildcat Broad. Inc)\footnote{\href{https://en.wikipedia.org/wiki/List _of_radio_stations_in_Nebraska}{en.wikipedia.org/wiki/List\_of\_radio\_stations\_in\_Nebraska}}.
+\mammotab contains a variety of tables that allow to evaluate approaches considering the challenges previously listed: in the dataset there are tables containing i) entities hard to disambiguate (e.g., table id LBJJ1WGD - reactor Clinton)\footnote{\href{https://en.wikipedia.org/wiki/List_of_cancelled_nuclear_reactors_in_the_United_States}{en.wikipedia.org/wiki/List\_of\_cancelled\_nuclear\_reactors\_in\_the\_United\_States}}, ii) cases of homonymy (e.g., table id MRBWAAOA - soccer player Michael Jordan)\footnote{\href{https://en.wikipedia.org/wiki/USA_Today_All-USA_high_school_football_team}{en.wikipedia.org/wiki/USA\_Today\_All-USA\_high\_school\_football\_team}}, iii) aliases (table id JCND1XGG - Tom Riddle alias of Lord Voldemort)\footnote{\href{https://en.wikipedia.org/wiki/Christian_Coulson}{en.wikipedia.org/wiki/Christian\_Coulson}}, and iv) NIL-mentions (e.g., table id MSTBGKPR - KKOP-LP Wildcat Broad. Inc)\footnote{\href{https://en.wikipedia.org/wiki/List _of_radio_stations_in_Nebraska}{en.wikipedia.org/wiki/List\_of\_radio\_stations\_in\_Nebraska}}.
 
 \paragraph{Dataset Profile}
 \label{sec:dataset-profile}
@@ -104,7 +104,7 @@ iii) \textit{tables normalisation and cleaning}: each cell is normalised and cle
 iv) \textit{tables analysis}: each table is analysed to check for cells that contain links to Wikipedia pages (wikitext syntax: [[link]]). A cell is considered as a mention of an entity only if the entire cell is a link. The remaining cells, containing multiple links or additional words around the link, may also be mentions of entities, but we consider them uncertain and mark them as UNKNOWN;
 v) \textit{tables storing}: tables that have at least three fully linked cells in a column are stored;
 vi) \textit{table header and table caption detection}: table header (wikitext syntax: !header) and table caption, if any, are stored and added to the current table;
-vii) \textit{column analysis}: each column is analysed and classified into Literal columns (L-column) for datatype values (\eg strings, numbers, dates, such as 4808, 10/04/1983), or Named-Entity columns (NE-column) if it contains links to Wikipedia pages;
+vii) \textit{column analysis}: each column is analysed and classified into Literal columns (L-column) for datatype values (e.g., strings, numbers, dates, such as 4808, 10/04/1983), or Named-Entity columns (NE-column) if it contains links to Wikipedia pages;
 viii) \textit{entity linking - CEA}: for each Wikipedia link, the related Wikidata entity is extracted;
 ix) \textit{column annotation - CTA}: column types are set by choosing the most specific entity class (according to Wikidata subclass relationships) that is shared by most of the column rows. For columns with less than 5 rows, all cells must be instances of that class, while, for bigger columns, at least 60\% of the cells are instances of that class;
 x) \textit{NIL-identification}: we mark as NIL the cells containing Wikipedia red links\footnote{\href{https://en.wikipedia.org/wiki/Wikipedia:Red_link}{en.wikipedia.org/wiki/Wikipedia:Red\_link}}, which are those links referring to a page that does not exist.
@@ -163,4 +163,4 @@ SemTab2021 R3    & 0.968 & 0.984 & 0.993 \\ \hline
 \end{table}
 
 The values obtained by MTab versus \mammotab are lower than the other datasets. A substantial decrease in the F1-Score in the CTA can also be noted.
-The results show that in the current version, the \mammotab tables are a valuable resource for testing \ac{sti} approaches which must be characterised by sophisticated mechanisms that consider many semantics aspects. However, as done in other datasets~\cite{Cutrona2020}, it is possible to add some noise (\ie adding misspelt or fake mentions) to increase the complexity of the annotation task.
+The results show that in the current version, the \mammotab tables are a valuable resource for testing \ac{sti} approaches which must be characterised by sophisticated mechanisms that consider many semantics aspects. However, as done in other datasets~\cite{Cutrona2020}, it is possible to add some noise (i.e., adding misspelt or fake mentions) to increase the complexity of the annotation task.

@@ -1,0 +1,172 @@
+\setlength{\tabcolsep}{1.0pt}
+
+\begin{table}[ht]
+\caption{Statistics for the most common datasets. `-' indicates unknown.}
+\label{table:stats-gss}
+\centering
+\scriptsize
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{\textbf{GS}} & \multicolumn{1}{c|}{\textbf{Tables}} & \multicolumn{1}{c|}{\textbf{Columns}} & \multicolumn{1}{c|}{\textbf{Rows}} & \multicolumn{1}{c|}{\textbf{Classes}} & \multicolumn{1}{c|}{\textbf{Entities}} & \multicolumn{1}{c|}{\textbf{Predicates}} & \multicolumn{1}{c|}{\textbf{KG}}                                                      \\ \hline
+\textbf{T2Dv2} \cite{Ritze2017} & 234 & \numprint{1157} & \numprint{27996} & 39 & - & 154 & DBpedia \\ \hline
+\textbf{Limaye} \cite{Limaye2010} & \numprint{6522} & - & - & 747 & \numprint{142737} & 90 & Wikipedia Yago \\ \hline
+\textbf{LimayeAll} \cite{Zhang2017} & \numprint{6310} & \numprint{28547} & \numprint{135978} & - & \numprint{227046} & - & Freebase \\ \hline
+\textbf{Limaye200} \cite{Zhang2017} & 200 & 903 & \numprint{4144} & 615 & - & 361 & Freebase \\ \hline
+\textbf{MusicBrainz} \cite{Zhang2017} & \numprint{1406} & \numprint{9842} & - & \numprint{9842} & \numprint{93266} & \numprint{7030} & Freebase                                                                              \\ \hline
+\textbf{IMDB} \cite{Zhang2017} & \numprint{7416} & \numprint{7416} & - & \numprint{7416} & \numprint{92321} & - & Freebase \\ \hline
+\textbf{Taheriyan} \cite{Taheriyan2016} & 29 & \numprint{2467} & \numprint{16006} & - & - & - & Schema \\ \hline
+\textbf{Tough Table (2T)} \cite{Cutrona2020} & 180 & \numprint{194438} & 802 & 540 & \numprint{667244} & 0 & Wikidata DBpedia \\ \hline
+
+\begin{tabular}{@{}c|c@{}}
+\multirow{4}{*}{\textbf{SemTab2019}} 
+& \textbf{~R1~} \\
+& \textbf{~R2~} \\
+& \textbf{~R3~} \\
+& \textbf{~R4~} \\
+\end{tabular}
+& 
+\begin{tabular}{@{}c@{}}
+64 \\
+\numprint{11924} \\
+\numprint{2161} \\
+817 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+320 \\
+\numprint{59620} \\
+\numprint{10805} \\
+\numprint{3268} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{9088} \\
+\numprint{298100} \\
+\numprint{153431} \\
+\numprint{51471} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+120 \\
+\numprint{14780} \\
+\numprint{5752}  \\
+\numprint{1732}  \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{8418}   \\
+\numprint{463796} \\
+\numprint{406827} \\
+\numprint{107352} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+ 116 \\
+\numprint{6762}\\
+\numprint{7575}\\
+\numprint{2747}\\
+\end{tabular}
+&
+DBpedia
+\\ \hline
+
+\begin{tabular}{@{}c|c@{}}
+\multirow{4}{*}{\textbf{SemTab2020}} 
+& \textbf{~R1~} \\
+& \textbf{~R2~} \\
+& \textbf{~R3~} \\
+& \textbf{~R4~} \\
+\end{tabular}
+& 
+\begin{tabular}{@{}c@{}}
+\numprint{34294} \\
+\numprint{12173} \\
+\numprint{62614} \\
+\numprint{22387} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{170068} \\
+\numprint{55951} \\
+\numprint{229321} \\
+\numprint{79552} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{249329} \\
+\numprint{84896}  \\
+\numprint{396903} \\
+\numprint{670335} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{135773}\\
+\numprint{43752}\\
+\numprint{166632}\\
+\numprint{32461}\\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{985109}\\
+\numprint{283446}\\
+\numprint{768324}\\
+\numprint{1662164} \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+\numprint{135773}\\
+\numprint{43752}\\
+\numprint{166632}\\
+\numprint{56475}\\
+\end{tabular}
+&
+Wikidata
+\\ \hline
+
+\begin{tabular}{@{}l|l@{}}
+\multirow{4}{*}{\textbf{SemTab2021}} 
+& \textbf{~R1~} \\
+& \textbf{~R2~} \\
+& \textbf{~R3~} \\
+\end{tabular}
+& 
+\begin{tabular}{@{}c@{}}
+180 \\
+1750 \\
+7207 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+802 \\
+5589 \\
+17902 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+194438 \\
+29280 \\
+58949 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+539 \\
+2190 \\
+7206 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+667243 \\
+47439 \\
+58948 \\
+\end{tabular}
+&
+\begin{tabular}{@{}c@{}}
+56475 \\
+3835 \\
+10694 \\
+\end{tabular}
+&
+Wikidata
+\\ \hline
+\end{tabular}
+\end{table}

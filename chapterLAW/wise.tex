@@ -3,3 +3,805 @@
 \todo{rw ima and investigations}
 
 \todo{divide the contributions between extraction and access. merge all extraction and then all access}
+
+\subsection{intro}
+
+% Use of knowledge graph to support an investigation.
+% A che cosa serve?
+% come valuti l'approccio proposto?: domande ai magistrati che ci dicono le considerazioni qualitative
+% ci servono degli esempi da far vedere
+% valutazione di performance senza mostrare dati, a posteriori
+% audio non servono negli esempi
+
+In a criminal investigation, \textit{investigators} like prosecutors and law enforcers %\footnote{We use the term \textit{investigators} to refer broadly to prosecutors and law enforcement personnel, typically coordinated by prosecutors, without focusing on specific cooperation structures, as these vary by country.} 
+need to acquire and analyze evidence collected from a large number of heterogeneous sources, including structured, unstructured, and multimedia data~\cite{batini2021semantic}.
+
+Considering the crucial role of entities in this domain, it is not surprising that semantic data integration and knowledge graphs (KGs)~\cite{knoblock2015exploiting} have been proposed as valuable assets to support investigative activities~\cite{szekely2015building,batini2021semantic}. Semantics is applied to interlink and organize data collected from heterogeneous sources, adopting an entity-centric data management approach.
+% Even a lightweight use of KGs can provide several benefits to help investigators search over large amounts of data and get insights from it~\cite{szekely2015building}.
+Several companies operating with semantic models also target investigative applications, e.g., Siren\footnote{\url{https://siren.io/}}. Generative AI and Language Models are expected to significantly impact data processing in this domain. However, we believe that rather than diminishing the value of semantics, they can unlock new opportunities for data integration and organization. 
+
+
+In this work, we address the problem of supporting the analysis of the information extracted from Instant Messaging Apps (IMAs) like WhatsApp. Investigators report that fully analyzing IMA data is very effort-consuming. In two investigations considered, over 1000 chats were collected. Current software offers limited support, mainly scrolling and syntactic search, while analyzing voice messages is even more demanding and unsupported. As a result, the time required for analysis can exceed available resources.
+
+%As a rough estimate, eight hours of work are estimated to provide transcripts for one hour of audio content.  
+
+
+
+%the increased number of exchanged voice messages makes it almost impossible to access a significant amount of data, which may contain valuable content. 
+
+% the Suspects' smartphones are often confiscated and the contained data is inspected. But the inspection process may be very effort consuming: for instance, WhatsApp chats may contain thousands of text messages, voice messages, pictures and other attachments.
+
+%To give the reader an idea, in an investigation we are working on as consultants a human would take more than 9 hours just to listen to all the voice messages in a single suspect's smartphone.
+
+This work is part of a research project funded by the Italian Ministry of Justice, where two teams coordinated by the CINI consortium are experimenting with semantic data integration approaches to support criminal investigations~\cite{batini2021semantic}. Our mission is to develop Proof-of-Concepts (PoCs) to evaluate the feasibility and usefulness of AI-based solutions and define key functionalities for final software products. Specifically, in IMA analysis, we aim to leverage deep learning-based speech-to-text technology to transcribe audio content in IMAs and assess its suitability, while integrating this into a semantic data integration paradigm. Here, chats (and transcripts) are processed to extract entities, and integrated data is made accessible through a semantic search application. Our consultant contract allows us to develop PoCs, write reports, and collect feedback from investigators. While the project is ongoing, we believe the activities and preliminary results are worth sharing with the research community.
+
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{images/wise/overview.drawio.pdf}
+\caption{Overview of the proposed solution.} \label{fig:overview}
+\end{figure}
+
+A sketch of our solution is depicted in Figure~\ref{fig:overview}. It combines KGs to organize data extracted from IMA, deep learning-based speech-to-text technology to transcribe audio messages, NLP to extract entities and annotate chats, and semantic search to access the data.
+Chat dumps include message content and metadata, such as participants, timestamps, and message types. The dumps are processed to populate a property graph, the chat KG, stored in Neo4j\footnote{https://neo4j.com/}. The graph represents relational data (chats, participants, exchanged messages) and message content. Multimedia enrichment generates textual content from audio messages and other attachments, enabling search functionality and entity extraction from this data. Currently, we focus on transcribing audio messages with the Whisper APIs~\cite{radford23a-whisper}, but the figure suggests potential extensions to image-to-text and video-to-text enrichment.
+Entities in the chat metadata (senders, participants) are parsed to construct the graph. For message content, we employ a Named Entity Recognition and Linking (NEEL) pipeline adapted from previous work~\cite{pozzi2023,pozzi23aixia}.
+It combines Named Entity Recognition (NER), Named Entity Linking (NEL), NIL prediction and entity clustering (for more details, see Section~\ref{sec:approach}).
+With NEEL, we annotate the chat content, creating an annotated corpus, and we update the KG with the extracted entities.
+
+In this paper, we consider two User Interfaces (UI) for accessing data and gaining insights:
+the first is a native Neo4j UI that supports querying and visual exploration of the KG, which was a major factor in choosing Neo4j for storage. The second UI is DAVE (Document Annotation Validation and Exploration), a web application for visualizing, searching, and editing annotated documents, where users can use faceted search to filter results with entity-based facets. 
+
+This paper is structured as follows: in Section~\ref{sec:context} we contextualize our work and discuss the relevance of IMA for criminal investigations; in Section~\ref{sec:relatedworks}, we discuss related work. Section~\ref{sec:approach} describes in detail the components of our approach and Section~\ref{sec:results_and_challenges} discusses experimental results and challenges. Conclusions are presented in Section~\ref{sec:conclusion}.
+Finally, we report our ethical considerations in Section~\ref{sec:ethics}.
+
+%\todo{spiegare come colleghiamo nlp e kg! nlp sfruttando info strutturate? triener?}
+
+% \todo{feedback from stakeholders. mettere quando parliamo del progetto sora}
+
+% Once messaging data is processed by the entity extraction pipeline...
+
+% Our aim is to provide stakeholders the means to grasp knowledge out of these ``massive'' information sources.
+
+
+% using entity extraction techniques, knowledge graphs, and recent speech-to-text models.
+
+% With entity extraction techniques we refer to named entity recognition (NER), the task of \todo{}, named entity linking (NEL), \todo{}, NIL Prediction,, and NIL clustering. In fact these systems combined (their combination is often obtained with a pipeline) allow to extract the entities mentioned in textual documents, or in an entire chat.
+
+% Then, knowledge graphs are suitable for representing connecting entities, such as chats, messages, people, locations, etc., so that these connections can be explored by end users. \todo{example queries}
+
+% With respect to voice messages we use recent speech-to-text models to obtain the transcriptions to process with the entity extraction pipeline.
+
+% Finally, while most work in legal entity extraction focused on NER, we believe that in a context such as investigations it is vital to go beyond mentions reaching a ``knowledge layer'' though the tasks of NEL, NIL prediction, and entity clustering and by representing the extracted knowledge in a knowledge graph.
+
+%\todo{perchè facciamo nil prediction e clustering? cosa ne facciamo delle nuove entità}
+%\todo{chiarire bene cosa facciamo già e cosa invece vogliamo fare}
+
+%\todo{fig:1 caption}
+
+
+% \todo{pensiamo a strutturare anche come sappiamo che andrebbe fatto:
+% estrazione metadati in KG, ``multimedia enrichment'' (trascrizione audio, captioning) e ora lancio entity extraction (su un messaggio alla volta o su chat intera?) }
+
+
+
+%\todo{un po' di soa. Recent advancement in ...}
+
+
+\subsection{context}
+
+
+%Different software products are currently used in investigations, and are, most often, operated by law enforcement personnel and consultants. There are a few niche advanced products that apply techniques quite close to those considered in semantic data integration. However, costs and overhead associated with the most advanced software are often extremely high, incompatible with most investigation budgets, and used only in peculiar cases of national interest. 
+%Most of the software used has a quite deep and narrow focus; examples include software to analyze specific input, such as in/out calls and text messages, GPS traces, social media (where link exploration is also supported), company databases, and so on. 
+%In relation to the analysis of IMA, investigators named Cellebrite\footnote{\url{https://cellebrite.com/}} as a reference product they can seldom use. We found that core features of more sophisticated products by international vendors are sometimes included in simpler products used in local markets. A local product used by our collaborators targets the analysis of the complete mobile phone, supporting users to explore data from a user interface and perform textual searches. However, investigators found that the knowledge expiration process is still quite limited because search is based on syntactic patterns. 
+
+%The approach discussed in this paper is the result of empirical work conducted as part of a National project to develop semantic applications to support crime investigation in Italy. The role of research teams involved in the project - authors of this paper form one of these teams - is twofold: evaluate the application of novel ideas and technology based on AI by developing Proof-of-Concepts (PoCs) to be presented and analyzed by stakeholders; identify functionalities to be developed by larger IT companies into full-fledged software products in later stages. 
+
+The broader scope of the project this work is part of is to apply semantic integration methodologies to manage the large amount of data collected in the investigation~\cite{batini2021semantic}. This data comes from a heterogeneity of sources, including documents such as reports by consultants, (semi-)structured files like phone call records and bank transfers, and digitalized papers seized during the investigation. As a result of the previous interactions, we had the first positive feedback on the overall semantic integration concept and defined a reference architecture~\cite{batini2021semantic}. In a later stage,  
+%of collaboration, prompted by the prosecutors' feedback, 
+we focused on more specific questions:
+which aspects of their activities can AI and semantic integration improve most?
+
+The first aspect we identified is the need to \textbf{integrate the pieces of evidence} collected directly and indirectly. During the investigation, before the decision of formulating or dropping charges for the trial follow-up, and during the preparation for the trial, prosecutors need to search in the documentation, reason on top of it, and use it for structuring an argument. Even when different specialized products are used, integration across pieces of evidence
+%, not to mention argumentation, 
+are processes where available software products offer no or very limited help.   
+%In this process, it is important to collect evidence related to a specific question, typical questions are, what  
+
+A second aspect we identified is the need to \textbf{quickly access content whose analysis represents a critical barrier} because of the associated costs (time and human effort). Such costs, in the best case,  impact dramatically on the length of the investigation, and, in the worst case, prevent them from extending the analyses to the scale they deem useful (budget allocated to investigations may change also depending on the severity of the charges).
+%~\footnote{We refer to limitations of tools used in current activities.} 
+%Examples of effort-demanding activities are the analysis of semi-structured data such as mobile calls, bank transfers, credit card statements, and similar data. Based on the approach proposed in~\cite{batini2021semantic}, our co-authors, for example, applied wrapping mechanisms and knowledge graphs to support the analysis of credit card purchases for a number of investigated subjects that was not possible at a given cost. 
+%
+An effort-demanding activity that is considered particularly important in investigations is the analysis of data collected from IMA on mobile phones seized during an investigation, which we consider in this paper.  
+
+%Despite what is described here must be considered as part of a wider integration objective plan, in this paper we report our work dealing with mobile data, where we discuss an important synergy between knowledge graphs and generative AI. When a subject is investigated his/her mobile data is seized and analyzed. 
+
+
+
+%We have been involved in this project since 2020. 
+%At the time of writing, this process went through three years when we had the chance to interact with prosecutors and law enforcers to collect requirements and present the proposed ideas. In this process, we have been appointed as official consultants in the investigation to have legit access to confidential and sensitive data we worked with. 
+
+ 
+
+
+
+
+%\subsection{Relevance of IMA Data and Expected Outcomes}
+
+IMA data found in seized mobile phones 
+%is crucial in many investigations today. These data 
+provide valuable insights into the owner's communication network, and enclose messages and attachments (images, audio, and video files) that often can be used as evidence or hints for supporting, rejecting, or triggering investigative hypotheses. 
+%In relation to available software the analysis of IMA, investigators named Cellebrite~\footnote{\url{https://cellebrite.com/}} as a reference product they can seldom use. We found that core features of more sophisticated products by international vendors are sometimes included in simpler products used in local markets. 
+%A local software product used by 
+In some investigations, law enforcers 
+%we interacted with 
+use a software product to inspect its whole content, which helps users explore data from a user interface and perform textual searches. However, investigators found that the knowledge exploration process is still quite limited because searching is based on syntactic patterns only, and no integration support is offered. They also know products on the global market with richer features, 
+%e.g., Cellebrite~\footnote{\url{https://cellebrite.com/}}, 
+but reported that the costs of licenses are incompatible with most of the investigations.    
+%Here we focus on messaging in social apps for a few main reasons: according to investigators data in these apps provide a crucial information source, they not only contain messages and a good proxy to the relational network of the subject, but also exchanged files and content. In particular, we focused on 
+We started to unlock the content of audio files, because, according to investigators, they are often too much resource-demanding to process. An upper bound estimate of the time required to transcribe 1h of speech is 8h of work.%; dedicated software provides features to cut this effort by 20-30\%. 
+%( no end-to-end speech-to-text so far). 
+%An obvious extension to this work is to apply a similar enrichment process to images and, soon, videos. The key objective is to unlock instant messaging data to search for evidence about some investigative hypothesis in the more generic form of network analysis or in the specific form of factual analysis. 
+
+
+
+%In conclusion, in this paper, we focus on a particular data modality, audio, selected because of high impact, to highlight the potential of combining generative AI and knowledge graphs to support criminal investigations.  
+
+
+
+%In order to do so, we had the chance to work with teams of persecutors and to make experiments with real-world documents used in archived investigations (those documents, however, can not be shared to third-parties). Main investigative methodologies which may be improved are cellphone traces, financial transactions (the principle of \textit{``segui il denaro''}, ``follow the money''), entity search in texts and data integration between all sources. As a result of this process we devised a data flow model to organize investigation-specific informaion as the investigative process unfolds and identified the functional architecture and its components.    
+%The final objective of the project is by no mean replace the human decision but to empower it with better tools to explore the evidence collected within the investigation.
+%\begin{Example}
+%\end{Example}
+% uso del sistema in ambito reale
+
+%\subsection{Expected outcome}
+% The work discussed in this paper was carried out on data collected from two investigations, and developed in two stages. In \textit{a first stage}, we extracted the graph from the data collected in a first investigation, developed the support for graph-based queries and visual exploration of the graph, and used these interfaces to write a report to answer specific questions formulated by the investigators; the report was submitted and the results discussed with the investigators. In a \textit{second stage}, we tested speech-to-text processing and entity extraction. The report and a PoC to demonstrate the proposed solutions are the expected outcomes of our collaborative work. As a result of these outcomes, we have been given a second investigation to further evaluate the results.  
+
+The work discussed in this paper was conducted in two stages using data from two investigations. In the \textit{first stage}, we extracted a graph from the initial investigation's data, developed graph-based querying and visualization tools, and produced a report addressing specific questions posed by the investigators as the final result of our consultancy contract. In the second stage, we tested speech-to-text processing and entity extraction. The expected outcomes of our work consist, indeed, of a report and a PoC to demonstrate the proposed solutions.
+
+%Our work is framed to produce the following output:
+%\begin{itemize}
+%    \item A PoC that shows how organized data can support better search on the content of instant messaging apps
+%    \item A report that analyzes the content according to specific questions, where the PoC is used by its creators under the role of consultants to search on the acquired data, generate answers and plots to provide evidence for the specific questions. 
+%\end{itemize}
+
+While factual analysis may target facts that investigators believe may have happened, it may also target the rejection of claims of the investigated subject. For example, in one case the Person Under Investigation (PUI) claims that he had scheduled a meeting with another subject, but investigators did not believe that the claim was grounded; while the subject could not prove that the meeting had happened, we were asked to check at the best of our capacity traces of such an encounter, to support or reject the argument that no evidence of such meeting is found in the mobile phone. These questions highlight two important ethical aspects of having AI tools in the loop:
+\begin{enumerate}
+    \item It is important to ensure that the evidence extrapolation process can be traced, controlled, and explained, allowing investigators to use the evidence for decision-making and, later, in the trial. Therefore, we believe that empowering search is the safest approach to propose today.  
+    \item It is important to design solutions that consider the limitations of the adopted models and tools, and the intrinsic uncertainty associated with data analysis; as a consequence, our PoC tools are designed to allow modifying annotations predicted by algorithms, support syntactic keyword search as a base functionality, and help users understand the quality of the results.   
+\end{enumerate}
+
+As such, we remark again that the final objective of the target solution is by no means to substitute the human decision-maker but only to empower her/him with better tools to explore the evidence collected within the investigation so as to build more robust arguments and better defend in the trial.
+
+In relation to the project objectives summarized in Section~\ref{sec:introduction} (PoC development and feature specification), we remark that our goal is to test,     
+collect feedback from the investigators about the usefulness and fit for use of the proposed solution, and better focus the identified features to be developed, rather than engineering a final product. 
+
+
+\subsection{related work}
+
+% \textbf{REMARKS}
+% \begin{itemize}
+%     \item SOTA from previous paper~\cite{batini2021semantic}: probably easier to modify this instead of writing this up from scratch?
+%     \item More focus on: analysis of instant messaging data: did anyone apply KGs and entity extraction to support analysis of instant messaging data?
+%     \item Additional work on semantic / AI applied to criminal investigations (where we can reuse after summarizing what is written here); of course, cite~\cite{batini2021semantic}, but also ~\cite{kejriwal2017investigative,spyropoulos2023interoperability} ; probably also~\cite{alhajeri2023using}, \cite{bellomarini2020rule} (it uses a rule-based system)
+%     \item For a discussion about the choice of the entity extraction algorithms (for the Italian language) used in our approach, we refer to papers where these algorithms have been discussed more in detail~\cite{pozzi2023,pozzi23aixia}. In these references we also discuss known limitations of these algorithms, identified especially in the accuracy of the NIL Prediction step. Entity clustering has been found as a less explored topic, which is currently under the attention of the NLP and semantic web communities~\cite{logan2021benchmarking,Heist2023nastylinker,kassner-etal-2022-edin}. In our work we have been inspired by~\cite{kassner-etal-2022-edin}, but we have been trying to improve it with additional features to compute mention-mention similarities and with community detection algorithms. A quantitative comparison between our clustering approach and previous work is out of the scope of this paper~\cite{}.      
+% \end{itemize}
+% per la scelta algoritmi ritorniamo agli altri paper
+ 
+
+
+As discussed in Section~\ref{sec:introduction}, this work is an evolution of the approach described in~\cite{batini2021semantic} and is inspired by previous work to combat human trafficking based on semantic data integration~\cite{szekely2015building}. With respect to~\cite{batini2021semantic}, we specifically target IMA data, consider multimedia data enrichment, use a substantially improved NEEL pipeline, and include a semantic search interface. From~\cite{szekely2015building}, we borrow the overall entity-centric approach~\cite{kejriwal2018}, as well as the idea to improve search as a main objective~\cite{kejriwal2017investigative}. However, we work on IMA data with a native network structure rather than on data crawled from the web, and we apply a full-fledged NEEL pipeline to extract and interlink entities. Direct exploitation of graph queries and multimedia data enrichment are two additional novelties. % ontology
+
+ 
+% financial
+Other approaches exploit KGs to detect criminal activities in the financial domain, employing various AI techniques and logic-based KGs and reasoning~\cite{alhajeri2023using,bellomarini2020rule}. However, they operate on non-textual or non-speech data. 
+Another approach examines forensic ontologies and reasoning but does not address knowledge extraction techniques that could (semi-)automatically populate these ontologies~\cite{spyropoulos2023interoperability}.
+% biomedical
+
+%As discussed in Section~\ref{sec:approach}, the algorithms in the NEEL pipeline were developed and tested on court sentences. 
+      
+%Noteworthy contributions have been made through the development of entity-centric domain-specific search engines~\cite{kejriwal2017investigative,metaengine2020} and knowledge extraction frameworks~\cite{kejriwal2018} for extracting and indexing attributes from web pages, including images.
+%Documents of different formats are integrated with the KARMA system~\cite{Knoblock2015ExploitingSF} that utilized a combination of machine learning techniques and handcrafted rules to find entities and their properties.
+%While these methodologies have been successfully applied to diverse investigative domains, such as addressing human trafficking, our specific emphasis is on the analysis of IMA data extracted from confiscated devices.
+
+% generic extraction / CI
+
+% descrizione dello stato dell'arte, analizzato su due filoni:
+% - ambito legale/indagine
+% - progetti simili in altri domini
+Several NLP approaches have been developed for the broader legal domain, but most of them do not adopt KGs and a semantic data integration paradigm.
+%and KGs to interlink and organize the extracted knowledge.
+%An overview of NLP approaches applied in the legal domain emphasizes especially the use of 
+NER and relation extraction have been proposed in the broader legal domain~\cite{zhong2020does}, and also to support forensic analysis~\cite{IE-forensic-2015}. The latter work, in particular, does not focus on IMA or apply a full NEEL pipeline, but exploits visualization as an intermediate step to check extracted entities before extracting relations. This usage of a human-in-the-loop approach inspires the design of our DAVE application and its future evolution. %However, it does not focus on IMA and does not apply a full NEEL pipeline; however, it exploits visualization as an intermediate step to check extracted entities before extracting relations. 
+In conclusion, there are several novelties with respect to the application of NLP to criminal investigations, from the application to IMA data, to the usage of a NEEL pipeline.  
+
+%However, to the best of our knowledge, none of the existing approaches have been proposed to assist prosecutors in handling extensive data from IMA using deep-learning models and KGs.
+
+
+%Concerning the application of NLP to investigative data, previous work considered information extraction in the forensic domain~\cite{IE-forensic-2015}; it does not focus on IMA data, and focuses on NER and relation extraction, rather than on a full NEEL pipeline; however, it exploits visualization as an intermediate step to check extracted entities before extracting relations. 
+%to provide the users, but, differently from us, does not exploit existing knowledge bases (e.g., for linking locations).
+% multimedia
+Concerning multimedia enrichment and analysis, a study focused on images and speech for crime prevention, applying speech-to-text models and NLP techniques~\cite{P_rez_2021}; however, it emphasizes behavioral pattern detection and sentiment analysis, rather than entity extraction.
+
+
+
+
+
+% relevant cases or law
+% law articles public
+% rimosso
+%Shifting to public domain documents, that are not exactly the domain of this paper, works like~\cite{passage_based_text_summarization_LIR_2019,improving_legal_IR_distributional_composition_term_order_probabilities_2017,combining_bandits_lexical_analysis_2020} are interesting for the investigative domain; indeed, they focus on laws or juridical regulations, developing search engines for finding related legal cases or law articles. Notably, \cite{passage_based_text_summarization_LIR_2019} designed common law model (A legal model based on precedents, involving the use of prior legal cases and judgments as a primary source of authority) automatically summarizes the case in a non-technical language, while \cite{improving_legal_IR_distributional_composition_term_order_probabilities_2017}, that refers to the civil law model (A legal model based on the abstraction of specific cases, emphasizing codified laws and statutes to resolve legal issues), matches the description of a case with relevant law articles.
+
+
+
+
+%Furthermore, \cite{PMID:33317512} processes textual data from biomedical literature, applying domain-specific NER, NEL, and triple extraction to build a knowledge graph.
+
+% algos rw
+In relation to the NEEL pipeline used in this paper for extracting entities, 
+%for a discussion about the choice of the entity extraction algorithms (for the Italian language) used in our approach, 
+we refer to papers where these algorithms have been discussed more in detail~\cite{pozzi2023,pozzi23aixia}. In these references, we also provide a more precise comparison between our algorithms and other algorithms used in the legal domain, and we discuss some limitations of our pipeline. 
+Entity clustering has been found as a less explored topic, which is currently under the attention of the NLP and semantic web communities~\cite{logan2021benchmarking,Heist2023nastylinker,kassner-etal-2022-edin}. In our work, we draw inspiration from~\cite{kassner-etal-2022-edin}, but we experimented with additional features to compute mention-mention similarities and with community detection algorithms. A quantitative comparison between our clustering approach and previous work is out of the scope of this paper. 
+
+% survey
+Broadening the context, papers, and books reviewing techniques for building Knowledge Graphs (KGs) and domain-specific KGs~\cite{weikum2021machine,ZhaoMultisourceFusion,KejriwalBook} are relevant to the domain-specific work discussed in this paper. They stress the importance of combining different techniques for information extraction, including handcrafted rules to capture domain specificity~\cite{weikum2021machine}. 
+%These reviews also discuss limitations when dealing with open-domain and large-scale ontologies~\cite{weikum2021machine}.
+
+\subsection{approach}
+
+    % \subsection{Overview}
+
+To provide more details about our approach, we describe the extraction of the knowledge graph (Section~\ref{sec:metadata_kg}), the methodology we adopt for multimedia (Section~\ref{sec:multimedia}), the entity extraction pipeline (Section~\ref{sec:entity_extraction}), and the exploratory interfaces (Section~\ref{sec:exploration}).
+        % \begin{enumerate}
+        %     \item what is a chat? what are the features of a message? 
+        %     \item Processing of structured data: chats, messages, sender/receiver/people in groups.
+        %     \item Entity extraction from message corpus and voice messages transcriptions.
+        % \end{enumerate}
+        % In a chat the information is divided between structured and unstructered data. Structured information include the participants of a chat and for each messages who the sender name (or the phone number), the receiver, and the time the message was sent. On the other hand, the message corpus and the transcription of a voice message come in the form of unstructured data.
+
+        % For the former class of information, the structured data, we built a parser to extract the available structured information. Then we populate a knowledge graph using Neo4j creating the entities of chats, messages, people, and attachments.
+
+        % For the latter, the unstructured, we employ our pipeline of entity extraction algorithms. At this point we
+        
+    \subsection{Organizing the Conversations with the Knowledge Graph} \label{sec:metadata_kg}
+%Chats and chat messages, in addition to the unstructured corpus of the message, include structured data. 
+Chat dumps are available in a copy of the mobile phone extracted with certified forensic applications. %and consist of textual files with some structure.
+Information about each chat includes the list of participants with their phone numbers, the start time, and the time of the last activity. Each message is described by its timestamp, the name and number of the sender, and the attachments it contains.
+We consider these metadata to be applicable to most instant-messaging applications. 
+However, different forensic applications may export data in different formats. In our case, we received structured textual data for the first investigation and MS Excel (.xlsx) data for the second one.
+
+% These metadata might depend on the specific IMA, e.g., WhatsApp, but do not depend on the forensic application used for the dump extraction. However different forensic application would likely export data in different formats.
+
+% For the specific data format received in the experimented investigation, we build a parser based on parsing expression grammars (PEGs)~\cite{ford2004_peg}, using the parsimonious library\footnote{https://pypi.org/project/parsimonious/}, to extract all the aforementioned metadata and the content of the messages.
+
+% While chats messages and metadata from the previous investigation were received in a structured textual form\footnote{For the previous investigation we used parsing expression grammars (PEGs) with parsimonious (https://pypi.org/project/parsimonious/).}, in the second investigation, the one we are considering in this work, the data received was in MS-XLSX (.xlsx), a machine readable format, easier to process.
+
+Once extracted, metadata and messages contents are used to populate the Neo4j chat knowledge graph. A conceptual schema of the knowledge graph is shown in Figure~\ref{fig:model}; dashed arrows represent is-a relations, continuous arrows represent relations and properties. We also represent \textit{sameAs} relationships, which are extracted from the chat metadata (different numbers associated with the same contact).      
+%shows the schema of the knowledge graph with the entity classes Chats, Messages, Person, and Attachment.%\todo{add attachment. add attributes.} 
+The main reason to choose a property graph and Neo4j over semantic web standards is the opportunity to exploit its visual interface for reporting purposes.     
+
+%Upon completing the metadata extraction, out of a total of 1501 chats, we successfully processed 1133 chats. This involved \todo{completa} individuals, \todo{completa} attachments, and \todo{completa} messages. (Queste informazioni sono già all'inizio della sessione 5)
+
+%\todo{aggiungere visualizzazioni anonimizzate dei casi d'uso.}
+    %\todo{numeri: 1501 chat WhatsApp di cui 1133 successi, quante persone nei metadati? quante entità?,... quanti allegati di vario tipo?}
+    %\todo{entità}
+    %\todo{attributi}
+    % entita
+    
+%\todo{or metadata parsing}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.8\textwidth]{images/wise/kg_model.drawio.pdf}
+\caption{Knowledge Graph schema} \label{fig:model}
+\end{figure}
+    \subsection{Multimedia Data Enrichment} \label{sec:multimedia}
+
+
+While we plan to increase support for multimedia content, our current pipeline processes audio only, as this is the most time-consuming type of multimedia for the investigators we collaborated with.
+To transcribe audio files we utilized Whisper~\cite{radford23a-whisper}, an automatic speech recognition (ASR) system developed by OpenAI.
+This decision followed an evaluation of various ASR systems. We randomly selected 500 Italian audio files and their validated transcription from three sources: Mailabs\footnote{https://www.caito.de/2019/01/03/the-m-ailabs-speech-dataset/}, CommonVoice~\cite{ardila2019common} and VoxForge\footnote{https://www.voxforge.org/}.
+Given the high quality of these audio files, we added artificial noise to better reflect the quality of WhatsApp voice messages, which typically contain various environmental noises. We applied different distortion techniques, including Gaussian noise, background noise, speed up, pitch shift, delay, and distortion. We then evaluated the systems using two measures: word error rate (WER) and BERT score (F1 score). The best-performing model was Whisper (Large), which achieved a BERT score of 0.908 and a WER of 0.282.
+
+
+
+\subsection{Algorithms for Entity Extraction} \label{sec:entity_extraction}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/wise/NEEL_chat_complete.drawio-2.pdf}
+\caption{NEEL pipeline on chats}% NER identifies mentions of entities,
+% \underline{steve brown}, \underline{steve}, and \underline{Tom} as Person and \underline{Boston} as Location.
+% NEL identifies candidate entities from the knowledge graph (KG). NIL prediction detects that \underline{steve brown}, \underline{steve}, and \underline{Tom} are linked to wrong entities and assumes they are not in the KG (NIL), while \underline{Boston} is linked to the KG. Entity clustering assigns \underline{steve brown} and \underline{steve} to the same cluster (\underline{NIL-1}), as they refer to the same entity, and \underline{Tom} to another cluster (\underline{NIL-2}).}
+\label{fig:neel}
+\end{figure}
+
+Most pipeline components for entity extraction directly derives from our previous work~\cite{pozzi23aixia},
+while the entity clustering used is specific to this study. 
+Figure~\ref{fig:neel} depicts an example application of the NEEL pipeline on chat messages.
+In the remainder of this section, we describe each component of the NEEL pipeline.
+
+The NER component is based on the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the SpaCy transition-based parser with the contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
+The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal-bert_2022},
+% , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
+additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for NER on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
+for the Italian legal domain and finally for NER %TODO anon
+in~\cite{pozzi23aixia}.
+
+
+% \subsubsection{NEL}
+
+For NEL, we use the bi-encoder architecture of BLINK~\cite{wu-etal-2020-scalable}, trained for the Italian language in previous work~\cite{pozzi23aixia}. The bi-encoder architecture encodes a mention and an entity separately into vectors and is optimized for maximizing the similarity between the vectors of correct mention-entity pairs.
+As the knowledge base for NEL we use the entities from Italian Wikipedia combined with the chat participants from the KG.
+Specifically, we exploit BLINK zero-shot capability to encode an entity given its title and textual description; thus, for each participant we obtain a representation by giving the following input to the bi-encoder: \verb|[CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP]|. 
+As the majority of the people of interest for the investigation refers to entities not in Wikipedia, we link mentions of persons only to the chat participants. For organizations and locations, instead, we consider Wikipedia entities.
+%are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.%\todo{controllare che sia vero}\todo{in realtà cerca di linkare anche le date}
+
+% \subsubsection{NIL Prediction}
+In the NIL prediction component, we employ a \textit{logistic regression classifier} (the same as in~\cite{pozzi23aixia}).
+It takes two inputs: 1) the NEL system's top-ranked entity score and 2) the score difference between the top-ranked entity and the second-best one. %~\cite{pozzi2023}. % TODO anon rimetti citazione
+The output $p \in [0,1]$ denotes correctness for linking the mention (1) or NIL (0) if the correct entity is not the top-ranked.
+
+        % \subsubsection{Entity Clustering and Consolidation}
+% The entity clustering approach is based on a supervised xgboost classifier trained on pairs of mentions belonging to the same cluster, determined through NEL data from the gold standard. This classifier takes as input a set of similarities, including surface text similarities (like Jaro Winkler and Jaccard), as well as cosine similarity of BLINK embeddings obtained with NEL, producing a probability score as an indicative synthetic similarity between the mentions. The pairwise similarity scores are then used to create weighted graphs for each document, where mentions are nodes and edge weights reflect mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast}) on these graphs.
+
+
+
+The entity clustering approach uses a supervised XGBoost classifier, trained with the mentions from the gold standard, to calculate a similarity score between pairs of mentions. The input includes lexical similarities (such as Jaro-Winkler and Jaccard) and the semantic similarity (cosine similarity of vectors from the BLINK bi-encoder) of the surface forms of the two mentions. The classifier outputs a synthetic similarity score.
+Next, the pairwise similarity scores are used to create weighted graphs, where mentions are represented as nodes and the edge weights reflect the mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast})
+on these graphs.
+%
+Entity clustering is applied at document-level to group the NIL mentions referring to the same unknown entity. %For computational efficiency we do not cluster mentions across different documents.
+%\todo{cosa ne facciamo delle annotazioni?}
+
+
+The application of NEEL has two outcomes: the chat file is annotated
+%in such a way that each annotation is associated with a span in the input text;
+and the knowledge graph is updated with the discovered entities (corresponding to the entity clusters) using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).
+% Annotations include information about links to Wikipedia, if present, or the cluster the mention is associated with.    
+
+% consolidation
+
+\subsection{Exploration and Editing of Annotated Data} \label{sec:exploration}
+
+%\todo{priorità max immagine con faceted search e chat}\todo{dobbiamo censurare tutto il testo presente nella chat con anche i nomi presenti nella faceted search}
+%\todo{priorità immagine con trascrizione annotata}
+%\todo{screenshot query demo modulo rag}
+
+To query, explore, and gain insights from the processed data, we offer two main interfaces: one for querying and exploring the knowledge graph stored in Neo4j, and another for searching and exploring chat files using faceted search.
+
+
+% The latter interface is in an early stage of development; it has been mostly introduced to collect feedback on the interest in this search interface from the investigators. In the rest of the paper, we focus on the first two interfaces in terms of technical details and evaluation, and only briefly discuss the third one.       
+
+%\subsubsection{Knowledge graph exploration}
+\textbf{Knowledge graph exploration.}
+Users can navigate the knowledge graph created by metadata using the query and visual exploration interface of Neo4j. This approach provides a comprehensive overview of the relationships and connections between various elements in the investigative data, but it also supports specific queries on the data. An example of this interface can be seen in Figure~\ref{fig:KGexploration}. The Figure shows all messages and chats between the Person Under Investigation (PUI) and another subject; sameAs connections reveal that the PUI and the other subjects have different numbers used in different chats.    
+
+\begin{figure}
+\includegraphics[width=\textwidth,trim=0 160 0 150, clip]{images/wise/KGexploration.png}
+\caption{Analysis of the correspondences between PUI and a second individual% We provide the translation for relationships in Italian.
+%The SameAs relationships help to identify the same person even when they use different phone numbers. Some nodes have been obscured due to the sensitivity of the information.
+} \label{fig:KGexploration}
+\end{figure}
+
+%DAVE provides a semantic retrieval system and a LLM-based question answering system; e.g., filtering the chats for a keyword such as ``withdraw'' and then using the entities as facets selecting a suspect. The former
+%%
+%%based on Elasticsearch\footnote{https://www.elastic.co/elasticsearch},
+%%
+%allows prosecutors to filter chats by keywords, metadata, and mentioned entities. The latter employs a generative LLM in a retrieval augmented generation (RAG) setting:
+%%
+%with a vector store (ChromaDB\footnote{https://www.trychroma.com/}) and an embedding model\footnote{https://huggingface.co/efederici/sentence-it5-base},
+%%
+%users can ask questions in natural language and receive answers with the reference to the documents containing the information they are asking about. 
+%%
+%% Once a chat is retrieved the user can open it and use the entity-driven exploration provided by DAVE. \todo{troppo specifico, non nell'intro}
+%%
+%For instance, a user question may be ``Is there evidence of any thefts? If so, what items were stolen?'' and the system would give an answer. Additionally, the system returns the chat messages that were used as the context to generate the answer, so that users can confirm the accuracy of the answer by referring to the original data. 
+%%
+%% Furthermore, in the case of voice messages, we maintain the association between transcribed words and the corresponding time in the audio, allowing users to listen to the specific segment without the need to go through the entire voice message or recording.
+%%
+%Indeed, LLM may produce hallucinated content~\cite{ji23hallucination}, that is nonsensical or unfaithful to the provided context.
+%; in our example, an hallucination may happen when the model answers with ``Yes, there were several thefts and the stolen items were smartphones and wallets'' when no message in the context contained such information.
+
+%\subsubsection{Faceted Search}
+\textbf{Faceted Search and Document Exploration.}
+Faceted search allows users to retrieve chats through a traditional keyword search. Users can filter results by selecting specific metadata (e.g., participants) or semantic annotations (e.g., other people, organizations, or places mentioned in the chat). Our current implementation is based on Elasticsearch\footnote{https://www.elastic.co/elasticsearch}. A peculiar feature is that semantic search is aware of links and clusters identified in the annotation process. 
+A sanitized example of the Faceted Search interface is shown in Figure~\ref{fig:Faceted Search}; three chats containing the keyword ``incontro" (Italian for ``meeting") are found; these chats also contain specific persons and specific places shown in the panel on the left; by selecting a specific entity or metadata, the results are filtered. A user can click on a chat she/he wants to open using the \textbf{Document Explorer} page; from this interface, as shown in Figure~\ref{fig:document explorer}, the user sees the clusters of entities in the left panel and all their mentions; by clicking on a mention, she/he can move to the exact position of the mention. %\todo{screen}
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{Faceted Search.png}
+%     \caption{Using the Faceted Search on DAVE to retrieve relevant information.
+% %In this example, the messages are filtered to retrieve those citing a specific person and a specific place.
+% Filters and chats have been obscured due to the sensitivity of the information.} 
+%     \label{fig:Faceted Search}
+% \end{figure}
+% \vspace{-5pt}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{document_explorer.png}
+%     \caption{Using the Document Explorer to navigate the entity mentions in the chat.
+% %In this example, the messages are filtered to retrieve those citing a specific person and a specific place.
+% Sensitive information has been obscured.} 
+%     \label{fig:document explorer}
+% \end{figure}
+% \vspace{-5pt}
+
+\begin{figure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth, trim=0 0 270 0, clip]{images/wise/Faceted Search.png}
+        \caption{Faceted Search}% Sensitive information has been obscured.} 
+        \label{fig:Faceted Search}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth, trim=0 0 100 0, clip]{images/wise/document_explorer.png}
+        \caption{Document Explorer} 
+        \label{fig:document explorer}
+    \end{subfigure}
+    \caption{DAVE interface} 
+\end{figure}
+
+%\centering
+%\includegraphics[width=\textwidth]{Faceted Search.png}
+%\caption{Utilization of Faceted Search on DAVE to retrieve relevant information.
+%In this example, the messages are filtered to retrieve those citing a specific person and a specific place.
+%Filters and chats have been obscured due to the sensitivity of the information.} \label{fig:Faceted Search}
+%\end{figure}
+
+% \subsubsection{Question Answering}
+% The QA module works as a chatbot, allowing users to ask questions and receive answers. 
+% %based on the knowledge extracted from the investigative data. 
+% Users can explore the information through a conversational interface that utilizes a LLM within a retrieval augmented generation (RAG) framework. Messages (or chunks of messages) are embedded using an Italian T5 model\footnote{https://huggingface.co/efederici/sentence-it5-base}, then vectors are stored with ChromaDB\footnote{https://www.trychroma.com/}, a vector database, that is also responsible for the retrieval. The question is, indeed, vectorized by the embedder model, then related chunks are retrieved  by ChromaDB through approximate nearest neighbor. At this point the LLM (Llama 2 7B~\cite{touvron2023llama}) receives the question and the relevant messages in the input prompt and generates the answer. The answers is shown to the user maintaining a link to the original messages, enabling users to trace the source of the information with the ``Document Explorer''.
+% %\todo{screen}
+
+\subsubsection{Role of Different Interfaces and Annotation Editing}
+
+While the search patterns supported by the two interfaces overlap, each interface has a specific role. 
+Table~\ref{tab:interfaces role} summarizes the information each interface is able to provide the user, in which form, and the impact of the graph representation and of the NLP entity extraction to the results given to the user.
+Additionally, DAVE was designed for a human-in-the-loop approach, considering the sensitive nature and ethical implications of the legal domain. Users can edit and correct annotations, ensuring the quality of the extracted knowledge.
+%\todo{screen}   
+
+%\todo{immagine workflow dell'allegato 4 dave ma adattata alle chat}
+
+ % come la parte di processing impatta sulle interfacces
+
+
+\begin{table}[h]
+% \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+\centering
+\caption{Role of different interfaces}
+% \begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{3.5cm}|p{3.5cm}|}
+\tymin=50pt
+\tymax=200pt
+\begin{tabulary}{\textwidth}{|L|L|J|J|J|}
+% \begin{tabular}{|p{.12\linewidth}|p{.12\linewidth}|p{.12\linewidth}|p{.30\linewidth}|p{.30\linewidth}|} 
+% \begin{tabularx}{\linewidth}{|X|X|X|X|X|} 
+\hline
+\textbf{Interface} &
+  \textbf{Query} &
+  \textbf{Result} &
+  \textbf{Impact of Graph} &
+  \textbf{Impact of NEEL} \\
+  \hline
+Graph &
+  Cypher
+  %, Simplified functions\tablefootnote{We developed specialized Python functions, e.g. matchMessages(keywords) or matchChats(kw), as a semplification of Cypher queries.} 
+  &
+  Tabular, Graph &
+  Match all nodes attributes. Graph visualization &
+  Queries match ``mentioned entity'' nodes \\
+  \hline
+% Document Interface &
+DAVE &
+  Faceted Search &
+  Chats &
+  Annotations linked to entities in the chat knowledge graph &
+  % Given a set of chats that match a search,
+  Entities in the matching chats are shown to the users and can be used to filter \\
+  \hline
+% Document Interface &
+DAVE &
+  Document Explorer &
+  A specific position in a chat &
+  Annotations linked to entities in the chat knowledge graph &
+  Entities in a chat are shown to the users and can be used to filter\\
+  \hline
+% \end{tabularx}%
+\end{tabulary}
+\label{tab:interfaces role}
+\end{table}
+
+% \begin{table}[h]
+% \small
+% \begin{center}
+% \begin{tabular}{|p | p | p| p| p|} 
+%  \hline
+%  \textbf{Interface} & \textbf{Query Type} & \textbf{Results} \\ [0.5ex] 
+%  \hline\hline
+%  Reconstruct relations between PUI and other persons  & Find all chats and messages between Suspect and Person 1   & Relational analysis  \\[1ex]
+%  \hline
+%  Search evidence of reported meeting between PUI and P1 & Find all messages that include one keywords in a list (e.g., “meeting”, “see you in”, etc.) & Text search  \\[1ex]
+%  \hline
+%  Search hints of money transfers between a list of People and Companies & Find all messages that cite an entity of type money  & Entity search \\[1ex]
+%  \hline
+%  Search for attachment types and distribution  & Find all attachment types and their respective frequency & Relational analysis \\[1ex]
+%  \hline
+%  People with whom PUI has interacted the most  & List of chats with highest number of interactions between PUI and different people & Relational analysis \\[1ex]
+%  \hline
+%  Chat naming a specific person  &Find all of the chat that cite an entity of type person & Entity search \\[1ex]
+%  \hline
+%  Persons with different phone numbers & Find the total number of phone numbers associated with the same person through SameAs relations  & Relational analysis \\[1ex]
+%  \hline
+% \end{tabular}
+% \caption{Examples of queries on the graph}\label{Queries-on-graph}
+% \end{center}
+% \end{table}
+
+\subsection{experiments}
+
+%The discussion of the results is based on the data acquired in the context of one investigation. 
+The results discussed in this section reflect the two-stage development of the project (see Section~\ref{sec:context}) and the maturity gap between the extraction of the enriched graph (first stage) and the application of the NEEL pipeline (second stage). We consider data from the two investigations, focusing on the second one for specific analyses.  
+Our evaluation has three main objectives: 1) to demonstrate that the combination of graph-based modeling, multimedia enrichment, and NLP-based entity extraction enhances IMA data analysis in criminal investigations through graph queries and semantic search; 2) to assess the current quality of the proposed solution; 3) to discuss limitations and challenges.
+      
+
+%After a summary of statistics of the data extracted from the investigation's chat dump, we discuss the utility of the graph to get insights into investigative questions. Then, we provide more details about the extracted data and discuss the challenges of entity extraction.
+%; our goal is to shed some light on the usefulness and fitness for use of the more advanced processing steps in the second phase.                 
+
+\begin{table}[htbp]
+  \centering
+  \caption{Investigation Statistics}
+    \begin{tabulary}{\textwidth}{|L|R|R|R|R|R|}
+    \hline
+    \textbf{Topic} & \textbf{Chats} & \textbf{Proc. chats} & \textbf{Msgs} & \textbf{Attach. (img-audio-docs)} & \textbf{Persons} \\
+    \hline
+    1) Fraud & 1133  & 801   & 45252 & 3324 (575-304-1590) & 1365 \\
+    % \hline
+    2) Corruption & 1442 & 1442  & 364690 & 63224 (51532-6273-4066) & 2351 \\
+    \hline
+    \end{tabulary}
+  \label{tab:chatstats}
+\end{table}
+
+\textbf{Graph Construction.}
+Statistics that summarize the result of chat processing to construct the graph are reported in Table~\ref{tab:chatstats}. For each investigation, we report its topic and the number of input chats, successfully processed chats loaded in the graph, messages, attachments (with more details about images, audio and documents), and number of different persons involved in the chats. Chats may involve two persons or groups (e.g., 86 groups in the second investigation).  
+%The increased success in successful processing rate comes from the improved processing with RabbitMQ (not used in for the first investigation).    
+
+%We were able to successfully process and add to the knowledge graph the information of all the 1442 chats received. Of these 1442 chats, 1351 are private chats and 86 group chats. In total the processed chats contain 364690 messages, including 63224 attachments, 51532 images, 6273 audios, 4066 documents, 1197 videos, and 156 other files. 
+%The total number of people identified is 2351. 
+\textbf{Impact of Entity-Based Modeling on Search.} 
+In the first investigation, we used the tool to write a report. Therefore, we translated each investigative question into Neo4j queries and reported the findings, providing: the queries, arguments and explanations for their choice, graph-based visualizations provided by the UI (e.g. Figure~\ref{fig:KGexploration}), and copies of the relevant messages. We can classify the query patterns into three main groups based on their purpose: relational analysis (e.g., between PUI and other people), text search, and entity search.  
+%Examples of investigative questions, queries, and their category, are reported in Table~\ref{Queries-on-graph}. 
+%Please note that these are some examples of questions and queries.
+% Multiple queries were constructed for each investigative question.
+
+We found that keyword and entity searches were very frequent. After validating the utility of combining graph-based constraints and textual search, which allows visualizing nodes (messages) containing the query pattern and exploring the connected nodes, and including graph-based visualizations in reports, we further explored the impact of our entity-centric approach in the second investigation, where messages and transcripts increased significantly. Law enforcers provided a list of 30 keywords of interest (22 generic terms and 8 entity names) for evaluation.
+The total results from searching each keyword amounted to 818 chats, 1780 messages, and 230 audio transcripts (results for different keywords may overlap). The generic terms (translated in English) returning the most results (chats/messages) are ``agreement'' (126/274), ``runoff'' (113/133), and ``tender'' (92/296). These numbers indicate a high results space for keyword searches, highlighting the need for advanced mechanisms to filter and explore data with specific entity constraints.
+For each query, we counted the distinct entities present in the retrieved chats, distinguishing between entities from IMA metadata and those recognized by the NEEL pipeline from the message corpus, which are more prone to errors. The median number of distinct entities retrieved from chats metadata is 181, and 568 for entities recognized by the NEEL pipeline. These entities can filter the often large number of results (e.g., consider only messages sent by X or in chats with Y) or provide insights into entities relevant to the query context. The data volume and associations between entities and results support the introduction of faceted search and document explorer interfaces, which display the entities found in the results.
+
+%the median number of distinct entities associated in the graph with the chats returned for a search result is 181.  returned search result in the graph (without counting entity mentions) is 181, while  occurring in every chat returned in the results 
+The terms referring to entities (persons and organizations) return fewer results (max 56 chats, min 0). Two terms are found in audio transcripts, providing evidence for the impact of the multimedia enrichment. We also match these terms to names of distinct entities extracted from the messages' content with the NEEL pipeline or included in the graph (w/o considering the NEEL pipeline). While three entities are found in both sources, four are found in only one source, and one in none. We believe that this observation suggests that combining keyword search with filters based on entities identified with two criteria (rule-based graph construction and NEEL-based extraction) is beneficial.       
+
+%returning more results  for generic terms. These numbers suggest that advanced mechanisms to filter out results and explore the data are needed to get      chats are  Searching for these keywords in the graph return match jointly match  
+%To support our main claim that entity-based filters  graph-based constraints are provide evidence for the need of      
+
+%In particular, the keyword search was the most frequently used query example for finding messages or audio transcripts of interest. In particular, the keyword search directly on the graph, through the use of simple queries, makes it possible to visualise the nodes (messages) that contain the indicated word and to navigate the graph, allowing the nodes connected to the one of interest, such as the chat, to be displayed. 
+%In addition, it was possible to identify a very limited number of messages containing words not in common use, such as names of particular organisations or nicknames of people, which would have taken time or would have been difficult to identify as they are details that may escape a superficial first reading. 
+
+% \textbf{Statics Investigative questions and graph-based queries.} ??
+% In the chats containing messages, the NEEL pipeline found 7486 mentions of entities: 4592 of type "person", 1166 of type "location", 606 of type "date", 229 of type "money" and 859 of type "organization". We should note that the addition of voice-messages transcriptions to the documents helped to recognize 138 more entities than when the pipeline was applied to the text messages alone. This suggests that voice messages may have a higher information content compared to plain-text messages, since the average number of entities mentioned in them (0.24) is higher than the average number of mentions in a text-message (0.16).\\
+
+\textbf{NEEL Contribution to Knowledge Graph Enrichment.} The NEEL pipeline successfully processed 1296 out of 1442 input chats, with errors caused by technical issues that can be fixed by splitting the very long chats. Statistics about the extracted entities are reported in Table~\ref{tab:stats}: the table indicates the impact of NEEL on enriching the KG with the ``mentioned in'' relationship, 
+%between entities and messages; 
+%Statistics are reported in Table~\ref{tab:stats}. 
+%Looking at the table we can demonstrate 
+and the informativeness of audio transcriptions, which contain on average four times more entities than text messages. %, i.e., 0.083 vs. 0.026.
+The statistics also show that 2361 mentions of persons have been linked to entities in the chat knowledge graph, which validates the introduction of this in-domain linking mechanism.
+
+%In addition, it was possible to identify a very limited number of messages containing words not in common use, such as names of particular organisations or nicknames of people, which would have taken time or would have been difficult to identify as they are details that may escape a superficial first reading.
+
+% For Person we identified 5701 entities (or clusters of mentions) of which 2055 refer to entities in the enriched knowledge graph for NEL. Note that we cluster at chat level, thus these 2055 entities may contain duplicates across different chats. With respect to Organization and Location, we respectively detected 1339 and 1892 entities, while for Date, Money, and Other we identified respectively 916, 124, and 32 mentions (here we report the number of mentions because we do not perform NEL, NIL prediction, nor clustering on these types).
+
+% \begin{table}[h]
+% % \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+% \begin{tabular}{|c|c|c|c|c|c||c|c|c|c|}
+% \hline
+% \textbf{STATS} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Entities} & \multicolumn{4}{c|}{\textbf{NER Evaluation}}\\
+% \hline
+% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+% \hline
+% \hline
+% Per & 7765 & 520 & 2361* & 5404 & 5701 & Strong Match & 51.2 & 25.2 & 33.7 \\
+% Org & 1753 & 113 & 614 & 1139 & 1339 & Strong Typed & 44.0 & 21.4 & 28.8 \\
+% Loc & 2578 & 185 & 1118 & 1460 & 1892 & Partial Match & 91.9 & 46.0 & 61.3 \\
+% Date & 916 & 53 & - & - & - & Partial Typed & 71.4 & 35.1 & 47.0\\
+% Money & 124 & 23 & - & - & - & &  &  & \\
+% Misc & 32 & 1 & - & - & - & &  &  & \\
+% \hline
+% % \end{tabularx}%
+% \end{tabular}
+% \caption{Statistics and NER Evaluation. * Links for Person refer to the chat knowledge graph, not to Wikipedia.}
+% \label{tab:stats eval}
+% \end{table}
+
+\begin{table}[htbp]
+  \begin{minipage}[t]{0.50\linewidth}
+    \centering
+    \caption{Statistics of the NEEL extraction. * Links for Person refer to the chat knowledge graph, not to Wikipedia.}
+    % \begin{tabular}{|c|c|c|c|c|c|}
+    \begin{tabulary}{\textwidth}{|L|C|C|C|C|C|}
+      \hline
+      \textbf{Type} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Enti-} \\
+      \cline{2-5}
+      & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} & \textbf{ties}\\
+      \hline
+      % \hline
+      Per & 7765 & 520 & 2361* & 5404 & 5701 \\
+      Org & 1753 & 113 & 614 & 1139 & 1339 \\
+      Loc & 2578 & 185 & 1118 & 1460 & 1892 \\
+      Date & 916 & 53 & - & - & - \\
+      Mon. & 124 & 23 & - & - & - \\
+      Misc & 32 & 1 & - & - & - \\
+      \hline
+    \end{tabulary}
+    \label{tab:stats}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.45\linewidth}
+    \centering
+    \caption{NER Evaluation. \textit{Strong} counts perfect matches of span and type. \textit{Partial} counts as correct when there is an overlap between predictions and gold annotations.}
+    \begin{tabularx}{\textwidth}{X|X|X|X|}
+      \cline{2-4}
+      & \centering{}\textbf{Prec} & \centering{}\textbf{Rec} & \centering{}\arraybackslash{}\textbf{F1} \\
+      \hline
+      \multicolumn{1}{|l|}{Strong} & \centering{}44.0 & \centering{}21.4 & \centering{}\arraybackslash{}28.8 \\
+      \multicolumn{1}{|l|}{Partial} & \centering{}71.4 & \centering{}35.1 & \centering{}\arraybackslash{}47.0 \\
+      \hline
+    \end{tabularx}
+    \label{tab:eval}
+  \end{minipage}
+\end{table}
+
+
+% audio menzioni
+% {'persona': 520,
+%  'luogo': 185,
+%  'organizzazione': 113,
+%  'denaro': 23,
+%  'data': 53,
+%  'altro': 1}
+
+% ner stats
+% {'data': 916,
+%  'organizzazione': 1753,
+%  'persona': 7765,
+%  'luogo': 2578,
+%  'denaro': 124,
+%  'altro': 32}
+
+% linking_stats
+
+% {'neo4j': 2343, 'organizzazione': 614, 'persona': 2361, 'luogo': 1118}
+
+% nil_stats
+
+% {'organizzazione': 1139, 'persona': 5404, 'luogo': 1460}
+
+% Selection deleted
+% cluster_stats
+
+% 'neo4j': 2055,
+% {'data': 793,
+%  'organizzazione': 1339,
+%  'persona': 5701,
+%  'luogo': 1892,
+%  'denaro': 100,
+%  'altro': 28}
+
+% audio menzioni
+% {'persona': 520,
+%  'luogo': 185,
+%  'organizzazione': 113,
+%  'denaro': 23,
+%  'data': 53,
+%  'altro': 1}
+
+% performance P R F1
+% strong 0.511737089	0.251538462	0.337287261
+% strong typed 0.439749609	0.216153846	0.289840124
+% approx 0.683881064	0.33954934	0.453790239
+% approx typed 0.561815336	0.276792598	0.370867769
+% partial 0.918622848	0.464031621	0.616596639
+% partial typed 0.713615023	0.353488372	0.472783826
+
+
+%%% old investigation
+
+% In these chats, the NEEL pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes. We should note that the addition of the transcriptions of voice-messages 
+
+% that contain actual messages was used to quantify the number of the ``mentioned in" relationships that could be added to the knowledge graph. In these chats, the NEEL pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes.
+%%%% old investigation
+
+
+
+% We should note that the addition of the transcriptions of voice-messages 
+%to the documents 
+% helped to recognize 138 more entities than when the pipeline was applied to the plain-text messages alone. This suggests that voice messages may have a higher information content, since the predicted average number of ``entity" nodes connected to them by a ``mentioned in" relation (0.24) is higher than the average number of ``entity" nodes connected to a ``Text-message" node (0.16).
+%At the time of writing this paper, we are still working on finalizing the interconnection between the NEEL pipeline and the knowledge graph. For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+% An example of how the NEEL pipeline identifies entities in a transcription is shown in Figure~\ref{fig:NER example}. 
+%Please note that this 
+% The screenshot is taken directly from DAVE and shows how the annotated document is presented to the user. In this example, several mentions of locations and organizations were found in a voice message that referred to a meeting (``incontro" - one of the keywords searched to answer the investigative questions). 
+%, in a chat that had references to a "meeting" (a relevant topic in ou a voice message related  
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.8\textwidth]{NER example.png}
+% \caption{Example entity annotations on a transcription. ``Persona" refers to entity of type ``Person", ``Luogo" to ``Place", ``Organization" to ``Organization" and ``Data" to ``Date"} \label{fig:NER example}
+% \end{figure}
+
+\textbf{Preliminary Insights on the Quality of NEEL Annotations.}
+While an end-to-end evaluation of the NEEL output is ongoing, we discuss a first evaluation of the NER component. 
+%, the task for which a comparison with our previous work is easier.  
+%To quantify the quality of the NLP pipeline 
+We annotated a gold standard for evaluating NER from six chats of which three are group chats, selected from the ones long enough and with audio transcripts. %We used the same methodology used in previous work~\cite{BELLANDI2024105904,pozzi23aixia}: % TODO anon riaggiungere citazione
+We computed a first set of automatic annotations using the NER component and thoroughly revised them with Doccano\footnote{https://github.com/doccano/doccano}. At the end of the process, we annotated 668 mentions of Person, 268 of Organization, 207 of Location, 157 Dates, and 11 Money.
+
+% 78 mentions of time, 13 phone numbers, 18 website addresses, 2 email addresses, and 12 misc. However, the NER evaluation only considers Person, Organization, Location, Date, and Money since they are the types currently extracted by the NER module.
+
+% gs stats
+% {'persona': 668,
+%  'luogo': 207,
+%  'organizzazione': 268,
+%  'data': 157,
+%  'numerocell': 13,
+%  'altro': 12,
+%  'sito': 18,
+%  'denaro': 11,
+%  'email': 2,
+%  'time': 78}
+
+% of  for four of the longest chats and 
+% %. We proceeded to evaluate the quality of the Named Entity Recognition algorithm, by 
+% measure how many mentions occurring in the gold standard are correctly recognized using 
+% %We checked four of the longest chats and counted how many mentions have been recognized correctly. 
+% %of the entities found in the golden standard had been recognized. 
+% %In particular, 
+% an ``approximate typed mention match" approach~\cite{pozzi23aixia}: an entity is ``recognized" if the annotation in the gold standard is included or includes our annotation and the predicted class is correct. Of the 285 entities present in the golden standard, 191 were correctly identified, leading to a score of 67\%. We focus on recall because of the search-driven exploitation of the annotations. 
+% %With respect to precision, we found some mistakes on transcriptions related to I'm  
+
+% Results shown in Table~\ref{tab:eval} are significantly worse than those obtained on other domain-specific data on which the pipeline we adapted was tested~\cite{pozzi2023,pozzi23aixia}. This confirms that NEEL on IMA data is challenging because of the specific data distributions and suggests that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
+Results shown in Table~\ref{tab:eval} are not satisfactory, confirming that NEEL on IMA data is challenging because of the specific data distributions and suggesting that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
+Indeed IMA data contain peculiarities such as person name abbreviations or inconsistent capitalization of names and locations. In relation to fitness for use, we make two remarks. 1) Metadata are precisely identified enabling accurate filtering in DAVE, for instance, by message sender. 2) DAVE supports text search, which makes it possible to complement entity-based retrieval to improve result recall.        
+
+
+%\begin{itemize}
+%    \item Questions to be answered with the report, vs. type of queries vs example of queries
+%    \item How these queries are empowered by NLP (exemplify) and speech-to-text (keyword search like "incontro") 
+%    \item Statistics on a chat sample: how many entities are found? How many same-as links in the graph? How many speech-to-text transcriptions? 
+%    Statistics that are relevant: mentions divided by class; how many are linked to Wikipedia, how many clusters, how many entities found in text are associated with entities in the KG, and how many are novel? Problem: one chat as an example, or more chats with average.  \\
+%\item Some insights on the performance of NLP on chats. NER: we count one if the correct annotation is included or includes our annotation AND class is correct (approximate typed mention match). Linking: we count how many entities for which a link is found by the algorithms have a correct link. Most recent measures proposed to evaluate clustering are quite complex to compute in post-hoc conditions with a manual approach, where we need to pick up one cluster at a time and control its quality; to give some insights on the quality of clusters, we use a heuristic measure defined as follows: we sample x clusters, each of which is associated with an entity label; we count how many mentions in the cluster are actually referred to this target entity. Observe that, in this way, we only evaluate if mentions in a cluster are correctly associated, while we do not consider the capability of joining together all mentions referred to the same entity to one cluster; however, in this context of semantic search, we believe that a measure inspired by precision is more relevant than a measure inspired by recall (in fact a user can also explore more cluster with a same label).      
+%\end{itemize}
+
+
+%\todo{forse meglio mettere una sezione tipo challenges. e citare qualche challenge anche nell'intro.}
+
+\textbf{Investigators' Feedback}. The feedback on our work was collected based on the report and demonstrations of our PoC (live demo) across the collaboration stages.
+Investigators found the graph-based visualizations helpful and understandable. They are familiar with these structures because of the relevance of relational knowledge in their investigations. The combination of text search with relational queries was appreciated. In relation to multimedia data enrichment, they believe that speech-to-text could be really transformative in terms of speed and effort balance.
+They have been quite surprised by the quality of the transcriptions and not concerned by occasional mistakes, as they always verify the evidence against the original audio. 
+The NLP part was also appreciated in terms of potential and usefulness. The opportunity to quickly browse through the chat exploiting DAVE interface was deemed promising because their previous tools only supported syntactic match patterns.           
+
+\textbf{Limitations and Challenges.}
+Our current solution has several limitations. To overcome the weaknesses of pre-trained algorithms in the NEEL pipeline, we need to increase the size of the gold standard and fine-tune the algorithms on IMA data. %; based on our previous experience~\cite{pozzi2023}, we expect a significant improvement across all performance measures. % TODO anon. valutare se riaggiungere
+%
+%The NEEL stack should be better customized for the domain, e.g., via in-domain fine-tuning. %Clustering is attracting the attention of the research community and we believe that investigations and IMA data provide a representative and challenging domain to develop better algorithms for this task. 
+%\todo{forse potremmo togliere questa discussione sul clustering visto che non è tanto esplorato nel paper}
+%In the customization of entity clustering in the domain of IMA, we also need to improve the interconnection between the knowledge graph and the NEEL pipeline.
+%For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+% The integration of generative LLMs is still limited.
+% The QA module requires significant improvement and
+%We did not include image-to-text enrichment yet, a highly desired features.
+After our demonstrations, investigators were eager to use our solution, but querying Neo4j through its interface requires expertise, and expressed their interest in conversational search interfaces to answer questions. We therefore developed two additional prototype interfaces 1) a set of intuitive and composable Python functions that handle a wide range of common query patterns,
+%to simplify analyses based on the graph data, 
+and 2) a conversational search interface based on the popular paradigm of retrieval augmented generation. We did not describe these features in this paper as their development stage is too early. However, the prosecutor and the law enforcers actually accessed the simplified query interface and were able to submit queries.    
+%is too early to be described in this paper have been shown and tested by our users (for example  to collect some initial feedback but their development stage is too early to be described in this paper. 

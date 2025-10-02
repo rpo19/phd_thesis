@@ -42,6 +42,10 @@
 \usepackage{cleveref}
 \usepackage{csquotes}
 \usepackage{booktabs}
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{numprint}
 \usepackage[style=numeric,maxcitenames=1,maxbibnames=6]{biblatex}
 \addbibresource{bibliography/bibliography.bib}
 
@@ -276,6 +280,18 @@
   long = Web,
 }
 
+% mammotab
+\DeclareAcronym{gs}{
+  short = GS,
+  long  = Gold Standard
+}
+
+\DeclareAcronym{sti}{
+  short = STI ,
+  long  = Semantic Table Interpretation
+}
+%%%
+
 \newcommand{\PERSON}[1]{\colorbox{magenta!30}{#1\textsuperscript{\smaller\texttt{[PER]}}}}
 \newcommand{\LOCATION}[1]{\colorbox{cyan!30}{#1\textsuperscript{\smaller\texttt{[LOC]}}}}
 \newcommand{\DATE}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
@@ -292,7 +308,7 @@
 \newcommand{\NELDate}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
 
 
-\newcommand{\mammotab}{\textsf{MammoTab}\xspace} 
+\newcommand{\mammotab}{MammoTab} 
 
 
 %custom page style for report class
@@ -322,7 +338,13 @@
 \newcommand{\phd}{Ph.D.\ }
 
 % TODO remove
-\includeonly{chapterLAW/chapter4,chapterLAW/legal_information_extraction,chapterLAW/aixia,chapterLAW/claw_journal,chapterLAW/}
+% \includeonly{
+%   chapterLAW/chapter4,
+%   chapterLAW/legal_information_extraction,
+%   chapterLAW/aixia,
+%   chapterLAW/claw_journal,
+%   chapterLAW/wise
+%   }
 
 % \include{chapterLAW/chapter4}
 % \include{chapterLAW/legal_information_extraction}
