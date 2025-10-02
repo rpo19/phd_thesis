@@ -219,7 +219,7 @@ $ALL$ &         100k &           6.5k &                501 &                    
 \end{figure}
 
 
-\subsection{Evaluation}
+\subsection{Evaluation Procedure}
 
 %The evaluation is run in two ways: first on the whole dataset (single-batch) to allow a comparison with other models from literature; then, it is run incrementally on each batch, so that the drop in performance, due to the lack of information provided in the first steps, can be quantified. \newline
 %As far as we know, however, there is no other work which uses the same dataset that train the model reducing the available information in any way: other works should be considered only as a reference for the task difficulty.
@@ -486,9 +486,9 @@ Finding representations of novel entities that provide a reasonable trade-off be
 Indeed, the performance of the NEL component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental NEL is NIL prediction.      
 %used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
 
-% \todo{future works}
-Future works include the application of our methodology to generate incremental versions of more datasets. In addition, we plan to elaborate on methods to address the main challenges found in I-NEL, especially in relation to the management of novel entities (NIL prediction and NIL mention representation).  
-%, and deeper studies to improve novel entities representation.
-% and additional studies on when to add a new entity to the KB.
+\todo{future works removed}
+% Future works include the application of our methodology to generate incremental versions of more datasets. In addition, we plan to elaborate on methods to address the main challenges found in I-NEL, especially in relation to the management of novel entities (NIL prediction and NIL mention representation).  
+% %, and deeper studies to improve novel entities representation.
+% % and additional studies on when to add a new entity to the KB.
 
-The dataset, the source code of the procedure to create it, and the code for the evaluation are openly available at \url{https://github.com/rpo19/Incremental-Entity-Extraction/}.
+% The dataset, the source code of the procedure to create it, and the code for the evaluation are openly available at \url{https://github.com/rpo19/Incremental-Entity-Extraction/}.
