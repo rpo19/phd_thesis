@@ -19,7 +19,7 @@
 
 \subsection{NER with MLM-adaptation and fine-tuning}
 
-We use the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} with the SpaCy transition-based parser to leverage contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
+We use the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} with the SpaCy transition-based parser to leverage contextualized token representations obtained from a transformer~\cite{vaswani_transformers_2017}.
 
 As the backbone transformer for the NER system, we evaluate five different BERT encoders that have been trained with one of three different MLM-adaptations or with a combination of them. They are further described in Table~\ref{tab:backbones} where \textit{ITA} (Italian) denotes the pre-training with MLM on general-domain Italian data, \textit{LGL} (Legal) the MLM-adaptation to legal-domain data, and \textit{ICCJ900k} to our corpus of 900,000 Italian civil court judgments. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data using MLM.
 
@@ -34,10 +34,10 @@ Finally, each model has been fine-tuned for the NER task on ICCJ training set us
 
 \subsubsection{NEL with BLINK-ITA-bi-encoder}
 
-For NEL we use the bi-encoder architecture of BLINK~\cite{wu-etal-2020-scalable}. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on $9M$ training samples from Italian Wikipedia hyperlinks, following the original work, for 5 epochs (in the last one we train with hard-negatives instead of random negatives) using AdamW optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20.  As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
+For NEL we use the bi-encoder architecture of BLINK~\cite{blink}. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on $9M$ training samples from Italian Wikipedia hyperlinks, following the original work, for 5 epochs (in the last one we train with hard-negatives instead of random negatives) using AdamW optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20.  As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
 
 \subsubsection{NIL Prediction}
-In the NIL prediction component, we use a \textit{logistic regression classifier} that receives as input features 1) the score of the top-ranked entity given by the NEL system and 2) the difference between the top-ranked entity score and the second-best one~\cite{pozzi2023}, and produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is correct for linking the mention, while $0$ means the opposite. In this latter case, we consider the mention NIL, assuming that if the correct entity is not in the top-ranked position, then it is not in the KB.
+In the NIL prediction component, we use a \textit{logistic regression classifier} that receives as input features 1) the score of the top-ranked entity given by the NEL system and 2) the difference between the top-ranked entity score and the second-best one~\cite{ijckg2022}, and produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is correct for linking the mention, while $0$ means the opposite. In this latter case, we consider the mention NIL, assuming that if the correct entity is not in the top-ranked position, then it is not in the KB.
 
 \subsubsection{Experimental Evaluation} \label{sez:experiments}
 
@@ -64,7 +64,7 @@ The comparison of backbone transformers for NER considers five different random 
 We identify the top-performing model based on its \textit{F1-measure} and utilize it as the foundation of the NER component for subsequent evaluations.
 
 \subsubsection{NEL}
-We evaluate the NEL component in terms of \textit{accuracy} and \textit{recall@100}, similarly to recent work~\cite{wu-etal-2020-scalable}, on the ICCJ test set, additionally comparing to the news-based benchmark VoxEL~\cite{rosales2018voxel}.
+We evaluate the NEL component in terms of \textit{accuracy} and \textit{recall@100}, similarly to recent work~\cite{blink}, on the ICCJ test set, additionally comparing to the news-based benchmark VoxEL~\cite{rosales2018voxel}.
 
 It is important to remind that the NEL evaluation and the following ones (NIL prediction, and end-to-end NEEL) exclusively focus on the classes \textit{PER}, \textit{ORG}, and \textit{LOC}.
 
