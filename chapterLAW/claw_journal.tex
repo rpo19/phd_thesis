@@ -1,0 +1,400 @@
+\section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing}
+\todo{later merge with aixia}
+
+\subsection{Gold Standard}
+
+
+The creation of a gold standard is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In this section, we discuss the methodology used to create this gold standard from a larger corpus and its features.
+
+We collected a corpus of 927,453\todo{probably mlm has been done on 900k exactly. think about it} real judgments in civil trials published from 2008 to 2021 (the majority of the judgments, $\approx 86\%$, are published from 2016 to 2021). 
+This number can be compared to the total number of trials that are estimated per year according to~\cite{bankitalia}, which falls between 2 and 2.5 millions from 2010 to 2019.
+
+% Judgements have been chosen randomly, so that the sample cannot be considered statistically representative in any sense (temporal, geographical, by subject, etc.) \todo{questo "so that" forse può confondere. non ho capito}.
+
+%The present work aims at describing a methodology, not the actual situation of justice in Italy.
+
+Data includes the judgment text and 41 metadata with information about the judge (or the president if several judges are involved), the number and year of the judgment and of the trial, the court and the district it belongs to, the instance (trial or appeal), references to the trial in case of appeal, a code describing the subject and some technical fields of no interest here. This dataset has been provided by the Ministry of Justice and consists of real documents as they were archived. As a consequence, in many cases, the texts contain spurious lines that must be cleared before processing, for instance, some metadata at the very beginning, duplicate headings, extra blank lines or characters from stamps present in the printed version.
+
+%structure
+The judgments' structure consists of several sections, the most important being: i) a preamble with the judge(s), plaintiff(s) and defendant(s) data, ii) the description of the case, iii)  the final decision and dispositions with the related reasons.
+
+%%%%%%%
+
+% \subsection{Gold Standard}
+\label{sec:gold_standard}
+
+From the corpus of 927,453 court judgments described above, we defined a gold standard consisting of 146 labeled documents selected using stratified sampling on the province of the court that made the judgment.
+The annotation was performed semi-automatically: 1) the documents were annotated with extraction algorithms, then 2) the human annotators reviewed the automatic annotations. This approach, where algorithms are used to speed up annotation has been used for developing a NER gold standard in previous work~\cite{lrec2022kind}.
+
+
+% We built a gold standard dataset to evaluate the main pipeline algorithms. In particular, the dataset has been built in an incremental way in order to support the evaluation of NER, NEL, NIL Prediction, and NIL Clustering tasks. The documents used to build the gold standard come from a sample of the 927,453 real judgments provided by the Italian Justice Ministry.
+% To build the gold standard we followed the natural flow of the main pipeline:
+% \begin{enumerate}
+%     \item NER
+%     \item NEL (entity linking + NIL prediction)
+%     \item NIL Clustering
+% \end{enumerate}
+
+
+% The procedure adopted to produce the dataset consists of two steps following the standard flow of the pipeline:
+% \begin{enumerate}
+%     \item Produce NER annotations, that will be used as NER gold standard and referred as GS$_{NER}$
+%     \item Enrich the annotations with the knowledge consolidation module to produce the consolidation gold standard, that will be referred as GS$_{CON}$
+%     \begin{enumerate}
+%         \item NEL
+%         \item NIL prediction
+%         \item NIL clustering
+%     \end{enumerate}
+% \end{enumerate}
+
+The annotations include labels for NER, NEL, NIL prediction, and NIL clustering.
+
+These tasks are executed sequentially, thus, each step has been performed by manually refining the output of the algorithm of interest applied to the annotated documents from the previous step. For this reason, we can consider the annotation process as a simulation of the real human-in-the-loop use case, thus making it possible to estimate the amount of time required by the final user to consolidate the main pipeline algorithms output.
+
+% \subsection{Types of Interest}
+The annotation process involved the following entity classes:
+\begin{enumerate}
+    \item ``person'',
+    % \begin{itemize}
+        % \item ``attorney''
+        % \item ``judge''
+    % \end{itemize}
+    \item ``location'',
+    % \item ``address'',
+    \item ``organization'',
+    % \begin{itemize}
+        % \item ``court''
+    % \end{itemize}
+    % \item ``plaintiff''
+    % \item ``defendant''
+    \item ``money'',
+    \item ``date'',
+    \item ``miscellaneous''.
+    % \item ``law article''
+\end{enumerate}
+
+
+% Additional type classes have been identified as potentially interesting in this domain, which requires the definition of more complex relationships between classes. These include \textit{Attorney} and \textit{Judge} as subclasses of \textit{Person}, the class \textit{Court} as subclass of \textit{Organization}, and the classes \textit{Plaintiff} and \textit{Defendant}, which intersect the classes \textit{Person} and \textit{Organization} (people and organizations can be both plaintiff and defendants in civil trials). Furthermore, all these additional classes refer to roles that different entities play in a specific trial. In the rest of the paper, we focus on the rigid classification reflected in the core classification scheme.
+
+To obtain an objective measure of the quality of the NER annotations (GS$_{NER}$), which served as the starting point for subsequent annotation processes, we calculated an inter-annotator agreement (IAA) measure. We then used this gold standard as a basis for creating GS$_{CON}$, which includes annotations for the remaining tasks, also referred to as the consolidation process.
+
+\paragraph{NER}
+\paragraph{Annotation Process}
+The annotation process for GS$_{NER}$ has been carried out by two annotators using Doccano\footnote{https://doccano.github.io/doccano/}, a web application for labeling tasks. Each annotator was asked to annotate 88 documents, of which 15 were overlapping with the other annotator so that 30 documents $(15 + 15)$ contained annotation from both. These overlapping documents are necessary for calculating the inter-annotator agreement (IAA).
+For this specific task, an annotation is composed of the index of the start character, the end index, and the type of the mentioned entity.
+
+% In addition to the types listed in Table~\ref{tab:algotypes}, we included \textit{Plaintiff}, \textit{Defendant}, \textit{Judge}, \textit{Attorney}, and \textit{Court} to prepare the gold standard for future works on hierarchical classification.
+
+Based on~\cite{jha2017all}, a detailed set of guidelines has been prepared and provided to the annotators to reduce as much as possible the inconsistencies that could be generated by different styles of annotation. During the annotation process, we iteratively refined the guidelines by keeping track of the doubts cast by the annotators.
+The guidelines involve both the span selection (e.g., in case of nested entities, annotate the span of the most informative supported type: \textit{``\underline{Via Garibaldi 18, Roma}[LOC]''} must be preferred over \textit{``\underline{Via Garibaldi 18}[LOC], \underline{Roma}[LOC]''}) and the type assignment (e.g., a type must be assigned based on the context in which the entity appear: \textit{``Mario Rossi, born in \underline{Italy}[LOC]''} vs \textit{``\underline{Italy}[ORG] asked the European Union to ...''}). Furthermore, each type has its own guidelines to deal with particular cases (e.g., exclude the title of a person from the annotation: \textit{``Dr. \underline{Mario Rossi}[PER]''} must be preferred over \textit{``\underline{Dr. Mario Rossi}[PER]''}). Furthermore, we decided to annotate mentions such as ``the Judge'' or ``the Court'' that are not exactly in the scope of NER but close to the coreference resolution task, because these mentions are relevant to the domain. 
+
+\paragraph{Document Statistics}
+% The annotation process ended up with 146 valid documents out of 156, since we discarded 10 invalid documents.
+% Moreover, the resulting corpus is composed of documents with a wide variety in terms of length and number of annotations.
+% Some statistics about the gold standard are provided in the following list:
+% \begin{itemize}
+%     \item \# annotations: 21,836 (on average $\sim$150 per document)
+%     \item average document length: $\sim$1,900 words
+%     \item average annotation length: $\sim$2.6 words
+%     \item ...
+% \end{itemize}
+% The frequencies of annotations per type are: 4027 Persona, 408 Avvocato, 766 Giudice, 884 Luogo, 3824 Organizzazione, 1386 Tribunale, 1129 Parte, 1513 Controparte, 1098 Denaro, 2993 Data, and 3808 Altro.
+
+% The resulting corpus counts 21,836 annotations ($\sim$150 annotations per document), with an average document length of $\sim$1,900 words. Each document required on average $\sim$15 minutes to be annotated. The distribution of types is reported in Figure~\ref{fig:types_distrib}. Note that a subtype contributes to the count of its supertype (e.g., instances of type \textit{Court} are also counted as \textit{Organization}). Moreover, \textit{Plaintiff} and \textit{Defendant} always co-occur with \textit{Person} or \textit{Organization}, so there are annotations with multiple types. 
+
+The resulting corpus counts 16,634 annotations ($\sim$114 annotations per document), with an average document length of $\sim$1,900 words. Each document required on average $\sim$15 minutes to be annotated. The distribution of types is reported in Figure~\ref{fig:types_distrib}.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{images/claw/types_distrib.png}
+    \caption{Distribution of entity mention types in the GS$_{NER}$ gold standard.
+    % *\textit{location} implicitly includes \textit{addresses} since nested annotations are not taken into account in this work; **miscellaneous annotations are mostly referred to \textit{law articles}, thus there is no distinction in the count.
+    }
+    \label{fig:types_distrib}
+\end{figure}
+
+\input{table/dataset_stats}
+Table~\ref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
+
+For the remainder of this work, we will refer to our annotated corpus of 146 documents as ICCJ (Italian Civil Court Judgment)\todo{use iccj names} and to the 927,453 legal judgment (without annotations) as ICCJ900k.
+
+
+\paragraph{Inter-Annotator Agreement}
+To assess the quality of the gold standard and the clarity of the guidelines we compute the inter-annotator agreement (IAA) on the 30 overlapping documents, which are annotated independently by both the annotators.
+% These documents were sampled at different timestamps in order to be representative since the annotators became more confident over time.
+Since there is no standard way to evaluate the agreement level of a NER dataset~\cite{braylan2022measuring}, we adopted an IAA based on F$_1$ score computed with the criteria described in Section~\ref{sec:metrics}. In this context, the F$_1$ score is pair-wisely computed between annotators: for each combination, an annotator is used as gold standard to evaluate the other annotator; an average is computed in case of more than two annotators. 
+
+Popular IAA metrics such as Cohen's Kappa, Scott's Pi, Fleiss' Kappa, and Krippendorff’s Alpha, may not be suitable for complex labeling tasks such as NER, providing low interpretability values~\cite{braylan2022measuring}. As discussed in Section~\ref{sec:metrics}, a problem of this task is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however thish would yield overly optimistic IAA value (e.g., the pair of \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} is considered a perfect match). For these reasons, the choice of an F$_1$ score-based IAA as the main metric is a more robust alternative to the classic metrics~\cite{hripcsak2005agreement, grouin2011proposal}.
+%, wang2021nero}.
+
+% Since there is no standard way to evaluate the IAA of complex annotation tasks such as NER~\cite{braylan2022measuring}, we consider the F$_1$ score computed with the criteria described in Section~\ref{sec:metrics} as the main metric by using an annotator as gold standard and the other annotator as NER prediction~\cite{hripcsak2005agreement, grouin2011proposal, wang2021nero}.
+% Popular IAA metrics for like Cohen's Kappa, Scott's Pi, Fleiss' Kappa, and Krippendorff’s Alpha are not the best choice for this task, since they may provide low interpretability values~\cite{braylan2022measuring}, however we report them for completeness. We also report the token-based F$_1$ score for the \textit{strong typed} match criteria (see Section~\ref{sec:metrics}).
+Table~\ref{tab:iaa} shows all metrics averaged over documents. For completeness, we also report the token-level F$_1$ score for the \textit{strong typed} match criteria and Cohen's Kappa, Scott's Pi, Fleiss' Kappa, and Krippendorff’s Alpha.
+We can see that \textit{strong-typed (instance-level)}, i.e., the strictest metric, has a score of .808, which can be considered satisfactory since it measures perfect matches between annotators. Moreover, by looking at the additional F$_1$ score-based metrics we can see that the values increase as we relax the matching criterion (partial is the least stringent). This proves that even in cases where the labels from the two annotators do not perfectly match, there is still a significant degree of overlap.
+These differences between hard and soft constrained F$_1$ scores, as well as the difference between \textit{instance-level} and \textit{token-level} \textit{strong typed}, also point out that a perfect span selection was the most difficult part for the annotators, as expected.
+
+\begin{table}[]
+\centering
+\begin{tabular}{l|l}
+\toprule
+\textbf{Metric}                     & \textbf{Value} \\\toprule
+\multicolumn{2}{c}{F$_1$ score-based metrics} \\\midrule
+strong                              & .839           \\
+strong typed (instance-level)       & .808           \\
+strong typed (token-level)          & .886           \\
+approximate                         & .966           \\
+approximate typed                   & .904           \\
+partial                             & .969           \\
+partial typed                       & .906           \\\midrule
+\multicolumn{2}{c}{Other metrics} \\\midrule
+Cohen*/Fleiss*/Krippendorff*/Scott* & .662           \\\bottomrule
+\end{tabular}
+\caption{Inter-annotator agreement computed on a subset of 30 documents from the gold standard GS$_{NER}$. The description of each F$_1$ score-based metric can be found in Section~\ref{sec:metrics}. *based on strong typed match}
+\label{tab:iaa}
+\end{table}
+
+
+\paragraph{Knowledge Consolidation}
+
+The gold standard GS$_{CON}$ for the knowledge consolidation process, with annotations for NER, NEL, NIL prediction, and NIL clustering, has been created semi-automatically from the 30 overlapping documents used to compute the IAA. The set of general guidelines defined for this task is much simpler than the NER ones. Based on the assumptions in~\cite{jha2017all}, the guidelines can be summed up in two steps:
+
+\begin{enumerate}
+    \item if the mention refers to a known entity in the KB (Italian Wikipedia and manually added entities) label it with the entity URI and mark the mention as $\neg$NIL;
+    \item otherwise, mark the mention as NIL, create a new entity, and label the mention with the new entity URI. This latter step is necessary to trace which NIL mentions refer to the same unknown entity (NIL clustering). 
+\end{enumerate}
+
+% In addition, other entity-level guidelines (e.g., \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (e.g., a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of KB entity) have been defined during the annotation process when particular cases were found. 
+
+To enhance the efficiency of the annotation procedure a UI was developed, incorporating both Wikipedia search API and a fuzzy search mechanism. On average documents required $\sim$15 minutes to be annotated for NEL, NIL prediction, and NIL clustering. Out of the 3,006 annotated mentions, 467 refer to Wikipedia entities, and 1,753 to NIL entities. The remaining 786 mentions, categorized as either \textit{Date} or \textit{Money}, were left unassociated with any entity.
+
+% \paragraph{NIL clustering}
+% Since we can consider a cluster as a set of mentions pointing to the same entity, the NIL clustering gold standard, which is part of GS$_{CON}$, is implicitly obtained from the NEL gold standard without additional efforts.
+
+The 2,200 mentions linked to an entity are organized into a total of 1,025 clusters, with 211 clusters corresponding to Wikipedia entities.
+The larger portion of 814 refers to NIL entities, as expected within the considered domain.
+
+% sotto si considerano i cluster a livello globale
+% the resulting corpus counts a total of 924 clusters, 122 identified by known Wikipedia entities and 802 identified by out of knowledge base entities. As we can see, the majority of the clusters is composed of out of KB entities.
+
+% \paragraph{Limitations}
+% There are several known issues that arise when creating a NER/NEL gold standard. The core problem is that there is no standard definition of what should be considered a named entity~\cite{jha2017all, rosales2018should}. In this specific case, the limitations derived from this problem are related to nested entities, coreference resolution, and out of KB entities. See~\ref{app:gold_standard:limitations} for more details.
+
+% \paragraph{Extensibility Experiments}
+% Additionally, two more entity classes, Postal Address and Law Article, were later annotated to evaluate the system's extensibility with rule-based additional extractors (see Section \todo{sec}). In this case the annotation was done by a single annotator considering the same 30 documents of GS$_{CON}$, obtaining 210 mentions of law articles and 37 of postal addresses.
+
+\subsection{Entity Extraction and Knowledge Consolidation}
+\todo{pipeline in italian}
+\todo{compare and merge with incremental pipeline}
+\label{sec:entityextractionservice}
+
+% \textbf{Scaletta}
+% \begin{enumerate}
+%     \item Pipeline: descrizione teorica/generale
+%     \item Pipeline: implementazione + algoritmi; discussione su combinazione
+%     \item Gold standard (costruzione e valutazione IAA). com'è costruito semi-automaticamente
+%     \item esperimenti e valutazione (document-level / documenti divisi sentenze)
+%     \begin{enumerate}
+%         \item NER
+%         \item NEL
+%         \item clustering
+%     \end{enumerate}
+%     \item interfaccia human-in-the-loop. consolidamento ouput algoritmi +? eventuale simulazione hitl.
+%     \item DUBBIO: ottimizzazione pipeline a livello di tempo richiesto
+
+% \end{enumerate}
+
+% incremental? possibility to add entities
+% tasks
+% why we are not using NER algos from UNIMI? they already link.
+% we are doing. OPEN Entity Extraction? vs CLOSE entity extraction (verify?)
+% the term open information
+% extraction (OIE), to describe information extraction systems that are not con-
+% strained by the boundaries of encyclopedic knowledge and the corresponding
+% fixed schemata that are, for instance, used by YAGO and DBpedia.
+% https://ceur-ws.org/Vol-1064/Dutta_Integrating.pdf
+
+%%%%% pensare se mettere in un objective
+
+% \todo{ridurre. di sicuro togliere le definizioni}
+% The entity extraction service supports an open information extraction process~\cite{martinez2020information}, since most of the entities mentioned in legal documents are not known in background information sources or knowledge bases. These entities, in the literature, are referred to as NIL (not in lexicon~\cite{nil_not_in_lexicon}), unlinkable, or unknown entities. In this work, we will also refer to NIL entities as \textit{new entities}.
+
+% On the other hand, court judgments also contain several mentions of entities that are described in encyclopedic knowledge bases such as Wikipedia\footnote{\url{https://en.wikipedia.org/}}, DBpedia\footnote{\url{https://www.dbpedia.org/}} or Wikidata\footnote{\url{https://www.wikidata.org/}}, e.g., locations or institutions, or in other background information sources such as legal codes, i.e., law articles, or maps, i.e., addresses. Linking to these sources supports advanced data exploration features (e.g., adding the hyperlinks in the User Interface) but also additional data enrichment processes: for example, we can fetch the province and/or region of a municipality linked to Wikidata to support better content exploration (e.g., filter all court judgments that refer to one article in a given province) or compute advanced statistics (e.g., count the number of judgments referring to a given law article grouped by referred province). 
+%Therefore, we believe that it is useful and relevant to try to link the entity mentions to a background knowledge base or information sources with a best-effort approach.         
+
+To address RQ1, inspired by~\cite{pozzi2022,Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline system that orchestrates first the entity extraction process, i.e., the NER task, and then the knowledge consolidation processes, namely NEL, NIL prediction, and NIL clustering.
+With NER we use different algorithms to extract all the types annotated in GS$_{NER}$; the algorithms are described in detail in the remainder of this section.
+
+Figure~\ref{tab:algotypes} illustrates the supported types for each NER extractor, as well as the NEL, NIL prediction, and NIL clustering algorithms. Notably, for the latter three tasks, we exclusively consider the types ``person'', ``location'', and ``organization''. This decision is based on the fact that ``date'' and ``money'' are not directly associated with any linkable entity. With respect to the ``miscellaneous'' class, during an exploratory phase, we found that the quality of the prediction for this class, significantly lower than for the other classes, was not promising enough to proceed with the knowledge consolidation process. We further discuss this issue in the experimental evaluation.
+
+% The identification ``miscellaneous'' class, due to its broad nature, has a tendency to propagate errors throughout the pipeline, thus compromising the quality of the extraction.
+
+
+
+% Our primary objective is to assess the performance of existing algorithms, trained on publicly available training data, on civil judgments.
+% and to examine the performance gap that arises when we employ algorithms trained on ``conventional'' training data (typically news articles) for the more challenging data scenario (domain-specific language; text extracted from PDFs).
+
+\begin{table}[H]
+    \centering
+    \scalebox{.7}{
+        \begin{tabular}{l|cccc|c|c|c}
+            \multirow{2}{*}{Types}      & \multicolumn{4}{c|}{NER}              & \multirow{2}{*}{NEL}  & \multirow{2}{*}{NIL pred.}    & \multirow{2}{*}{NIL clust.} \\
+                                    & SpaCy & Tint  & TrieNER*  & Combination    &                       &                               & \\
+            \midrule
+            Person         & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            Location       & \ding{51} & \ding{51} & -             & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            % + Address       & RAE    & -         & -         & -             & -           & Map         & Implicit   & Implicit \\
+            Organization   & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            Money          & -         & \ding{51} & -             & \ding{51}   &     -        & -          & -  \\
+            Date           & -         & \ding{51} & -             & \ding{51}   &     -       & -          & -  \\
+            Miscellaneous  & \ding{51} & -         & -             & \ding{51}   &     -        & -          & -  \\
+            % + Law article   & RAE    & -         & -         & -             & -           & Normattiva  & Implicit          & Implicit  \\
+        \end{tabular}
+        }
+    \caption{Types supported by the NER, NEL, NIL prediction, and NIL Clustering algorithms. *Note that the TrieNER relies on a knowledge base and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, TrieNER extracts entities of type ``person'' and ``organization'', since the knowledge base (derived from documents metadata) of reference is limited to these two types.}
+    % (``Implicit'' derives from RAE, since rule-based additional extractors perform recognition and linking as a whole)
+    \label{tab:algotypes}
+\end{table}
+
+%inally, we observe that NEL and NIL clustering can be viewed as two faces of the same process aimed at consolidating the mentions found by NER algorithms into a \textit{knowledge layer}: mentions linked to the same knowledge base entity are, in fact, clustered together, while NIL mentions clustered together are linked to the same new entity. As discussed in Section~\ref{sec:related_work}, this process of knowledge consolidation is the most novel aspect in our proposal, the one whose feasibility we want to evaluate and the one we mainly focus on in this paper.
+
+By using multiple NER algorithms, it becomes necessary to combine the extracted annotations and resolve any conflicts that may arise. To this end, we present heuristic-based combination rules, which are described in the remainder of this section. 
+
+% Note that each task can be performed by more than one service: a trivial example is having different algorithms specialized for different entity types.
+% With respect to NER, indeed, certain entity types (e.g., money, dates) can be identified using regular expressions due to consistent linguistic patterns. Unfortunately, for other entity types like persons, organizations, and locations, such regular patterns do not exist. Thus, we use NER algorithms utilizing machine learning (\textit{ML-based algorithms}). However, combining multiple extraction algorithms often generate conflicts: for instance, the same word could be a mention to an organization according to an algorithm, and to a location according to another algorithm. We address this issue by proposing heuristic-based combination rules.
+%, which in the current solution is done using a heuristic approach. 
+%As a consequence, 
+%we study the problem of combining different algorithms. 
+% However, for some entity types, the mentions are found by specific rule-based extractors, for which the conflicts do not occur or have a naive solution. 
+
+% Therefore, we distinguish between a \textit{main pipeline}, which covers most of the types listed in Section~\ref{sec:context}, integrating overlapping algorithms, and \textit{rule-based additional extractors}, that run independently. The main pipeline includes: two ML-based and one rule-based approaches for NER, which are combined to find mentions of \textit{Person}, \textit{Organization}, \textit{Location}, \textit{Date}, \textit{Money}, \textit{Miscellaneous}; a ML-based NEL algorithm that links to Wikipedia (from Wikipedia links we can access other full-fledged knowledge bases like Wikidata or DBpedia by exploiting existing services that link across these sources~\cite{AvogadroCDPP22}); a ML-based NIL prediction algorithm; a NIL clustering algorithm. Additional extractors include rule-based NER algorithms for \textit{addresses}, linked to points on maps (via well-known geocoding APIs), and for law articles, which links identify a Normattiva\footnote{\url{https://www.normattiva.it/}} page.       
+
+% As NER extractors we use
+
+% Finally, we observe that NEL and NIL clustering can be viewed as two faces of the same process aimed at consolidating the mentions found by NER algorithms into a \textit{knowledge layer}: mentions linked to the same knowledge base entity are, in fact, clustered together, while NIL mentions clustered together are linked to the same new entity. As discussed in Section~\ref{sec:related_work}, this process of knowledge consolidation is the most novel aspect in our proposal, the one whose feasibility we want to evaluate and the one we mainly focus on in this paper.
+
+% In the remainder of this section, we describe the algorithms used for the different tasks.
+% \begin{itemize}
+%     \item we focus on the \textit{main pipeline,} where most of the interesting challenges are; we found that the \textit{additional rule-based extractors} work quite well and could still be improved by regular expression engineering;
+    % \item also in the main pipeline, we look with more attention at algorithms dedicated to the knowledge consolidation process; ; our main focus is to evaluate 1) the potential benefit of combining different algorithms that produce overlapping results and 2) the performance gap when we apply algorithms trained on ``traditional'' cleaned data (typically, news in native text format) to more difficult data (domain-specific language; text extracted from PDFs).   
+% \end{itemize}
+
+\subsubsection{Entity Extraction}          
+
+
+% TODO SCHEMA
+
+% TODO pipeline
+
+%We implement the entity extraction service as a pipeline of different sub-services.
+For the NER task, two general-domain ML-based algorithms for the Italian language have been selected: SpaCy and Tint.
+In addition, we developed a rule-based service, namely TrieNER, supporting efficient retrieval on a custom dictionary and on-the-fly update of the reference dictionary\footnote{On-the-fly dictionary update is not yet active in the current pipeline but we consider it important for future development.}. Each algorithm recognizes a different set of types; Table~\ref{tab:algotypes} shows which entity types of our gold standard are recognized by each algorithm including the combination of them.  
+
+SpaCy\footnote{\url{https://spacy.io/}} is a NLP library designed to be production-ready, able to perform NER in several languages including Italian. NER is performed by first obtaining a vector representation of the input, in our case with a pre-trained Italian transformer (dbmdz/bert-base-italian-uncased\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}), then the vectors are processed by a neural transition-based parser. We trained the SpaCy NER system on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is composed of annotated Wikipedia articles.
+%The results for the evaluation on the WikiNER dev set are shown in~\ref{app:blink}.
+    % TODO mouvere in appendices
+
+Tint~\cite{2018tint2} is an Italian NLP library based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}. The NER task is based on Conditional Random Fields (CRF) sequence taggers, combined with rule-based systems to extract money, numbers, and temporal expressions.
+%The service is available via API and returns all the tags for an input sentence.  
+
+TrieNER\footnote{TrieNER is based on trie-search \url{https://github.com/s-yata/marisa-trie}.} is a pattern-matching approach, based on a prefix-tree (or trie), that uses a dictionary of entity titles derived from documents metadata. Entities are divided into tokens, personal names are enriched by their permutations, and then the tokens are added to the trie index. This algorithm also identifies partial matches, e.g. the name of a person without the surname.
+This service is not limited to NER, indeed, besides knowing the matched pattern is part of a named entity we are also aware of the entity (or the entities if both can be mentioned with the same pattern) from which the pattern has been derived. This pattern-based algorithm is used to exploit metadata attached to the judgments, which cover plaintiffs, defendants, and judges. Although these metadata are incomplete, TrieNER is introduced to increase the likelihood that, when an entity appears in the metadata, it is also identified by the NER component. Supposing that ``Jane Smith'' is listed as a plaintiff in the metadata, TrieNER would search for all the tokens and their permutation in the text, finding mentions like ``Ms. Smith'' (with a partial match on the token ``Smith'') and ``Smith Jane''.
+
+%\paragraph{Combining NER annotations}
+% As we use multiple NER services, we combine the annotations obtained by each of them. Every NER annotation consists of a text span associated to a type, thus conflicts may arise when the spans of two annotations overlap and when the types of two overlapping annotations are inconsistent.
+
+Finally, we need to combine the annotations produced by the different algorithms. Each NER annotation consists of a text span associated with a type, thus conflicts may arise when the spans of two annotations overlap (e.g., in \textit{``Mr. Cityville''} we may have a first algorithm that identifies ``[Mr. Cityville (PER)]'' while a second algorithm identifies ``[Cityville (LOC)]'') or when the types of two overlapping annotations are inconsistent (e.g., ``Italy'' identified both as \textit{Location} and \textit{Organization}).
+
+First, we identify span conflicts, then we address type-related conflicts:
+\begin{enumerate}
+    \item two overlapping annotations may be totally overlapping (i.e., they share the same exact boundaries) or partially overlapping. In the latter case, we prefer the longest annotation, assuming it is the most informative one. Exceptionally, for the annotations of type ``person'', we down-prioritize annotations whose span is longer than $k$ tokens\footnote{we heuristically found that $k=6$ fit the court judgment dataset},
+    \item with respect to type-related conflicts, different algorithms may predict different types. Consequently, we assign a weight to each algorithm and, in case of type-related conflicts, we perform a \textit{weighted majority vote} to select the type with the highest score (in case two or more algorithms predicted the same type, the score of the type is given by the sum of the algorithms' weights).
+    This mechanism allows us to control the impact of each algorithm on the final prediction.
+    
+    % the control of the impact of each algorithm to the final decision by modifying its weight. Additionally, it can be further improved by learning optimal weights for the voting, eventually differentiating the weights of the types recognized by the same algorithm.
+
+\end{enumerate}
+
+% While SpaCy and Tint are very effective on benchmark datasets (Table~\ref{tab:nereval:bymetric}, \cite{2018tint2}), applying these algorithms to Italian judgments presents several challenges related to the noise (e.g., OCR,  - see Section~\ref{sec:context}) in the text and to the specificity of the language. Indeed, documents often contain lists of partial entities (e.g., ``Art. 1, 2, and 3'', where only ``Art. 1'' can be correctly annotated while ``2'' and ``3'' can not be annotated together with ``Art.''), people names in capital letters, or location names used as organizations (e.g., ``Milan'' to indicate the Court of Milan, instead of the city of Milan). In the experiments, we will discuss the impact of these features of the input text on the quality of the NER tags obtained when including pre-trained algorithms.
+% \todo{verificare}
+% \todo{verificare che abbiamo introdotto OCR nei dati}
+
+% TODO  example (same type from different services = sum of the weights)
+% TODO dire che i pesi sono alti per il TrieNER
+
+
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{l|ccc|c}
+% Gold Standard   &   spaCy   &   Tint    &   TrieNER*  &   Merged    \\
+% \midrule
+% \textbf{Person} & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}         \\
+% % + Attorney      & -         & -         & -             & -                 \\
+% % + Judge         & -         & -         & -             & -                 \\
+% \textbf{Location}   & \ding{51} & \ding{51} & -            & \ding{51}      \\
+% + Address       & -         & -         & -             & -                 \\
+% \textbf{Organization} & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   \\
+% % + Court         & -         & -         & -             & -                 \\
+% Plaintiff       & -         & -         & -             & -                 \\
+% Defendant       & -         & -         & -             & -                 \\
+% \textbf{Money}  & -         & \ding{51} & -             & \ding{51}         \\
+% \textbf{Date}   & -         & \ding{51} & -             & \ding{51}         \\
+% \textbf{Miscellaneous} & \ding{51} & -  & -             & \ding{51}         \\
+% + Law article   & -         & -         & -             & -                 \\
+%     \end{tabular}
+%     \caption{Types recognized by the different NER algorithms and by their combination. *Note that the rule-based algorithm relies on a knowledge base and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments the rule-base algorithms extracts entities of type ``person'' and ``organization'', since the knowledge base (derived from documents metadata) of reference is limited to these two types.}
+%     \label{tab:algotypes}
+% \end{table}
+
+
+
+
+\subsubsection{Knowledge consolidation}
+The knowledge consolidation process involves the three tasks of NEL, NIL prediction, and NIL clustering.
+NEL is executed by a bi-encoder based on BLINK~\cite{blink}. The bi-encoder is a method for entity retrieval trained to encode mentions and entity descriptions in the same dense space, in such a way that the distance between a mention and the corresponding entity description is minimized. The training objective is to maximize the similarity of the correct mention-entity pairs; in this case the similarity is calculated with the dot-product and basically represents a linking score.
+
+% We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for NEL. % TODO migliorare
+% Provato a scriverla meglio
+We chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the NEL system is able to link to the new entities~\cite{pozzi2022}.
+
+The training for the Italian language has been performed following the approach of BLINK authors for the English language. We created an entity linking dataset using the hyperlinks from Italian Wikipedia articles as training samples where the anchor text is the mention. Differently from~\cite{blink}, we used $BERT_{BASE}$\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased} instead of $BERT_{LARGE}$ for computational reasons. The training process has been done in 4 epochs with 9M training examples using in-batch random negatives followed by one epoch of hard negatives in which we use a single hard negative for each training sample. Given a mention, the hard negative is the negative entity (not the correct one) with the highest linking score, calculated using the bi-encoder trained with random negatives.
+
+% spostare negli experiments
+% We conduct a first evaluation of $BLINK_{ITA}$ on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016overview} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
+
+% TODO voxel multilingual NEL dataset
+
+% Although a systematic comparison is not possible (as further discussed in ~\ref{app:blink}), our goal is to have some insights on the performance of $BLINK_{ITA}$ in a challenging linking scenario~\cite{basile2016overview}.
+
+% The insights suggest that $BLINK_{ITA}$ achieves reasonable performance, despite some known limitations of its current implementation (see~\ref{app:blink}).
+% todo ?
+
+%the 
+%Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016overview}, that is composed of tweets in the Italian language; see Table~\ref{tab:blink_ita_eval}.
+
+NIL prediction is implemented as a binary classification using logistic regression.
+%: given a mention and the top-ranked entity, according to the NEL sub-service, it predicts whether the mention refers to that entity or not. In this latter case, we consider the mention as NIL. 
+It has been trained with the same Wikipedia-based dataset used to train the NEL model. Different combinations of input features have been evaluated. The ones we are currently using are the NEL score of the top-ranked entity and the difference between the top score and the score of the second-best candidate.
+
+% The NIL clustering sub-service is a three-step algorithm~\cite{simone_24}: initially, the mentions are clustered using their surface form (i.e., edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise), then inside each cluster we apply a hierarchical clustering algorithm by using a predefined threshold to split clusters, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
+% In this way, each cluster from the first step is divided into sub-clusters.
+% Finally, semantically similar sub-clusters are merged together, according to the distance between their medoid vectors.
+
+The NIL clustering sub-service is inspired by a three-step algorithm~\cite{simone_24}. First, mentions are clustered based on their surface form, with a tolerance of edit-distance $\leq 3$ for words longer than 3 characters, or exact matching for shorter words. Next, a hierarchical clustering algorithm is applied to each cluster, using a predetermined threshold to split clusters based on the semantic representations of the mentions generated by the NEL bi-encoder. NIL clustering thresholds are obtained with grid search using the same Wikipedia-based dataset used to train the NEL model. 
+%and correspond to a semantic representation of the mention.
+This step creates sub-clusters within each first-step cluster. Finally, each sub-cluster is represented using the medoid vector of all the mention representations of the sub-clusters, and those that are semantically similar, according to the similarity (dot-product) between the medoid vector, are merged.
+
+% The NIL prediction and NIL clustering approaches are based on incremental extraction methods from English documents~\cite{pozzi2022}.
+
+
+% Per stabilire quale span di testo preferire, nel caso in cui si tratti di persona
+% o categorie correlate ad essa, si sceglie l’annotazione più lunga, a patto che
+% essa sia composta da un numero di token inferiore o uguale al massimo
+% determinato per via empirica nel corpus (6 elementi nel caso in esame), nel
+% caso di altre categorie o qualora non sia possibile stabilire una categoria,
+% viene preferita l’annotazione più lunga.
+
+
+
+
+\subsection{evaluation}
+\todo{merge with aixia}

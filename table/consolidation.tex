@@ -1,0 +1,35 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+% \begin{table}[tb]
+% \centering
+% \caption{}
+% \label{tab:consolidation}
+% % \resizebox{0.8\textwidth}{!}{%
+% \begin{tabular}{l|ll|r|lll|ll}
+% \multicolumn{3}{c}{NEL$_\perp$} & \multicolumn{4}{|c|}{NIL Pred$_\perp$}    & \multicolumn{2}{c}{NEL + NIL Pred$_\perp$} \\
+% \midrule
+%       & Acc   & Rec@100 &         & P     & R     & F     & Link$_{Rec}$           & 52.95          \\ \cline{1-7}
+% ICCJ  & 73.52 & 90.81   & NIL     & 92.15 & 86.51 & 89.24 & NIL$_{Rec}$            & 86.31          \\
+% sVoxEL-it & 88.9 & 96.8 & $\neg$NIL & 58.45 & 72.02 & 64.53 & Overall$_{Acc}$            & 76.85         
+% \end{tabular}%
+% % }
+% \end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+\begin{table}[tb]
+\centering
+\caption{NEL and NIL Prediction evaluation on ICCJ test. NEL$_\perp$ and NIL Pred$_\perp$ are independent from other tasks. NEL \& NIL Pred$_\perp$ evaluate the two tasks independently from NER. *NEL$_\perp$ also reports results on VoxEL~\cite{rosales2018voxel} for comparison. }
+\label{tab:consolidation}
+\begin{tabular*}{\textwidth}{lcc@{\extracolsep{\fill}}r@{\extracolsep{\fill}}ccc@{\extracolsep{\fill}}lc}
+\toprule
+\multicolumn{3}{c}{\textbf{NEL}$_\perp$} & \multicolumn{4}{c}{\textbf{NIL Pred}$_\perp$}    & \multicolumn{2}{c}{\textbf{NEL \& NIL Pred}$_\perp$} \\
+\midrule
+      & Acc   & Rec@100 &         & Prec     & Rec     & F1     & Link$_{Rec}$           & 52.95          \\ \cline{1-7}
+ICCJ  & 73.52 & 90.81   & NIL     & 92.15 & 86.51 & 89.24 & NIL$_{Rec}$            & 86.31          \\
+sVoxEL-it* & 88.89 & 96.83 & $\neg$NIL & 58.45 & 72.02 & 64.53 & Overall$_{Acc}$            & 76.85 \\
+\bottomrule
+\end{tabular*}%
+\end{table}

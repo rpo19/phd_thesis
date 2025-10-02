@@ -22,10 +22,12 @@
 \usepackage{dsfont}
 \usepackage{lipsum}
 \usepackage{multirow}
+\usepackage{pifont}
 \usepackage{makecell}
 \usepackage{MnSymbol}%\sumint
 \usepackage{wrapfig}
 \usepackage{textpos}
+\usepackage{bm}
 \usepackage{todonotes}
 \usepackage[integrals]{wasysym}
 \usepackage{fancyhdr}
@@ -320,7 +322,16 @@
 \newcommand{\phd}{Ph.D.\ }
 
 % TODO remove
-\includeonly{chapter2/nilpred,chapter2/ijckg}
+\includeonly{chapterLAW/chapter4,chapterLAW/legal_information_extraction,chapterLAW/aixia,chapterLAW/claw_journal,chapterLAW/}
+
+% \include{chapterLAW/chapter4}
+% \include{chapterLAW/legal_information_extraction}
+% \include{chapterLAW/claw_journal}
+% \include{chapterLAW/aixia}
+% \include{chapterLAW/wise}
+% \include{chapterLAW/legal_information_access}
+% \include{chapterLAW/dave}
+
 
 % \definecolor{red}{rgb}{0.631, 0.094, 0.094}
 \begin{document}
@@ -442,33 +453,33 @@ As an \textbf{author:}
 \include{preface/preface}
 
 
-\include{chapter1/chapter1intro}
-\include{chapter1/informationaccess}
-\include{chapter1/entities}
-\include{chapter1/llms}
-\include{chapter1/legal}
-\include{chapter1/chapter1outro}
+\include{chapterBACK/chapter1intro}
+\include{chapterBACK/informationaccess}
+\include{chapterBACK/entities}
+\include{chapterBACK/llms}
+\include{chapterBACK/legal}
+\include{chapterBACK/chapter1outro}
 
-\include{chapter2/chapter2}
-\include{chapter2/information_extraction}
-\include{chapter2/ner}
-\include{chapter2/nel}
-\include{chapter2/nilpred}
-\include{chapter2/ijckg}
-\include{chapter2/sti}
-\include{chapter2/mammotab}
+\include{chapterINEL/chapter2}
+\include{chapterINEL/information_extraction}
+\include{chapterINEL/ner}
+\include{chapterINEL/nel}
+\include{chapterINEL/nilpred}
+\include{chapterINEL/ijckg}
+\include{chapterINEL/sti}
+\include{chapterINEL/mammotab}
 
-\include{chapter4/chapter4}
-\include{chapter4/legal_information_access}
-\include{chapter4/legal_information_extraction}
-\include{chapter4/claw_journal}
-\include{chapter4/aixia}
-\include{chapter4/wise}
-\include{chapter4/dave}
+\include{chapterLAW/chapter4}
+\include{chapterLAW/legal_information_extraction}
+\include{chapterLAW/claw_journal}
+\include{chapterLAW/aixia}
+\include{chapterLAW/wise}
+\include{chapterLAW/legal_information_access}
+\include{chapterLAW/dave}
 
-\include{chapter3/chapter3}
-\include{chapter3/ia_qa_review}
-\include{chapter3/refactx}
+\include{chapterQA/chapter3}
+\include{chapterQA/ia_qa_review}
+\include{chapterQA/refactx}
 
 
 
