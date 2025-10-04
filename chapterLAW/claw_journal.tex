@@ -1,5 +1,13 @@
-\section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing - Entity Linking for Italian Legal Judgments}
+% \section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing - Entity Linking for Italian Legal Judgments}
+\section{Entity Extraction from Italian Civil Judgments}
 \todo{later merge with aixia}
+
+\begin{itemize}
+    \item gold standard
+    \item pipeline (see section inel). plus ner
+    \item evaluation
+    \item adaptation (aixia)
+\end{itemize}
 
 \subsection{Gold Standard}
 
@@ -52,26 +60,7 @@ The annotations include labels for NER, NEL, NIL prediction, and NIL clustering.
 These tasks are executed sequentially, thus, each step has been performed by manually refining the output of the algorithm of interest applied to the annotated documents from the previous step. For this reason, we can consider the annotation process as a simulation of the real human-in-the-loop use case, thus making it possible to estimate the amount of time required by the final user to consolidate the main pipeline algorithms output.
 
 % \subsection{Types of Interest}
-The annotation process involved the following entity classes:
-\begin{enumerate}
-    \item ``person'',
-    % \begin{itemize}
-        % \item ``attorney''
-        % \item ``judge''
-    % \end{itemize}
-    \item ``location'',
-    % \item ``address'',
-    \item ``organization'',
-    % \begin{itemize}
-        % \item ``court''
-    % \end{itemize}
-    % \item ``plaintiff''
-    % \item ``defendant''
-    \item ``money'',
-    \item ``date'',
-    \item ``miscellaneous''.
-    % \item ``law article''
-\end{enumerate}
+The annotation process involved the entities of class \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Money}, \texttt{Date}, and \texttt{Miscellaneous}.
 
 
 % Additional type classes have been identified as potentially interesting in this domain, which requires the definition of more complex relationships between classes. These include \textit{Attorney} and \textit{Judge} as subclasses of \textit{Person}, the class \textit{Court} as subclass of \textit{Organization}, and the classes \textit{Plaintiff} and \textit{Defendant}, which intersect the classes \textit{Person} and \textit{Organization} (people and organizations can be both plaintiff and defendants in civil trials). Furthermore, all these additional classes refer to roles that different entities play in a specific trial. In the rest of the paper, we focus on the rigid classification reflected in the core classification scheme.
