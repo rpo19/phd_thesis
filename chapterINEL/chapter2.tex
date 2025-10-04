@@ -45,7 +45,21 @@ For this reason, we worked towards producing datasets and evaluation procedures 
 % homonym and NIL-mentions. The dataset has been evaluated using MTab, one of the best approaches of
 % the SemTab challenge.
 
-In particular, in \textcite{ijckg2022}, we focus on batch-based incremental entity extraction, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We apply this method to the WNUM \ac{el} dataset producing its incremental version, \emph{Incremental WNUM}, which is available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}. This approach leverages \ac{el} with a background \ac{kb}, while also detecting and clustering NIL mentions, and incrementally updating the \ac{kb} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
+In particular, in \textcite{ijckg2022}, we focus on batch-based incremental entity extraction, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We apply this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} producing its incremental version, \emph{Incremental WNUM}, which is available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}. This approach leverages \ac{el} with a background \ac{kb}, while also detecting and clustering NIL mentions, and incrementally updating the \ac{kb} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
 
-In \textcite{mammotab}, we introduce \emph{MammoTab}, a large-scale dataset of 1M annotated Wikipedia tables extracted from 20M pages and aligned with Wikidata. This resource was designed to address core challenges in \acl{sti}---i.e., the task of identifying entities, classes columns types, and relations between columns in tabular data (see \Cref{sec:sti})---such as entity disambiguation, homonym resolution, and NIL detection.
+In \textcite{mammotab}, we introduce \emph{MammoTab}, a large-scale dataset of 1M annotated Wikipedia tables extracted from 20M pages and aligned with Wikidata. This resource was designed to address core challenges in \emph{\acf{sti}}---i.e., the task of identifying entities, classes columns types, and relations between columns in tabular data (see \Cref{sec:sti})---such as entity disambiguation, homonym resolution, and NIL detection.
 %Its utility is showcased by evaluating it with one of the leading systems from the SemTab challenge.
+
+Finally, the contributions for incremental \ac{nel} can be summarized as follows:
+\begin{enumerate}
+    \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
+    \item A dataset for incremental \ac{el}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering---created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying our methodology.
+    \item A baseline pipeline, based on the BLINK bi-encoder~\cite{blink}, which additionally supports NIL prediction and clustering.
+    \item Evaluation procedures for incremental \ac{nel}.
+    \item An evaluation of the baseline pipeline on the incremental scenario and a discussion of the main challenges.
+\end{enumerate}
+Similarly the contributions for \ac{sti} are
+\begin{itemize}
+    \item mammotab with NIL annotations.
+    \item evaluation\todo{}
+\end{itemize}
