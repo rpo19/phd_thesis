@@ -1,16 +1,46 @@
-# Makefile
+# Main file (without extension)
 MAIN = main
+
+# XeLaTeX command
 LATEX = xelatex
 LATEX_FLAGS = -interaction=nonstopmode -halt-on-error
 
-.PHONY: all clean distclean
+# Biber command
+BIBER = biber
 
-all:
-	$(LATEX) $(LATEX_FLAGS) $(MAIN).tex
+all: pdf biber finalpdf
+
+.PHONY: pdf finalpdf biber
+
+pdf:
 	$(LATEX) $(LATEX_FLAGS) $(MAIN).tex
 
+biber:
+	$(BIBER) $(MAIN)
+
+finalpdf:
+	$(LATEX) $(LATEX_FLAGS) $(MAIN).tex
+
+
+# Clean auxiliary files recursively
 clean:
-	rm -f *.aux *.log *.out *.toc *.bbl *.blg *.fls *.fdb_latexmk *.lof *.lot *.nav *.snm *.vrb *.xdv
+	find . -type f \( \
+		-name "*.aux" -o \
+		-name "*.log" -o \
+		-name "*.out" -o \
+		-name "*.toc" -o \
+		-name "*.bbl" -o \
+		-name "*.blg" -o \
+		-name "*.fls" -o \
+		-name "*.fdb_latexmk" -o \
+		-name "*.lof" -o \
+		-name "*.lot" -o \
+		-name "*.nav" -o \
+		-name "*.snm" -o \
+		-name "*.vrb" -o \
+		-name "*.xdv" \
+	\) -delete
 
+# Remove everything including the PDF
 distclean: clean
-	rm -f $(MAIN).pdf
+	find . -type f -name "*.pdf" -delete

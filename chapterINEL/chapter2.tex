@@ -1,5 +1,5 @@
 %\pagestyle{mystyle}
-\chapter{Information Extraction}
+\chapter{Incremental Entity Linking}
 % All the papers on knowledge extraction
 % \section{IJCKG and NIL Prediction}
 % \section{Knowledge Extraction in Specific Domains: Specific Issues}
@@ -10,3 +10,42 @@
 % \subsection{Judgments}
 % \subsection{IM Criminal Investigations}
 % \section{Adapting to Specific Domains}
+
+This chapter presents the contributions about \emph{incremental \acl{nel}} (see \Cref{sec:incrementalel}), co-authored during my Ph.D.  These have been published and presented in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)---\textcite{ijckg2022}---and at the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)---\textcite{mammotab}. Both the events were co-located with the 21st International Semantic Web Conference (ISWC 2022).
+
+In 2022, as described in \Cref{sec:incrementalel}, the advancements in the NIL prediction task were left behind the one in \ac{nel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
+For this reason, we worked towards producing datasets and evaluation procedures for aiding the research in this field, focusing on unstructured text~\cite{ijckg2022} (\Cref{sec:ijckg}), but also on structured tabular data~\cite{mammotab} (\Cref{sec:mammotab})---for which a brief backround review is given in \Cref{sec:sti}.
+
+% \todo{add brief intro with contributions}
+% \todo{focus on incremental/nil prediction}
+
+% % abstract from ijckg2022
+% In this paper, we
+% advocate for batch-based incremental entity extraction methods
+% that can exploit NEL with a background KB, detect mentions of
+% entities that are not present in the KB yet (NIL mentions), and up-
+% date the KB with the novel entities. Based on this assumption, we
+% present a methodology to evaluate NEL-based incremental entity
+% extraction, which can be applied to a “static” dataset for evaluating
+% NEL into a dataset for evaluating incremental entity extraction. We
+% apply this methodology to an existing benchmark for evaluating
+% NEL algorithms, and evaluate an incremental extraction pipeline
+% that orchestrates different strong state-of-the-art and baseline al-
+% gorithms for the tasks involved in the extraction process, namely,
+% NEL, NIL prediction, and NIL clustering. In presenting our experi-
+% ments, we demonstrate the increased difficulty of the information
+% extraction task in incremental settings and discuss the strengths of
+% the available solutions as well as open challenges.
+
+% % abstract from mammotab
+% In this paper, we present MammoTab, a dataset composed of 1M Wikipedia tables extracted from over
+% 20M Wikipedia pages and annotated through Wikidata. The lack of this kind of dataset in the state-
+% of-the-art makes MammoTab a good resource for testing and training Semantic Table Interpretation
+% approaches. The dataset has been designed to cover several key challenges, such as disambiguation,
+% homonym and NIL-mentions. The dataset has been evaluated using MTab, one of the best approaches of
+% the SemTab challenge.
+
+In particular, in \textcite{ijckg2022}, we focus on batch-based incremental entity extraction, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We apply this method to the WNUM \ac{el} dataset producing its incremental version, \emph{Incremental WNUM}, which is available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}. This approach leverages \ac{el} with a background \ac{kb}, while also detecting and clustering NIL mentions, and incrementally updating the \ac{kb} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
+
+In \textcite{mammotab}, we introduce \emph{MammoTab}, a large-scale dataset of 1M annotated Wikipedia tables extracted from 20M pages and aligned with Wikidata. This resource was designed to address core challenges in \acl{sti}---i.e., the task of identifying entities, classes columns types, and relations between columns in tabular data (see \Cref{sec:sti})---such as entity disambiguation, homonym resolution, and NIL detection.
+%Its utility is showcased by evaluating it with one of the leading systems from the SemTab challenge.
