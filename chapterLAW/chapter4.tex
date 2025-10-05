@@ -15,22 +15,21 @@ As anticipated in \Cref{sec:background:ai4legal}, \ac{ai} systems can be applied
 During my Ph.D. I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
 These proposals have been published in Computer Law \& Security Review (Vol. 52)~\cite{BELLANDI2024}, in the proceedings of the 22nd International Conference of the Italian Association for Artificial Intelligence (AIxIA 2023 -- Advances in Artificial Intelligence)~\cite{aixia_2023}, and of the 25th International Conference on Web Information Systems Engineering (WISE 2024)~\cite{pozzi_wise_2025}.
 
-Data in this domain, as described in \Cref{sec:background:ai4legal}, often contain personal data, and privacy regulations implies important challenges such as the difficulty in obtaining labeled data. Furthermore, the language used in documents, such as civil judgments, differs from the one generally used for training neural models---i.e., Web data~\cite{}.\todo{giustifica. guarda miei paper, legal bert,...}
+Data in this domain, as described in \Cref{sec:background:ai4legal}, often contain personal data, and privacy regulations imply important challenges such as the difficulty in obtaining labeled data for evaluating or training \ac{ee} systems. Furthermore, the language used in documents---such as civil judgments---differs from daily language~\cite{ccetindaug2023name_legal_turkish}, while open datasets used for training neural models, such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}, are generally obtained from Web data. Another consequent issue is the impossibility of using APIs, such as OpenAI ones\footnote{https://openai.com/api/}\todo{mention apis, openai,... in llms}, with legal data that contain personal information---unless previously anonymized or pseudonymized. Moreover, using these APIs may involve transferring sensitive data outside the European Union, raising additional compliance concerns~\cite[Article~44]{gdpr2016}. As a result, institutions are often forced to rely on local models, which, while enabling full control over data storage and security in line with \textcite[Article~32]{gdpr2016}, can be limited by the local infrastructure.
 
-\todo{private data challenge and consequences: no api,...}
-\todo{summarize abstracts and focus on ie (ia later)}
-\todo{contributions itemize}
+In the remaining of this chapter, I present the contributions of my Ph.D. work on entity extraction in the Italian legal domain.
+\todo{summary introduttivo}
+With respect to civil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
 
-Labeling data is a problem\todo{so gold standard annotation}
-Highlight the challenges (e.g. data,...)
-\todo{objective and motivation of IE} enable ia techniques (faceted search, sta/browsing annotated docs)
-semantic search, sta, kbp (more wise)
-\todo{use background to motivate. start from general IA for law. then IE. then IE contributions. finally IA contributions }
+For criminal investigation data, we focused the extraction and organization of the entities from instant messaging data. Messages---including voice transcriptions---have been modeled in a knowledge graph that capture the network of contacts of the main suspect. Furthermore, an improved version of the \ac{nel} pipeline from \Cref{sec:incrementalel:pipeline} have been evaluated on data---previously labeled with a similar procedure to the one applied to legal judgments~\cite{pozzi_wise_2025}.
+
+These works\todo{works plurale?} also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
+
+In summary, the main contributions in legal \ac{ee} of this Ph.D. are the following.
 \begin{itemize}
-    \item context
-    \item challenges of legal domain
-    \item ie motivation (sta, for ia). vast documents
-    \item ie contributions
-    \item ia intro
-    \item ia contributions
+    \item Creation of annotated benchmark datasets for civil judgments and investigative chat data, enabling structured evaluation of entity extraction methods.
+    \item Development and evaluation of \ac{ner} and incremental \ac{nel} pipelines tailored for legal and investigative domains, including a study on domain adaptation techniques.
+    \item Knowledge organization using knowledge graphs to represent entities and relationships from investigative chat records.
 \end{itemize}
+
+\todo{prima rw legal ie and italian}
