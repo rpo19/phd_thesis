@@ -331,7 +331,7 @@ in~\cite{aixia_2023}.
 
 % \subsubsection{NEL}
 
-For NEL, we use the bi-encoder architecture of BLINK~\cite{wu-etal-2020-scalable}, trained for the Italian language in previous work~\cite{aixia_2023}. The bi-encoder architecture encodes a mention and an entity separately into vectors and is optimized for maximizing the similarity between the vectors of correct mention-entity pairs.
+For NEL, we use the bi-encoder architecture of BLINK~\cite{blink}, trained for the Italian language in previous work~\cite{aixia_2023}. The bi-encoder architecture encodes a mention and an entity separately into vectors and is optimized for maximizing the similarity between the vectors of correct mention-entity pairs.
 As the knowledge base for NEL we use the entities from Italian Wikipedia combined with the chat participants from the KG.
 Specifically, we exploit BLINK zero-shot capability to encode an entity given its title and textual description; thus, for each participant we obtain a representation by giving the following input to the bi-encoder: \verb|[CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP]|. 
 As the majority of the people of interest for the investigation refers to entities not in Wikipedia, we link mentions of persons only to the chat participants. For organizations and locations, instead, we consider Wikipedia entities.

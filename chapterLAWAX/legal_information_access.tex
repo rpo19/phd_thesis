@@ -1,2 +1,152 @@
 \section{Background: Information Access in the Legal Domain}
 \todo{neo4j ui in addition to dave}
+\todo{also integrate in rw legal}
+
+\subsection{NLP, Entity Extraction and Knowledge Consolidation in the Legal Domain}
+\label{sec:rw:nlp:legal}
+
+Several approaches based on NLP have been proposed to improve the management of legal documents in different use cases~\cite{zhong2020does}, including legal case summarization~\cite{passage_based_text_summarization_LIR_2019} and retrieval~\cite{improving_legal_IR_distributional_composition_term_order_probabilities_2017,combining_bandits_lexical_analysis_2020}, legal rule extraction~\cite{dragoni2018}, and data management for criminal investigations~\cite{kejriwal2018,P_rez_2021,batini2021}. The approaches proposed for criminal investigations are based on entity-centric data management principles; therefore, they apply, entity extraction techniques and, in some cases, describe downstream applications where the extracted entities are used to support faceted search engines~\cite{kejriwal2018}. However, these approaches apply entity extraction to sources that are relevant for the investigations (e.g., scraped web pages, images, police reports) but not proper legal documents like court judgments, which represent specific legal language distributions. Also, one of these approaches~\cite{kejriwal2018} does not apply end-to-end entity extraction pipelines for generic entities as we do in our work, but focuses on specific pattern-based extraction rules. While the approach proposed in cite~\cite{batini2021} admittedly discusses preliminary experiments and baseline algorithms. Our work takes inspiration from these approaches, especially in terms of data management principles and background architecture, but we target different types of data, especially court judgments; with respect to~\cite{batini2021}, we also use novel algorithms and a more solid evaluation.                   
+
+Several approaches have focused on the application of entity extraction to legal data similar to ours, and, specifically, court judgments. Most of these approaches have applied NER techniques, which support a variety of downstream applications including anonymization, an objective of interest for most legal systems worldwide. A thorough review of previous work on NER applied in the legal domain can be found in~\cite{turkish_2023}. In order to avoid manual labeling, an approach developed for Indian Supreme Court Judgements adopts a rule-based approach to information extraction~\cite{sarika2022}; it classifies entities into domain-specific types and extracts relations based on a custom ontology. The approach has been evaluated on five judgments, obtaining high precision but very limited recall for most of the entity types, a known bottleneck of rule-based methods. However, combining different algorithms, including rule-based ones, was found to be beneficial for NER in the legal domain~\cite{andrew2018,leitner2019fine}. 
+In our paper, we evaluate several NER algorithms that can be considered competitive on generic texts on Italian court judgments, including alrepository and proposes an entity centric infrastructure to manage these extracted information.
+\todo{ia?}
+Finally, NLP methods have been applied to support legal information retrieval and develop search engines. A few approaches focus on leveraging text summarization techniques~\cite{passage_based_text_summarization_LIR_2019,combining_bandits_lexical_analysis_2020,hu2022bert_lf}, but information extraction and retrieval are interconnected tasks~\cite{CASTANO2022101842}, as appears from contributions to the Competition on Legal Information Extraction/Entailment (COLIEE) organized since 2017~\cite{cooliedescropt}. In this paper, we do not focus on specific algorithms for legal information retrieval; however, our entity extraction approach and architecture are intended to support document search by exploiting entity-related annotations, e.g., to populate search facets and filter out documents. 
+
+%as  the annotations of entity mentions and the entities that result from consolidated   extraction pipeline and is intended to support faceted search     
+
+ 
+  
+%Influenced by the \emph{Common Law}\footnote{A Juridical Model based on \emph{Precedents} legal cases.},~\cite{passage_based_text_summarization_LIR_2019} extracts a summary automatically in order to describe the case with a non-technical language.
+%On the other hand, influenced by the Civil Law\footnote{A Juridical Model based on abstraction of the specific case.},~\cite{improving_legal_IR_distributional_composition_term_order_probabilities_2017} develops a system matching the description of a specific case with a set of (abstract) laws that may be relevant for a concrete scenario.
+%\cite{combining_bandits_lexical_analysis_2020} \nocite{10.1007/978-3-030-63799-6_24} presents a system which retrieves laws and regulations about a specific topic, starting from the original \texttt{pdf} file.
+%To improve the system, the user is tracked continuously in order to both estimate the appreciation of the results and the information needs.
+
+%Related to the above problems, we quote the Competition on Legal Information Extraction/Entailment (COLIEE) organized since 2017 (see~\cite{cooliedescropt}), with, among others, the legal case retrieval task that consists in reading a new case Q, and extracting supporting cases S1, S2, ... Sn for the decision of Q; and the legal case entailment task, that consists in  the identification of a paragraph from existing cases that entails the decision of a new case.
+
+% investigativo
+ 
+
+%In most of the state of the art techniques, it is assumed that distant supervision can be applied because many domain-specific entities are described in the KG and their mentions can be used for training~\cite{weikum2021machine,ZhaoMultisourceFusion}. %This assumption is more at risk in our scenario, where we expect to help build an investigation-specific KG without knowing its domain \textit{a priori}, and where a limited number of entities relevant for the investigation (e.g. places) are covered by available information sources. 
+%It is also recommended the use of different sources in order to improve and verify the information stored in the KG ~\cite{ZhaoMultisourceFusion}; in our case, we plan to replace this validation strategy with human supervision.
+%In fact, since \textit{``state-of-the-art IE systems tend to be based on supervised machine learning''} (\cite{KejriwalBook}) it is not possible to expect good performances from classic \textit{Open Information Extraction} systems. 
+ 
+
+%\cite{dragoni2018} describes a pipeline to extract machine-readable rules from legal documents. It combines the linguistic information provided by WordNet together with a syntax-based extraction of rules from legal texts, and a logic-based extraction of dependencies between chunks of such texts.~\cite{andrew2018} uses a combination of a statistical method (Conditional Random Fields) and rule based techniques (document and language specific regular expressions). They use a corpus from a publicly
+%available legal register containing information about people and companies who are investing money or property in the state of Luxembourg.
+
+%In~\cite{sarika2022} it is described a system to extract a Knowledge Graph from a legal document corpus. It is rule-based and performs entity extraction, relation extraction (with entity types from an ontology) and triple construction. The system has been applied to  the Indian Supreme Court Judgements.
+%Results are compared to a gold standard where five documents were randomly selected from the corpus and annotated for entities and relations with the help of domain experts. F$_1$ scores for extracted entities ranges from 1 (for dates) to 0.182 for court decisions and 0 for documents; for relations from 0.83 for relation between judgements and parties to 0 for relation between judgements and decisions.
+
+%A website that track the performance of state-of-the-art approaches on different atasets\footnote{\url{https://paperswithcode.com/task/relation-extraction page}}, reports, at the time of writing, best $f_1$ scores between ~0.66 (on DocRED, with 97 relation types) and ~0.75 (on TACRED, with 41 relation types), with $f_1$ scores rising over 0.90 only for fewer relation types (e.g., ~0.92 on NYT, with 24 relation types).  }
+
+
+
+
+%In a future, it could be useful to identify a small set of relations relevant to all investigations, but at the moment we prefer to support knowledge exploration with the method based on factoids.            
+%In addition to the previously cited papers, we cite work done to build domain-specific KGs in the biomedical domain, where, e.g. linguistic rules are proposed to extract information from unstructured documents~\cite{PMID:33317512}.
+%Despite good performances and generalization capabilities, this approach does not consider the incremental construction of the the graph.
+%, and can become too complex to use for general users, while our system is intended to update the graph as more information is available.
+
+\subsection{Architectures and Entity-centric Infrastructures for the Legal Domain}
+\todo{move in IA?}
+\label{sec:related_arch}
+The body of work discussed in the previous sections has paid more attention to conceptual frameworks, algorithms, and their evaluation, and less attention to architectures to support the extraction processes and to manage their output.   
+However, a few studies have addressed these problems from an architectural point of view in recent years. In~\cite{PAUZI2023111616}, the authors conducted a systematic mapping study to identify and analyze state-of-the-art software architecture for NLP, in the field of legal documents. They analyzed relevant papers and identified several architectural approaches, including architectures based on pipelines, services, and microservices. 
+%Different from our proposal, where we define an entity-centric infrastructure, 
+They have found that the last approaches focus especially on pipelines, which involve a sequence of NLP modules that process text in a predefined order. The authors also argue that service-oriented and microservices architectures have advantages in terms of flexibility and scalability. However, they do not identify a generic infrastructure to manage entities in the legal domain as we do in our work (see Section~\ref{sec:arch}). 
+
+\subsection{Architectures and Entity-centric Infrastructures for the Legal Domain}
+\todo{move in IA?}
+\label{sec:related_arch}
+The body of work discussed in the previous sections has paid more attention to conceptual frameworks, algorithms, and their evaluation, and less attention to architectures to support the extraction processes and to manage their output.   
+However, a few studies have addressed these problems from an architectural point of view in recent years. In~\cite{PAUZI2023111616}, the authors conducted a systematic mapping study to identify and analyze state-of-the-art software architecture for NLP, in the field of legal documents. They analyzed relevant papers and identified several architectural approaches, including architectures based on pipelines, services, and microservices. 
+%Different from our 
+In the reference \cite{9378375}, the authors present a software architecture designed to aid legal professionals in resolving legal cases through automated extraction of crucial information from documents and generation of potential arguments. This system employs a fusion of rule-based and statistical natural language processing techniques, with a specific focus on a dedicated knowledge extraction pipeline.
+
+Certain architectures seamlessly integrate NLP services and ontologies. For example, in \cite{amato2008}, a document management system within the legal domain is elaborated, demonstrating the conversion of diverse paper documents into RDF statements. This transformation enables efficient indexing, retrieval, and long-term preservation.
+Another architecture, discussed in \cite{buey2016}, concentrates on the analysis and extraction of specific entities from legal texts like acts and agreements. This approach relies on an ontology containing pertinent information about document types, their structures, the entities to be extracted from each section, and the requisite processing steps involving a pre-existing text analysis library. The enhancement of system performance led to the adoption of a microservices-based architecture integrated with message brokers, as detailed in \cite{ruiz2020}. This implementation was integrated into a high-level document management system used for extensive language analysis of legal documents. It is worth noting that although this implementation shares some characteristics with our own design, it does not encompass the knowledge consolidation process central to our work. 
+
+%\cite{humphreys2020} addresses the problem of creating a specialist knowledge management system to semi-automate the extraction of norms and their elements and populate legal ontologies. Their approach consists of general-purpose NLP modules with pre- and post-processing using rules based on domain knowledge. An information extraction system based on Semantic Role Labeling is described.
+gorithms based on contextualized word embeddings fine-tuned on our gold standard. Also, considering the evidence reported in previous work, e.g., in~\cite{sarika2022}, we prefer to focus now on assessing and improving the extraction of a limited number of rather generic entity types (see Section~\ref{sec:gold_standard}); we capture some specific types of entities with rules (as discussed in Section~\ref{sec:experiments}) and we leave the task of finer-grained entity classification for future work, a task for which promising zero-shot methods are emerging~\cite{huang2022few}.        
+
+
+A few approaches consider NEL in legal texts. An approach applied NER and NEL on a corpus of judgments of the European Court of Human Rights~\cite{cardellino_etal_2017_lowcost}, using a legal ontology as background KB. Another approach proposes to apply NEL on the EUR-Lex law article dataset~\cite{Elnaggar2018}; it is trained using transfer learning. In our work, we study an end-to-end combination of NER, NEL, NIL prediction, and NIL Clustering for full-fledged knowledge consolidation and we use a more recent pre-trained NEL approach~\cite{blink}. Another study combined BERT with rule-based techniques for NER and coupled it with an off-the-shelves NEL service to extract entities from court decisions in the Finnish language~\cite{Tamper2020}.
+%; NEL is performed with a popularity-based approach. 
+This study is more similar to ours because it also applies, to some extent, a knowledge consolidation approach; however, we also focus on NIL Prediction and NIL Clustering, and we use a BLINK-based NEL algorithm.
+%; also, in this paper, we discuss only the performance of neural algorithms. 
+Some work combining NEL and NIL prediction has been evaluated on historic legal documents~\cite{klie-etal-2020-zero} (the depositions of the 1641 Irish rebellion\footnote{http://1641.tcd.ie/}). However, to the best of our knowledge, no prior work investigated the combination of NER, NEL, and NIL Prediction in recent court judgments.  
+
+%While we focus mainly on extracting named entities, 
+\todo{ia?}
+Some approaches have focused on the extraction of abstract concepts and legal terminology~\cite{CASTANO2022101842}, or other kinds of information. For example, a knowledge management system is proposed to semi-automate the extraction of norms and their elements and populate legal ontologies~\cite{humphreys2020}, based on Semantic Role Labeling. Their approach consists of general-purpose NLP modules with pre- and post-processing using rules based on domain knowledge. These approaches have orthogonal objectives compared to ours, which focus on named entities, and could be in principle combined in the future. 
+%An information extraction system based on Semantic Role Labeling is described.  
+
+
+%techniques 
+%and few of them make use of Knowledge Graphs (KG) as means to support data integration in the broad legal domain. 
+%We observe, however, that in general these approaches are not intended to support the various actors of the process office in their  daily activities. 
+%
+%Many approaches focus on specific critical topics (terrorism, national security, etc.)~(\cite{kejriwal2018,P_rez_2021}) or on public domain documents, such as laws or juridical regulation (\cite{passage_based_text_summarization_LIR_2019,improving_legal_IR_distributional_composition_term_order_probabilities_2017,combining_bandits_lexical_analysis_2020}).
+
+% A good overview of different NLP techniques applied in the legal domain is provided in~\cite{zhong2020does}, which emphasizes that Named Entity Recognition (NER) techniques and Relation Extraction (RE) have been applied on legal documents.
+
+%Different NLP techniques have been applied in the legal domain, including NER, NEL with ontologies~\cite{zhong2020does}, and widely used NLP models like BERT have been adapted to the legal domain~\cite{chalkidis-etal-2020-legal}.
+% aggiunta unimib 25 ago
+%The literature additionally suggests that combining different algorithms for NER may be beneficial in the legal domain~\cite{leitner2019fine}.
+
+%Previous work has also focused on the extraction of legal entities~(\cite{kejriwal2018,P_rez_2021}), but, in our case, users must be allowed to revise the output of NER algorithms, as it is not possible to rely only on \emph{black-box} algorithms\footnote{Art. 22 EU's GDPR (\emph{General Data Protection Regulation}), into force in our country, does not permit the use of automatic algorithms in making decisions ``which produces legal effects''.}, despite their performance~\cite{zhong2020does}.
+
+%In addition, our solution targets the integration and reconciliation of the entities annotated in different documents stored in the repository and proposes an entity centric infrastructure to manage these extracted information.
+\todo{ia?}
+Finally, NLP methods have been applied to support legal information retrieval and develop search engines. A few approaches focus on leveraging text summarization techniques~\cite{passage_based_text_summarization_LIR_2019,combining_bandits_lexical_analysis_2020,hu2022bert_lf}, but information extraction and retrieval are interconnected tasks~\cite{CASTANO2022101842}, as appears from contributions to the Competition on Legal Information Extraction/Entailment (COLIEE) organized since 2017~\cite{cooliedescropt}. In this paper, we do not focus on specific algorithms for legal information retrieval; however, our entity extraction approach and architecture are intended to support document search by exploiting entity-related annotations, e.g., to populate search facets and filter out documents. 
+
+%as  the annotations of entity mentions and the entities that result from consolidated   extraction pipeline and is intended to support faceted search     
+
+ 
+  
+%Influenced by the \emph{Common Law}\footnote{A Juridical Model based on \emph{Precedents} legal cases.},~\cite{passage_based_text_summarization_LIR_2019} extracts a summary automatically in order to describe the case with a non-technical language.
+%On the other hand, influenced by the Civil Law\footnote{A Juridical Model based on abstraction of the specific case.},~\cite{improving_legal_IR_distributional_composition_term_order_probabilities_2017} develops a system matching the description of a specific case with a set of (abstract) laws that may be relevant for a concrete scenario.
+%\cite{combining_bandits_lexical_analysis_2020} \nocite{10.1007/978-3-030-63799-6_24} presents a system which retrieves laws and regulations about a specific topic, starting from the original \texttt{pdf} file.
+%To improve the system, the user is tracked continuously in order to both estimate the appreciation of the results and the information needs.
+
+%Related to the above problems, we quote the Competition on Legal Information Extraction/Entailment (COLIEE) organized since 2017 (see~\cite{cooliedescropt}), with, among others, the legal case retrieval task that consists in reading a new case Q, and extracting supporting cases S1, S2, ... Sn for the decision of Q; and the legal case entailment task, that consists in  the identification of a paragraph from existing cases that entails the decision of a new case.
+
+% investigativo
+ 
+
+%In most of the state of the art techniques, it is assumed that distant supervision can be applied because many domain-specific entities are described in the KG and their mentions can be used for training~\cite{weikum2021machine,ZhaoMultisourceFusion}. %This assumption is more at risk in our scenario, where we expect to help build an investigation-specific KG without knowing its domain \textit{a priori}, and where a limited number of entities relevant for the investigation (e.g. places) are covered by available information sources. 
+%It is also recommended the use of different sources in order to improve and verify the information stored in the KG ~\cite{ZhaoMultisourceFusion}; in our case, we plan to replace this validation strategy with human supervision.
+%In fact, since \textit{``state-of-the-art IE systems tend to be based on supervised machine learning''} (\cite{KejriwalBook}) it is not possible to expect good performances from classic \textit{Open Information Extraction} systems. 
+ 
+
+%\cite{dragoni2018} describes a pipeline to extract machine-readable rules from legal documents. It combines the linguistic information provided by WordNet together with a syntax-based extraction of rules from legal texts, and a logic-based extraction of dependencies between chunks of such texts.~\cite{andrew2018} uses a combination of a statistical method (Conditional Random Fields) and rule based techniques (document and language specific regular expressions). They use a corpus from a publicly
+%available legal register containing information about people and companies who are investing money or property in the state of Luxembourg.
+
+%In~\cite{sarika2022} it is described a system to extract a Knowledge Graph from a legal document corpus. It is rule-based and performs entity extraction, relation extraction (with entity types from an ontology) and triple construction. The system has been applied to  the Indian Supreme Court Judgements.
+%Results are compared to a gold standard where five documents were randomly selected from the corpus and annotated for entities and relations with the help of domain experts. F$_1$ scores for extracted entities ranges from 1 (for dates) to 0.182 for court decisions and 0 for documents; for relations from 0.83 for relation between judgements and parties to 0 for relation between judgements and decisions.
+
+%A website that track the performance of state-of-the-art approaches on different atasets\footnote{\url{https://paperswithcode.com/task/relation-extraction page}}, reports, at the time of writing, best $f_1$ scores between ~0.66 (on DocRED, with 97 relation types) and ~0.75 (on TACRED, with 41 relation types), with $f_1$ scores rising over 0.90 only for fewer relation types (e.g., ~0.92 on NYT, with 24 relation types).  }
+
+
+
+
+%In a future, it could be useful to identify a small set of relations relevant to all investigations, but at the moment we prefer to support knowledge exploration with the method based on factoids.            
+%In addition to the previously cited papers, we cite work done to build domain-specific KGs in the biomedical domain, where, e.g. linguistic rules are proposed to extract information from unstructured documents~\cite{PMID:33317512}.
+%Despite good performances and generalization capabilities, this approach does not consider the incremental construction of the the graph.
+%, and can become too complex to use for general users, while our system is intended to update the graph as more information is available.
+
+\subsection{Architectures and Entity-centric Infrastructures for the Legal Domain}
+\todo{move in IA?}
+\label{sec:related_arch}
+The body of work discussed in the previous sections has paid more attention to conceptual frameworks, algorithms, and their evaluation, and less attention to architectures to support the extraction processes and to manage their output.   
+However, a few studies have addressed these problems from an architectural point of view in recent years. In~\cite{PAUZI2023111616}, the authors conducted a systematic mapping study to identify and analyze state-of-the-art software architecture for NLP, in the field of legal documents. They analyzed relevant papers and identified several architectural approaches, including architectures based on pipelines, services, and microservices. 
+%Different from our proposal, where we define an entity-centric infrastructure, 
+They have found that the last approaches focus especially on pipelines, which involve a sequence of NLP modules that process text in a predefined order. The authors also argue that service-oriented and microservices architectures have advantages in terms of flexibility and scalability. However, they do not identify a generic infrastructure to manage entities in the legal domain as we do in our work (see Section~\ref{sec:arch}). 
+
+In the reference \cite{9378375}, the authors present a software architecture designed to aid legal professionals in resolving legal cases through automated extraction of crucial information from documents and generation of potential arguments. This system employs a fusion of rule-based and statistical natural language processing techniques, with a specific focus on a dedicated knowledge extraction pipeline.
+
+Certain architectures seamlessly integrate NLP services and ontologies. For example, in \cite{amato2008}, a document management system within the legal domain is elaborated, demonstrating the conversion of diverse paper documents into RDF statements. This transformation enables efficient indexing, retrieval, and long-term preservation.
+Another architecture, discussed in \cite{buey2016}, concentrates on the analysis and extraction of specific entities from legal texts like acts and agreements. This approach relies on an ontology containing pertinent information about document types, their structures, the entities to be extracted from each section, and the requisite processing steps involving a pre-existing text analysis library. The enhancement of system performance led to the adoption of a microservices-based architecture integrated with message brokers, as detailed in \cite{ruiz2020}. This implementation was integrated into a high-level document management system used for extensive language analysis of legal documents. It is worth noting that although this implementation shares some characteristics with our own design, it does not encompass the knowledge consolidation process central to our work. 
+
+%\cite{humphreys2020} addresses the problem of creating a specialist knowledge management system to semi-automate the extraction of norms and their elements and populate legal ontologies. Their approach consists of general-purpose NLP modules with pre- and post-processing using rules based on domain knowledge. An information extraction system based on Semantic Role Labeling is described.
+

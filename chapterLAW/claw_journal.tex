@@ -2,12 +2,7 @@
 \section{Entity Extraction from Italian Civil Judgments}
 \todo{later merge with aixia}
 
-\begin{itemize}
-    \item gold standard
-    \item pipeline (see section inel). plus ner
-    \item evaluation
-    \item adaptation (aixia)
-\end{itemize}
+The work begins with gold standard, called iccj....
 
 \subsection{Gold Standard}
 
@@ -351,17 +346,17 @@ We chose the bi-encoder paradigm because it is able to produce a semantic repres
 The training for the Italian language has been performed following the approach of BLINK authors for the English language. We created an entity linking dataset using the hyperlinks from Italian Wikipedia articles as training samples where the anchor text is the mention. Differently from~\cite{blink}, we used $BERT_{BASE}$\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased} instead of $BERT_{LARGE}$ for computational reasons. The training process has been done in 4 epochs with 9M training examples using in-batch random negatives followed by one epoch of hard negatives in which we use a single hard negative for each training sample. Given a mention, the hard negative is the negative entity (not the correct one) with the highest linking score, calculated using the bi-encoder trained with random negatives.
 
 % spostare negli experiments
-% We conduct a first evaluation of $BLINK_{ITA}$ on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016overview} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
+% We conduct a first evaluation of $BLINK_{ITA}$ on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
 
 % TODO voxel multilingual NEL dataset
 
-% Although a systematic comparison is not possible (as further discussed in ~\ref{app:blink}), our goal is to have some insights on the performance of $BLINK_{ITA}$ in a challenging linking scenario~\cite{basile2016overview}.
+% Although a systematic comparison is not possible (as further discussed in ~\ref{app:blink}), our goal is to have some insights on the performance of $BLINK_{ITA}$ in a challenging linking scenario~\cite{basile2016neelit}.
 
 % The insights suggest that $BLINK_{ITA}$ achieves reasonable performance, despite some known limitations of its current implementation (see~\ref{app:blink}).
 % todo ?
 
 %the 
-%Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016overview}, that is composed of tweets in the Italian language; see Table~\ref{tab:blink_ita_eval}.
+%Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016neelit}, that is composed of tweets in the Italian language; see Table~\ref{tab:blink_ita_eval}.
 
 NIL prediction is implemented as a binary classification using logistic regression.
 %: given a mention and the top-ranked entity, according to the NEL sub-service, it predicts whether the mention refers to that entity or not. In this latter case, we consider the mention as NIL. 
