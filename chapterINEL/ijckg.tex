@@ -46,7 +46,7 @@ max, secondiff                     &  51.4 &  83.1 &          67.3 \\
 Given a mention and the entity candidates provided by the linking system, we perform NIL prediction by discriminating whether the top-ranked candidate entity is correct or not, without modifying the ranking given by the \ac{nel} module. According to this prediction, the mention is respectively linked to the top-ranked entity or set as NIL.
 
 Our implementation is based on a logistic regression whose input is composed by %extrapolated from the score distribution of the bi-encoder:
-the linking score of the best candidate---calculated with the dot-product of mention and entity embeddings---and the difference between the best and the second-best score.
+the linking score of the best candidate---calculated with the dot-product of mention and entity embeddings---and the difference between the best and the second-best score (\textit{secondiff}).
 %This model is trained using the training set of our dataset (see Section \ref{sec:dataset}).
 This configuration is the result of an ablation study (Table \ref{tab:feature_ablation_study}) conducted using the train set for training and evaluating on the dev set of our dataset, that is presented in the next section. The study considered, in addition to the score of the best candidate for \ac{nel}, the similarity scores derived by Levenshtein distance and Jaccard index of the mention and the best candidate title, and some statistics (mean, median, and standard deviation) of the scores of the top-k candidates (to not consider only the top-1 candidate).
 The output of logistic regression belongs to $[0,1]$ and represents the confidence of the linking between the mention and the best candidate (close to 0 means NIL).

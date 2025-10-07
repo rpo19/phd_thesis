@@ -1,5 +1,6 @@
 % \section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing - Entity Linking for Italian Legal Judgments}
 \section{Entity Extraction from Italian Civil Judgments}
+\label{sec:eejudgements}
 \todo{later merge with aixia}
 
 Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
@@ -185,7 +186,7 @@ For the \ac{ner} task, two general-domain ML-based algorithms for the Italian la
 In addition, we developed a rule-based service, to which we refer to with Trie\ac{ner}, supporting efficient retrieval from a gazetteer. Each algorithm recognizes a different set of types. \Cref{tab:algotypes} shows which entity types in our benchmark dataset are recognized by each algorithm including the combination of them.  
 
 SpaCy~\cite{honnibal2020spacy} is a NLP library designed to be production-ready, able to perform \ac{ner} in several languages including Italian. \ac{ner} is performed by first obtaining a vector representation of the input, in our case with a pre-trained Italian transformer (dbmdz/bert-base-italian-uncased\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}), then the vectors are processed by a neural transition-based parser(see \Cref{sec:rw:ner} for more details). We fine-tuned the SpaCy \ac{ner} pipeline, including the transformer and the transition-based parsed, on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is composed of Wikipedia articles annotated with mentions of \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous}.
-%The results for the evaluation on the Wiki\ac{ner} dev set are shown in~\ref{app:blink}.
+%The results for the evaluation on the WikiNER dev set are shown in~\ref{app:blink}.
     % TODO mouvere in appendices
 
 Tint~\cite{2018tint2} is an Italian NLP library based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}. The \ac{ner} task is based on Conditional Random Fields (CRF)~\cite{Lafferty2001} sequence taggers, combined with rule-based systems to extract money, numbers, and temporal expressions.
@@ -219,7 +220,8 @@ The knowledge consolidation process involves the three tasks of \ac{nel}, NIL pr
 % Provato a scriverla meglio
 As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 
-For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK authors for the English language. We created an entity linking dataset using the hyperlinks from Italian Wikipedia articles as training samples where the anchor text is the mention. Differently from~\cite{blink}, we used $BERT_{BASE}$\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142} instead of $BERT_{LARGE}$ for computational reasons. The training process has been done in 4 epochs with 9 million training examples using in-batch random negatives followed by one epoch of hard negatives in which we use a single hard negative for each training sample. Given a mention, the hard negative is the negative entity---not the correct one---with the highest linking score, calculated using the bi-encoder previously trained with random negatives.
+For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW\todo{cita} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
+As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
 
 % spostare negli experiments
 % We conduct a first evaluation of $BLINK_{ITA}$ on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
@@ -235,6 +237,13 @@ For the \ac{nel} system to support the Italian language, we trained the bi-encod
 %Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016neelit}, that is composed of tweets in the Italian language; see Table~\ref{tab:blink_ita_eval}.
 
 NIL prediction has been trained with the same Wikipedia-based dataset used to train the \ac{nel} model. Different combinations of input features have been evaluated. The ones we are currently using are the \ac{nel} score of the top-ranked entity and the difference between the top score and the score of the second-best candidate.\todo{simlarly to ijckg??}
+
+For NIL prediction, as in \textcite{ijckg2022} and \Cref{sec:incrementalel:pipeline}, we use a \textit{logistic regression classifier} considering as input features:
+\begin{enumerate}
+    \item the \ac{nel} score of the top-ranked entity;
+    \item the difference between the top-ranked entity score and the second-best one (\textit{secondiff}).
+\end{enumerate}
+It produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is correct for linking the mention, while $0$ means the opposite. In this latter case, we consider the mention NIL, assuming that if the correct entity is not in the top-ranked position, then it is not in the \ac{kr}.
 
 % The NIL clustering sub-service is a three-step algorithm~\cite{simone_24}: initially, the mentions are clustered using their surface form (i.e., edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise), then inside each cluster we apply a hierarchical clustering algorithm by using a predefined threshold to split clusters, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
 % In this way, each cluster from the first step is divided into sub-clusters.
@@ -260,22 +269,22 @@ The NIL clustering approach is the three-step clustering method described in \Cr
 
 We evaluate the entity extraction pipeline in the following experimental settings:
 \begin{enumerate}
-    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. For \ac{ner} we use ICCJ146-EE as the evaluation dataset and ICCJ30-\ac{inel} for the knowledge consolidation tasks. We remind that knowledge consolidation tasks, i.e, \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization} (see Section~\ref{sec:entityextractionservice}). Moreover, This analysis aligns with the concept of human-in-the-loop validation, in which the results of each step can be refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different criteria, including more relaxed ones that also accept spans that are partially correct (see Section~\ref{sec:metrics}).  
-    \item \textit{\ac{nel} with NIL prediction}: we study the combined performance of \ac{nel} and NIL prediction, since these two tasks are closely related, isolating them from \ac{ner} errors. To achieve this, we execute \ac{nel} and NIL prediction on gold standard \ac{ner} annotations from ICCJ30-\ac{inel}.
-    \item \textit{End-to-end}: we analyze the behaviour of our system on each mention of ICCJ30-\ac{inel} for the tasks \ac{ner}, \ac{nel}, and NIL prediction (as done in the NEEL challenge~\cite{basile2016neelit}), wherein an input mention can be finally linked to an entity in the KB or classified as NIL. NIL clustering is not included in the end-to-end evaluation because it complicates the evaluation since it would require evaluating whether a NIL mention was grouped in the correct cluster, leading to a too broad space of possible outcomes (e.g., the NIL mention is grouped with one correct and one wrong mention, the NIL mention is grouped with only one correct mention out of $n$).
+    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practise, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use ICCJ146-EE as the evaluation dataset and ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization} (see Section~\ref{sec:entityextractionservice}). This analysis aligns with the concept of human-in-the-loop validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (see Section~\ref{sec:metrics}).  
+    \item \textit{\ac{nel} with NIL prediction}: we study the combined performance of \ac{nel} and NIL prediction, since these two tasks are closely related, isolating them from \ac{ner} errors. To achieve this, we execute \ac{nel} and NIL prediction on ground truth \ac{ner} annotations from ICCJ30-\ac{inel}.
+    \item \textit{End-to-end}: we analyze the behaviour of our system on each mention of ICCJ30-\ac{inel} for the tasks \ac{ner}, \ac{nel}, and NIL prediction (as done in the NEEL challenge~\cite{basile2016neelit}), wherein an input mention can be finally linked to an entity in the KB or classified as NIL. NIL clustering is not included in the end-to-end evaluation because it complicates the evaluation since it would require evaluating whether a NIL mention was grouped in the correct cluster, leading to a too broad space of possible outcomes---e.g., the NIL mention is grouped with one correct and one wrong mention, the NIL mention is grouped with only one correct mention out of $n$.
 \end{enumerate}
-To better study the difficulty of the domain we compare with \ac{ner} and \ac{nel} results on standard benchmarks in the Italian language: Wiki\ac{ner}~\cite{NOTHMAN2013151} and I-CAB~\cite{magnini-etal-2006-cab} for \ac{ner}; Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT~\cite{basile2016neelit} for \ac{nel}.
+To better study the difficulty of the domain we compare with \ac{ner} and \ac{nel} results on standard benchmarks in the Italian language: WikiNER~\cite{NOTHMAN2013151} and I-CAB~\cite{magnini-etal-2006-cab} for \ac{ner}; Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT~\cite{basile2016neelit} for \ac{nel}.
 
 In the remainder of this section, we present the evaluation metrics and the evaluation results.
 
 % The following sections contain the explanation of the evaluation metrics (Section~\ref{sec:metrics})
-% %, the description of the gold standard (Section~\ref{sec:gold_standard}),
+% %, the description of the ground truth (Section~\ref{sec:gold_standard}),
 % and the results of the experiments (Section~\ref{sec:results}).
 
 % %%%
 
 
-% The experiments were carried out to evaluate the algorithms with gold standard labels, focusing on \ac{ner}, \ac{nel}, NIL prediction, and NIL clustering. 
+% The experiments were carried out to evaluate the algorithms with ground truth labels, focusing on \ac{ner}, \ac{nel}, NIL prediction, and NIL clustering. 
 % The aim of this evaluation is to analyze the difficulty of \ac{ner}, \ac{nel}, NIL prediction, and NIL clustering algorithms without any domain-specific fine-tuning. We also seek to establish a best-effort baseline, which can be further improved by adapting the algorithms to the specific target domains, as demonstrated in the existing literature under similar contexts with limited manually annotated data available~\cite{ehrmann2021named}.
 
 %%%%
@@ -295,15 +304,15 @@ In the remainder of this section, we present the evaluation metrics and the eval
 The different tasks are analyzed according to the following metrics and criteria.
 \subsubsection{Evaluation Metrics and Criteria}\label{sec:metrics}
 % \paragraph{\ac{ner}}
-For the \textit{atomic} evaluation of \ac{ner}, we calculate precision, recall, and F$_1$ score with different matching criteria that determine when an extracted mention is correct with respect to the human-annotated gold standard.
+For the \textit{atomic} evaluation of \ac{ner}, we calculate precision, recall, and F$_1$ score with different matching criteria that determine when an extracted mention is correct with respect to the human-annotated ground truth.
 Indeed in some contexts, ``partially-correct'' annotations might be acceptable, e.g., identifying ``A4 Highway'' instead of ``A4 Highway Torino-Trieste'' might be informative enough~\cite{nadeau2007survey, tsai2006various}. Furthermore, in a human-in-the-loop scenario, we prefer to detect partially-correct annotations rather than to miss them, since a human can quickly correct annotation boundaries.
 
 % The metrics used for the evaluation of \ac{ner} are inspired by~\cite{tsai2006various}, and have different criteria to mark a prediction as correct. In this way, it is possible to compute precision, recall, and F$_1$ score at different severity levels, thus providing a better overview of the effectiveness of the algorithm.
 
-The adopted criteria, taken from~\cite{tsai2006various} and extended to provide both a typed and untyped evaluation, allow us to assess the behavior of the algorithms at different severity levels. The metrics are defined as follows:
+The adopted criteria---taken from~\cite{tsai2006various} and extended to provide both a typed and untyped evaluation---allow us to assess the behavior of the algorithms at different severity levels. The metrics are defined as follows:
 \begin{enumerate}
-    \item \textit{strong:} the predicted entity has an exact span match with the gold standard annotations;
-    \item \textit{strong typed:} the predicted entity has an exact span match and the type is correct with respect to the gold standard annotations;
+    \item \textit{strong:} the predicted entity has an exact span match with the ground truth annotations;
+    \item \textit{strong typed:} the predicted entity has an exact span match and the type is correct with respect to the ground truth annotations;
     \item \textit{approximate:} the predicted entity is contained in the correct span (or vice versa);
     \item \textit{approximate typed:} the predicted entity is contained in the correct span (or vice versa) and the type is correct;
     \item \textit{partial:} the predicted entity is overlapping with the correct span;
@@ -312,7 +321,8 @@ The adopted criteria, taken from~\cite{tsai2006various} and extended to provide 
 
 % \todo{controlla HITL}
 
-For the sake of clarity, given $c$ is the chosen criterion from the above, $Y^i_c$ the number of correctly predicted annotations according to $c$, $Y^i$ the total number of predicted annotations, and $Y_G$ the expected number of annotations in the gold standard, precision is defined as $P = \frac{Y^i_c}{Y^i}$, that is the number of correctly predicted annotations divided by the total number of predicted annotations. Recall is $R = \frac{Y^i_c}{Y_G}$, the ratio of correctly predicted annotations and the expected number of annotations, and, finally F$_1$ score is the harmonic mean of $P$ and $R$: $F_1 = 2 * \frac{P * R}{P + R}$.
+For the sake of clarity, given $c$ is the chosen criterion from the above, $Y^i_c$ the number of correctly predicted annotations according to $c$, $Y^i$ the total number of predicted annotations, and $Y_G$ the expected number of annotations in the ground truth, precision is defined as $P = \frac{Y^i_c}{Y^i}$, that is the number of correctly predicted annotations divided by the total number of predicted annotations. Recall is $R = \frac{Y^i_c}{Y_G}$, the ratio of correctly predicted annotations and the expected number of annotations, and, finally F$_1$ score is the harmonic mean of $P$ and $R$: $F_1 = 2 * \frac{P * R}{P + R}$.
+\todo{speak about metrics in rw}
 
 % \paragraph{Knowledge consolidation} % (\ac{nel}, NIL prediction, NIL clustering)
 % The evaluation of \ac{nel} is composed of two parts. The first part regards the base entity linking, which is evaluated on \textbf{recall@K} metric to assess if the correct link is contained in the top-K candidates with the highest score. The second part evaluated is the NIL predictor. Since it is a binary classifier, it is evaluated on the standard metrics of precision, recall, and F$_1$ score. 
@@ -324,16 +334,16 @@ For the sake of clarity, given $c$ is the chosen criterion from the above, $Y^i_
 % Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
 
 % \paragraph{\ac{nel}}
-\ac{nel} is \textit{atomically} evaluated on accuracy, that is the number of mentions linked to the correct entity divided by the total number of mentions to link, and recall@k. This latter metric assesses whether the correct entity is among the top-k candidates with the highest linking score (in our case accuracy and recall@1 are equivalent). Note that \ac{nel}, and also NIL prediction and NIL clustering, is evaluated solely on the types ``person'', ``location'', and ``organization''. 
+\ac{nel} is \textit{atomically} evaluated on accuracy, that is the number of mentions linked to the correct entity divided by the total number of mentions to link, and recall@k. This latter metric assesses whether the correct entity is among the top-k candidates with the highest linking score (in our case accuracy and recall@1 are equivalent). Note that \ac{nel}, and also NIL prediction and NIL clustering, is evaluated solely on the types \texttt{Person}, \texttt{Location}, \texttt{Organization}. 
 
 % \paragraph{\ac{nel}}
 % \paragraph{NIL prediction}
 For the \textit{atomic} evaluation of the NIL prediction classifier, we calculate precision, recall, and F$_1$ score for both the NIL and $\neg$NIL classes. The NIL prediction task strongly relies on the \ac{nel} score, thus to evaluate it independently from \ac{nel} we consider correct when mentions linked to a wrong entity are classified as NIL: in this case, the top-ranked entity, according to \ac{nel}, is not the correct one and the NIL prediction classifier is based on the assumption that when the correct entity is not the top-ranked one, then, it does not exist in the KB.
 
 NIL clustering, similarly to coreference resolution tasks~\cite{streaming_crossdoc_coreference}, is evaluated \textit{atomically} with the metrics metrics MUC, B$_3$, and CEAF$_e$. For each of them, we calculate precision, recall, and F$_1$ score.
-For the evaluation to be independent of error propagation, we run the clustering algorithm only for the NIL mentions from the gold standard.
+For the evaluation to be independent of error propagation, we run the clustering algorithm only for the NIL mentions from the ground truth.
 
-For the joint evaluation of \textit{\ac{nel} with NIL prediction}, starting from the gold standard \ac{ner} annotations, we calculate the accuracy on 1) all the mentions, 2) on the mentions that should be linked to the KB, and 3) on the mentions that should be classified as NIL. They respectively represent the ratio of all the mentions, of the $\neg$NIL mentions, and of the NIL mentions that were correctly processed.
+For the joint evaluation of \textit{\ac{nel} with NIL prediction}, starting from the ground truth \ac{ner} annotations, we calculate the accuracy on 1) all the mentions, 2) on the mentions that should be linked to the KB, and 3) on the mentions that should be classified as NIL. They respectively represent the ratio of all the mentions, of the $\neg$NIL mentions, and of the NIL mentions that were correctly processed.
 
 % \begin{figure}
 %     \centering
@@ -456,7 +466,7 @@ SpaCy is effective in recognizing the types \texttt{Person} and \texttt{Location
         % \hline
         % \multicolumn{5}{c}{Benchmark Comparison**} \\
         % \hline
-        % Wiki\ac{ner}~\cite{NOTHMAN2013151} & SpaCy & .919 & .919 & .919 \\ % per org loc misc
+        % WikiNER~\cite{NOTHMAN2013151} & SpaCy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
     \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate typed match}. *Miscellanea mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}

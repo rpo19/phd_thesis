@@ -1,4 +1,5 @@
-\section{Contribution III: Named Entity Recognition and Linking for Entity Extraction from Italian Civil Judgements}
+% \section{Contribution III: Named Entity Recognition and Linking for Entity Extraction from Italian Civil Judgements}
+\section{Adapting Entity Recognition to Italian Civil Judgments}
 
 % \subsection{Italian Civil Court Judgment Corpus and NER classes} \label{sez:dataset}
 % %
@@ -17,27 +18,20 @@
 % For the remainder of this work, we will refer to our annotated corpus of 146 documents as ICCJ (Italian Civil Court Judgment)\todo{use iccj names} and to the 900,000 legal judgment (without annotations) as ICCJ900k.
 
 
-\subsection{NER with MLM-adaptation and fine-tuning}
+% \subsection{NER with MLM-adaptation and fine-tuning}
 
-We use the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} with the SpaCy transition-based parser to leverage contextualized token representations obtained from a transformer~\cite{vaswani_transformers_2017}.
-
-As the backbone transformer for the NER system, we evaluate five different BERT encoders that have been trained with one of three different MLM-adaptations or with a combination of them. They are further described in Table~\ref{tab:backbones} where \textit{ITA} (Italian) denotes the pre-training with MLM on general-domain Italian data, \textit{LGL} (Legal) the MLM-adaptation to legal-domain data, and \textit{ICCJ900k} to our corpus of 900,000 Italian civil court judgments. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data using MLM.
+As in the previous Section, \Cref{sec:eejudgements}, for \ac{ner}, we use spaCy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers.
+As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders that have been trained with one of three different MLM-adaptations (from masked language modeling, see \Cref{sec:rw:llms}) or with a combination of them. They are further described in Table~\ref{tab:backbones} where \textit{ITA} (Italian) denotes the pre-training with MLM on general-domain Italian data, \textit{LGL} (Legal) the MLM-adaptation to legal-domain data, and ICCJ900k to the corpus of $\approx$900,000 Italian civil court judgments. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data using MLM.
 
 \input{table/backbones}
 
 As a baseline, we consider the general-domain model \textit{ITA} (available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}).
 Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with MLM.
-For each backbone, we consider five models with a different random weight initialization.
+For each backbone, we consider five models with a different random weight initialization.\too{specify only for the ner fine-tuning}
 
 Finally, each model has been fine-tuned for the NER task on ICCJ training set using the SpaCy library with early stopping on the validation set and AdamW as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
 
 
-\subsubsection{NEL with BLINK-ITA-bi-encoder}
-
-For NEL we use the bi-encoder architecture of BLINK~\cite{blink}. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on $9M$ training samples from Italian Wikipedia hyperlinks, following the original work, for 5 epochs (in the last one we train with hard-negatives instead of random negatives) using AdamW optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20.  As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
-
-\subsubsection{NIL Prediction}
-In the NIL prediction component, we use a \textit{logistic regression classifier} that receives as input features 1) the score of the top-ranked entity given by the NEL system and 2) the difference between the top-ranked entity score and the second-best one~\cite{ijckg2022}, and produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is correct for linking the mention, while $0$ means the opposite. In this latter case, we consider the mention NIL, assuming that if the correct entity is not in the top-ranked position, then it is not in the KB.
 
 \subsubsection{Experimental Evaluation} \label{sez:experiments}
 
