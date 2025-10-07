@@ -1,0 +1,124 @@
+cosa sono kg intensive domain
+cosa vogliono farci utenti?
+presenza di tante informazioni?
+
+il contributo qual'è?
+tutto utile ad uno scopo: IA
+raggruppiamo contributi
+costruzione di kr?
+partimonio informativo, dati eterogenei, integrazione / linking, incremental
+non estraiamo kg ma la consolidiamo anche -> forza consolidation
+collegamenti a livello di entità del mondo reale
+
+caratterizzare kg intensive domains: bisogni informativi
+- web search. tesi di georgios
+
+2 filoni: come sono fatti i dati e come ci posso accedere
+mia proposta per mettere insieme
+semantic table interpretation, knoblock
+
+framework di organizzazione della conoscenza?
+
+generale e non vago. triple è fatto? si assume che sia vera all'interno del kg(?)
+
+documenti: non sono fatti, ma possono contenerli
+file, dati (tabelle? chat)
+collegamenti tra questi documenti e entità (ciò che unisce i fatti ai documenti) <--------
+slide di matteo con kg in mezzo, a dx documenti, a sx tabelle, potrei aggiungere altro. le entità sono i collegamenti tra i pezzi di conoscenza
+
+propongo un modello dell'integrazione della conoscenza che raffina kr? modelli di conoscenza mista, non pure kg, ne collezioni documentali. propongo mix tra fatti e collezioni documentali?
+
+sistematizzazione approccio ibrido a integrazione di conoscenza mescolando fatti e documenti (bellandi)
+costruire basi di conoscenza è complicato -> sfide (parlo anche di più di quelle che ho fatto)
+1. valutare se metodi di costruzione incrementale comportano problemi maggiori?
+2. aspetti complicati su costruzione nei domini. problema: adattare modelli generali in legal italian
+3. tecniche di enrichment sofisticate a partire da dati che rappresentano eventi ma all'interno hanno contenuti (indagini????)
+4. costruire rappresentazioni dei dati/fatti in modo che possa usare meglio la conoscenza dei llm/pretraining
+
+modello organizzazione informazioni, definito a partire dai vari lavori (libro luna dong weikum costruzioni basi di conoscenza su web scale. cosa succede invece in domini specifici?)
+
+contributi a costruzione vs all accesso
+
+come accedere a questa conoscenza? accesso. lista di metodologia: basate su interrogazioni utenti o proattive (recommended system?).
+nell'attiva: query su dati strutturati, search/semantic/faceted su documenti, chatbot in nl, esplorazione con semantic highlights
+
+SOTA
+background: proposte per rappresentare dati, basi di conoscenza, organizzare documenti, orga conoscenza
+stato arte: come organizzi, processare informazioni -> organizzazione, metodi di accesso
+metodologie per organizzare dati ed informazioni e per considerare casi specifici con informazioni eterogenee
+tecniche per costruire (ner, nel,...)
+tecniche per accedere
+
+sfide
+
+storia:
+ci sono proposte. perchè applicare questi metodi è sfidante? ragioni: io mi sono occupato di queste
+linking e clustering complicati in alcuni domini (wikipedia) ma complicati in altri domini. wikifier funziona bene su wikipedia
+
+prima (prima del sota):
+cosa sono i kg intensive domains
+use case: nell'ambito legal
+impatto dell'ai (iniziato nel 2022). già forte impatto dei trf, ma applicazione pervasiva agli iniziato
+in the AI era.
+kg intensive domains hanno loro bisogni. dopo aver identificato bisogni summary su tecniche ?. sintesi modalità di accesso informazioni. sintesi tecniche (kbs, ie per collegare dati da sorgenti diverse, poi impatto ai)
+impatto ai, progressi importanti in interpretation nlp e fare task
+impatto ai generative più accessibile a metà dottorato
+
+questo: (background and ) problem definition (e sfide principali)
+poi stato dell'arte-> approfondimento. problematiche più dettagliate
+
+summary contributions:
+- modelli di organizzazione conoscenza: architettura dati di riferimento?
+- costruzione kr
+- modalità di accesso: dave, refactx, rag. prima preprocessing e poi access.
+
+in refactx elaborazione finalizzata a ?. ho struttura e devo portarla nell'ambito linguistico per usarla con llm
+
+prima estraevo struttura?
+
+
+altra storia: refactx anche per rendere la conoscenza disponibile a llm
+per parlare di ai: uso etico nei domini, alto rischio, human oversight, policies,.. per output trasparente e trusted
+
+parlare anche di metodi di accesso nell'era dell'ai. non solo ia. aumentare capacità umano di human oversight, trasparenza,....
+
+
+bello-----------------------------------------------------------------------------------------
+semantic search, chatbot, ci sono già. miei contributi per limitare i rischi ai in domini sensibili (anche la bank in refactx). banca come kg intensive domain: esempio use case banca che vuole usare chatbot con problemi
+
+
+stato dell'arte portato su nella parte sota.
+
+diversi livelli di astrazione: il problema deve essere un problema. rilevanza sviluppo sistemi ai a supporto di utenti che lavorano in kg intensive domains <---------------- bello
+
+livelli di astrazione delle modalità di accesso: metodi per la costruzione di kg repository. modello di organizzazione delle informazioni
+
+ci vuole un bel disegno che mostra modello di organizzazione delle conoscenza. schemino. documenti -> estrazione e collegamento (layer)
+
+quando affronto i contributi faccio vedere il pezzettino su cui sto lavorando
+
+
+contributo indagini: generalizzazione sull'organizzazione
+
+
+immagine: parlo delle sfide e mostro come le ho affrontate su questi punti
+
+
+consiglia di lavorare su presentazione power point
+
+riorganizzazione per venerdì. filo logico e struttura argomentazione
+
+come farei il phd ora? partire a definire modello dati, formalizzazione. storia di semantic integration, problemi nuovi. modello compatibile con graphrag,... modello organizzativo
+
+qual'è il modello con cui organizzi informazioni per garantire insieme di proprietà per accesso a informazioni. (renzo ruben hanno integrato anonimizzazione)
+modello dati: enittà associata a id, concetto di menzione con id (linking). id interno ed esterno.
+-------> proprietà
+contributi sono dimostrazione che il modello funziona (ci sono strategie per far funzionare) ed è applicabile. magari cambiando algo con più nuovi anche meglio.
+
+sota su ie, non devo necessariamente fare la review, ma raccontare la storia. cose sono sempre più fattibili (modello sempre più portabile)
+
+parlo con renzo per componenti tecniche
+
+guardo tesi georgios
+
+dare ordine e respiro organico agli obiettivi
