@@ -1,5 +1,7 @@
 % \section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing - Entity Linking for Italian Legal Judgments}
 \section{Entity Extraction from Italian Civil Judgments}
+\sectionmark{EE from Italian Judgments}
+\todo{look at chaptermark and sectionmark}
 \label{sec:eejudgements}
 \todo{later merge with aixia}
 
@@ -218,7 +220,7 @@ The knowledge consolidation process involves the three tasks of \ac{nel}, NIL pr
 % Provato a scriverla meglio
 As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 
-For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW\todo{cita} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
+For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
 As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
 
 % spostare negli experiments
