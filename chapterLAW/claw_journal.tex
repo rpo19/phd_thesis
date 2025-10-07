@@ -54,19 +54,17 @@ Finally, we also decided to annotate mentions such as \textit{``the Judge''} or 
 
 
 \paragraph{Document Statistics}
-The resulting corpus counts 16,634 annotations ($\approx$114 annotations per document), with an average document length of $\approx$1,900 words. Each document required on average $\approx$15 minutes to be annotated. The distribution of types is reported in \Cref{fig:types_distrib}.
+The resulting corpus counts 16,634 annotations ($\approx$114 annotations per document), with an average document length of $\approx$1,900 words. Each document required on average $\approx$15 minutes to be annotated. The distribution of types is reported in \Cref{fig:types_distrib}\todo{create new starting from stats}.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.8]{images/claw/types_distrib.png}
-    \caption{Distribution of \ac{ner} types in the ICCJ146-EE dataset.
+    \includegraphics[scale=0.8]{images/ICCJ146-EE_entity_type_distribution.png}
+    \caption{Distribution of \ac{ner} types in the ICCJ146-EE dataset (with NIL counts).
     % *\textit{location} implicitly includes \textit{addresses} since nested annotations are not taken into account in this work; **miscellaneous annotations are mostly referred to \textit{law articles}, thus there is no distinction in the count.
     }
     \label{fig:types_distrib}
 \end{figure}
 
-\input{table/dataset_stats}
-\Cref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
 
 \paragraph{Inter-Annotator Agreement}
 To assess the quality of the annotations and the clarity of the guidelines we compute the inter-annotator agreement (IAA) on the 30 overlapping documents, which are annotated independently by both the annotators.

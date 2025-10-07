@@ -27,3 +27,4 @@ latexmk/
 *.run.xml
 *.bcf
 *.bib.original
+venv

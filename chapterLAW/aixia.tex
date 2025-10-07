@@ -21,16 +21,23 @@
 % \subsection{NER with MLM-adaptation and fine-tuning}
 
 As in the previous Section, \Cref{sec:eejudgements}, for \ac{ner}, we use spaCy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers.
-As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders that have been trained with one of three different MLM-adaptations (from masked language modeling, see \Cref{sec:rw:llms}) or with a combination of them. They are further described in Table~\ref{tab:backbones} where \textit{ITA} (Italian) denotes the pre-training with MLM on general-domain Italian data, \textit{LGL} (Legal) the MLM-adaptation to legal-domain data, and ICCJ900k to the corpus of $\approx$900,000 Italian civil court judgments. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data using MLM.
+As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders that vary in the pre-training data. We consider three classes of pre-training data. From the most generic to the most specific, they are general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus of $\approx$900,000 Italian civil court judgments.
+\Cref{tab:backbones} shows all the five different configurations of the \ac{ner} backbone transormer---one per column---and on which data they have been pre-trained\todo{uniform pre-trained or pretrained} with \acf{mlm}. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data without any previous training on generic Italian data.
 
 \input{table/backbones}
 
-As a baseline, we consider the general-domain model \textit{ITA} (available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}).
-Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with MLM.
-For each backbone, we consider five models with a different random weight initialization.\todo{specify only for the ner fine-tuning}
+As a baseline, we consider the general-domain model \textit{ITA}---which is available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}.
+Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with \ac{mlm}.
+Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the SpaCy library with early stopping on the validation set and AdamW as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
 
-Finally, each model has been fine-tuned for the NER task on ICCJ training set using the SpaCy library with early stopping on the validation set and AdamW as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
+\input{table/dataset_stats}
 
+For the \ac{ner} fine-tuning data, we use the annotated corpus ICCJ146-EE, divided in three splits. The 30 documents also annotated for \ac{inel} represents the test set, while for the validation set we randomly select 12 documents from the remaining ones, ending up with 102 training documents.  
+\Cref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
+
+
+
+For each configuration, we consider five models with a different random weight initialization for the \ac{ner} layers (see \Cref{sec:rw:ner})\todo{describe in rw how ner is performed with BERT}, in order to minimize the bias from the initialization. As a consequence, we perform 25 \ac{ner} fine-tuning.
 
 
 \subsubsection{Experimental Evaluation} \label{sez:experiments}
