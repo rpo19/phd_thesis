@@ -27,7 +27,7 @@ As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2
 
 As a baseline, we consider the general-domain model \textit{ITA} (available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}).
 Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with MLM.
-For each backbone, we consider five models with a different random weight initialization.\too{specify only for the ner fine-tuning}
+For each backbone, we consider five models with a different random weight initialization.\todo{specify only for the ner fine-tuning}
 
 Finally, each model has been fine-tuned for the NER task on ICCJ training set using the SpaCy library with early stopping on the validation set and AdamW as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
 
