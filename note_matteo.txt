@@ -53,7 +53,7 @@ sfide
 
 storia:
 ci sono proposte. perchè applicare questi metodi è sfidante? ragioni: io mi sono occupato di queste
-linking e clustering complicati in alcuni domini (wikipedia) ma complicati in altri domini. wikifier funziona bene su wikipedia
+linking e clustering facili in alcuni domini (wikipedia) ma complicati in altri domini. wikifier funziona bene su wikipedia (prior?)
 
 prima (prima del sota):
 cosa sono i kg intensive domains
