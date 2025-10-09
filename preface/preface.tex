@@ -10,26 +10,67 @@
 % information need? which ones?
 
 % extraction and access
+\todo{important: motivate why we should treat judgments and criminal investigations with the same model}
 
 Knowledge-intensive domains are fields that demand specialized expertise, deep understanding, and extensive information processing, such as law, healthcare, finance, and scientific research~\cite{niu-etal-2025-tree,cambridge-knowledge-intensive}. In these areas, decisions rely heavily on the expert's domain knowledge~\cite{kg-intensive-nlu-xai-2021}. To gather the required knowledge, professionals may need to consult a variety of sources, such as clinical records, research papers, and medical guidelines in healthcare, or legal codes, court decisions, contracts, and investigative or forensic reports in law. 
 
-Users' needs---such as searching for precedent cases in law or identifying relevant clinical trials in healthcare---have motivated the development of domain-specific \acf{ir} systems~\cite{moens2001innovative,breuker2004legal,hersh2003trec,roberts2016overview}. 
+Several \acf{nlp} approaches have been introduced for improving the workflow in these domains. The need for retrieving precedent cases in law or identifying relevant clinical trials in healthcare motivated the development of domain-specific \acf{ir} systems~\cite{moens2001innovative,breuker2004legal,hersh2003trec,roberts2016overview}. Document summarization systems have been introduced for lengthy documents~\cite{llms_in_law_2025,clinical_summarization_2023}, or predictive methods---such as drug response prediction in the healthcare domain~\cite{sharma2024advances}, or civil case outcome prediction in the legal domain~\cite{juliahb2024}.
 % These systems are designed to support complex queries and integrate multiple heterogeneous sources of information to aid expert decision-making~\cite{voorhees2014clinical,liu2023domain}.
 
-In this thesis, we consider the legal domain as representative of knowledge-intensive domains, especially focusing on civil court judgments---i.e., the documents which conclude a civil trial and contains the parties, the facts, and the motivated final decision---and investigative chat logs---i.e., the chat messages extracted from seized suspects' phones.
+In this thesis, we consider the legal domain as representative of knowledge-intensive domains, especially focusing on civil court judgments---i.e., the documents which conclude a civil trial and contains the parties, the facts, and the motivated final decision---and investigative chat logs---i.e., the chat messages extracted from seized suspects' phones during an investigation.
 
-However, the legal domain is characterized by specific challenges for \ac{ir}. According to the law, the theft of similar products may be regulated with different law articles, according to the price of the stolen item~\cite{feng-etal-2024-legal}. Consequently, two cases that appear similar at first glance may be, instead, quite different in the eyes of the law. The concept of relevance also heavily depends on the outcome of the trial~\cite{SANSONE2022101967}.
-Furthermore, this domain is characterized by a peculiar language that follows implicit structure, which however can vary depending, for instance, on the judge that is writing the document~\cite{SANSONE2022101967}. Documents are often long in size and heterogeneous in nature~\cite{SANSONE2022101967}---for example, the data acquired during an investigation may include legal contracts, chat messages, posts on social media, or even pictures, and audio recordings.
+However, the legal domain is characterized by specific challenges. According to the law, the theft of similar products may be regulated with different law articles, according to the price of the stolen item~\cite{feng-etal-2024-legal}. Consequently, two cases that appear similar according to general-domain \ac{nlp} tools may be considered quite different in the eyes of the law. The concept of similarity between legal cases also heavily depends on the outcome of the trials~\cite{SANSONE2022101967}, which may be overlooked by general-domain \ac{nlp} methods.
+Furthermore, this domain is characterized by a peculiar language that follows implicit structure, which however can vary depending on the country, on the court, or on the professionist that is writing the document~\cite{SANSONE2022101967,breit_legal_permits_2020}. Documents are often long in size and heterogeneous in nature~\cite{SANSONE2022101967}---for example, the data acquired during an investigation may include legal contracts, chat messages, multimodal posts on social media, pictures, and audio recordings.
 
-Another important challenge for using \ac{ir} systems, or any other automated system in this domain, is the compliance with the regulations, such as respecting principles like transparency, non-discrimination, and privacy~\cite{SANSONE2022101967}\todo{magari cita direttamente regulations}.
+Another important challenge for using \ac{nlp} systems, or other automated tools in this domain, is the compliance with the regulations, such as respecting principles like transparency, non-discrimination, and privacy~\cite{SANSONE2022101967}\todo{magari cita direttamente regulations}.
 \todo{time challenge, see feng. section aware,... aggiungi magari in legal o in soa. o quando definisco le proprietà}
+
+This work focuses on the information access needs of users in knowledge-intensive domains, with particular attention to the legal domain. These needs encompass retrieving relevant documents, efficiently exploring their content, posing questions about individual documents or entire collections, and computing statistics across document corpora.
+
+% casi d'uso
+For example, judges and lawyers may need to search and consult previous cases involving the same individuals or analyze the outcomes of similar cases to identify legal trends. When reviewing lengthy judgments, they can benefit from tools that allow them to quickly navigate to specific sections or locate all mentions of a given person. Investigators, on the other hand, may need to retrieve a particular contract from a seized hard drive or identify chat messages confirming a meeting between suspects. Moreover, in the \acf{ai} era, when popular search engines are able to detect and directly answer some questions in natural language, legal professionals may benefit from \acf{qa} systems that directly answer questions on the document they are reading or on document collections, additionally providing references to the pieces of information supporting the answers.
+Finally, authorities such as the Ministry of Justice may need to compute statistics, including the number of new cases per court each year or the average trial duration by court, for performance monitoring and policy assessment~\cite{bellandi2025streamlining}.
+\todo{also add quick look to the commuication network of suspects? maybe too specific}
+
+
+While several systems for assisting legal professionals have been developed~\cite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china,breit_legal_permits_2020,,amato2008,buey2016}, most existing approaches are highly specialized for specific subdomains or data formats. \textcite{HAN2024121052legalasst} focus on court judgments, proposing \emph{LegalAsst}, a legal assistance for enhancing court productivity that uses \acfp{llm}, entities, graph-based visualizations of the trial facts, and represents and shows to the users decision-trees describing the trial reasoning. \textcite{human-ai-system-legal-precedent-search-china} study and propose a prototype for legal case retrieval which guides professionals interactively, e.g., with a visualized faceted search system that recommends alternative search terms.
+\textcite{breit_legal_permits_2020} focus on legal permits\todo{}. \textcite{amato2008} proposes a management system using ontologies and entities, focusing notary documents. \textcite{buey2016} study different types of legal documents, such as public acts or private agreements, but relying on ontologies describing the document structure and which entities to extract from each section.
+\todo{adele}
+\todo{maybe order historically}
+\todo{add approaches for criminal investigations from claw}
+
+\todo{perception of ai tools. see china}
+
+% % studies for scalability
+% Later advancements, such as the microservices-based architecture proposed in \textcite{ruiz2020}, improved scalability and performance for large-scale language analysis of legal documents.
+
+
+
+
+However, despite these advancements, existing systems focus remain narrowed to a specific set of document types, lacking cross-domain generalization---which is central for criminal investigations.
+\todo{verify and add others. maybe not here but in sota}
+% vietnam papers
+
+
+
+% idea
+While case retrieval systems do exists, and similarly for all the other use cases ??, these problem have been addressed with specific approaches that falls when increased generalization is required.
+% idea worse
+While, specialized methods for legal case retrieval do exist, the focus of this work is to achieve a level of generalization that allows the system to work in different scenarios, also including heterogeneus investigative data. Indeed, in this case there are no solution to achieve this????\todo{verify, cite, also from claw}
+
+% support
+In the reference \cite{9378375}, the authors present a software architecture designed to aid legal professionals in resolving legal cases through automated extraction of crucial information from documents and generation of potential arguments. This system employs a fusion of rule-based and statistical natural language processing techniques, with a specific focus on a dedicated knowledge extraction pipeline.
+
+Certain architectures seamlessly integrate NLP services and ontologies. For example, in \cite{amato2008}, a document management system within the legal domain is elaborated, demonstrating the conversion of diverse paper documents into RDF statements. This transformation enables efficient indexing, retrieval, and long-term preservation.
+Another architecture, discussed in \cite{buey2016}, concentrates on the analysis and extraction of specific entities from legal texts like acts and agreements. This approach relies on an ontology containing pertinent information about document types, their structures, the entities to be extracted from each section, and the requisite processing steps involving a pre-existing text analysis library. The enhancement of system performance led to the adoption of a microservices-based architecture integrated with message brokers, as detailed in \cite{ruiz2020}. This implementation was integrated into a high-level document management system used for extensive language analysis of legal documents. It is worth noting that although this implementation shares some characteristics with our own design, it does not encompass the knowledge consolidation process central to our work. 
+
 
 \todo{say something about legal case retrieval systems}
 \todo{speak of more use cases and why case ir is not enough}
 % mention graphrag and other proposals (also not rag) that create an intermediary representation of the information
 % idea di ordinamento (table of contents gerarchica, ir, ...)
 % integrazione conoscenza
-While, specialized methods for legal case retrieval do exist, the focus of this work is to achieve a level of generalization that allows the system to work in different scenarios, also including heterogeneus investigative data. Indeed, in this case there are no solution to achieve this????\todo{verify, cite, also from claw}
+
 % siamo più generali di legal case search
 \todo{proprietà da rispettare. una può essere anche la generalizzabilità. che poi riprende adattabilità in claw}
 
@@ -51,7 +92,7 @@ My proposal is to use entities, which are of undeniable importance in knowledge-
 
 In Knowledge-intensive domains, such as law and criminal investigations, noticeable attention is given to the people, locations, or organizations mentioned in judgements, or investigative data.
 \todo{entity/named entity definition}
-Judges, layers, or investigators, indeed, often seek information around particular entities, but the vastness, variety, and ambiguity of the examined documents represent a challenge for a prompt and complete understanding~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}, often resulting in time-consuming manual work.\todo{citare altro?}\todo{leggi il paper batini. find additional citations}
+Judges, lawyers, or investigators, indeed, often seek information around particular entities, but the vastness, variety, and ambiguity of the examined documents represent a challenge for a prompt and complete understanding~\cite{real_batini2021semantic,pozzi_wise_2025,BELLANDI2024,aixia_2023}, often resulting in time-consuming manual work.\todo{citare altro?}\todo{leggi il paper batini. find additional citations}
 \todo{there is interest in using technology to help extract, organize and access information. we can see this by looking at the recent interesting in applying AI/ML techniques to...}
 Recent interest, indeed, has been driven towards extracting and organizing knowledge for supporting the exploration and interpretation activities by the end users~\cite{kejriwal2018,szekely2015building,kejriwal2017investigative}.\todo{aggiungere altro: sono tutti dello stesso gruppo}
 
