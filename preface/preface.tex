@@ -65,22 +65,30 @@ What is common to all the aforementioned approaches is the idea of building a mo
 % idea di ordinamento (table of contents gerarchica, ir, ...)
 % integrazione conoscenza
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{images/overview_thesis.pdf}
+    \caption{Overview of the proposed architecture.}
+    \label{fig:overview}
+\end{figure}
+\todo{improve figure and show central role of entities in connecting with readable text}
+
 The final objective of my Ph.D. is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
-This model must be:
+This model must be respect the following principles:
 \begin{enumerate}
-    \item scalable to vast data
-    \item generalizable to heterogeneous documents
-    \item adaptable to new use cases
-    \item traceable and correctable by humans, since we tackle a sensitive domain
+    \item scalability to vast document collections;
+    \item generalizability to heterogeneous documents;
+    \item adaptability to new use cases. Certain investigation may require ad-hoc workflows.
+    \item traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
+    \item Error-correcton capability to allow users to correct errors when identified and improving the system quality with a human-in-the-loop~\cite{} approach.\todo{citare qualcosa per human-in-the loop? è un po' buttato li?}
 \end{enumerate}
 \todo{something about kc or incremental knowledge. support long tail entities,... and also exploit availbel known entities wikipedia wd, legal codes,...}
 \todo{must connect everything in a semantic web. let it clear}
 \todo{immagine}
+\Cref{fig:overview} sketches a schema of the model proposed in this thesis.
 
 % siamo più generali di legal case search
 \todo{proprietà da rispettare. una può essere anche la generalizzabilità. che poi riprende adattabilità in claw}
-
-My proposal is to use entities, which are of undeniable importance in knowledge-intensive domains, think at law articles for the legal, or diseases and sympthoms for the healthcare, to organize the information from the data, for the final objective of helping final users in fulfilling their information need---also proposing novel \acl{ia} applications.
 
 % then say my proposal is similar 
 
