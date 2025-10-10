@@ -10,6 +10,12 @@
 % information need? which ones?
 
 % extraction and access
+
+In recent years, \ac{nlp} has been revolutionized by the transformer architecture~\cite{vaswani_transformers_2017}---introcuded in 2017 \todo{due parole sui transformers}---and by its [scale?] to billion-parameters models [instructed?] to follow human-instruction. Before transformers \todo{say previous challenge...}. Instead, with the first generation of transformers~\cite{devlin-etal-2019-bert,radford2019unsupervised_learners}, transfer learning---the practice of using large (at least in those years) models, pretrained on big corpora for generic language understanding, and adapt them, namely fine-tuning, on specific tasks with far less data---allowed to obtain outstanding results in several \ac{nlp} tasks, while drastically reducing human intervention for feature definitions\todo{,... improve verify and cite}. While \textcite{browngpt3} already counted 175 billion parameters and obtained outstanding few-shot performance in several tasks~\cite{}, the second [milestone] came with \textcite{instruct_gpt_2022} and the public release of ChatGPT~\cite{openai2025chatgpt} in the end of 2022, which achieved impressive capabilities in understanding human instruction and made publicly available, through both the chat system and APIs, this powerful advancement.
+
+Today, when speaking about \aclp{llm} we mean very \aclp{llm}, where the smaller ones---sometimes called small \acp{llm}---count few billion parameters up to about 70 billion parameters, whose weights are often open and researchers are able to run them on decent GPUs. For example to run \todo{} the cheaper GPU is \todo{}, which costs \todo{}. Very large \acp{llm} instead count hundreds of billions of parameters\todo{cite deepseek that is open and the estimates of gpt and friends} and their quality and ease of use let them be used almost for everything reaching an abuse of \acp{llm} for tasks that may be solved accurately with simpler and more efficient models. These also generates concerns about the environmental impact of running these models, since executing all the calculations needed by the billions of parameters implies massive energy consumptions~\cite{}.
+
+
 \todo{important: motivate why we should treat judgments and criminal investigations with the same model}
 
 Knowledge-intensive domains are fields that demand specialized expertise, deep understanding, and extensive information processing, such as law, healthcare, finance, and scientific research~\cite{niu-etal-2025-tree,cambridge-knowledge-intensive}. In these areas, decisions rely heavily on the expert's domain knowledge~\cite{kg-intensive-nlu-xai-2021}. To gather the required knowledge, professionals may need to consult a variety of sources, such as clinical records, research papers, and medical guidelines in healthcare, or legal codes, court decisions, contracts, and investigative or forensic reports in law. 
@@ -19,7 +25,7 @@ Several \acf{nlp} approaches have been introduced for improving the workflow in 
 
 In this thesis, we consider the legal domain as representative of knowledge-intensive domains, especially focusing on civil court judgments---i.e., the documents which conclude a civil trial and contains the parties, the facts, and the motivated final decision---and investigative chat logs---i.e., the chat messages extracted from seized suspects' phones during an investigation.
 
-However, the legal domain is characterized by specific challenges. According to the law, the theft of similar products may be regulated with different law articles, according to the price of the stolen item~\cite{feng-etal-2024-legal}. Consequently, two cases that appear similar according to general-domain \ac{nlp} tools may be considered quite different in the eyes of the law. The concept of similarity between legal cases also heavily depends on the outcome of the trials~\cite{SANSONE2022101967}, which may be overlooked by general-domain \ac{nlp} methods.
+However, the legal domain is characterized by specific challenges. According to the law, the theft of similar products may be regulated with different law articles with respect to the price of the stolen item~\cite{feng-etal-2024-legal}. Consequently, two cases that appear similar according to general-domain \ac{nlp} tools may be considered quite different in the eyes of the law. The concept of similarity between legal cases also heavily depends on the outcome of the trials~\cite{SANSONE2022101967}, which may be overlooked by general-domain \ac{nlp} methods.
 Furthermore, this domain is characterized by a peculiar language that follows implicit structure, which however can vary depending on the country, on the court, or on the professionist that is writing the document~\cite{SANSONE2022101967,breit_legal_permits_2020}. Documents are often long in size and heterogeneous in nature~\cite{SANSONE2022101967}---for example, the data acquired during an investigation may include legal contracts, chat messages, multimodal posts on social media, pictures, and audio recordings.
 
 Another important challenge for using \ac{nlp} systems, or other automated tools in this domain, is the compliance with the regulations, such as respecting principles like transparency, non-discrimination, and privacy~\cite{SANSONE2022101967}\todo{magari cita direttamente regulations}.
@@ -28,7 +34,7 @@ Another important challenge for using \ac{nlp} systems, or other automated tools
 This work focuses on the \acl{ia} needs of users in knowledge-intensive domains, with particular attention to the legal domain. These needs encompass retrieving relevant documents, efficiently exploring their content, posing questions about individual documents or entire collections, and computing statistics across document corpora.
 
 % casi d'uso
-For example, judges and lawyers may need to search and consult previous cases involving the same individuals or analyze the outcomes of similar cases to identify legal trends. When reviewing lengthy judgments, they can benefit from tools that allow them to quickly navigate to specific sections or locate all mentions of a given person. Investigators, on the other hand, may need to retrieve a particular contract from a seized hard drive or identify chat messages confirming a meeting between suspects. Moreover, in the \acf{ai} era, when popular search engines are able to detect and directly answer some questions in natural language, legal professionals may benefit from \acf{qa} systems that directly answer questions on the document they are reading or on document collections, additionally providing references to the pieces of information supporting the answers.
+For example, judges and lawyers may need to search and consult previous cases involving the same individuals or analyze the outcomes of similar cases to identify legal trends. When reviewing lengthy judgments, they can benefit from tools that allow them to quickly navigate to specific sections or locate all mentions of a given person. Investigators, on the other hand, may need to retrieve a particular contract from a seized hard drive or identify chat messages confirming a meeting between suspects. Moreover, in the \acf{ai} era, when popular search engines directly answer some questions in natural language, legal professionals may benefit from \acf{qa} systems that directly answer questions on the document they are reading or on document collections, additionally providing references to the pieces of information supporting the answers.
 Finally, authorities such as the Ministry of Justice may need to compute statistics, including the number of new cases per court each year or the average trial duration by court, for performance monitoring and policy assessment~\cite{bellandi2025streamlining}.
 \todo{also add quick look to the commuication network of suspects? maybe too specific}
 
@@ -39,6 +45,7 @@ Early work by \textcite{amato2008} introduced a document management system for t
 More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
 The latter developed a prototype for legal case retrieval that guides professionals interactively through a visualized faceted search interface, recommending alternative search terms to support precedent discovery.
 \todo{adele}
+\todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
 \todo{maybe order historically}
 \todo{add approaches for criminal investigations from claw}
 
@@ -73,18 +80,19 @@ What is common to all the aforementioned approaches is the idea of building a mo
 The final objective of my Ph.D. is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
 This model must be respect the following principles.
 \begin{enumerate}
-    \item Scalability to vast document collections;
-    \item Generalizability to heterogeneous documents;
-    \item Adaptability to new use cases. Certain investigation may require ad-hoc workflows.
+    \item Generalizability to heterogeneous documents and to new use cases, since certain investigation may require ad-hoc workflows.
     \item Traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
     \item Error-correcton capability to allow users to correct errors when identified and improving the system quality with a human-in-the-loop~\cite{} approach.\todo{citare qualcosa per human-in-the loop? è un po' buttato li?}
+    \item Scalability to vast document collections.
 \end{enumerate}
 \todo{something about kc or incremental knowledge. support long tail entities,... and also exploit availbel known entities wikipedia wd, legal codes,...}
 \todo{must connect everything in a semantic web. let it clear}
 \todo{immagine}
-\Cref{fig:overview} sketches a schema of the model proposed in this thesis.
 
-To fulfill these principles we decide to... entities support generalizability since they are present in all the aforementioned knowledge-intensive domains---people, diseases, genes in the healthcare, companies,... in finance, articles, conferences, publishers... in scientific research...
+\Cref{fig:overview} sketches a schema of the model proposed in this thesis.
+To achieve generalizability, we decide for an entity-centric approach. Common examples of entities, include persons, locations, and organizations~\cite{entityorientedsearch2018balog}, but entities are also central for knowledge-intensive domains. Legal documents often mention law articles or other documents, such as judgments 
+
+To fulfill these principles we decide to... entities support generalizability since they are present in all the aforementioned knowledge-intensive domains---people, diseases, genes in the healthcare, companies,... in finance, articles, conferences, publishers... in scientific research...and can link documents from these domains. also legal examples.
 
 
 \begin{figure}[t]
