@@ -45,11 +45,8 @@ The latter developed a prototype for legal case retrieval that guides profession
 On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a knowledge graph---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
 % both focus also on scalability
 \textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
-Furthermore, these approaches for enhancing criminal investigations do not focus on \ac{kc} processes, such as \ac{nel}, except specific applications like clustering via phone number~\cite{kejriwal2017searchengine}, resulting in ambiguity risks---e.g., keyword-based system may identify ``Lisbon'' without disambiguating between \texttt{Lisbon, Capital of Portugal} and \texttt{Lisbon, Connecticut} or \todo{example like name of the president and "president of" should be understood that it is the same entity}. Finally, using \ac{nel} also allows to make us of existing knowledge repositories, such as Wikipedia~\cite{wikipedia:wikipedia} or domain specific ones\todo{}.
 
-Furthermore, these approaches for enhancing criminal investigations do not address \ac{kc} processes, such as \ac{nel}, except for specific applications like clustering entities via phone numbers~\cite{kejriwal2017searchengine}. This omission introduces ambiguity risks---for example, a keyword-based system may identify ``Lisbon'' without distinguishing between \texttt{Lisbon, Capital of Portugal} and \texttt{Lisbon, Connecticut}, or fail to recognize that ``the president'' and ``President Smith'' refer to the same entity. Incorporating \ac{nel} techniques would also enable systems to leverage existing \acl{kr}, such as Wikipedia~\cite{wikipedia:wikipedia}, or domain-specific ones\todo{}.
-
-Furthermore, these approaches for enhancing criminal investigations do not address \ac{kc} processes, such as \ac{nel}, except for specific applications like clustering entities via phone numbers~\cite{kejriwal2017searchengine}. This omission introduces ambiguity risks---for example, a keyword-based system may identify ``Lisbon'' without distinguishing between \texttt{Lisbon, Capital of Portugal} and \texttt{Lisbon, Connecticut}, or fail to recognize that ``the president of the European Commission'' and ``Ursula von der Leyen'' refer to the same entity. Incorporating \ac{nel} techniques would instead enable systems to leverage existing knowledge repositories, such as Wikipedia~\cite{wikipedia:wikipedia}, or domain-specific ones, such as legal codes.
+Furthermore, these approaches for enhancing criminal investigations do not address \ac{kc} processes, such as \ac{nel}, except for specific applications like clustering entities via phone numbers~\cite{kejriwal2017searchengine}. This results in the risk of ambiguity---for example, a keyword-based system may identify ``Lisbon'' without distinguishing between \texttt{Lisbon, Capital of Portugal}, \texttt{Lisbon, Connecticut}, and \texttt{Lisbon (1956 film)}, or fail to recognize that ``the president of the European Commission'' and ``Ursula von der Leyen'' refer to the same entity. Incorporating \ac{nel} techniques would also enable systems to leverage existing knowledge repositories, such as Wikipedia~\cite{wikipedia:wikipedia}, or domain-specific ones, such as legal codes.
 
 
 \todo{perception of ai tools. see china}
@@ -74,12 +71,12 @@ What is common to all the aforementioned approaches is the idea of building a mo
 \todo{improve figure and show central role of entities in connecting with readable text}
 
 The final objective of my Ph.D. is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
-This model must be respect the following principles:
+This model must be respect the following principles.
 \begin{enumerate}
-    \item scalability to vast document collections;
-    \item generalizability to heterogeneous documents;
-    \item adaptability to new use cases. Certain investigation may require ad-hoc workflows.
-    \item traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
+    \item Scalability to vast document collections;
+    \item Generalizability to heterogeneous documents;
+    \item Adaptability to new use cases. Certain investigation may require ad-hoc workflows.
+    \item Traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
     \item Error-correcton capability to allow users to correct errors when identified and improving the system quality with a human-in-the-loop~\cite{} approach.\todo{citare qualcosa per human-in-the loop? è un po' buttato li?}
 \end{enumerate}
 \todo{something about kc or incremental knowledge. support long tail entities,... and also exploit availbel known entities wikipedia wd, legal codes,...}
@@ -93,7 +90,7 @@ To fulfill these principles we decide to... entities support generalizability si
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{images/entities_central_role.pdf}
-    \caption{The central role played by entities in interconnecting heterogeneous data.}
+    \caption{The central role played by entities in interconnecting heterogeneous data. In the picture, a criminal report, a civil judgment, a chat report (including a voice message), and structured bank transfers are interlinked by entities.}
     \label{fig:entities_central}
 \end{figure}
 \todo{improve figure and show central role of entities in connecting with readable text}
