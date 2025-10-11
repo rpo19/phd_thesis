@@ -1421,7 +1421,8 @@ numpages = {390}
   volume        = {92},
   number        = {22},
   pages         = {9977--9982},
-  year          = {1995}
+  year          = {1995},
+  url = {https://www.pnas.org/doi/pdf/10.1073/pnas.92.22.9977},
 }
 @inproceedings{gu2024mamba,
   title         = {Mamba: Linear-Time Sequence Modeling with Selective State Spaces},
@@ -1659,11 +1660,12 @@ numpages = {390}
   booktitle     = {Handbook of research on machine learning applications and trends: algorithms, methods, and techniques},
   pages         = {242--264},
   year          = {2010},
-  publisher     = {IGI Global Scientific Publishing}
+  publisher     = {IGI Global Scientific Publishing},
+  url = {https://ftp.cs.wisc.edu/machine-learning/shavlik-group/torrey.handbook09.pdf}
 }
 @techreport{radford2018improving,
   title         = {Improving Language Understanding by Generative Pre-Training},
-  author        = {Alec, Radford and Karthik, Narasimhan and Tim, Salimans and Ilya, S},
+  author={Radford, Alec and Narasimhan, Karthik and Salimans, Tim and Sutskever, Ilya and others},
   year          = {2018},
   institution   = {OpenAI},
   type          = {Technical Report},
@@ -1708,18 +1710,20 @@ numpages = {390}
   doi           = {https://doi.org/10.1007/s13042-024-02443-6}
 }
 @article{Raffel2020t5,
-  author        = {Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J.},
-  year          = {2020},
-  issue_date    = {January 2020},
-  publisher     = {JMLR.org},
-  volume        = {21},
-  number        = {1},
-  issn          = {1532-4435},
-  journal       = {J. Mach. Learn. Res.},
-  month         = jan,
-  articleno     = {140},
-  numpages      = {67},
-  keywords      = {deep learning, attention based models, multi-task learning, natural language processing, transfer learning}
+  author = {Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J.},
+  title = {Exploring the limits of transfer learning with a unified text-to-text transformer},
+  year = {2020},
+  issue_date = {January 2020},
+  publisher = {JMLR.org},
+  volume = {21},
+  number = {1},
+  issn = {1532-4435},
+  journal = {J. Mach. Learn. Res.},
+  month = jan,
+  articleno = {140},
+  numpages = {67},
+  keywords = {transfer learning, natural language processing, multi-task learning, attention based models, deep learning},
+  url = {https://dl.acm.org/doi/pdf/10.5555/3455716.3455856}
 }
 @inproceedings{maynez-etal-2020-faithfulness-hallucination,
   title         = "On Faithfulness and Factuality in Abstractive Summarization",
@@ -4833,4 +4837,60 @@ url="http://www.ncbi.nlm.nih.gov/pubmed/38015588"
   url       = {https://chatgpt.com/},
   note      = {Large language model},
   urldate   = {2025-10-10}
+}
+
+@ARTICLE{zhuang_survey_transfer_learning_2021,
+  author={Zhuang, Fuzhen and Qi, Zhiyuan and Duan, Keyu and Xi, Dongbo and Zhu, Yongchun and Zhu, Hengshu and Xiong, Hui and He, Qing},
+  journal={Proceedings of the IEEE}, 
+  title={A Comprehensive Survey on Transfer Learning}, 
+  year={2021},
+  volume={109},
+  number={1},
+  pages={43-76},
+  keywords={Transfer learning;Semisupervised learning;Data models;Covariance matrices;Machine learning;Adaptation models;Domain adaptation;interpretation;machine learning;transfer learning},
+  doi={10.1109/JPROC.2020.3004555}}
+
+  @article{Sor2025chatgpt,
+  author       = {Jennifer Sor},
+  title        = {ChatGPT is now being used by 10\% of the world's adult population},
+  journal      = {Business Insider},
+  year         = {2025},
+  month        = oct,
+  url          = {https://www.businessinsider.com/chatgpt-users-growth-openai-growth-sam-altman-ai-llm-2025-10},
+  note         = {Accessed: 2025-10-11}
+}
+
+@inproceedings{shen-etal-2024-small,
+    title = "Small {LLM}s Are Weak Tool Learners: A Multi-{LLM} Agent",
+    author = "Shen, Weizhou  and
+      Li, Chenliang  and
+      Chen, Hongzhan  and
+      Yan, Ming  and
+      Quan, Xiaojun  and
+      Chen, Hehong  and
+      Zhang, Ji  and
+      Huang, Fei",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.929/",
+    doi = "10.18653/v1/2024.emnlp-main.929",
+    pages = "16658--16680",
+    abstract = "Large Language Model (LLM) agents significantly extend the capabilities of standalone LLMs, empowering them to interact with external tools (e.g., APIs, functions) and complete various tasks in a self-directed fashion. The challenge of tool use demands that LLMs not only understand user queries and generate answers accurately but also excel in task planning, tool invocation, and result summarization. While traditional works focus on training a single LLM with all these capabilities, performance limitations become apparent, particularly with smaller models. To overcome these challenges, we propose a novel approach that decomposes the aforementioned capabilities into a planner, caller, and summarizer. Each component is implemented by a single LLM that focuses on a specific capability and collaborates with others to accomplish the task. This modular framework facilitates individual updates and the potential use of smaller LLMs for building each capability. To effectively train this framework, we introduce a two-stage training paradigm. First, we fine-tune a backbone LLM on the entire dataset without discriminating sub-tasks, providing the model with a comprehensive understanding of the task. Second, the fine-tuned LLM is used to instantiate the planner, caller, and summarizer respectively, which are continually fine-tuned on respective sub-tasks. Evaluation across various tool-use benchmarks illustrates that our proposed multi-LLM framework surpasses the traditional single-LLM approach, highlighting its efficacy and advantages in tool learning."
+}
+
+@misc{Google2024generative_search,
+  author       = {Elizabeth Reid},
+  title        = {Generative AI in Search: Let Google Do the Searching for You},
+  howpublished = {Google Blog},
+  year         = {2024},
+  month        = may,
+  day          = 14,
+  url          = {https://blog.google/products/search/generative-ai-google-search-may-2024/},
+  note         = {Accessed: 2025-10-11}
 }
