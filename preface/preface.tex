@@ -82,14 +82,14 @@ Other challenges include compliance with regulations, as described above, as wel
 \paragraph{Use cases addressed in this work}
 \todo{add citations}
 \todo{mention facets}
-To illustrate the practical information access needs in knowledge-intensive domains, we consider several tasks in the legal and investigative contexts. These use cases highlight the types of queries, document navigation, and analysis that professionals often require, and motivate the design of tools to support them. In particular, users may rely on information access systems for:
+To illustrate the practical needs for accessing information (\ac{ia}) in knowledge-intensive domains, we consider several tasks in the legal and investigative contexts. These use cases highlight the types of queries, document navigation, and analysis that professionals often require, and motivate the design of tools to support them. In particular, users may rely on \ac{ia} systems for:
 
 \begin{itemize}
-    \item \textbf{Case retrieval and precedent search:} Judges and lawyers may need to search for previous cases involving the same individuals or organizations, or analyze outcomes of similar cases to identify legal trends and inform their reasoning.
-    \item \textbf{Document navigation and content exploration:} When reviewing lengthy judgments, legal professionals benefit from tools that allow them to quickly navigate to specific sections, locate all mentions of a given person, or summarize relevant parts of a document.
-    \item \textbf{Evidence and contract retrieval:} Investigators may need to retrieve particular contracts from seized devices, identify chat messages confirming meetings or agreements between suspects, or quickly visualize the communication network of the individuals under investigation.
-    \item \textbf{Question answering on documents and collections:} In the \acf{ai} era, when search engines can answer questions directly in natural language, legal professionals can benefit from \acf{qa} systems that provide answers on a single document or across document collections, along with references to the supporting evidence.
-    \item \textbf{Statistical analysis and monitoring:} Authorities, such as the Ministry of Justice, may require aggregated statistics, e.g., the number of new cases per court per year or the average trial duration, to support performance monitoring, policy assessment, and resource planning~\cite{bellandi2025streamlining}.
+    \item \emph{Case retrieval and precedent search:} Judges and lawyers may need to search for previous cases involving the same individuals or organizations~\cite{human-ai-system-legal-precedent-search-china}, or analyze outcomes of similar cases to identify legal trends to ensure uniformity in the interpretation of the law~\cite{egea2024does}.
+    \item \emph{Document navigation and content exploration:} When reviewing lengthy judgments, legal professionals benefit from tools that allow them to quickly identify specific information or sections~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}, for example by locating all mentions of a given person.\todo{posso citare il mio paper wise?}
+    \item \emph{Investigative retrieval:} Investigators may need to retrieve particular documents from seized devices, identify chat messages confirming meetings or agreements between suspects, or quickly visualize the communication network of the individuals under investigation~\cite{}.
+    \item \emph{Question answering on documents and collections:} In the \acf{ai} era, when search engines can answer questions directly in natural language~\cite{}, legal professionals can benefit from \acf{qa} systems that provide answers on a single document or across document collections, along with references to the supporting evidence~\cite{HAN2024121052legalasst,}.
+    \item \emph{Statistical analysis and monitoring:} Authorities, such as the Ministry of Justice, may require aggregated statistics, e.g., the number of new cases per court per year or the average trial duration, to support performance monitoring, policy assessment, and resource planning~\cite{bellandi2025streamlining}.
 \end{itemize}
 
 
@@ -162,7 +162,7 @@ This model must be respect the following principles.
 \todo{immagine}
 
 \Cref{fig:overview} sketches a schema of the model proposed in this thesis.
-To achieve generalizability, we decide for an entity-centric approach. Common examples of entities, include persons, locations, and organizations~\cite{entityorientedsearch2018balog}, but entities are also central for knowledge-intensive domains. Legal documents often mention law articles or other documents, such as judgments 
+To achieve generalizability, we decide for an entity-centric approach. Common examples of entities, include persons, locations, and organizations~\cite{entityorientedsearch2018balog}, but entities are also central for knowledge-intensive domains. Legal documents often mention law articles or other documents, such as judgments
 
 \paragraph{choices made to reach the objectives}
 \todo{go on}
@@ -182,7 +182,7 @@ While \Cref{fig:entities_central} shows how entities can connect different heter
 % siamo più generali di legal case search
 \todo{proprietà da rispettare. una può essere anche la generalizzabilità. che poi riprende adattabilità in claw}
 
-% then say my proposal is similar 
+% then say my proposal is similar
 
 
 % esempi business cases sul legal dove ai puo aiutare
@@ -205,7 +205,7 @@ While \Cref{fig:entities_central} shows how entities can connect different heter
 % \subsection{Extraction}
 
 % Extracting entity-based knowledge from textual documents has been the focus of several studies, dating back to \todo{}. Researchers have been focusing on different aspects of the extraction process, from the identification of which words refer to a named entity---named entity recognition (NER)---to the curation of knowledge bases to maintain and serve information about knwon entities~\cite{}. And then the connection of the identified mentions of entities to the correct record in the knowledge base---named entity linking (NEL)~\cite{}.
-% \todo{in this work we relax the definition of named entity to entity in general}  
+% \todo{in this work we relax the definition of named entity to entity in general}
 
 % \subsubsection{Specific language}
 
