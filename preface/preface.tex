@@ -182,11 +182,11 @@ The proposed architecture is guided by the following principles:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
     \item \textbf{Traceability and Verifiability}, ensuring that the origin of any extracted information can always be verified. For instance, a user searching for documents mentioning a person must be able to read the exact mention within its context, while a \acl{qa} system should provide references to the text passages supporting its answers.
-    \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality through a human-in-the-loop approach~\cite{humanintheloop_2020}.
+    \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality through a human-in-the-loop approach~\cite{klie-etal-2020-zero}.\todo{hitl implica che il modello migliori?}
     \item \textbf{Scalability} to large and continuously growing document collections.
 \end{enumerate}
 
-Additionally, it should be capable of integrating both existing knowledge from public repositories---such as entities from Wikipedia, Wikidata, or legal codes---and newly extracted knowledge, not publicly available, such as the parties in the judgments or the people composing the suspect's communication network in an investigation.
+Additionally, it should be capable of integrating both existing knowledge from public repositories---such as entities from Wikipedia, Wikidata, or legal codes---and knowledge from \emph{novel entities}, not publicly available, such as the parties in the judgments or the people composing the suspect's communication network in an investigation.
 
 \begin{figure}[t]
     \centering
@@ -197,23 +197,25 @@ Additionally, it should be capable of integrating both existing knowledge from p
 
 \paragraph{Research objectives and contributions}
 Building on these design principles, this thesis pursues three main research objectives:
-\begin{enumerate}
-    \item \textbf{Design of an entity-centric architecture for data integration and \ac{ia}.}  
+\begin{enumerate}[leftmargin=*,label=\textit{Obj.~\arabic*:},ref=\textit{Obj.~\arabic*}]
+    \item \label{ob:architecture} \textbf{Design of an entity-centric architecture for data integration and \ac{ia}.}  
     The architecture organizes heterogeneous and unstructured information around entities (e.g., persons, locations, organizations, laws), supporting both legal and investigative sources.
     
-    \item \textbf{Evaluation of the feasibility of existing \ac{ie} technologies in the legal domain.}  
-    This involves experiments with extraction models (including \ac{ner}, \ac{nel}, and NIL prediction) to assess their adaptability and performance on domain-specific data.
+    \item \label{ob:extraction_assessment} \textbf{Evaluation of the feasibility of existing \ac{ie} technologies in the legal domain.}  
+    This involves experiments with \acl{ie} models (including \acl{ner}, \acl{nel}, and NIL prediction, that are described in \Cref{sec:information_extraction}) to assess their adaptability and performance on domain-specific data.
     
-    \item \textbf{Development of an efficient question answering system for providing grounded answers.}  
-    The final contribution, \textbf{ReFactX}, is an efficient \ac{qa} system designed to provide answers grounded with explicit evidence from existing knowledge, ensuring traceability and verifiability.
+    \item \label{ob:refactx} \textbf{Development of an efficient question answering system for providing grounded answers.}  
+    The final contribution, \textbf{ReFactX}, is an efficient \acl{qa} system designed to provide answers grounded with explicit evidence from existing knowledge, enabling users to trace and verify given answers.
 \end{enumerate}
 
 \paragraph{Design choices to achieve the objectives}
-To meet these objectives, the proposed approach adopts an \emph{entity-centric paradigm}.  
+To meet these objectives, the proposed approach adopts an \emph{entity-centric} paradigm.  
 Entities serve as conceptual anchors that connect information within and across documents, enabling cross-references and semantic aggregation.  
 They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance.  
 As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---enabling aggregation operations, such as computing counts or groupings over certain entities or entity types, and faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}. In this context, faceted search allows users to filter items---such as legal documents or chat messages---mentioning specific locations, persons, or laws, as well as to compose more complex queries combining multiple facets, for instance a location, a date, and certain persons.
 
+\par
+This \phd thesis is organized as follows. \Cref{chap:background_soa} described background concept required for the understanding of this work, including \aclp{llm} and the Italian legal system. Then, the state-of-the-art on data integration architectures for knowledge-intensive domains and on the experimented \acl{ie} tasks (\acl{ner}, \acl{ner}, and novel entity prediction and clustering). \Cref{chap:architecture} focuses on \ref{ob:architecture}, \Cref{chap:extraction} focuses on \ref{ob:extraction_assessment}, \Cref{chap:refactx} on \ref{ob:refactx}. Finally, \Cref{chap:conclusion} draws the conclusion of this work.
 
 
 % \begin{figure}[t]
