@@ -14,50 +14,8 @@
     % \subsection{Overview}
 
 To provide more details about our approach, we describe the extraction of the knowledge graph (Section~\ref{sec:metadata_kg}), the methodology we adopt for multimedia (Section~\ref{sec:multimedia}), the entity extraction pipeline (Section~\ref{sec:entity_extraction}), and the exploratory interfaces (Section~\ref{sec:exploration}).
-        % \begin{enumerate}
-        %     \item what is a chat? what are the features of a message? 
-        %     \item Processing of structured data: chats, messages, sender/receiver/people in groups.
-        %     \item Entity extraction from message corpus and voice messages transcriptions.
-        % \end{enumerate}
-        % In a chat the information is divided between structured and unstructered data. Structured information include the participants of a chat and for each messages who the sender name (or the phone number), the receiver, and the time the message was sent. On the other hand, the message corpus and the transcription of a voice message come in the form of unstructured data.
 
-        % For the former class of information, the structured data, we built a parser to extract the available structured information. Then we populate a knowledge graph using Neo4j creating the entities of chats, messages, people, and attachments.
-
-        % For the latter, the unstructured, we employ our pipeline of entity extraction algorithms. At this point we
-        
-    \subsection{Organizing the Conversations with the Knowledge Graph} \label{sec:metadata_kg}
-%Chats and chat messages, in addition to the unstructured corpus of the message, include structured data. 
-Chat dumps are available in a copy of the mobile phone extracted with certified forensic applications. %and consist of textual files with some structure.
-Information about each chat includes the list of participants with their phone numbers, the start time, and the time of the last activity. Each message is described by its timestamp, the name and number of the sender, and the attachments it contains.
-We consider these metadata to be applicable to most instant-messaging applications. 
-However, different forensic applications may export data in different formats. In our case, we received structured textual data for the first investigation and MS Excel (.xlsx) data for the second one.
-
-% These metadata might depend on the specific \ac{ima}, e.g., WhatsApp, but do not depend on the forensic application used for the dump extraction. However different forensic application would likely export data in different formats.
-
-% For the specific data format received in the experimented investigation, we build a parser based on parsing expression grammars (PEGs)~\cite{ford2004_peg}, using the parsimonious library\footnote{https://pypi.org/project/parsimonious/}, to extract all the aforementioned metadata and the content of the messages.
-
-% While chats messages and metadata from the previous investigation were received in a structured textual form\footnote{For the previous investigation we used parsing expression grammars (PEGs) with parsimonious (https://pypi.org/project/parsimonious/).}, in the second investigation, the one we are considering in this work, the data received was in MS-XLSX (.xlsx), a machine readable format, easier to process.
-
-Once extracted, metadata and messages contents are used to populate the Neo4j chat knowledge graph. A conceptual schema of the knowledge graph is shown in Figure~\ref{fig:model}; dashed arrows represent is-a relations, continuous arrows represent relations and properties. We also represent \textit{sameAs} relationships, which are extracted from the chat metadata (different numbers associated with the same contact).      
-%shows the schema of the knowledge graph with the entity classes Chats, Messages, Person, and Attachment.%\todo{add attachment. add attributes.} 
-The main reason to choose a property graph and Neo4j over semantic web standards is the opportunity to exploit its visual interface for reporting purposes.     
-
-%Upon completing the metadata extraction, out of a total of 1501 chats, we successfully processed 1133 chats. This involved \todo{completa} individuals, \todo{completa} attachments, and \todo{completa} messages. (Queste informazioni sono già all'inizio della sessione 5)
-
-%\todo{aggiungere visualizzazioni anonimizzate dei casi d'uso.}
-    %\todo{numeri: 1501 chat WhatsApp di cui 1133 successi, quante persone nei metadati? quante entità?,... quanti allegati di vario tipo?}
-    %\todo{entità}
-    %\todo{attributi}
-    % entita
-    
-%\todo{or metadata parsing}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.8\textwidth]{images/wise/kg_model.drawio.pdf}
-\caption{Knowledge Graph schema} \label{fig:model}
-\end{figure}
-    \subsection{Multimedia Data Enrichment} \label{sec:multimedia}
+\subsection{Multimedia Data Enrichment} \label{sec:multimedia}
 
 
 While we plan to increase support for multimedia content, our current pipeline processes audio only, as this is the most time-consuming type of multimedia for the investigators we collaborated with.
@@ -82,7 +40,7 @@ while the entity clustering used is specific to this study.
 Figure~\ref{fig:neel} depicts an example application of the \ac{inel} pipeline on chat messages.
 In the remainder of this section, we describe each component of the \ac{inel} pipeline.
 
-The NER component is based on the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the SpaCy transition-based parser with the contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
+The NER component is based on the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the SpaCy transition-based parser with the contextualized token representations obtained from a transformer~\cite{vaswani_transformers_2017}.
 The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal-bert_2022},
 % , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
 additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for NER on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
@@ -306,7 +264,7 @@ We discuss a first evaluation of the NER component.
 %, the task for which a comparison with our previous work is easier.  
 %To quantify the quality of the NLP pipeline 
 We annotated a gold standard for evaluating NER from six chats of which three are group chats, selected from the ones long enough and with audio transcripts. %We used the same methodology used in previous work~\cite{BELLANDI2024105904,aixia_2023}: % TODO anon riaggiungere citazione
-We computed a first set of automatic annotations using the NER component and thoroughly revised them with Doccano\footnote{https://github.com/doccano/doccano}. At the end of the process, we annotated 668 mentions of Person, 268 of Organization, 207 of Location, 157 Dates, and 11 Money.
+We computed a first set of automatic annotations using the NER component and thoroughly revised them with doccano~\cite{doccano}. At the end of the process, we annotated 668 mentions of Person, 268 of Organization, 207 of Location, 157 Dates, and 11 Money.
 
 % 78 mentions of time, 13 phone numbers, 18 website addresses, 2 email addresses, and 12 misc. However, the NER evaluation only considers Person, Organization, Location, Date, and Money since they are the types currently extracted by the NER module.
 
