@@ -1,20 +1,28 @@
 % \section{Contributin I: Evaluation of Incremental Entity Extraction with Background Knowledge and Entity Linking}
+\section{Adapting an \ac{nel} Benchmark to Incremental \ac{nel}}
+\label{sec:ijckg}
 
-In particular, in \textcite{ijckg2022}, we focus on batch-based incremental entity extraction, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We apply this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} producing its incremental version, \emph{Incremental WNUM}, which is available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}. This approach leverages \ac{el} with a background \ac{kb}, while also detecting and clustering NIL mentions, and incrementally updating the \ac{kb} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
 
-An additional contribution of my \phd is \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. This contribution is not part of this thesis but still addresses a related topic, \acf{sti}---the task of identifying entities (similarly to \ac{ner} and \ac{nel} for text), columns types, and relations between columns in tabular data. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, thus this dataset include NIL-labeled instances.
 
-Finally, the contributions for incremental \ac{nel} can be summarized as follows:
+The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}, co-located with the 21st International Semantic Web Conference (ISWC 2022).
+%
+% The proposed approach addresses the \nilchallenge by extending \ac{el} with a background \ac{kbr} with NIL prediction, novel entity clustering, and the incremental population of the \ac{kr} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
+% It focuses on batch-based \acl{inel}, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We applied this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} obtaining its incremental version, \emph{Incremental WNUM}, available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}.
+%
+At the time of publication (2022), as described in \Cref{sec:incrementalel}, the advancements in the NIL prediction task were left behind the one in \ac{nel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
+For this reason, addressing the \nilchallenge, we worked towards producing a dataset and an evaluation procedures for aiding the research in this field.
+
+Following this line, during my \phd I co-authored \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. This contribution is not part of this thesis but still addresses a related topic, \acf{sti}---the field that studies interpretation tasks for tabular data, that are linking cells containing entity mentions to the correct entry in a \ac{kr} (similarly to \ac{nel} for text), identifying the types of table columns, and the relations between different columns of the table~\cite{cremaschi2024surveysemanticinterpretationtabular}. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, including NIL-labeled instances. This work was presented at the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)~\cite{mammotab}, co-located with the 21st International Semantic Web Conference (ISWC 2022).
+
+The contributions to \acl{inel}---which is part of the \ref{ob:extraction_assessment}, since the \nilchallenge is relevant for the legal domain---are described in the next sections and can be summarized as follows.
 \begin{enumerate}
     \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
-    \item A dataset for incremental \ac{el}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering---created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying our methodology.
+    \item A dataset for \ac{inel}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering---created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying our methodology.
     \item A baseline pipeline, based on the BLINK bi-encoder~\cite{blink}, which additionally supports NIL prediction and clustering.
     \item Evaluation procedures for incremental \ac{nel}.
-    \item An evaluation of the baseline pipeline on the incremental scenario and a discussion of the main challenges.
+    \item An assessment of the performance and main challeges of the baseline pipeline on the incremental scenario.
 \end{enumerate}
 
-\section{Adapting an \ac{nel} Benchmark to Incremental \ac{nel}}
-\label{sec:incrementalel:pipeline}
 \todo{dire che non facciamo ner e perche?}
 
 The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component, the procedure to adapt a \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020}, followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges.
@@ -97,7 +105,7 @@ Finally, each sub-cluster is represented using the medoid vector of all the ment
 \begin{figure}
     \centering
     \includegraphics[
-    width=.25\textwidth,
+    width=.35\textwidth,
     keepaspectratio]
     %{imgs/pipeline_simple.drawio.png}
     {images/ijckg/pipeline_simple.png}
@@ -216,7 +224,7 @@ $ALL$ &         100k &           6.5k &                501 &                    
 \begin{figure}[htbp]
     \centering
     \includegraphics[
-        width=.45\textwidth,
+        width=.8\textwidth,
         keepaspectratio]{images/ijckg/dataset_creation}
     \caption{Construction of the I-\ac{nel} dataset from a \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kb} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
     \label{fig:evluation_outcome}
@@ -311,7 +319,7 @@ Finally, if a new entity is erroneously created due to a false positive in the N
 % \todo{cambiare}
 To allow the comparison with other models, we decided to test our baselines with the following experiments: the first one
 %trains the NIL prediction model (we use a pre-trained bi-encoder, and the clustering does not require training) on the train set and
-runs the evaluation on the whole test set (\textit{one-pass}), with only one step of clustering; the second experiment, instead,
+runs the evaluation on the whole unbatched test set---in \textit{one-pass} ($\varnothing$)---with only one step of clustering; the second experiment, instead,
 %takes the same models, trained in the same way, but
 is an incremental evaluation on the 10 batches of the test set.
 This second experiment is the focus of the present work and simulates the arrival of new documents in the pipeline.
@@ -325,7 +333,7 @@ Finally, we run another experiment, called ``correct'', that corrects the output
 \begin{figure}
     \centering
     \includegraphics[
-    width=.3\textwidth,
+    width=.5\textwidth,
     keepaspectratio]
     {images/ijckg/experiments_expected.drawio.png}
     \caption{Schema of the expected outcome of the system, given a mention m referring to an entity E, when (a) E is known ``a priori'', (b) E has already been added while processing the previous batches, (c) E is not in the \ac{kb}.}
@@ -375,76 +383,74 @@ A higher precision translates in a lower number of clusters, for the most repres
 
 
 
-
+\begin{landscape}
 %%%%%%%%%%%%%%% NEWWW
 % incremental_3step
 \begin{table*}
     \centering
 \begin{tabular}{llrrrrrrrrrrrr}
 \toprule
-{} &   $b_0$  &     $b_1$  &     $b_2$  &     $b_3$  &     $b_4$  &     $b_5$  &     $b_6$  &     $b_7$  &     $b_8$  &     $b_9$  &     $\overline{b}$ & one-pass \\
-% \midrule
-% % Three step    &&&&&&&&&&&& \\
+{} &   &  $b_0$  &     $b_1$  &     $b_2$  &     $b_3$  &     $b_4$  &     $b_5$  &     $b_6$  &     $b_7$  &     $b_8$  &     $b_9$  &     $\overline{b}$ & $\varnothing$ \\
+\midrule
+% Three step    &&&&&&&&&&&& \\
+% \hline
+% & NEL &&&&&&&&&&&& \\
+\textbf{NEL} & R@1          &  72.64 &  62.03 &  55.43 &  51.68 &  46.53 &  45.02 &  41.71 &  40.56 &  39.03 &  38.39 &  49.30 & 72.91 \\
+\midrule
+% & NIL Pred &&&&&&&&&&&& \\
+\textbf{NIL} & P            &  65.16 &  66.25 &  70.55 &  74.30 &  78.92 &  78.64 &  80.00 &  79.53 &  81.38 &  81.96 &  75.67 & 64.01 \\
+\textbf{Pred} & R            &  46.74 &  30.51 &  30.55 &  31.47 &  33.59 &  34.14 &  34.32 &  34.21 &  35.79 &  36.10 &  34.74 & 46.06 \\
+& F1           &  54.43 &  41.78 &  42.63 &  44.22 &  47.13 &  47.61 &  48.04 &  47.84 &  49.71 &  50.12 &  47.35 & 53.57 \\
+\midrule
+% & NIL Clust    &&&&&&&&&&&& \\
+% & Three step    &&&&&&&&&&&& \\
+\multicolumn{14}{l}{\textbf{NIL Clust:} comparison among $3Steps$, $GNN_B$, $GNN_F$: best results highlighted in bold}  \\
+$3Steps$ & MUC F1       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
+& B3 F1        &  \textbf{97.43} &  \textbf{97.07} & \textbf{96.73} &  \textbf{96.25} &  \textbf{96.48} &  \textbf{96.66} &  \textbf{96.11} &  \textbf{97.14} &  \textbf{95.79} &  \textbf{96.55} &  \textbf{96.62} & \textbf{94.36} \\
+& CEAF F1      &  \textbf{95.16} &  \textbf{94.43} &  \textbf{93.10} &  \textbf{93.02} &  \textbf{92.56} &  \textbf{93.15} &  \textbf{92.38} &  \textbf{93.35} &  \textbf{92.49} &  \textbf{93.26} &  \textbf{93.29} & \textbf{82.27} \\
+& $\overline{F1}$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
 \hline
-\textbf{\ac{nel}} &&&&&&&&&&&&& \\
-R@1          &  72.64 &  62.03 &  55.43 &  51.68 &  46.53 &  45.02 &  41.71 &  40.56 &  39.03 &  38.39 &  49.30 & 72.91 \\
+% & Greedy    &&&&&&&&&&&& \\
+$GNN_B$ & MUC F1       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
+& B3 F1        &  91.33 &  90.12 &  89.07 &  90.34 &  90.92 &  90.74 &  90.36 &  91.69 &  91.72 &  91.92 &  90.82 & 86.46 \\
+& CEAF F1      &  84.96 &  83.94 &  80.62 &  81.65 &  80.95 &  81.58 &  80.77 &  82.57 &  81.38 &  81.14 & 81.96  & 64.61  \\
+& $\overline{F1}$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
 \hline
-\textbf{NIL Pred} &&&&&&&&&&&&& \\
-P            &  65.16 &  66.25 &  70.55 &  74.30 &  78.92 &  78.64 &  80.00 &  79.53 &  81.38 &  81.96 &  75.67 & 64.01 \\
-R            &  46.74 &  30.51 &  30.55 &  31.47 &  33.59 &  34.14 &  34.32 &  34.21 &  35.79 &  36.10 &  34.74 & 46.06 \\
-F1           &  54.43 &  41.78 &  42.63 &  44.22 &  47.13 &  47.61 &  48.04 &  47.84 &  49.71 &  50.12 &  47.35 & 53.57 \\
+% & Feature    &&&&&&&&&&&& \\
+$GNN_F$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
+& B3 F1        &  71.66 &  65.16 &  58.68 &  56.80 &  55.03 &  54.78 &  53.31 &  54.40 &  51.89 &  51.16 &  57.29 & 48.83 \\
+& CEAF F1      &  62.72 &  56.91 &  49.09 &  47.01 &  44.90 &  44.60 &  43.24 &  44.22 &  41.66 &  40.46 &  47.48 & 35.89 \\
+& $\overline{F1}$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
 \hline
-% % & NIL Clust    &&&&&&&&&&&& \\
-% % & Three step    &&&&&&&&&&&& \\
-% \multicolumn{12}{l}{\textbf{NIL Clust:} comparison among $3Steps$, $GNN_B$, $GNN_F$: best results highlighted in bold}  \\
-% $3Steps$ & MUC F1       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
-% & B3 F1        &  \textbf{97.43} &  \textbf{97.07} & \textbf{96.73} &  \textbf{96.25} &  \textbf{96.48} &  \textbf{96.66} &  \textbf{96.11} &  \textbf{97.14} &  \textbf{95.79} &  \textbf{96.55} &  \textbf{96.62} & \textbf{94.36} \\
-% & CEAF F1      &  \textbf{95.16} &  \textbf{94.43} &  \textbf{93.10} &  \textbf{93.02} &  \textbf{92.56} &  \textbf{93.15} &  \textbf{92.38} &  \textbf{93.35} &  \textbf{92.49} &  \textbf{93.26} &  \textbf{93.29} & \textbf{82.27} \\
-% & $\overline{F1}$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
-% \hline
-% % & Greedy    &&&&&&&&&&&& \\
-% $GNN_B$ & MUC F1       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
-% & B3 F1        &  91.33 &  90.12 &  89.07 &  90.34 &  90.92 &  90.74 &  90.36 &  91.69 &  91.72 &  91.92 &  90.82 & 86.46 \\
-% & CEAF F1      &  84.96 &  83.94 &  80.62 &  81.65 &  80.95 &  81.58 &  80.77 &  82.57 &  81.38 &  81.14 & 81.96  & 64.61  \\
-% & $\overline{F1}$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
-% \hline
-% % & Feature    &&&&&&&&&&&& \\
-% $GNN_F$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
-% & B3 F1        &  71.66 &  65.16 &  58.68 &  56.80 &  55.03 &  54.78 &  53.31 &  54.40 &  51.89 &  51.16 &  57.29 & 48.83 \\
-% & CEAF F1      &  62.72 &  56.91 &  49.09 &  47.01 &  44.90 &  44.60 &  43.24 &  44.22 &  41.66 &  40.46 &  47.48 & 35.89 \\
-% & $\overline{F1}$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
-% \hline
-\textbf{Correct} &&&&&&&&&&&& \\
-\textbf{\ac{nel}} & R@1          &   72.64 &  72.11 &   72.24 &   72.79 &  72.26 &  73.13 &   71.71 &   72.77 &  71.87 &   72.28 &  72.38 & \\
+\textbf{Overall} & (a) Link     &  65.67 &  56.05 &  49.68 &  46.36 &  41.69 &  39.87 &  36.67 &  35.29 &  33.99 &  33.46 &  43.87 & \\
+& (b) NIL      &  42.00 &  38.46 &  51.35 &  32.35 &  60.00 &  50.00 &  41.18 &  46.67 &  44.44 &  37.93 &  44.44 & \\
+& (c) Link$_{\text{New}}$ &   n/a* &  36.36 &  76.92 &  68.75 &  73.33 &  70.00 &  70.59 &  85.00 &  69.57 &  61.90 &  61.24 & \\
+& (d) Acc &  65.55 &  55.96 &  49.72 &  46.35 &  41.80 &  39.96 &  36.74 &  35.42 &  34.10 &  33.53 &  43.91 & \\
+\midrule
 \hline
-\textbf{Overall} \\
-(a) Link & 66 & 56 & 50 & 46 & 42 & 40 & 37 & 35 & 34 & 33 & 44 & \\ 
-(b) NIL & 42 & 38 & 51 & 32 & 60 & 50 & 41 & 47 & 44 & 38 & 44 & \\ 
-(c) Link New & n/a* & 36 & 77 & 69 & 73 & 70 & 71 & 85 & 70 & 62 & 61 & \\ 
-(d) Overall Acc & 66 & 56 & 50 & 46 & 42 & 40 & 37 & 35 & 34 & 34 & 44 & \\ 
-% \hline
-% \textbf{Correct} &&&&&&&&&&&& \\
-% \textbf{\ac{nel}} & R@1          &   72.64 &  72.11 &   72.24 &   72.79 &  72.26 &  73.13 &   71.71 &   72.77 &  71.87 &   72.28 &  72.38 & \\
-% \hline
-% \textbf{NIL Pred} & P            &   55.43 &  55.17 &   54.87 &   54.26 &  55.52 &  55.61 &   55.96 &   56.21 &  55.83 &   54.38 &  55.32 & \\
-% & R            &   43.32 &  42.43 &   45.47 &   43.02 &  43.57 &  43.44 &   42.22 &   44.91 &  42.30 &   43.08 &  43.38 & \\
-% & F1           &   48.63 &  47.97 &   49.73 &   47.99 &  48.83 &  48.78 &   48.13 &   49.93 &  48.13 &   48.08 &  48.62 & \\
-% \hline
-% \textbf{NIL Clust} & MUC F1       &  100.00 &  80.00 &    - &  100.00 &  66.67 &  66.67 &    - &  100.00 &   - &    - &  51.33 & \\
-% $3Steps$ & B3 F1        &  100.00 &  97.26 &  100.00 &  100.00 &  95.65 &  97.78 &  100.00 &  100.00 &  97.14 &  100.00 &  98.78 & \\
-% & CEAF F1      &  100.00 &  96.89 &  100.00 &  100.00 &  94.53 &  96.12 &  100.00 &  100.00 &  95.24 &  100.00 &  98.28 & \\
-% & $\overline{F1}$       &  100.00 &  91.38 &   66.67 &  100.00 &  85.62 &  86.86 &   66.67 &  100.00 &  64.13 &   66.67 &  82.80 & \\
+\multicolumn{14}{l}{\textbf{Correct}} \\
+\textbf{NEL} & R@1          &   72.64 &  72.11 &   72.24 &   72.79 &  72.26 &  73.13 &   71.71 &   72.77 &  71.87 &   72.28 &  72.38 & \\
+\hline
+\textbf{NIL} & P            &   55.43 &  55.17 &   54.87 &   54.26 &  55.52 &  55.61 &   55.96 &   56.21 &  55.83 &   54.38 &  55.32 & \\
+\textbf{Pred} & R            &   43.32 &  42.43 &   45.47 &   43.02 &  43.57 &  43.44 &   42.22 &   44.91 &  42.30 &   43.08 &  43.38 & \\
+& F1           &   48.63 &  47.97 &   49.73 &   47.99 &  48.83 &  48.78 &   48.13 &   49.93 &  48.13 &   48.08 &  48.62 & \\
+\hline
+\textbf{NIL} & MUC F1       &  100.0 &  80.00 &    - &  100.0 &  66.67 &  66.67 &    - &  100.0 &   - &    - &  51.33 & \\
+\textbf{Clust} & B3 F1        &  100.0 &  97.26 &  100.0 &  100.0 &  95.65 &  97.78 &  100.0 &  100.0 &  97.14 &  100.0 &  98.78 & \\
+$3Steps$ & CEAF F1      &  100.0 &  96.89 &  100.0 &  100.0 &  94.53 &  96.12 &  100.0 &  100.0 &  95.24 &  100.0 &  98.28 & \\
+& $\overline{F1}$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the $3Steps$ clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. NIL prediction performance are calculated considering correct when a \ac{nel} error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. "-" represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the $3Steps$ clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched \emph{one-pass} experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``-'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table*}
+\end{landscape}
 
 Those errors could be mitigated by a HITL process, which merges clusters representing the same entities (fixing errors of the NIL predictor) or splits a cluster, removing wrong mentions.
 
 
 \subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
-The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in table \ref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
+The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in table \ref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
 
 % hitl
 
