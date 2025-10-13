@@ -4,19 +4,45 @@
 \todo{more than ee: exploit semi-structured chats for graph}
 \todo{speak about rw on investigations in ee for legal above}
 
+
+%%%%%%
+
+% During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
+
+% In the remaining of this chapter, I present the contributions of my \phd work on entity extraction in the Italian legal domain.
+% Before describing these contributions, a review of the related literature on legal \ac{ie} and on \ac{ie} in Italian is provided, in order to contextualize the research.
+
+
+% With respect to civil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
+
+Investigators often need to explore and extract insights from large volumes of heterogeneous documents, including \acf{ima} data. To address this need, we proposed an entity-centric approach to integrate different data sources (\Cref{sec:intro}), for enabling \acl{ia} applications such as faceted search and graph-based visualizations.
+
+Accordingly, this section focuses on the extraction and organization of entities from \ac{ima} data. Messages---including transcribed voice notes---were modeled within a knowledge graph designed to represent the network of contacts of the main suspect (\Cref{chap:architecture}). An improved version of the \ac{nel} pipeline introduced in \Cref{sec:incrementalel:pipeline} was then applied and evaluated on a labeled message corpora. The evaluation relied on a labeled dataset created through a procedure similar to the one employed for legal judgments~\Cref{sec:eejudgements}. As in that case, the availability of labeled data for \ac{ima} analysis is limited by the presence of personal and sensitive information\todo{verify}.
+
+The work presented in this section was published at the \emph{25th International Conference on Web Information Systems Engineering (WISE 2024)}~\cite{pozzi_wise_2025}. Its main contributions, with respect to \ac{ee} applied to \ac{ima} data, can be summarized as follows:
+\begin{itemize}
+    \item Creation of annotated benchmark datasets for investigative \ac{ima} data, enabling structured evaluation of \ac{ee} methods.
+    \item Selection and evaluation of a suitable speech-to-text model for transcribing voice messages.
+    \item Assessment of \ac{ner} and incremental \ac{nel} pipelines on domain-specific data, identifying performance trends and key challenges.
+\end{itemize}
+
+The following sections describe the methodology adopted for handling voice messages (\Cref{sec:wise_multimedia}), the entity extraction pipeline (\Cref{sec:wise_entity_extraction}), and the dataset, experiments, and evaluation procedures (\Cref{sec:wise_experiments}).
+
+
+% These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
+
+
+% \todo{maybe move later?}
+% Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
+
 \todo{rw ima and investigations}
 
 \todo{divide the contributions between extraction and access. merge all extraction and then all access}
 
-, and of the 25th International Conference on Web Information Systems Engineering (WISE 2024)~\cite{pozzi_wise_2025}
-
-\subsection{approach}
 
     % \subsection{Overview}
 
-To provide more details about our approach, we describe the extraction of the knowledge graph (Section~\ref{sec:metadata_kg}), the methodology we adopt for multimedia (Section~\ref{sec:multimedia}), the entity extraction pipeline (Section~\ref{sec:entity_extraction}), and the exploratory interfaces (Section~\ref{sec:exploration}).
-
-\subsection{Multimedia Data Enrichment} \label{sec:multimedia}
+\subsection{Multimedia Data Enrichment} \label{sec:wise_multimedia}
 
 
 While we plan to increase support for multimedia content, our current pipeline processes audio only, as this is the most time-consuming type of multimedia for the investigators we collaborated with.
@@ -26,7 +52,7 @@ Given the high quality of these audio files, we added artificial noise to better
 
 
 
-\subsection{Algorithms for Entity Extraction} \label{sec:entity_extraction}
+\subsection{Algorithms for Entity Extraction} \label{sec:wise_entity_extraction}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{images/wise/NEEL_chat_complete.drawio-2.pdf}
@@ -46,14 +72,17 @@ The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal
 % , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
 additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for NER on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
 for the Italian legal domain and finally for NER %TODO anon
-in~\cite{aixia_2023}.
+in~\cite{aixia_2023}. This can give us clues on how the best model for judgments (see \Cref{sec:eejudgements}) performs on investigative \ac{ima} data, allowing to understand the feasibility of using a single \ac{ner} model for both judgments and \ac{ima} data.
 
 
 % \subsubsection{NEL}
 
 For NEL, we use the bi-encoder architecture of BLINK~\cite{blink}, trained for the Italian language in previous work~\cite{aixia_2023}. The bi-encoder architecture encodes a mention and an entity separately into vectors and is optimized for maximizing the similarity between the vectors of correct mention-entity pairs.
 As the knowledge base for NEL we use the entities from Italian Wikipedia combined with the chat participants from the KG.
-Specifically, we exploit BLINK zero-shot capability to encode an entity given its title and textual description; thus, for each participant we obtain a representation by giving the following input to the bi-encoder: \verb|[CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP]|. 
+Specifically, we exploit BLINK zero-shot capability to encode an entity given its title and textual description; thus, for each participant we obtain a representation by giving the following input to the bi-encoder:
+\begin{lstlisting}
+[CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP].
+\end{lstlisting}
 As the majority of the people of interest for the investigation refers to entities not in Wikipedia, we link mentions of persons only to the chat participants. For organizations and locations, instead, we consider Wikipedia entities.
 %are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.%\todo{controllare che sia vero}\todo{in realtà cerca di linkare anche le date}
 
@@ -82,7 +111,8 @@ and the knowledge graph is updated with the discovered entities (corresponding t
 
 % consolidation
 
-\subsection{experiments}
+\subsection{Experiments}
+\label{sec:wise_experiments}
 
 %The discussion of the results is based on the data acquired in the context of one investigation. 
 The results discussed in this section reflect the two-stage development of the project (see Section~\ref{sec:context}) and the maturity gap between the extraction of the enriched graph (first stage) and the application of the \ac{inel} pipeline (second stage). We consider data from the two investigations, focusing on the second one for specific analyses.  

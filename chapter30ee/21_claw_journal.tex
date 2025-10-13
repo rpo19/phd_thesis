@@ -6,39 +6,25 @@
 \todo{later merge with aixia}
 
 \todo{maybe integrate commented code here to legal sota or preface}
-As anticipated in \Cref{sec:intro}, annotating legal documents with \ac{ee} systems may be useful for addressing the analysis of vast amount of heterogeneous documents (challenges \ref{ch:scalability} and \ref{ch:heterogeneity})---for example, by implementing faceted search applications~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
-% During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
 
-In this section we focus on the performance assessment of existing \ac{ee} systems applied to Italian civil court judgments. Moreover, we analyze different adaptation techniques to improve \ac{ee} performance in this domain, given a labeled dataset---drawing conclusions on which techniques are worth considering both the computational costs and the performance gains.
+In this section, we evaluate the performance of existing \ac{ee} systems on Italian civil court judgments. We also investigate various domain adaptation techniques aimed at improving \ac{ee} performance on this type of data, using a labeled dataset. The analysis highlights which techniques offer the most favorable balance between computational cost and performance gain.
 
-This work have been published in Computer Law \& Security Review (Vol. 52)~\cite{BELLANDI2024} and in the proceedings of the 22nd International Conference of the Italian Association for Artificial Intelligence (AIxIA 2023 -- Advances in Artificial Intelligence)~\cite{aixia_2023}.
+The work presented in this section was published in \emph{Computer Law \& Security Review} (Vol.~52)~\cite{BELLANDI2024} and in the proceedings of the 22nd International Conference of the Italian Association for Artificial Intelligence (\emph{AIxIA 2023 -- Advances in Artificial Intelligence})~\cite{aixia_2023}.
 
-Legal data, as described in \Cref{sec:background:ai4legal}, often contain personal data, and privacy regulations imply important challenges such as the difficulty in obtaining labels for evaluating or training \ac{ee} systems. Furthermore, the language used in documents---such as civil judgments---differs from daily language~\cite{ccetindaug2023name_legal_turkish}, while open datasets used for training neural models, such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}, are generally obtained from Web data.
+As discussed in \Cref{sec:background:ai4legal}, legal data often contain personal information, making compliance with privacy regulations a key challenge. This is reflected in the scarcity of labeled data for training or evaluating \ac{ee} systems~\cite{li-etal-2022-parameter}. Furthermore, the language used in legal documents differs significantly from everyday language~\cite{ccetindaug2023name_legal_turkish}, whereas most open datasets employed to train neural models---such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}---are derived from general web sources.
 
-Another consequent issue is the impossibility of using APIs, such as OpenAI ones\footnote{https://openai.com/api/}, with legal data that contain personal information---unless previously anonymized or pseudonymized. Moreover, using these APIs may involve transferring sensitive data outside the European Union, raising additional compliance concerns~\cite[Article~44--49]{gdpr2016}. As a result, institutions are often forced to rely on local models, which, while enabling full control over data storage and security in line with \textcite[Article~32]{gdpr2016}\todo{check}, can be limited by the local infrastructure.
+Another related issue concerns the use of external \acp{api}, such as those offered by OpenAI\footnote{\url{https://openai.com/api/}}, on legal data containing personal information. Unless the input data are anonymized or pseudonymized, their use may result in transferring sensitive data outside the European Union, raising compliance concerns under \textcite[Art.~44--49]{gdpr2016}. Consequently, many institutions must rely on locally deployed models, which, while ensuring full control over data storage and security in line with \textcite[Art.~32]{gdpr2016}, may be constrained by the available computational infrastructure.
 
-% In the remaining of this chapter, I present the contributions of my \phd work on entity extraction in the Italian legal domain.
-% Before describing these contributions, a review of the related literature on legal \ac{ie} and on \ac{ie} in Italian is provided, in order to contextualize the research.
-\todo{italian ee? where?}
-
-% With respect to civil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
-
-% For criminal investigation data, we focused the extraction and organization of the entities from instant messaging data. Messages---including voice transcriptions---have been modeled in a knowledge graph that capture the network of contacts of the main suspect. Furthermore, an improved version of the \ac{nel} pipeline from \Cref{sec:incrementalel:pipeline} have been evaluated on data---previously labeled with a similar procedure to the one applied to legal judgments~\cite{pozzi_wise_2025}.
-
-% These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
-
-In summary, the main contributions in \ac{ee} applied to Italian civil judgements are the following.
+In summary, the main contributions of this work on \ac{ee} applied to Italian civil judgments are as follows:
 \begin{itemize}
-    \item Creation of annotated benchmark datasets for civil judgments and investigative chat data, enabling structured evaluation of \acl{ee} methods.
-    \item Development and evaluation of \ac{ner} and incremental \ac{nel} pipelines.
-    \item Study of different domain adaptation techniques.
-    % \item Knowledge organization using knowledge graphs to represent entities and relationships from investigative chat records.
+    \item Creation of annotated benchmark datasets for civil judgments, including \acf{iaa} analysis, enabling structured evaluation of \ac{ee} methods.
+    \item Evaluation of \ac{ner} and incremental \ac{nel} pipelines on domain-specific data, assessing performance and identifying key challenges.
+    \item Comparative study of domain adaptation techniques, highlighting which approaches provide the best trade-off between computational cost and performance improvement.
 \end{itemize}
 
-In order, the following sections describe the process to create the labeled benchmark dataset--- in \Cref{sec:judgements_labeled_data}---the Italian \ac{ee} pipeline---in \Cref{sec:italian_ee_pipeline}---and---finally in \Cref{sec:judgment_ee_eval}---the experimental evaluation.
+The remainder of this section is organized as follows: \Cref{sec:judgements_labeled_data} describes the creation of the labeled benchmark dataset; \Cref{sec:italian_ee_pipeline} presents the Italian \ac{ee} pipeline; and \Cref{sec:judgment_ee_eval} reports the experimental evaluation.
 
-% \todo{maybe move later?}
-% Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
+\todo{italian ee? where?}
 
 \subsection{Annotation of a Legal Benchmark}
 \label{sec:judgements_labeled_data}
@@ -70,11 +56,11 @@ Initially, \ac{er} annonations have been labeled on all the 146 documents by two
 The annotation process focused the entities of class \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Money}, \texttt{Date}, and \texttt{Miscellaneous}.\todo{say something about anonymization?}
 
 
-To obtain an objective measure of the quality of the \ac{ner} annotations, which served as the starting point for subsequent annotation processes, we calculated an inter-annotator agreement (IAA) measure.\todo{mention knowledge consolidation? maybe in I-EL section}
+To obtain an objective measure of the quality of the \ac{ner} annotations, which served as the starting point for subsequent annotation processes, we calculated an \acf{iaa} measure.\todo{mention knowledge consolidation? maybe in I-EL section}
 
 \paragraph{\ac{ner} Annotation Process}
 A \ac{ner} label---as described in \Cref{sec:rw:ner}---is composed of the indexes of start and end characters, and by the type of the mentioned entity ($(i_{start},i_{end},t^i)$).
-The annotations were carried out by two annotators using doccano~\cite{doccano} a web-based application for labeling tasks. Each annotator was assigned 88 documents, with 15 documents overlapping between them, resulting in 30 documents $(15 + 15)$ annotated by both. These overlapping documents were used to measure inter-annotator agreement (IAA).
+The annotations were carried out by two annotators using doccano~\cite{doccano} a web-based application for labeling tasks. Each annotator was assigned 88 documents, with 15 documents overlapping between them, resulting in 30 documents $(15 + 15)$ annotated by both. These overlapping documents were used to measure \acl{iaa}.
 
 
 Based on~\cite{jha2017all}, a detailed set of annotation guidelines was prepared and provided to the annotators to reduce inconsistencies arising from different annotation styles. During the annotation process, the guidelines were iteratively refined by recording and addressing the annotators' doubts and edge cases.
@@ -103,7 +89,7 @@ The resulting corpus counts 16,634 annotations ($\approx$114 annotations per doc
 
 
 \paragraph{Inter-Annotator Agreement}
-To assess the quality of the annotations and the clarity of the guidelines we compute the inter-annotator agreement (IAA) on the 30 overlapping documents, which are annotated independently by both the annotators.
+To assess the quality of the annotations and the clarity of the guidelines we compute the \acl{iaa} on the 30 overlapping documents, which are annotated independently by both the annotators.
 % These documents were sampled at different timestamps in order to be representative since the annotators became more confident over time.
 
 
