@@ -2,6 +2,7 @@
 \chapter{Introduction}
 
 \section{Introduction}
+\label{sec:intro}
 
 % While benchmark data\dots
 
@@ -62,6 +63,7 @@ Several \acf{nlp}-based approaches have been developed to support and enhance in
 % These systems are designed to support complex queries and integrate multiple heterogeneous sources of information to aid expert decision-making~\cite{voorhees2014clinical,liu2023domain}.
 
 \paragraph{narrow to the legal}
+\todo{calca high number e heterogeneus come challenges del legal domain}
 Even though different knowledge-intensive domains have their own specific characteristics, certain recurring features can be observed across them. These include the central roles of entities---such as parties, judges, and lawyers in the legal domain; patients, doctors, and clinical staff in healthcare; and companies, investors, and regulators in finance---as well as the reliance on heterogeneous information sources. In the legal domain, these sources include court documents, such as civil court judgments, notary documents, or other contracts~\cite{HAN2024121052legalasst,amato2008,buey2016}. In the context of criminal investigations, it might be necessary to analyze chat messages extracted from suspects' mobile phone~\cite{subbulakshmi2024forensic,pirzada2024framework,kaushik2022forensic,Sonakshi_whatsapp_group_2025},  bank statements~\cite{data_mining_money_laundering_2003}, emails, or posts on social media platforms~\cite{jarrett2021impact}. In healthcare, relevant sources consist of laboratory reports~\cite{lab_reports_2023}, clinical trials, electronic health records, medical imaging, and data from health monitoring devices~\cite{XIAO2024108577}, while financial professionals consult financial news, statements, and market data~\cite{nlp_finance_survey_2025}.
 
 In the rest of this thesis, we focus on the Italian legal domain. Specifically, we examine civil trials and criminal investigations through two types of sources: civil court judgments and investigative chat logs.
@@ -176,8 +178,16 @@ What is common to all the aforementioned approaches is the idea of building an a
 % \todo{go on}
 % To fulfill these principles we decide to... entities support generalizability since they are present in all the aforementioned knowledge-intensive domains---people, diseases, genes in the healthcare, companies,... in finance, articles, conferences, publishers... in scientific research...and can link documents from these domains. also legal examples.
 
+\paragraph{Main challenges addressed in this work}
+In this work, we address several key challenges that arise when integrating \ac{ai}-based systems in knowledge-intensive and legally relevant domains:
+\begin{itemize}[leftmargin=*,label=\textit{Ch.~\arabic*:},ref=\textit{Ch.~\arabic*}]
+    \item \label{ch:scalability} \emph{Scalability.} Legal and investigative datasets may comprise thousands of heterogeneous documents, requiring solutions that can efficiently process and integrate large volumes of text and metadata.
+    \item \label{ch:heterogeneity} \emph{Heterogeneity.} The documents vary widely in structure and type---ranging from judgments and contracts to chat logs and structured records---which demands flexible models capable of representing diverse sources within a unified framework.
+    \item \label{ch:traceability} \emph{Traceability and verifiability.} Users must be able to verify the outcome of \ac{ai}-driven operations by tracing each piece of extracted or inferred information back to its source document~\cite[Art.~15]{ai_act}. Furthermore, without such mechanisms, user trust and accountability in \ac{ai}-assisted decision-making may be compromised~\cite{HAN2024121052legalasst}.
+\end{itemize}
+
 \paragraph{Objectives}
-The central objective of this \phd thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
+Building on these challenges, the central objective of this \phd thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
 The proposed architecture is guided by the following principles:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.

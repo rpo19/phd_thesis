@@ -16,8 +16,11 @@
 This chapter presents the contributions for \ref{ob:extraction_assessment}---through an assessment of existing \ac{ee} techniques applied to the legal domain.
 First, in \Cref{sec:ijckg}, we address the \emph{novel entity challenge}---an important problem for the legal domain, since court and investigative documents often mention persons that are not known in public \acl{kr}, but whose recognition and linking may enable tasks like precedent case retrieval or interlinking heterogeneous documents mentionin suspects during an investigation.
 
-Secondly, in \Cref{sec:eejudgements,sec:eechats}, we to which extent general-domain \ac{nlp} appoaches for \acl{ee} work on Italian civil court judgments and investigative chat logs in Italian, respectively. 
+Secondly we study to which extent general-domain \ac{nlp} appoaches for \acl{ee} work on the Italian legal domain.
+In \Cref{sec:eejudgements} focusing on Italian judgments from civil courts and in \Cref{sec:eechats} chat logs from an Italian investigation.
 
+
+% During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
 
 
 % This chapter presents the contributions about \emph{incremental \acl{nel}} (see \Cref{sec:incrementalel}), co-authored during my \phd  These have been published and presented in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)---\textcite{ijckg2022}---and at the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)---\textcite{mammotab}. Both the events were co-located with the 21st International Semantic Web Conference (ISWC 2022).
@@ -38,7 +41,7 @@ Secondly, in \Cref{sec:eejudgements,sec:eechats}, we to which extent general-dom
 %\pagestyle{mystyle}
 % \section{Information Extraction in the Legal Domain}
 % \chaptermark{KE in Legal}
-% \label{chap:legalie}
+% \label{chap:legalie} 
 \todo{kg because in wise it is not only entities but also relations from chat metadata}
 \todo{add dave}
 \todo{add the end speak about architecture, scalability, adaptability,...}
@@ -50,38 +53,3 @@ Secondly, in \Cref{sec:eejudgements,sec:eechats}, we to which extent general-dom
 % \subsection{Question Answering with Retrieval Augmented Generation}
 
 % \section{Question Answering with ReFactX}
-
-As anticipated in \Cref{sec:background:ai4legal}, \ac{ai} systems can be applied to the legal domain for addressing the analysis of vast amount of documents, that can come from heterogeneous sources.
-During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
-These proposals have been published in Computer Law \& Security Review (Vol. 52)~\cite{BELLANDI2024}, in the proceedings of the 22nd International Conference of the Italian Association for Artificial Intelligence (AIxIA 2023 -- Advances in Artificial Intelligence)~\cite{aixia_2023}, and of the 25th International Conference on Web Information Systems Engineering (WISE 2024)~\cite{pozzi_wise_2025}.
-
-Data in this domain, as described in \Cref{sec:background:ai4legal}, often contain personal data, and privacy regulations imply important challenges such as the difficulty in obtaining labeled data for evaluating or training \ac{ee} systems. Furthermore, the language used in documents---such as civil judgments---differs from daily language~\cite{ccetindaug2023name_legal_turkish}, while open datasets used for training neural models, such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}, are generally obtained from Web data. Anovil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
-
-For criminal investigation data, we focused the extraction and organization of the entities from instant messaging data. Messages---including voice transcriptions---have been modeled in a knowledge graph that capture the network of contacts of the main suspect. Furthermore, an improved version of the \ac{nel} pipeline from \Cref{sec:incrementalel:pipeline} have been evaluated on data---previously labeled with a similar procedure to the one applied to legal judgments~\cite{pozzi_wise_2025}.
-
-These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
-
-In summary, the main contributions in legal \ac{ee} of this \phd are the following.
-\begin{itemize}
-    \item Creation of annotated benchmark datasets for civil judgments and investigative chat data, enabling structured evaluation of entity extraction methods.
-    \item Development and evaluation of \ac{ner} and incremental \ac{nel} pipelines tailored for legal and investigative domains, including a study on domain adaptation techniques.
-    \item Knowledge organization using knowledge graphs to represent entities and relationships from investigative chat records.
-\end{itemize}
-
-Another consequent issue is the impossibility of using APIs, such as OpenAI ones\footnote{https://openai.com/api/}\todo{mention apis, openai,... in llms}, with legal data that contain personal information---unless previously anonymized or pseudonymized. Moreover, using these APIs may involve transferring sensitive data outside the European Union, raising additional compliance concerns~\cite[Article~44]{gdpr2016}. As a result, institutions are often forced to rely on local models, which, while enabling full control over data storage and security in line with \textcite[Article~32]{gdpr2016}, can be limited by the local infrastructure.
-
-In the remaining of this chapter, I present the contributions of my \phd work on entity extraction in the Italian legal domain.
-Before describing these contributions, a review of the related literature on legal \ac{ie} and on \ac{ie} in Italian is provided, in order to contextualize the research.
-
-With respect to civil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
-
-For criminal investigation data, we focused the extraction and organization of the entities from instant messaging data. Messages---including voice transcriptions---have been modeled in a knowledge graph that capture the network of contacts of the main suspect. Furthermore, an improved version of the \ac{nel} pipeline from \Cref{sec:incrementalel:pipeline} have been evaluated on data---previously labeled with a similar procedure to the one applied to legal judgments~\cite{pozzi_wise_2025}.
-
-These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
-
-In summary, the main contributions in legal \ac{ee} of this \phd are the following.
-\begin{itemize}
-    \item Creation of annotated benchmark datasets for civil judgments and investigative chat data, enabling structured evaluation of entity extraction methods.
-    \item Development and evaluation of \ac{ner} and incremental \ac{nel} pipelines tailored for legal and investigative domains, including a study on domain adaptation techniques.
-    \item Knowledge organization using knowledge graphs to represent entities and relationships from investigative chat records.
-\end{itemize}

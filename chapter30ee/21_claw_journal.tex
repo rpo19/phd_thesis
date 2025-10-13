@@ -5,9 +5,43 @@
 \label{sec:eejudgements}
 \todo{later merge with aixia}
 
-Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
+\todo{maybe integrate commented code here to legal sota or preface}
+As anticipated in \Cref{sec:intro}, annotating legal documents with \ac{ee} systems may be useful for addressing the analysis of vast amount of heterogeneous documents (challenges \ref{ch:scalability} and \ref{ch:heterogeneity})---for example, by implementing faceted search applications~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
+% During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
+
+In this section we focus on the performance assessment of existing \ac{ee} systems applied to Italian civil court judgments. Moreover, we analyze different adaptation techniques to improve \ac{ee} performance in this domain, given a labeled dataset---drawing conclusions on which techniques are worth considering both the computational costs and the performance gains.
+
+This work have been published in Computer Law \& Security Review (Vol. 52)~\cite{BELLANDI2024} and in the proceedings of the 22nd International Conference of the Italian Association for Artificial Intelligence (AIxIA 2023 -- Advances in Artificial Intelligence)~\cite{aixia_2023}.
+
+Legal data, as described in \Cref{sec:background:ai4legal}, often contain personal data, and privacy regulations imply important challenges such as the difficulty in obtaining labels for evaluating or training \ac{ee} systems. Furthermore, the language used in documents---such as civil judgments---differs from daily language~\cite{ccetindaug2023name_legal_turkish}, while open datasets used for training neural models, such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}, are generally obtained from Web data.
+
+Another consequent issue is the impossibility of using APIs, such as OpenAI ones\footnote{https://openai.com/api/}, with legal data that contain personal information---unless previously anonymized or pseudonymized. Moreover, using these APIs may involve transferring sensitive data outside the European Union, raising additional compliance concerns~\cite[Article~44--49]{gdpr2016}. As a result, institutions are often forced to rely on local models, which, while enabling full control over data storage and security in line with \textcite[Article~32]{gdpr2016}\todo{check}, can be limited by the local infrastructure.
+
+% In the remaining of this chapter, I present the contributions of my \phd work on entity extraction in the Italian legal domain.
+% Before describing these contributions, a review of the related literature on legal \ac{ie} and on \ac{ie} in Italian is provided, in order to contextualize the research.
+\todo{italian ee? where?}
+
+% With respect to civil judgments, due to the lack of labeled domain data, a benchmark dataset has been annotated with a semi-automatic approach and a \ac{nel} pipeline, inspired from the one introduced in \Cref{sec:incrementalel:pipeline}, has been evaluated on the labeled data~\cite{BELLANDI2024}. Additionally, different adaptations techniques have been studied to improve \ac{ner} performance on legal data~\cite{aixia_2023}, discussing both the accuracy and the required computation.
+
+% For criminal investigation data, we focused the extraction and organization of the entities from instant messaging data. Messages---including voice transcriptions---have been modeled in a knowledge graph that capture the network of contacts of the main suspect. Furthermore, an improved version of the \ac{nel} pipeline from \Cref{sec:incrementalel:pipeline} have been evaluated on data---previously labeled with a similar procedure to the one applied to legal judgments~\cite{pozzi_wise_2025}.
+
+% These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
+
+In summary, the main contributions in \ac{ee} applied to Italian civil judgements are the following.
+\begin{itemize}
+    \item Creation of annotated benchmark datasets for civil judgments and investigative chat data, enabling structured evaluation of \acl{ee} methods.
+    \item Development and evaluation of \ac{ner} and incremental \ac{nel} pipelines.
+    \item Study of different domain adaptation techniques.
+    % \item Knowledge organization using knowledge graphs to represent entities and relationships from investigative chat records.
+\end{itemize}
+
+In order, the following sections describe the process to create the labeled benchmark dataset--- in \Cref{sec:judgements_labeled_data}---the Italian \ac{ee} pipeline---in \Cref{sec:italian_ee_pipeline}---and---finally in \Cref{sec:judgment_ee_eval}---the experimental evaluation.
+
+% \todo{maybe move later?}
+% Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
 
 \subsection{Annotation of a Legal Benchmark}
+\label{sec:judgements_labeled_data}
 
 We started from a corpus of 927,453 real judgments in civil trials published from 2008 to 2021 (the majority of the judgments, $\approx 86\%$, are published from 2016 to 2021).\todo{da dove l'abbiamo preso e con che permessi???}
 This number can be compared to the total number of trials that are estimated per year according to~\cite{bankitalia}, which falls between 2 and 2.5 millions from 2010 to 2019.
@@ -135,7 +169,7 @@ The larger portion of 814 refers to NIL entities, as expected within the conside
 \todo{ner here uses combination of spacy, tint, triener. ground triener as an efficient dictionary based approach (cite giang-ner-gazetteer-trie-2014)}
 \todo{aixia no clustering, wise clustering updated}
 % example trie gazzeteer link.springer.com/chapter/10.1007/978-3-319-06569-4_19
-\label{sec:entityextractionservice}
+\label{sec:italia_ee_pipeline}
 
 Inspired by the \ac{inel} pipeline introduced in previous work~\cite{ijckg2022} (described in \Cref{sec:incrementalel:pipeline}) and by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
 With \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE. These methods are described in detail in the remainder of this section.
@@ -265,7 +299,7 @@ The NIL clustering approach is the three-step clustering method described in \Cr
 
 
 \subsection{Evaluation on Italian Civil Judgments}
-\label{sec:experiments}
+\label{sec:judgment_ee_eval}
 
 We evaluate the entity extraction pipeline in the following experimental settings:
 \begin{enumerate}
