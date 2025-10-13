@@ -1,0 +1,365 @@
+% \section{Contribution: Combining Knowledge Graphs and NLP to Analyze Instant Messaging Data in Criminal Investigations}
+\section{Knowledge Extraction from Chats Under Investigation}
+\todo{more than ee: exploit semi-structured chats for graph}
+\todo{speak about rw on investigations in ee for legal above}
+
+\todo{rw ima and investigations}
+
+\todo{divide the contributions between extraction and access. merge all extraction and then all access}
+
+
+
+\subsection{approach}
+
+    % \subsection{Overview}
+
+To provide more details about our approach, we describe the extraction of the knowledge graph (Section~\ref{sec:metadata_kg}), the methodology we adopt for multimedia (Section~\ref{sec:multimedia}), the entity extraction pipeline (Section~\ref{sec:entity_extraction}), and the exploratory interfaces (Section~\ref{sec:exploration}).
+        % \begin{enumerate}
+        %     \item what is a chat? what are the features of a message? 
+        %     \item Processing of structured data: chats, messages, sender/receiver/people in groups.
+        %     \item Entity extraction from message corpus and voice messages transcriptions.
+        % \end{enumerate}
+        % In a chat the information is divided between structured and unstructered data. Structured information include the participants of a chat and for each messages who the sender name (or the phone number), the receiver, and the time the message was sent. On the other hand, the message corpus and the transcription of a voice message come in the form of unstructured data.
+
+        % For the former class of information, the structured data, we built a parser to extract the available structured information. Then we populate a knowledge graph using Neo4j creating the entities of chats, messages, people, and attachments.
+
+        % For the latter, the unstructured, we employ our pipeline of entity extraction algorithms. At this point we
+        
+    \subsection{Organizing the Conversations with the Knowledge Graph} \label{sec:metadata_kg}
+%Chats and chat messages, in addition to the unstructured corpus of the message, include structured data. 
+Chat dumps are available in a copy of the mobile phone extracted with certified forensic applications. %and consist of textual files with some structure.
+Information about each chat includes the list of participants with their phone numbers, the start time, and the time of the last activity. Each message is described by its timestamp, the name and number of the sender, and the attachments it contains.
+We consider these metadata to be applicable to most instant-messaging applications. 
+However, different forensic applications may export data in different formats. In our case, we received structured textual data for the first investigation and MS Excel (.xlsx) data for the second one.
+
+% These metadata might depend on the specific \ac{ima}, e.g., WhatsApp, but do not depend on the forensic application used for the dump extraction. However different forensic application would likely export data in different formats.
+
+% For the specific data format received in the experimented investigation, we build a parser based on parsing expression grammars (PEGs)~\cite{ford2004_peg}, using the parsimonious library\footnote{https://pypi.org/project/parsimonious/}, to extract all the aforementioned metadata and the content of the messages.
+
+% While chats messages and metadata from the previous investigation were received in a structured textual form\footnote{For the previous investigation we used parsing expression grammars (PEGs) with parsimonious (https://pypi.org/project/parsimonious/).}, in the second investigation, the one we are considering in this work, the data received was in MS-XLSX (.xlsx), a machine readable format, easier to process.
+
+Once extracted, metadata and messages contents are used to populate the Neo4j chat knowledge graph. A conceptual schema of the knowledge graph is shown in Figure~\ref{fig:model}; dashed arrows represent is-a relations, continuous arrows represent relations and properties. We also represent \textit{sameAs} relationships, which are extracted from the chat metadata (different numbers associated with the same contact).      
+%shows the schema of the knowledge graph with the entity classes Chats, Messages, Person, and Attachment.%\todo{add attachment. add attributes.} 
+The main reason to choose a property graph and Neo4j over semantic web standards is the opportunity to exploit its visual interface for reporting purposes.     
+
+%Upon completing the metadata extraction, out of a total of 1501 chats, we successfully processed 1133 chats. This involved \todo{completa} individuals, \todo{completa} attachments, and \todo{completa} messages. (Queste informazioni sono già all'inizio della sessione 5)
+
+%\todo{aggiungere visualizzazioni anonimizzate dei casi d'uso.}
+    %\todo{numeri: 1501 chat WhatsApp di cui 1133 successi, quante persone nei metadati? quante entità?,... quanti allegati di vario tipo?}
+    %\todo{entità}
+    %\todo{attributi}
+    % entita
+    
+%\todo{or metadata parsing}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.8\textwidth]{images/wise/kg_model.drawio.pdf}
+\caption{Knowledge Graph schema} \label{fig:model}
+\end{figure}
+    \subsection{Multimedia Data Enrichment} \label{sec:multimedia}
+
+
+While we plan to increase support for multimedia content, our current pipeline processes audio only, as this is the most time-consuming type of multimedia for the investigators we collaborated with.
+To transcribe audio files we utilized Whisper~\cite{radford23a-whisper}, an automatic speech recognition (ASR) system developed by OpenAI.
+This decision followed an evaluation of various ASR systems. We randomly selected 500 Italian audio files and their validated transcription from three sources: Mailabs\footnote{https://www.caito.de/2019/01/03/the-m-ailabs-speech-dataset/}, CommonVoice~\cite{ardila-etal-2020-common} and VoxForge\footnote{https://www.voxforge.org/}.\todo{footnote or citations?}
+Given the high quality of these audio files, we added artificial noise to better reflect the quality of WhatsApp voice messages, which typically contain various environmental noises. We applied different distortion techniques, including Gaussian noise, background noise, speed up, pitch shift, delay, and distortion. We then evaluated the systems using two measures: word error rate (WER) and BERT score (F1 score). The best-performing model was Whisper (Large), which achieved a BERT score of 0.908 and a WER of 0.282.
+
+
+
+\subsection{Algorithms for Entity Extraction} \label{sec:entity_extraction}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{images/wise/NEEL_chat_complete.drawio-2.pdf}
+\caption{\Ac{inel} pipeline on chats}% NER identifies mentions of entities,
+% \underline{steve brown}, \underline{steve}, and \underline{Tom} as Person and \underline{Boston} as Location.
+% NEL identifies candidate entities from the knowledge graph (KG). NIL prediction detects that \underline{steve brown}, \underline{steve}, and \underline{Tom} are linked to wrong entities and assumes they are not in the KG (NIL), while \underline{Boston} is linked to the KG. Entity clustering assigns \underline{steve brown} and \underline{steve} to the same cluster (\underline{NIL-1}), as they refer to the same entity, and \underline{Tom} to another cluster (\underline{NIL-2}).}
+\label{fig:neel}
+\end{figure}
+
+Most pipeline components for entity extraction directly derives from our previous work~\cite{aixia_2023},
+while the entity clustering used is specific to this study. 
+Figure~\ref{fig:neel} depicts an example application of the \ac{inel} pipeline on chat messages.
+In the remainder of this section, we describe each component of the \ac{inel} pipeline.
+
+The NER component is based on the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the SpaCy transition-based parser with the contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
+The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal-bert_2022},
+% , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
+additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for NER on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
+for the Italian legal domain and finally for NER %TODO anon
+in~\cite{aixia_2023}.
+
+
+% \subsubsection{NEL}
+
+For NEL, we use the bi-encoder architecture of BLINK~\cite{blink}, trained for the Italian language in previous work~\cite{aixia_2023}. The bi-encoder architecture encodes a mention and an entity separately into vectors and is optimized for maximizing the similarity between the vectors of correct mention-entity pairs.
+As the knowledge base for NEL we use the entities from Italian Wikipedia combined with the chat participants from the KG.
+Specifically, we exploit BLINK zero-shot capability to encode an entity given its title and textual description; thus, for each participant we obtain a representation by giving the following input to the bi-encoder: \verb|[CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP]|. 
+As the majority of the people of interest for the investigation refers to entities not in Wikipedia, we link mentions of persons only to the chat participants. For organizations and locations, instead, we consider Wikipedia entities.
+%are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.%\todo{controllare che sia vero}\todo{in realtà cerca di linkare anche le date}
+
+% \subsubsection{NIL Prediction}
+In the NIL prediction component, we employ a \textit{logistic regression classifier} (the same as in~\cite{aixia_2023}).
+It takes two inputs: 1) the NEL system's top-ranked entity score and 2) the score difference between the top-ranked entity and the second-best one. %~\cite{ijckg2022}. % TODO anon rimetti citazione
+The output $p \in [0,1]$ denotes correctness for linking the mention (1) or NIL (0) if the correct entity is not the top-ranked.
+
+        % \subsubsection{Entity Clustering and Consolidation}
+% The entity clustering approach is based on a supervised xgboost classifier trained on pairs of mentions belonging to the same cluster, determined through NEL data from the gold standard. This classifier takes as input a set of similarities, including surface text similarities (like Jaro Winkler and Jaccard), as well as cosine similarity of BLINK embeddings obtained with NEL, producing a probability score as an indicative synthetic similarity between the mentions. The pairwise similarity scores are then used to create weighted graphs for each document, where mentions are nodes and edge weights reflect mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast}) on these graphs.
+
+
+
+The entity clustering approach uses a supervised XGBoost classifier, trained with the mentions from the gold standard, to calculate a similarity score between pairs of mentions. The input includes lexical similarities (such as Jaro-Winkler and Jaccard) and the semantic similarity (cosine similarity of vectors from the BLINK bi-encoder) of the surface forms of the two mentions. The classifier outputs a synthetic similarity score.
+Next, the pairwise similarity scores are used to create weighted graphs, where mentions are represented as nodes and the edge weights reflect the mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast})
+on these graphs.
+%
+Entity clustering is applied at document-level to group the NIL mentions referring to the same unknown entity. %For computational efficiency we do not cluster mentions across different documents.
+%\todo{cosa ne facciamo delle annotazioni?}
+
+
+The application of \ac{inel} has two outcomes: the chat file is annotated
+%in such a way that each annotation is associated with a span in the input text;
+and the knowledge graph is updated with the discovered entities (corresponding to the entity clusters) using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).
+% Annotations include information about links to Wikipedia, if present, or the cluster the mention is associated with.    
+
+% consolidation
+
+\subsection{experiments}
+
+%The discussion of the results is based on the data acquired in the context of one investigation. 
+The results discussed in this section reflect the two-stage development of the project (see Section~\ref{sec:context}) and the maturity gap between the extraction of the enriched graph (first stage) and the application of the \ac{inel} pipeline (second stage). We consider data from the two investigations, focusing on the second one for specific analyses.  
+Our evaluation has three main objectives: 1) to demonstrate that the combination of graph-based modeling, multimedia enrichment, and NLP-based entity extraction enhances \ac{ima} data analysis in criminal investigations through graph queries and semantic search; 2) to assess the current quality of the proposed solution; 3) to discuss limitations and challenges.
+      
+
+%After a summary of statistics of the data extracted from the investigation's chat dump, we discuss the utility of the graph to get insights into investigative questions. Then, we provide more details about the extracted data and discuss the challenges of entity extraction.
+%; our goal is to shed some light on the usefulness and fitness for use of the more advanced processing steps in the second phase.                 
+
+\begin{table}[htbp]
+  \centering
+  \caption{Investigation Statistics}
+    \begin{tabulary}{\textwidth}{|L|R|R|R|R|R|}
+    \hline
+    \textbf{Topic} & \textbf{Chats} & \textbf{Proc. chats} & \textbf{Msgs} & \textbf{Attach. (img-audio-docs)} & \textbf{Persons} \\
+    \hline
+    1) Fraud & 1133  & 801   & 45252 & 3324 (575-304-1590) & 1365 \\
+    % \hline
+    2) Corruption & 1442 & 1442  & 364690 & 63224 (51532-6273-4066) & 2351 \\
+    \hline
+    \end{tabulary}
+  \label{tab:chatstats}
+\end{table}
+
+\textbf{Graph Construction.}
+Statistics that summarize the result of chat processing to construct the graph are reported in Table~\ref{tab:chatstats}. For each investigation, we report its topic and the number of input chats, successfully processed chats loaded in the graph, messages, attachments (with more details about images, audio and documents), and number of different persons involved in the chats. Chats may involve two persons or groups (e.g., 86 groups in the second investigation).  
+%The increased success in successful processing rate comes from the improved processing with RabbitMQ (not used in for the first investigation).    
+
+
+\textbf{\ac{inel} Contribution to Knowledge Graph Enrichment.} The \ac{inel} pipeline successfully processed 1296 out of 1442 input chats, with errors caused by technical issues that can be fixed by splitting the very long chats. Statistics about the extracted entities are reported in Table~\ref{tab:stats}: the table indicates the impact of \ac{inel} on enriching the KG with the ``mentioned in'' relationship, 
+%between entities and messages; 
+%Statistics are reported in Table~\ref{tab:stats}. 
+%Looking at the table we can demonstrate 
+and the informativeness of audio transcriptions, which contain on average four times more entities than text messages. %, i.e., 0.083 vs. 0.026.
+The statistics also show that 2361 mentions of persons have been linked to entities in the chat knowledge graph, which validates the introduction of this in-domain linking mechanism.
+
+%In addition, it was possible to identify a very limited number of messages containing words not in common use, such as names of particular organisations or nicknames of people, which would have taken time or would have been difficult to identify as they are details that may escape a superficial first reading.
+
+% For Person we identified 5701 entities (or clusters of mentions) of which 2055 refer to entities in the enriched knowledge graph for NEL. Note that we cluster at chat level, thus these 2055 entities may contain duplicates across different chats. With respect to Organization and Location, we respectively detected 1339 and 1892 entities, while for Date, Money, and Other we identified respectively 916, 124, and 32 mentions (here we report the number of mentions because we do not perform NEL, NIL prediction, nor clustering on these types).
+
+% \begin{table}[h]
+% % \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+% \begin{tabular}{|c|c|c|c|c|c||c|c|c|c|}
+% \hline
+% \textbf{STATS} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Entities} & \multicolumn{4}{c|}{\textbf{NER Evaluation}}\\
+% \hline
+% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+% \hline
+% \hline
+% Per & 7765 & 520 & 2361* & 5404 & 5701 & Strong Match & 51.2 & 25.2 & 33.7 \\
+% Org & 1753 & 113 & 614 & 1139 & 1339 & Strong Typed & 44.0 & 21.4 & 28.8 \\
+% Loc & 2578 & 185 & 1118 & 1460 & 1892 & Partial Match & 91.9 & 46.0 & 61.3 \\
+% Date & 916 & 53 & - & - & - & Partial Typed & 71.4 & 35.1 & 47.0\\
+% Money & 124 & 23 & - & - & - & &  &  & \\
+% Misc & 32 & 1 & - & - & - & &  &  & \\
+% \hline
+% % \end{tabularx}%
+% \end{tabular}
+% \caption{Statistics and NER Evaluation. * Links for Person refer to the chat knowledge graph, not to Wikipedia.}
+% \label{tab:stats eval}
+% \end{table}
+
+\begin{table}[htbp]
+  \begin{minipage}[t]{0.50\linewidth}
+    \centering
+    \caption{Statistics of the \ac{inel} extraction. * Links for Person refer to the chat knowledge graph, not to Wikipedia.}
+    % \begin{tabular}{|c|c|c|c|c|c|}
+    \begin{tabulary}{\textwidth}{|L|C|C|C|C|C|}
+      \hline
+      \textbf{Type} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Enti-} \\
+      \cline{2-5}
+      & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} & \textbf{ties}\\
+      \hline
+      % \hline
+      Per & 7765 & 520 & 2361* & 5404 & 5701 \\
+      Org & 1753 & 113 & 614 & 1139 & 1339 \\
+      Loc & 2578 & 185 & 1118 & 1460 & 1892 \\
+      Date & 916 & 53 & - & - & - \\
+      Mon. & 124 & 23 & - & - & - \\
+      Misc & 32 & 1 & - & - & - \\
+      \hline
+    \end{tabulary}
+    \label{tab:stats}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.45\linewidth}
+    \centering
+    \caption{NER Evaluation. \textit{Strong} counts perfect matches of span and type. \textit{Partial} counts as correct when there is an overlap between predictions and gold annotations.}
+    \begin{tabularx}{\textwidth}{X|X|X|X|}
+      \cline{2-4}
+      & \centering{}\textbf{Prec} & \centering{}\textbf{Rec} & \centering{}\arraybackslash{}\textbf{F1} \\
+      \hline
+      \multicolumn{1}{|l|}{Strong} & \centering{}44.0 & \centering{}21.4 & \centering{}\arraybackslash{}28.8 \\
+      \multicolumn{1}{|l|}{Partial} & \centering{}71.4 & \centering{}35.1 & \centering{}\arraybackslash{}47.0 \\
+      \hline
+    \end{tabularx}
+    \label{tab:eval}
+  \end{minipage}
+\end{table}
+
+
+% audio menzioni
+% {'persona': 520,
+%  'luogo': 185,
+%  'organizzazione': 113,
+%  'denaro': 23,
+%  'data': 53,
+%  'altro': 1}
+
+% ner stats
+% {'data': 916,
+%  'organizzazione': 1753,
+%  'persona': 7765,
+%  'luogo': 2578,
+%  'denaro': 124,
+%  'altro': 32}
+
+% linking_stats
+
+% {'neo4j': 2343, 'organizzazione': 614, 'persona': 2361, 'luogo': 1118}
+
+% nil_stats
+
+% {'organizzazione': 1139, 'persona': 5404, 'luogo': 1460}
+
+% Selection deleted
+% cluster_stats
+
+% 'neo4j': 2055,
+% {'data': 793,
+%  'organizzazione': 1339,
+%  'persona': 5701,
+%  'luogo': 1892,
+%  'denaro': 100,
+%  'altro': 28}
+
+% audio menzioni
+% {'persona': 520,
+%  'luogo': 185,
+%  'organizzazione': 113,
+%  'denaro': 23,
+%  'data': 53,
+%  'altro': 1}
+
+% performance P R F1
+% strong 0.511737089	0.251538462	0.337287261
+% strong typed 0.439749609	0.216153846	0.289840124
+% approx 0.683881064	0.33954934	0.453790239
+% approx typed 0.561815336	0.276792598	0.370867769
+% partial 0.918622848	0.464031621	0.616596639
+% partial typed 0.713615023	0.353488372	0.472783826
+
+
+%%% old investigation
+
+% In these chats, the \ac{inel} pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes. We should note that the addition of the transcriptions of voice-messages 
+
+% that contain actual messages was used to quantify the number of the ``mentioned in" relationships that could be added to the knowledge graph. In these chats, the \ac{inel} pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes.
+%%%% old investigation
+
+
+
+% We should note that the addition of the transcriptions of voice-messages 
+%to the documents 
+% helped to recognize 138 more entities than when the pipeline was applied to the plain-text messages alone. This suggests that voice messages may have a higher information content, since the predicted average number of ``entity" nodes connected to them by a ``mentioned in" relation (0.24) is higher than the average number of ``entity" nodes connected to a ``Text-message" node (0.16).
+%At the time of writing this paper, we are still working on finalizing the interconnection between the \ac{inel} pipeline and the knowledge graph. For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+% An example of how the \ac{inel} pipeline identifies entities in a transcription is shown in Figure~\ref{fig:NER example}. 
+%Please note that this 
+% The screenshot is taken directly from DAVE and shows how the annotated document is presented to the user. In this example, several mentions of locations and organizations were found in a voice message that referred to a meeting (``incontro" - one of the keywords searched to answer the investigative questions). 
+%, in a chat that had references to a "meeting" (a relevant topic in ou a voice message related  
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.8\textwidth]{NER example.png}
+% \caption{Example entity annotations on a transcription. ``Persona" refers to entity of type ``Person", ``Luogo" to ``Place", ``Organization" to ``Organization" and ``Data" to ``Date"} \label{fig:NER example}
+% \end{figure}
+
+\textbf{Preliminary Insights on the Quality of \ac{inel} Annotations.}
+We discuss a first evaluation of the NER component. 
+%, the task for which a comparison with our previous work is easier.  
+%To quantify the quality of the NLP pipeline 
+We annotated a gold standard for evaluating NER from six chats of which three are group chats, selected from the ones long enough and with audio transcripts. %We used the same methodology used in previous work~\cite{BELLANDI2024105904,aixia_2023}: % TODO anon riaggiungere citazione
+We computed a first set of automatic annotations using the NER component and thoroughly revised them with Doccano\footnote{https://github.com/doccano/doccano}. At the end of the process, we annotated 668 mentions of Person, 268 of Organization, 207 of Location, 157 Dates, and 11 Money.
+
+% 78 mentions of time, 13 phone numbers, 18 website addresses, 2 email addresses, and 12 misc. However, the NER evaluation only considers Person, Organization, Location, Date, and Money since they are the types currently extracted by the NER module.
+
+% gs stats
+% {'persona': 668,
+%  'luogo': 207,
+%  'organizzazione': 268,
+%  'data': 157,
+%  'numerocell': 13,
+%  'altro': 12,
+%  'sito': 18,
+%  'denaro': 11,
+%  'email': 2,
+%  'time': 78}
+
+% of  for four of the longest chats and 
+% %. We proceeded to evaluate the quality of the Named Entity Recognition algorithm, by 
+% measure how many mentions occurring in the gold standard are correctly recognized using 
+% %We checked four of the longest chats and counted how many mentions have been recognized correctly. 
+% %of the entities found in the golden standard had been recognized. 
+% %In particular, 
+% an ``approximate typed mention match" approach~\cite{aixia_2023}: an entity is ``recognized" if the annotation in the gold standard is included or includes our annotation and the predicted class is correct. Of the 285 entities present in the golden standard, 191 were correctly identified, leading to a score of 67\%. We focus on recall because of the search-driven exploitation of the annotations. 
+% %With respect to precision, we found some mistakes on transcriptions related to I'm  
+
+% Results shown in Table~\ref{tab:eval} are significantly worse than those obtained on other domain-specific data on which the pipeline we adapted was tested~\cite{ijckg2022,aixia_2023}. This confirms that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggests that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
+Results shown in Table~\ref{tab:eval} are not satisfactory, confirming that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggesting that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
+Indeed \ac{ima} data contain peculiarities such as person name abbreviations or inconsistent capitalization of names and locations. In relation to fitness for use, we make two remarks. 1) Metadata are precisely identified enabling accurate filtering in DAVE, for instance, by message sender. 2) DAVE supports text search, which makes it possible to complement entity-based retrieval to improve result recall.        
+
+
+%\begin{itemize}
+%    \item Questions to be answered with the report, vs. type of queries vs example of queries
+%    \item How these queries are empowered by NLP (exemplify) and speech-to-text (keyword search like "incontro") 
+%    \item Statistics on a chat sample: how many entities are found? How many same-as links in the graph? How many speech-to-text transcriptions? 
+%    Statistics that are relevant: mentions divided by class; how many are linked to Wikipedia, how many clusters, how many entities found in text are associated with entities in the KG, and how many are novel? Problem: one chat as an example, or more chats with average.  \\
+%\item Some insights on the performance of NLP on chats. NER: we count one if the correct annotation is included or includes our annotation AND class is correct (approximate typed mention match). Linking: we count how many entities for which a link is found by the algorithms have a correct link. Most recent measures proposed to evaluate clustering are quite complex to compute in post-hoc conditions with a manual approach, where we need to pick up one cluster at a time and control its quality; to give some insights on the quality of clusters, we use a heuristic measure defined as follows: we sample x clusters, each of which is associated with an entity label; we count how many mentions in the cluster are actually referred to this target entity. Observe that, in this way, we only evaluate if mentions in a cluster are correctly associated, while we do not consider the capability of joining together all mentions referred to the same entity to one cluster; however, in this context of semantic search, we believe that a measure inspired by precision is more relevant than a measure inspired by recall (in fact a user can also explore more cluster with a same label).      
+%\end{itemize}
+
+
+%\todo{forse meglio mettere una sezione tipo challenges. e citare qualche challenge anche nell'intro.}
+
+        
+
+\textbf{Limitations and Challenges.}
+Our current solution has several limitations. To overcome the weaknesses of pre-trained algorithms in the \ac{inel} pipeline, we need to increase the size of the gold standard and fine-tune the algorithms on \ac{ima} data. %; based on our previous experience~\cite{ijckg2022}, we expect a significant improvement across all performance measures. % TODO anon. valutare se riaggiungere
+%
+%The \ac{inel} stack should be better customized for the domain, e.g., via in-domain fine-tuning. %Clustering is attracting the attention of the research community and we believe that investigations and \ac{ima} data provide a representative and challenging domain to develop better algorithms for this task. 
+%\todo{forse potremmo togliere questa discussione sul clustering visto che non è tanto esplorato nel paper}
+%In the customization of entity clustering in the domain of \ac{ima}, we also need to improve the interconnection between the knowledge graph and the \ac{inel} pipeline.
+%For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+% The integration of generative LLMs is still limited.
+% The QA module requires significant improvement and
+%We did not include image-to-text enrichment yet, a highly desired features.
+After our demonstrations, investigators were eager to use our solution, but querying Neo4j through its interface requires expertise, and expressed their interest in conversational search interfaces to answer questions. We therefore developed two additional prototype interfaces 1) a set of intuitive and composable Python functions that handle a wide range of common query patterns,
+%to simplify analyses based on the graph data, 
+and 2) a conversational search interface based on the popular paradigm of retrieval augmented generation. We did not describe these features in this paper as their development stage is too early. However, the prosecutor and the law enforcers actually accessed the simplified query interface and were able to submit queries.    
+%is too early to be described in this paper have been shown and tested by our users (for example  to collect some initial feedback but their development stage is too early to be described in this paper. 

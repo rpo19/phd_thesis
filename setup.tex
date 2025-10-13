@@ -1,0 +1,385 @@
+\usepackage[T1]{fontenc}    % better font encoding (includes \k)
+\usepackage[utf8]{inputenc} % ensure UTF-8 input
+\usepackage{lmodern}        % modern Latin fonts
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{url}
+\usepackage{dirtytalk}
+\usepackage{color}
+\usepackage{eurosym}
+\usepackage{calc}
+\usepackage{float}
+\usepackage{epsfig}
+\usepackage{dsfont}
+\usepackage{lipsum}
+\usepackage{multirow}
+\usepackage{pifont}
+\usepackage{makecell}
+\usepackage{MnSymbol}%\sumint
+\usepackage{wrapfig}
+\usepackage{textpos}
+\usepackage{bm}
+\usepackage{todonotes}
+\usepackage[integrals]{wasysym}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{tcolorbox} % optional, for nicer boxes (not required)
+\usepackage{relsize}
+\usepackage{amsthm}
+\usepackage{acro}
+\usepackage{mfirstuc}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{cleveref}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{numprint}
+\usepackage[style=numeric,maxcitenames=1,maxbibnames=6]{biblatex}
+\addbibresource{bibliography/bibliography.bib}
+
+\crefname{lstlisting}{listing}{listings}
+\Crefname{lstlisting}{Listing}{Listings}
+
+\lstset{
+  basicstyle=\ttfamily,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  escapeinside={*@}{@*}, % allow LaTeX inside listings
+}
+
+\lstdefinestyle{rdfstyle}{
+  basicstyle=\ttfamily\small, % monospaced
+  frame=single,               % box around
+  numbers=none,               % no line numbers
+  breaklines=true,            % wrap long lines
+  showstringspaces=false      % cleaner strings
+}
+
+\newmdenv[
+  backgroundcolor=gray!10, % light gray background
+  linecolor=gray!10,       % border color
+  skipabove=5pt,
+  skipbelow=5pt,
+  innertopmargin=0pt,
+  innerbottommargin=8pt,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  roundcorner=5pt
+]{graybox}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\BeforeBeginEnvironment{definition}{\begin{samepage}\begin{graybox}}
+\AfterEndEnvironment{definition}{\end{graybox}\end{samepage}}
+
+\DeclareAcronym{ie}{
+  short = IE,
+  long = information extraction,
+  % short-indefinite = an,
+%   long-plural = administrations,
+%   foreign = true
+}
+
+\DeclareAcronym{ee}{
+  short = EE,
+  long = entity extraction,
+  % short-indefinite = an,
+%   long-plural = administrations,
+%   foreign = true
+}
+
+\DeclareAcronym{ima}{
+  short = IMA,
+  long = instant messaging application,
+  % short-indefinite = an,
+%   long-plural = administrations,
+%   foreign = true
+}
+
+
+\DeclareAcronym{ui}{
+  short = UI,
+  long = user interface,
+  % short-indefinite = an,
+%   long-plural = administrations,
+%   foreign = true
+}
+
+\DeclareAcronym{ia}{
+  short = IA,
+  long = information access,
+}
+
+
+\DeclareAcronym{cot}{
+  short = CoT,
+  long = chain-of-thoughts,
+  long-plural-form  = chains of thoughs
+}
+
+
+\DeclareAcronym{ner}{
+  short = ER,
+  long = entity recognition,
+}
+
+\DeclareAcronym{api}{
+  short = API,
+  long = application programming interface,
+}
+
+\DeclareAcronym{gpu}{
+  short = GPU,
+  long = graphics processing unit,
+}
+
+\DeclareAcronym{nel}{
+  short = EL,
+  long = entity linking,
+}
+
+\DeclareAcronym{inel}{
+  short = I-EL,
+  long = incremental entity linking,
+}
+% todo maybe IncEl i better?
+
+\DeclareAcronym{ann}{
+  short = ANN,
+  long = approximate nearest neighbor,
+}
+
+\DeclareAcronym{rag}{
+  short = RAG,
+  long = retrieval augmented generation,
+}
+
+
+
+\DeclareAcronym{dl}{
+  short = DL,
+  long = deep learning,
+}
+
+\DeclareAcronym{rlhf}{
+  short = RLHF,
+  long = reinforcement learning from human feedback,
+}
+
+\DeclareAcronym{ir}{
+  short = IR,
+  long = information retrieval,
+}
+
+\DeclareAcronym{db}{
+  short = DB,
+  long = databases,
+}
+
+\DeclareAcronym{sw}{
+  short = SW,
+  long = semantic web,
+}
+
+\DeclareAcronym{kb}{
+  short = KB,
+  long = knowledge base,
+}
+
+\DeclareAcronym{kc}{
+  short = KC,
+  long = knowledge consolidation,
+}
+
+
+\DeclareAcronym{kr}{
+  short = KR,
+  long = knowledge repository,
+  long-plural-form  = knowledge repositories
+}
+
+\DeclareAcronym{icl}{
+  short = ICL,
+  long = in-context learning,
+}
+
+\DeclareAcronym{kg}{
+  short = KG,
+  long = knowledge graph,
+}
+
+\DeclareAcronym{kbp}{
+  short = KBP,
+  long = knowledge base population,
+}
+
+\DeclareAcronym{sta}{
+  short = STA,
+  long = semantic text annotation,
+}
+
+\DeclareAcronym{nlp}{
+  short = NLP,
+  long = natural language processing,
+}
+
+\DeclareAcronym{ai}{
+  short = AI,
+  long = artificial intelligence,
+}
+
+\DeclareAcronym{er}{
+  short = ER,
+  long = entity recognition,
+}
+
+\DeclareAcronym{el}{
+  short = EL,
+  long = entity linking,
+}
+
+\DeclareAcronym{qa}{
+  short = QA,
+  long = question answering,
+}
+
+\DeclareAcronym{cr}{
+  short = CR,
+  long = coreference resolution,
+}
+
+\DeclareAcronym{cs}{
+  short = CS,
+  long = computer science,
+}
+
+\DeclareAcronym{rdf}{
+  short = RDF,
+  long = Resource Description Framework,
+}
+
+\DeclareAcronym{lm}{
+  short = LM,
+  long = language model,
+  plural = s,
+  long-plural = s
+}
+
+\DeclareAcronym{llm}{
+  short = LLM,
+  long = large language model,
+  plural = s,
+  long-plural = s
+}
+
+\DeclareAcronym{lrm}{
+  short = LRM,
+  long = large reasoning model,
+  plural = s,
+  long-plural = s
+}
+
+\DeclareAcronym{clm}{
+  short = CLM,
+  long = causal language model,
+  plural = s,
+  long-plural = s
+}
+
+
+\DeclareAcronym{mlm}{
+  short = MLM,
+  long = masked language model,
+  plural = s,
+  long-plural = s
+}
+
+
+\DeclareAcronym{pos}{
+  short = POS,
+  long = part-of-speech,
+}
+
+
+
+\DeclareAcronym{ml}{
+  short = ML,
+  long = machine learning,
+}
+
+
+\DeclareAcronym{web}{
+  short = Web,
+  long = Web,
+}
+
+% mammotab
+\DeclareAcronym{gs}{
+  short = GS,
+  long  = Gold Standard
+}
+
+\DeclareAcronym{sti}{
+  short = STI ,
+  long  = Semantic Table Interpretation
+}
+%%%
+
+\newcommand{\PERSON}[1]{\colorbox{magenta!30}{#1\textsuperscript{\smaller\texttt{[PER]}}}}
+\newcommand{\LOCATION}[1]{\colorbox{cyan!30}{#1\textsuperscript{\smaller\texttt{[LOC]}}}}
+\newcommand{\DATE}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
+\newcommand{\LAW}[1]{\colorbox{green!40}{#1\textsuperscript{\smaller\texttt{[LAW]}}}}
+\newcommand{\MONEY}[1]{\colorbox{orange!30}{#1\textsuperscript{\smaller\texttt{[MONEY]}}}}
+
+\newcommand{\WikiIcon}{\raisebox{-0.15\height}{\includegraphics[height=6pt]{images/Wikipedia-globe.png}}}
+\newcommand{\NormattivaIcon}{\raisebox{-0.15\height}{\includegraphics[height=6pt]{images/Normattiva-icon.pdf}}}
+\newcommand{\NIL}{\textit{NIL}}
+% New commands for NEL highlighting and linking
+\newcommand{\NELPerson}[3]{\colorbox{pink!40}{#1\textsuperscript{\smaller\texttt{[PER]}\href{#2}{#3}}}}
+\newcommand{\NELLocation}[3]{\colorbox{teal!30}{#1\textsuperscript{\smaller\texttt{[LOC]}\href{#2}{#3}}}}
+\newcommand{\NELLaw}[3]{\colorbox{lime!40}{#1\textsuperscript{\smaller\texttt{[LAW]}\href{#2}{#3}}}}
+\newcommand{\NELDate}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
+
+
+\newcommand{\mammotab}{MammoTab }
+
+
+%custom page style for report class
+\fancypagestyle{mystyle}{
+\pagestyle{fancy}
+\fancyhf{} % clear all headers
+\fancyhead[R]{\rmfamily \small \nouppercase \rightmark}
+\fancyhead[L]{\rmfamily \small \nouppercase \leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+\newcommand{\alert}[1]{{\color{red} #1}}
+
+
+% macros for fast scaling parentheses
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+
+\newcommand{\lsb}{\left[}
+\newcommand{\rsb}{\right]}
+
+\newcommand{\lcb}{\left\{}
+\newcommand{\rcb}{\right\}}
+
+\newcommand{\la}{\left\langle}
+\newcommand{\ra}{\right\rangle}
+\newcommand{\phd}{Ph. D.\ }

@@ -1,561 +1,68 @@
 \documentclass{report}
-\usepackage[T1]{fontenc}    % better font encoding (includes \k)
-\usepackage[utf8]{inputenc} % ensure UTF-8 input
-\usepackage{lmodern}        % modern Latin fonts
-\usepackage[english]{babel}
-\usepackage{graphicx}
-\usepackage{geometry}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{enumitem}
-\usepackage{physics}
-\usepackage{hyperref}
-\usepackage{cleveref}
-\usepackage{url}
-\usepackage{dirtytalk}
-\usepackage{color}
-\usepackage{eurosym}
-\usepackage{calc}
-\usepackage{float}
-\usepackage{epsfig}
-\usepackage{dsfont}
-\usepackage{lipsum}
-\usepackage{multirow}
-\usepackage{pifont}
-\usepackage{makecell}
-\usepackage{MnSymbol}%\sumint
-\usepackage{wrapfig}
-\usepackage{textpos}
-\usepackage{bm}
-\usepackage{todonotes}
-\usepackage[integrals]{wasysym}
-\usepackage{fancyhdr}
-\usepackage{xcolor}
-\usepackage{tcolorbox} % optional, for nicer boxes (not required)
-\usepackage{relsize}
-\usepackage{amsthm}
-\usepackage{acro}
-\usepackage{mfirstuc}
-\usepackage{mdframed}
-\usepackage{listings}
-\usepackage{cleveref}
-\usepackage{csquotes}
-\usepackage{booktabs}
-\usepackage{tabulary}
-\usepackage{tabularx}
-\usepackage{subcaption}
-\usepackage{numprint}
-\usepackage[style=numeric,maxcitenames=1,maxbibnames=6]{biblatex}
-\addbibresource{bibliography/bibliography.bib}
 
-\crefname{lstlisting}{listing}{listings}
-\Crefname{lstlisting}{Listing}{Listings}
-
-\lstset{
-  basicstyle=\ttfamily,
-  breaklines=true,
-  breakatwhitespace=false,
-  columns=fullflexible,
-  escapeinside={*@}{@*}, % allow LaTeX inside listings
-}
-
-\lstdefinestyle{rdfstyle}{
-  basicstyle=\ttfamily\small, % monospaced
-  frame=single,               % box around
-  numbers=none,               % no line numbers
-  breaklines=true,            % wrap long lines
-  showstringspaces=false      % cleaner strings
-}
-
-\newmdenv[
-  backgroundcolor=gray!10, % light gray background
-  linecolor=gray!10,       % border color
-  skipabove=5pt,
-  skipbelow=5pt,
-  innertopmargin=0pt,
-  innerbottommargin=8pt,
-  innerleftmargin=10pt,
-  innerrightmargin=10pt,
-  roundcorner=5pt
-]{graybox}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-
-\BeforeBeginEnvironment{definition}{\begin{samepage}\begin{graybox}}
-\AfterEndEnvironment{definition}{\end{graybox}\end{samepage}}
-
-\DeclareAcronym{ie}{
-  short = IE,
-  long = information extraction,
-  % short-indefinite = an,
-%   long-plural = administrations,
-%   foreign = true
-}
-
-\DeclareAcronym{ee}{
-  short = EE,
-  long = entity extraction,
-  % short-indefinite = an,
-%   long-plural = administrations,
-%   foreign = true
-}
-
-\DeclareAcronym{ima}{
-  short = IMA,
-  long = instant messaging application,
-  % short-indefinite = an,
-%   long-plural = administrations,
-%   foreign = true
-}
-
-
-\DeclareAcronym{ui}{
-  short = UI,
-  long = user interface,
-  % short-indefinite = an,
-%   long-plural = administrations,
-%   foreign = true
-}
-
-\DeclareAcronym{ia}{
-  short = IA,
-  long = information access,
-}
-
-
-\DeclareAcronym{cot}{
-  short = CoT,
-  long = chain-of-thoughts,
-  long-plural-form  = chains of thoughs
-}
-
-
-\DeclareAcronym{ner}{
-  short = ER,
-  long = entity recognition,
-}
-
-\DeclareAcronym{api}{
-  short = API,
-  long = application programming interface,
-}
-
-\DeclareAcronym{gpu}{
-  short = GPU,
-  long = graphics processing unit,
-}
-
-\DeclareAcronym{nel}{
-  short = EL,
-  long = entity linking,
-}
-
-\DeclareAcronym{inel}{
-  short = I-EL,
-  long = incremental entity linking,
-}
-% todo maybe IncEl i better?
-
-\DeclareAcronym{ann}{
-  short = ANN,
-  long = approximate nearest neighbor,
-}
-
-\DeclareAcronym{rag}{
-  short = RAG,
-  long = retrieval augmented generation,
-}
-
-
-
-\DeclareAcronym{dl}{
-  short = DL,
-  long = deep learning,
-}
-
-\DeclareAcronym{rlhf}{
-  short = RLHF,
-  long = reinforcement learning from human feedback,
-}
-
-\DeclareAcronym{ir}{
-  short = IR,
-  long = information retrieval,
-}
-
-\DeclareAcronym{db}{
-  short = DB,
-  long = databases,
-}
-
-\DeclareAcronym{sw}{
-  short = SW,
-  long = semantic web,
-}
-
-\DeclareAcronym{kb}{
-  short = KB,
-  long = knowledge base,
-}
-
-\DeclareAcronym{kc}{
-  short = KC,
-  long = knowledge consolidation,
-}
-
-
-\DeclareAcronym{kr}{
-  short = KR,
-  long = knowledge repository,
-  long-plural-form  = knowledge repositories
-}
-
-\DeclareAcronym{icl}{
-  short = ICL,
-  long = in-context learning,
-}
-
-\DeclareAcronym{kg}{
-  short = KG,
-  long = knowledge graph,
-}
-
-\DeclareAcronym{kbp}{
-  short = KBP,
-  long = knowledge base population,
-}
-
-\DeclareAcronym{sta}{
-  short = STA,
-  long = semantic text annotation,
-}
-
-\DeclareAcronym{nlp}{
-  short = NLP,
-  long = natural language processing,
-}
-
-\DeclareAcronym{ai}{
-  short = AI,
-  long = artificial intelligence,
-}
-
-\DeclareAcronym{er}{
-  short = ER,
-  long = entity recognition,
-}
-
-\DeclareAcronym{el}{
-  short = EL,
-  long = entity linking,
-}
-
-\DeclareAcronym{qa}{
-  short = QA,
-  long = question answering,
-}
-
-\DeclareAcronym{cr}{
-  short = CR,
-  long = coreference resolution,
-}
-
-\DeclareAcronym{cs}{
-  short = CS,
-  long = computer science,
-}
-
-\DeclareAcronym{rdf}{
-  short = RDF,
-  long = Resource Description Framework,
-}
-
-\DeclareAcronym{lm}{
-  short = LM,
-  long = language model,
-  plural = s,
-  long-plural = s
-}
-
-\DeclareAcronym{llm}{
-  short = LLM,
-  long = large language model,
-  plural = s,
-  long-plural = s
-}
-
-\DeclareAcronym{lrm}{
-  short = LRM,
-  long = large reasoning model,
-  plural = s,
-  long-plural = s
-}
-
-\DeclareAcronym{clm}{
-  short = CLM,
-  long = causal language model,
-  plural = s,
-  long-plural = s
-}
-
-
-\DeclareAcronym{mlm}{
-  short = MLM,
-  long = masked language model,
-  plural = s,
-  long-plural = s
-}
-
-
-\DeclareAcronym{pos}{
-  short = POS,
-  long = part-of-speech,
-}
-
-
-
-\DeclareAcronym{ml}{
-  short = ML,
-  long = machine learning,
-}
-
-
-\DeclareAcronym{web}{
-  short = Web,
-  long = Web,
-}
-
-% mammotab
-\DeclareAcronym{gs}{
-  short = GS,
-  long  = Gold Standard
-}
-
-\DeclareAcronym{sti}{
-  short = STI ,
-  long  = Semantic Table Interpretation
-}
-%%%
-
-\newcommand{\PERSON}[1]{\colorbox{magenta!30}{#1\textsuperscript{\smaller\texttt{[PER]}}}}
-\newcommand{\LOCATION}[1]{\colorbox{cyan!30}{#1\textsuperscript{\smaller\texttt{[LOC]}}}}
-\newcommand{\DATE}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
-\newcommand{\LAW}[1]{\colorbox{green!40}{#1\textsuperscript{\smaller\texttt{[LAW]}}}}
-\newcommand{\MONEY}[1]{\colorbox{orange!30}{#1\textsuperscript{\smaller\texttt{[MONEY]}}}}
-
-\newcommand{\WikiIcon}{\raisebox{-0.15\height}{\includegraphics[height=6pt]{images/Wikipedia-globe.png}}}
-\newcommand{\NormattivaIcon}{\raisebox{-0.15\height}{\includegraphics[height=6pt]{images/Normattiva-icon.pdf}}}
-\newcommand{\NIL}{\textit{NIL}}
-% New commands for NEL highlighting and linking
-\newcommand{\NELPerson}[3]{\colorbox{pink!40}{#1\textsuperscript{\smaller\texttt{[PER]}\href{#2}{#3}}}}
-\newcommand{\NELLocation}[3]{\colorbox{teal!30}{#1\textsuperscript{\smaller\texttt{[LOC]}\href{#2}{#3}}}}
-\newcommand{\NELLaw}[3]{\colorbox{lime!40}{#1\textsuperscript{\smaller\texttt{[LAW]}\href{#2}{#3}}}}
-\newcommand{\NELDate}[1]{\colorbox{yellow!50}{#1\textsuperscript{\smaller\texttt{[DATE]}}}}
-
-
-\newcommand{\mammotab}{MammoTab }
-
-
-%custom page style for report class
-\fancypagestyle{mystyle}{
-\pagestyle{fancy}
-\fancyhf{} % clear all headers
-\fancyhead[R]{\rmfamily \small \nouppercase \rightmark}
-\fancyhead[L]{\rmfamily \small \nouppercase \leftmark}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}}
-\newcommand{\alert}[1]{{\color{red} #1}}
-
-
-% macros for fast scaling parentheses
-\newcommand{\lp}{\left(}
-\newcommand{\rp}{\right)}
-
-\newcommand{\lsb}{\left[}
-\newcommand{\rsb}{\right]}
-
-\newcommand{\lcb}{\left\{}
-\newcommand{\rcb}{\right\}}
-
-\newcommand{\la}{\left\langle}
-\newcommand{\ra}{\right\rangle}
-\newcommand{\phd}{Ph. D.\ }
+\input{setup.tex}
 
 % TODO remove
 \includeonly{
-preface/preface,
-% chapterBACK/chapter1intro,
-% chapterBACK/informationaccess,
-% % % chapterBACK/entities,
-% chapterBACK/llms,
-% chapterBACK/legal,
-% % chapterBACK/information_extraction,
-% % chapterBACK/ner,
-% % chapterBACK/nel,
-% % chapterBACK/nilpred,
-% % chapterBACK/chapter1outro,
+% preface/preface,
+% chapter10back/chapter1intro,
+% chapter10back/informationaccess,
+% % % chapter10back/entities,
+% chapter10back/llms,
+% chapter10back/legal,
+% % chapter10back/information_extraction,
+% % chapter10back/ner,
+% % chapter10back/nel,
+% % chapter10back/nilpred,
+% % chapter10back/chapter1outro,
+chapter30ee/10_inel,
+chapter30ee/10b_legalee,
+chapter30ee/11_ijckg,
+chapter30ee/12_mammotab,
+chapter30ee/21_claw_journal,
+chapter30ee/22_aixia,
+chapter30ee/23_wise,
   }
 
 
-
-% \definecolor{red}{rgb}{0.631, 0.094, 0.094}
 \begin{document}
 
 %%% TITLE PAGE %%%
-
-\thispagestyle{empty}
-\begin{textblock*}{\textwidth}(-2cm,-2.5cm)
-\includegraphics[height=0.1\paperheight]{logos/Bicocca_transparent.png}
-\end{textblock*}
-\begin{textblock*}{\textwidth}(1.9cm,-2.6cm)
-\begin{flushleft}
-\Large{DOCTORAL SCHOOL}\\[2mm]
-\Large{UNIVERSITY OF MILANO-BICOCCA}
-\end{flushleft}
-\end{textblock*}
-\vspace{2cm}
-\centerline{\Large{Department of \textbf{Informatics, Systems and Communication}}}
-\vspace{0.5cm}
-\centerline{\Large{Ph. D. program in \textbf{Computer Science}, \textbf{XXXVIII}} cycle}
-\vspace{2mm}
-% \centerline{\Large{Curriculum of \alert{\textbf{your curriculum (if applicable)}}}}
-\vspace{2cm}
-% \centerline{\huge{Entity-Oriented Knowledge Discovery in Knowledge-Intensive Domains}}
-% \huge{Entity-Oriented Strategies for Information Extraction and Access in the Legal Domain}
-\begin{center}
-  \huge{Entity-Oriented Strategies for Information Extraction and Access in Knowledge-Intensive Domains}
-\end{center}
-
-\vspace{2cm}
-\centerline{\LARGE{\textbf{Riccardo Pozzi}}}
-\vspace{2mm}
-\centerline{\Large{Student Number 807857}}
-\vspace{2cm}
-\begin{flushleft}
-\Large{Supervisor: \textbf{Prof. Matteo Palmonari}}\\[1.5mm]
-\Large{Ph. D. Tutor: \textbf{Prof. Claudio Zandron}}\\[1.5mm]
-\Large{Ph. D. Coordinator: \textbf{Prof. Leonardo Mariani}}\\[2cm]
-% \LARGE{Coordinator: \alert{\textbf{Leonardo Mariani and Gianluca Della Vedova}}}
-\end{flushleft}
-\vfill
-
-\begin{flushright}
-\LARGE{Academic Year \textbf{2024--2025}}
-\end{flushright}
-%%%%%%%%%%%%%%%%%
-%%% ABSTRACT (Techincal)%%%%
-\begin{abstract}
-%    A one-page \say{technical} abstract that summarizes
-%    your research work
-
-% In certain domains, such as ..., users face difficulties ...ing with legacy technologies.
-% In several cases, semantic knowledge can simplify their exploration,... activities.
-% In my research, I worked first on knowledge extraction...
-% Then on knowledge access and integration...
-
-
-% %%%%%
-% In \textbf{knowledge-intensive domains}, such as the legal and investigative sectors, users face difficulties interacting with high volumes of data. Indeed, documents such as legal judgements or instant-messaging data seized from suspects can be time-consuming to explore.
-% These documents contain several mentions of \textbf{named entities}, such as people, locations, or organizations, making their extraction and organization (for example in a knowledge graph) particularly useful to simplify the exploration and interpretation of these documents by the end users (judges, lawyers, or investigators).
-% % \todo{dimostra}\todo{dire cosa usavano prima?}
-
-% My research has been directed towards \textbf{knowledge extraction and knowledge access} of the information present in domain-specific documents. While extracting and accessing knowledge imply different technical tasks, these topics are equally critical to simplify the \textbf{knowledge discovery process by end users}, that is the main topic of my research.
-
-% With respect to \textbf{knowledge extraction}, I focused on \textbf{named entity recognition and linking}, addressing the challenges posed by \textbf{NIL entities}, those not present in existing knowledge bases. These entities are particularly important for domain-specific scenarios and have been often ignored in entity linking studies.
-% In my co-authored papers we tackled this problem by publishing NIL-aware datasets, one for generain-domain textual documents and tabular data, developing baseline techniques for identifying and clustering NIL mentions.
-
-% Subsequently, I focused on extracting and organizing entities from \textbf{domain-specific documents}, considering both the law and investigative domains, \textbf{manually labeling} them with mentions of entities and highlighting the \textbf{challenges} due to the peculiarities of the domain-specific language.
-% Additionally, I studied \textbf{adaptation methods} for named entity recognition on Italian judgements, concluding that task.specific fine-tuning is a good compromise between performance and computational costs.
-
-% Regarding \textbf{knowledge access and its integration with user interfaces}, I designed infrastructures that support entity-centric exploration, including faceted search and question answering, using knowledge graphs for representing the network of relations in the investigative domain and including \textbf{human-in-the-loop} functionalities that allow users to verify and correct machine errors.
-
-% I also developed \textbf{ReFactX}, a scalable and efficient method for answering questions using external knowledge bases through constrained generation. This work supports users in accessing structured knowledge with minimal computational resources, especially in privacy-sensitive contexts where reliance on public APIs is not feasible.
-% %%%%%
-
-% ok ma alla fine quali sono le RQ? qual'è la mia tesi? dovrei lavorare con utenti? NOOOOO
-
-
-
-\end{abstract}
-%%% PUBLICATIONS %%%
-\pagenumbering{roman}
-
-% Name & headline
-
-%\switchcolumn
-\todo{remove}
-Font: \fontname\font
-
-\section*{List of publications}
-$\bullet$ Paper 1 \cite{yourpaper1}
-
-$\bullet$ Paper 2
-
-\section*{Contributions to conferences}
-As a \textbf{speaker:}
-\begin{itemize}
-	\item Talk 1
-	\item Talk 2
-\end{itemize}
-As an \textbf{author:}
-\begin{itemize}
-
-    \item Proceedings 1
-    \item Proceedings 2
-\end{itemize}
-%%%%%%%%
-\tableofcontents
-
-\listoffigures
-\listoftables
-
-\printacronyms
-
-\pagestyle{mystyle}
-
-\pagenumbering{arabic}
-
-% \addcontentsline{toc}{chapter}{Introduction}
+% with list of publications
+\input{title.tex}
 
 
 \include{preface/preface}
 
-\include{chapterBACK/chapter1intro}
-\include{chapterBACK/informationaccess}
-\include{chapterBACK/entities}
-\include{chapterBACK/llms}
-\include{chapterBACK/legal}
-\include{chapterBACK/information_extraction}
-\include{chapterBACK/ner}
-\include{chapterBACK/nel}
-\include{chapterBACK/nilpred}
-\include{chapterBACK/chapter1outro}
+\include{chapter10back/10_intro}
+\include{chapter10back/20_informationaccess}
+\include{chapter10back/30_entities}
+\include{chapter10back/40_llms}
+\include{chapter10back/50_legal}
+\include{chapter10back/55_sota_architecture}
+\include{chapter10back/60_information_extraction}
+\include{chapter10back/70_ner}
+\include{chapter10back/75_nel}
+\include{chapter10back/78_nilpred}
+\include{chapter10back/79_legal_information_extraction}
+\include{chapter10back/99_outro}
 
-\include{chapterINEL/chapter2}
-\include{chapterINEL/ijckg}
-\include{chapterINEL/mammotab}
+\include{chapter20arc/10_intro}
+\include{chapter20arc/20_legal_information_access}
+\include{chapter20arc/30_dave}
 
-\include{chapterLAWAX/intro}
-\include{chapterLAWAX/legal_information_access}
-\include{chapterLAWAX/dave}
+\include{chapter30ee/10_inel}
+\include{chapter30ee/10b_legalee}
+\include{chapter30ee/11_ijckg}
+\include{chapter30ee/12_mammotab}
+\include{chapter30ee/21_claw_journal}
+\include{chapter30ee/22_aixia}
+\include{chapter30ee/23_wise}
 
-\include{chapterLAW/chapter4}
-\include{chapterLAW/legal_information_extraction}
-\include{chapterLAW/claw_journal}
-\include{chapterLAW/aixia}
-\include{chapterLAW/wise}
-
-\include{chapterQA/chapter3}
-\include{chapterQA/ia_qa_review}
-\include{chapterQA/refactx}
-
-
-
-
+\include{chapter40refact/10_chapter}
+\include{chapter40refact/20_ia_qa_review}
+\include{chapter40refact/30_refactx}
+\include{chapter40refact/}
 
 \addcontentsline{toc}{chapter}{Conclusions and Outlook}
 \include{conclusions/conclusions}

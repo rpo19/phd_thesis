@@ -58,7 +58,7 @@ Besides being sensitive in terms of data protection and confidentiality, the leg
 
 \paragraph{NLP in knowledge-intensive domains}
 Several \acf{nlp}-based approaches have been developed to support and enhance information workflows in knowledge-intensive domains. In these areas, professionals often face the challenge of locating, interpreting, and synthesizing large volumes of domain-specific information to make informed decisions. For instance, the need to retrieve precedent cases in law or identify relevant clinical trials in healthcare has driven the development of domain-specific \acf{ir} systems~\cite{moens2001innovative,breuker2004legal,hersh2003trec,roberts2016overview}. Other works have focused on automatic summarization to handle lengthy and complex documents~\cite{llms_in_law_2025,clinical_summarization_2023}, or on predictive modeling---such as drug response prediction in healthcare~\cite{sharma2024advances} and civil case outcome prediction in the legal domain~\cite{juliahb2024}. In finance, \ac{nlp} methods have been applied to the analysis of financial news, corporate announcements, and social media posts, supporting downstream tasks such as financial sentiment analysis and market forecasting~\cite{nlp_finance_survey_2025}.
-% In scientific research, \ac{ir} and \ac{ie} systems assist in literature discovery, citation prediction, and knowledge graph construction from scientific papers~\cite{}.
+% In scientific research, \ac{ir} and \ac{ie} systems assist in literature discovery, citation prediction, and \acl{kg} construction from scientific papers~\cite{}.
 % These systems are designed to support complex queries and integrate multiple heterogeneous sources of information to aid expert decision-making~\cite{voorhees2014clinical,liu2023domain}.
 
 \paragraph{narrow to the legal}
@@ -118,7 +118,7 @@ The latter developed a prototype for legal case retrieval that guides profession
 
 \paragraph{soa criminal}
 \todo{add whatsapp}
-On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a knowledge graph---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
+On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
 % both focus also on scalability
 \textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
 
@@ -135,7 +135,7 @@ However, these approaches for enhancing criminal investigations do not address \
 % Later advancements, such as the microservices-based architecture proposed in \textcite{ruiz2020}, improved scalability and performance for large-scale language analysis of legal documents.
 
 \paragraph{transition to objective}
-What is common to all the aforementioned approaches is the idea of building an architecture that sits between the users and the source data containing the information they seek. This general concept encompasses search engines, which index documents for efficient and relevant retrieval; visualization systems, which store key information to highlight them in \acp{ui}---for example, by coloring text~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023} or pinpointing locations on maps~\cite{pirzada2024framework,P_rez_2021,kejriwal2018}---to help users quickly interpret it; and approaches that populate a \ac{kg}~\cite{kejriwal2017searchengine,kejriwal2018,amato2008,HAN2024121052legalasst} or a database~\cite{bellandi2025streamlining}, which, like the other methods, organize knowledge in a meaningful way tailored to users' needs.
+What is common to all the aforementioned approaches is the idea of building an architecture that sits between the users and the source data containing the information they seek. This general concept encompasses search engines, which index documents for efficient and relevant retrieval; visualization systems, which store key information to highlight them in \acp{ui}---for example, by coloring text~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023} or pinpointing locations on maps~\cite{pirzada2024framework,P_rez_2021,kejriwal2018}---to help users quickly interpret it; and approaches that populate a \ac{kg}~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst} or a database~\cite{bellandi2025streamlining}, which, like the other methods, organize knowledge in a meaningful way tailored to users' needs.
 \todo{mention graphrag or not?? maybe too much concepts in the intro}
 \todo{verifica bene la descrizione degli approcci sopra e modifica in base a questo}
 
@@ -153,7 +153,7 @@ What is common to all the aforementioned approaches is the idea of building an a
 
 % \paragraph{objective draft}
 % \todo{structure with 3 objectives. data integration model, evaluation of feasibility / proof of concepts of existing techs in domans (both extractors, including nil pred, and accesses). final refactx}
-% A central objective of my Ph.D. is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
+% A central objective of my \phd is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
 % This model must be respect the following principles.
 % \begin{enumerate}
 %     \item Generalizability to heterogeneous documents and to new use cases, since certain investigation may require ad-hoc workflows.
@@ -177,7 +177,7 @@ What is common to all the aforementioned approaches is the idea of building an a
 % To fulfill these principles we decide to... entities support generalizability since they are present in all the aforementioned knowledge-intensive domains---people, diseases, genes in the healthcare, companies,... in finance, articles, conferences, publishers... in scientific research...and can link documents from these domains. also legal examples.
 
 \paragraph{Objectives}
-The central objective of this Ph.D. thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
+The central objective of this \phd thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
 The proposed architecture is guided by the following principles:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
@@ -288,7 +288,7 @@ This \phd thesis is organized as follows. \Cref{chap:background_soa} described b
 % \todo{prima di qui parlare bene dei problemi: cosa manca(va)????}
 % The main objective is fulfilling the information need of users in knowledge-intensive domains.
 % \todo{assicurati di disctere che questa cosa non era già possibile e di mostrarne i problemi che esistevano}
-% The main objective can be divided in different sub-objectives that correspond to the contributions of my Ph.D. research.
+% The main objective can be divided in different sub-objectives that correspond to the contributions of my \phd research.
 % \begin{itemize}
 %     \item create a dataset and a baseline for incremental EE
 %     \item analyze existing EE algorithms on domain-pecific domains, evaluating different adaptation techniques
