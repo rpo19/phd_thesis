@@ -1,4 +1,18 @@
 % \section{Contributin I: Evaluation of Incremental Entity Extraction with Background Knowledge and Entity Linking}
+
+In particular, in \textcite{ijckg2022}, we focus on batch-based incremental entity extraction, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We apply this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} producing its incremental version, \emph{Incremental WNUM}, which is available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}. This approach leverages \ac{el} with a background \ac{kb}, while also detecting and clustering NIL mentions, and incrementally updating the \ac{kb} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
+
+An additional contribution of my \phd is \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. This contribution is not part of this thesis but still addresses a related topic, \acf{sti}---the task of identifying entities (similarly to \ac{ner} and \ac{nel} for text), columns types, and relations between columns in tabular data. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, thus this dataset include NIL-labeled instances.
+
+Finally, the contributions for incremental \ac{nel} can be summarized as follows:
+\begin{enumerate}
+    \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
+    \item A dataset for incremental \ac{el}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering---created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying our methodology.
+    \item A baseline pipeline, based on the BLINK bi-encoder~\cite{blink}, which additionally supports NIL prediction and clustering.
+    \item Evaluation procedures for incremental \ac{nel}.
+    \item An evaluation of the baseline pipeline on the incremental scenario and a discussion of the main challenges.
+\end{enumerate}
+
 \section{Adapting an \ac{nel} Benchmark to Incremental \ac{nel}}
 \label{sec:incrementalel:pipeline}
 \todo{dire che non facciamo ner e perche?}
