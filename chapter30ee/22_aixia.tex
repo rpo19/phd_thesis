@@ -10,10 +10,10 @@
 % % \input{table/dataset_stats}
 % \todo{use table dataset stats}
 
-% All the documents have \ac{ner} annotations considering the following classes: Person (\textit{PER}), Organization (\textit{ORG}), Location (\textit{LOC}), Date (\textit{DATE}), Money (\textit{MONEY}), and Miscellaneous (\textit{MISC}), that includes references to court judgments, law articles, court decrees, or any entity not covered by the above classes.
+% All the documents have \ac{ner} annotations considering the following classes: Person (\texttt{Person}), Organization (\texttt{Organization}), Location (\texttt{Location}), Date (\texttt{Date}), Money (\texttt{Money}), and Miscellaneous (\texttt{Miscellaneous}), that includes references to court judgments, law articles, court decrees, or any entity not covered by the above classes.
 % In total, the dataset is composed of more than 16,000 annotations and each document counts on average $\sim$1,900 words. Table~\ref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
 
-% The annotations for named entity linking (\ac{nel}) and NIL prediction are only available in the test set. These annotations are limited to the classes \textit{PER}, \textit{ORG}, and \textit{LOC}. \textit{DATE}, \textit{MONEY}, and \textit{MISC} mentions have not been annotated for \ac{nel} and NIL prediction because they are expected to be processed by rule-based algorithms that we do not cover in this work.
+% The annotations for named entity linking (\ac{nel}) and NIL prediction are only available in the test set. These annotations are limited to the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}. \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous} mentions have not been annotated for \ac{nel} and NIL prediction because they are expected to be processed by rule-based algorithms that we do not cover in this work.
 
 
 % For the remainder of this work, we will refer to our annotated corpus of 146 documents as ICCJ (Italian Civil Court Judgment)\todo{use iccj names} and to the 900,000 legal judgment (without annotations) as ICCJ900k.
@@ -69,7 +69,7 @@ We identify the top-performing model based on its \textit{F1-measure} and utiliz
 \subsubsection{\ac{nel}}
 We evaluate the \ac{nel} component in terms of \textit{accuracy} and \textit{recall@100}, similarly to recent work~\cite{blink}, on the ICCJ146-EE test set, additionally comparing to the news-based benchmark VoxEL~\cite{rosales2018voxel}.
 
-It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \textit{PER}, \textit{ORG}, and \textit{LOC}.
+It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}.
 
 \subsubsection{NIL Prediction}
 The NIL prediction component is evaluated as a binary classifier with \textit{precision}, \textit{recall}, and \textit{F1-measure} calculated for both classes (NIL and $\neg$NIL). It is important to emphasize that, to evaluate the NIL prediction independently from \ac{nel} errors, we consider it correct when the NIL prediction classifies as NIL the mentions incorrectly linked by the \ac{nel} component. We attribute a positive value to this behavior as it showcases the ability of the NIL prediction to effectively identify \ac{nel} errors, thereby mitigating their impact.
@@ -94,7 +94,7 @@ Surprisingly, the findings suggest that employing a domain-specific legal BERT d
 
 \subsubsection{\ac{ner}}
 
-The evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \ac{ner} recognition. The classes \textit{MONEY} and \textit{PER} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \textit{MISC} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the MISC class. Additionally, \textit{MISC} exhibits the largest disparity between strong matching performance and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \textit{ORG}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
+The evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \ac{ner} recognition. The classes \texttt{Money} and \texttt{Person} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \texttt{Miscellaneous} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the MISC class. Additionally, \texttt{Miscellaneous} exhibits the largest disparity between strong matching performance and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \texttt{Organization}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
 
 We also consider the successful results achieved by the \ac{ner} component indicative of the high quality of our annotated corpus ICCJ146-EE.
 
@@ -117,8 +117,8 @@ For these reasons, we consider the NIL prediction to be the most significant cha
 
 \subsubsection{\ac{ee} end-to-end}
 
-Lastly, Table \ref{tab:overall4type} presents the comprehensive results for the end-to-end \ac{ee} task. \textit{PER} and \textit{LOC} exhibit similar satisfactory performance levels. On the other hand, \textit{ORG} entities appear to be more challenging.
+Lastly, Table \ref{tab:overall4type} presents the comprehensive results for the end-to-end \ac{ee} task. \texttt{Person} and \texttt{Location} exhibit similar satisfactory performance levels. On the other hand, \texttt{Organization} entities appear to be more challenging.
 
-Furthermore, the difference between strong and partial matching is limited for \textit{PER} and \textit{LOC}, but significant for \textit{ORG}, confirming the difficulty in accurately detecting boundaries for \textit{ORG} entities previously observed in the \ac{ner} results. Additionally, the relatively modest overall difference of $6\%$ between partial and strong matching, along with the disparity with \ac{ner}-only results ($72.24\%$ vs $91.74\%$), highlights that the \ac{nel} and NIL prediction components are responsible for the majority of errors. This observation, combined with the fact that we fine-tuned only the \ac{ner} component, suggests that fine-tuning the \ac{nel} and NIL prediction components on the data could potentially enhance the overall performance of the end-to-end \ac{ee} system.
+Furthermore, the difference between strong and partial matching is limited for \texttt{Person} and \texttt{Location}, but significant for \texttt{Organization}, confirming the difficulty in accurately detecting boundaries for \texttt{Organization} entities previously observed in the \ac{ner} results. Additionally, the relatively modest overall difference of $6\%$ between partial and strong matching, along with the disparity with \ac{ner}-only results ($72.24\%$ vs $91.74\%$), highlights that the \ac{nel} and NIL prediction components are responsible for the majority of errors. This observation, combined with the fact that we fine-tuned only the \ac{ner} component, suggests that fine-tuning the \ac{nel} and NIL prediction components on the data could potentially enhance the overall performance of the end-to-end \ac{ee} system.
 
 \input{table/overall4type}

@@ -17,23 +17,7 @@
 
 Investigators often need to explore and extract insights from large volumes of heterogeneous documents, including \acf{ima} data. To address this need, we proposed an entity-centric approach to integrate different data sources (\Cref{sec:intro}), for enabling \acl{ia} applications such as faceted search and graph-based visualizations.
 
-
-\begin{table}[htbp]
-  \centering
-  \begin{tabulary}{\textwidth}{LCCCCC}
-    \hline
-    \textbf{Topic} & \textbf{Chats} & \textbf{Proc. chats} & \textbf{Msgs} & \textbf{Attach. (img-audio-docs)} & \textbf{Persons} \\
-    \hline
-    1) Fraud & 1133  & 801   & 45252 & 3324 (575-304-1590) & 1365 \\
-    % \hline
-    \textbf{2) Corruption} & 1442 & 1442  & 364690 & 63224 (51532-6273-4066) & 2351 \\
-    \hline
-  \end{tabulary}
-  \caption{Statistics about two invatigation in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
-  \label{tab:chatstats}
-\end{table}
-
-During my \phd, I collaborated with prosecutors and judicial police officers from two public prosecutor's offices in the context of two separate investigations. While the work presented in this thesis refers exclusively to the second case---an investigation into suspected corruption---I report, in \Cref{tab:chatstats}, the statistics of the chat logs extracted and processed in both investigations, to better illustrate the volume of data that investigators must handle.
+During my \phd, I collaborated with prosecutors and judicial police officers from two public prosecutor's offices in the context of two separate investigations. While the work presented in this thesis refers exclusively to the second case---an investigation into suspected corruption---\Cref{tab:chatstats} reports the statistics of the chat logs extracted and processed---by the metadata extraction (\Cref{sec:wise:metdata_extraction})---in both investigations, to better illustrate the volume of data that investigators must handle.
 
 Our work was conducted under an official consultancy agreement within the framework of judicial investigations. All data, due to the private information contained, was stored locally and accessed only by authorized consultants, through a secure VPN with user-password authentication; no external \acp{api} have been used at any stage.
 
@@ -63,12 +47,58 @@ The following sections describe the annotation process for obtaining labeled ben
 
 \todo{rw ima and investigations}
 
-\todo{divide the contributions between extraction and access. merge all extraction and then all access}
+
+\subsection{Metadata Extraction}
+\label{sec:wise:metdata_extraction}
+Investigators usually use forensic software tools to extract the content of a seized smartphones (logical extraction)~\cite{exfiles_d1_1_2021}. In our case, we received chat logs in Microsoft Excel\footnote{\url{https://www.microsoft.com/en-us/microsoft-365/excel-c}} ``.xlsx'' format.
+
+\Ac{ima} dumps consist of semi-structured data. In fact, unstructured message corpora are accompanied by structured metadata, which include information such as the timestamp of each message and the contact names of the sender and receiver. These metadata are highly valuable for investigators, as they allows them to reconstruct the suspect's communication network based on the number and direction of exchanged messages.  
+For this reason, in this work we directly leverage chat metadata to construct a \ac{kg} that models contacts, chats, and messages, respectively through the entity classes \texttt{Person}, \texttt{Chat}, and \texttt{Message}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{images/wise/kg_model.drawio.pdf}
+\caption{Knowledge Graph schema} \label{fig:model}
+\end{figure}
+
+The entire schema\todo{posso chiamarlo ontologia? meglio di no} of the \emph{chat \acl{kg}} is depicted in \Cref{fig:model}. It incorporates all the metadata present in chat dumps and it is predisposed to host the new entities identified from an \ac{inel} pipeline---namely \texttt{Location}, \texttt{Organization}, \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous}, all of which are subclasses of \texttt{Entity}, together with \texttt{Person}. Finally, the relation \emph{mentioned in} allows to persist in which messages and chats entities have been mentioned. Consequently investigators can trace entities to the source messages and verify the correctness of potential deduction reading the original messages (\ref{ch:traceability}). 
 
 
-    % \subsection{Overview}
+We consider the metadata from the dump we received to be applicable to most \acp{ima}.
+For each chat they include
+\begin{itemize}
+  \item the list of participants with their phone numbers,
+  \item the start time,
+  \item and the time of the last activity.
+\end{itemize}
+And each message is described by
+\begin{itemize}
+  \item the timestamp it was sent,
+  \item the name of the sender,
+  \item the number of the sender,
+  \item and optionally the attachments.
+\end{itemize}
 
-\subsection{Benchmark Annotation Process}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabulary}{\textwidth}{LCCCCC}
+    \hline
+    \textbf{Topic} & \textbf{Chats} & \textbf{Proc. chats} & \textbf{Msgs} & \textbf{Attach. (img-audio-docs)} & \textbf{Persons} \\
+    \hline
+    1) Fraud & 1,133  & 801   & 45,252 & 3,324 (575-304-1,590) & 1,365 \\
+    % \hline
+    \textbf{2) Corruption} & 1,442 & 1,442  & 364,690 & 63,24 (51,532-6,273-4,066) & 2,351 \\
+    \hline
+  \end{tabulary}
+  \caption{Statistics about two invatigation in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
+  \label{tab:chatstats}
+\end{table}
+
+\Cref{tab:chatstats} shows the resulting statistics of the metadata extraction in both the investigations I was involved. The remaining of this section refers solely to the second investigate about suspected corruption.
+
+
+\subsection{Benchmark Annotation}
 \label{sec:wise_dataset}
 
 \begin{table}[h]
@@ -152,7 +182,7 @@ Using this model in the experiments can give us clues on how the best model for 
 
 % \subsubsection{\ac{nel}}
 
-For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} otained from Italian Wikipedia---as in \Cref{sec:claw_consolidation}---additionally populated with the chat participants obtained with the metadata extraction from \ac{ima} data.\todo{introduce this before!}
+For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} otained from Italian Wikipedia---as in \Cref{sec:claw_consolidation}---additionally populated with the chat participants from the chat \ac{kg}.
 To represent chat participants, we leverage BLINK zero-shot capability to encode an entity given its title and textual description. For each of them, we obtain a representation by giving the following input to the bi-encoder:
 \begin{lstlisting}
 [CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP].
@@ -168,7 +198,6 @@ It takes the \ac{nel} top-ranked score and \emph{secondiff} (the difference betw
 % The entity clustering approach is based on a supervised xgboost classifier trained on pairs of mentions belonging to the same cluster, determined through \ac{nel} data from the gold standard. This classifier takes as input a set of similarities, including surface text similarities (like Jaro Winkler and Jaccard), as well as cosine similarity of BLINK embeddings obtained with \ac{nel}, producing a probability score as an indicative synthetic similarity between the mentions. The pairwise similarity scores are then used to create weighted graphs for each document, where mentions are nodes and edge weights reflect mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast}) on these graphs.
 
 
-\todo{citazioni}
 The entity clustering approach, which has been improved with respect to previous work in \Cref{sec:eejudgements}, uses a supervised XGBoost classifier~\cite{chen2016xgboost}, trained with the mentions from the labeled dataset, to calculate a similarity score between pairs of mentions. The input features include lexical similarity measures, namely Jaro-Winkler~\cite{winkler1990string} and Jaccard~\cite{jaccard1901etude}, as well as semantic similarity computed as the cosine similarity of vectors from the \blinkita bi-encoder, applied to the surface forms of the two mentions. The classifier outputs a synthetic similarity score.  
 
 Next, the pairwise similarity scores are used to create weighted graphs, where mentions are represented as nodes and the edge weights reflect the mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast}) on these graphs.
@@ -180,7 +209,7 @@ Entity clustering is applied at document-level to group the NIL mentions referri
 
 The application of \ac{inel} has two outcomes: the chat file is annotated (\acl{sta}))
 %in such a way that each annotation is associated with a span in the input text;
-and the knowledge graph is updated with the discovered entities---which correspond to the entity clusters---using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).\todo{describe kg extraction and refer to next chapter}
+and the knowledge graph is updated with the discovered entities---which correspond to the entity clusters---using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).
 % Annotations include information about links to Wikipedia, if present, or the cluster the mention is associated with.    
 
 % consolidation
@@ -236,7 +265,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
     \begin{tabular}{l|cc|cc|c}
       \toprule
       \textbf{Type} & \multicolumn{2}{c|}{\textbf{Mentions}} & \multicolumn{2}{c|}{\textbf{Links}} & \textbf{Entities} \\
-      & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} & \\
+      & \textbf{Text}  & \textbf{Audio} & \textbf{to \ac{kr}} & \textbf{NIL} & \\
       \midrule
       % \hline
       \texttt{Person} & 7765 & 520 & 2361* & 5404 & 5701 \\
