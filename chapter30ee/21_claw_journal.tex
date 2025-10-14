@@ -29,7 +29,7 @@ The remainder of this section is organized as follows: \Cref{sec:judgements_labe
 \subsection{Annotation of a Legal Benchmark}
 \label{sec:judgements_labeled_data}
 
-We started from a corpus of 927,453 real judgments in civil trials published from 2008 to 2021 (the majority of the judgments, $\approx 86\%$, are published from 2016 to 2021).\todo{da dove l'abbiamo preso e con che permessi???}
+We started from a corpus of 927,453 real judgments in civil trials published from 2008 to 2021 (the majority of the judgments, $\approx 86\%$, are published from 2016 to 2021).\todo{da dove l'abbiamo preso e con che permessi??? from the ministry of justice? forse meglio non dire niente}
 This number can be compared to the total number of trials that are estimated per year according to~\cite{bankitalia}, which falls between 2 and 2.5 millions from 2010 to 2019.
 For the remainder of this work, we will refer to this corpus or more than 900 thousand civil judgments as \emph{ICCJ900k}---from ``Italian Civil Court Judgments''.
 
@@ -50,7 +50,7 @@ The annotation was performed semi-automatically. First, the documents have been 
 The annotations include labels for \ac{ner}, \ac{nel}, NIL prediction, and NIL clustering (see \Cref{sec:incrementalel} for details on these tasks).
 
 These tasks are executed sequentially, thus, each annotation step has been performed by manually refining the output of previous tasks. For this reason, we can consider the annotation process as a \say{simulation} of a real \emph{human-in-the-loop} use case, where humans manually verify and correct automatic annotations, for enhancing their quality.
-Furthermore, this \say{simulation} allows to estimate the amount of time required by the final users-in-the-loop to correct automatic annotations obtained with the \ac{ee} pipeline\todo{add which pipeline?}.
+Furthermore, this \say{simulation} allows to estimate the amount of time required by the final users-in-the-loop to correct automatic annotations obtained with the \ac{ee} pipeline described in \Cref{sec:italia_ee_pipeline}.
 
 Initially, \ac{er} annonations have been labeled on all the 146 documents by two annotators. Later, a subset of 30 documents has been additionally labeled for \ac{inel}. We will use ICCJ30-\ac{inel} to specifycally refer to this subset.
 The annotation process focused the entities of class \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Money}, \texttt{Date}, and \texttt{Miscellaneous}.\todo{say something about anonymization?}
@@ -103,9 +103,9 @@ For these reasons, we adopted the \ac{ner} F$_1$ score as the main metric is a m
 %, wang2021nero}.
 The F$_1$ score---calculated with the matching criteria described in \Cref{sec:metrics}---is pair-wisely computed between annotators: for each combination, the labels from an annotator are used as the ground truth to evaluate the labels from another annotator; an average is computed in case of more than two annotators. 
 
-Table~\ref{tab:iaa} shows all metrics averaged over documents. For completeness, we also report the token-level F$_1$ score for the \textit{strong typed} match criteria and Scott's~$\pi$, Cohen's~$\kappa$, Fleiss'~$\kappa$, and Krippendorff's~$\alpha$.
+Table~\ref{tab:iaa} shows all metrics averaged over documents. For completeness, we also report the token-level F$_1$ score for the \textit{strong-typed} match criteria and Scott's~$\pi$, Cohen's~$\kappa$, Fleiss'~$\kappa$, and Krippendorff's~$\alpha$.
 We can see that \textit{strong-typed (instance-level)}, i.e., the strictest metric, reaches 80.8\%, which can be considered satisfactory since it measures perfect matches between annotators. Moreover, by looking at the additional F$_1$ score-based metrics we can see that the values increase as we relax the matching criterion (partial is the least stringent). This proves that even in cases where the labels from the two annotators do not perfectly match, there is still a significant degree of overlap.
-These differences between F$_1$ scores---calculated with harder and softer matching criteria---as well as the difference between \textit{instance-level} and \textit{token-level} \textit{strong typed} measures, also point out that a perfect span selection was the most difficult part for the annotators.
+These differences between F$_1$ scores---calculated with harder and softer matching criteria---as well as the difference between \textit{instance-level} and \textit{token-level} \textit{strong-typed} measures, also point out that a perfect span selection was the most difficult part for the annotators.
 
 \begin{table}[]
 \centering
@@ -113,18 +113,18 @@ These differences between F$_1$ scores---calculated with harder and softer match
 \toprule
 \textbf{Metric}                     & \textbf{Value} \\\toprule
 \multicolumn{2}{c}{F$_1$ score-based metrics} \\\midrule
-strong                              & 83.9\%           \\
-strong typed (instance-level)       & 80.8\%           \\
-strong typed (token-level)          & 88.6\%           \\
-approximate                         & 96.6\%           \\
-approximate typed                   & 90.4\%           \\
-partial                             & 96.9\%           \\
-partial typed                       & 90.6\%           \\\midrule
+Strong                              & 83.9\%           \\
+Strong-typed (instance-level)       & 80.8\%           \\
+Strong-typed (token-level)          & 88.6\%           \\
+Approximate                         & 96.6\%           \\
+Approximate-typed                   & 90.4\%           \\
+Partial                             & 96.9\%           \\
+Partial-typed                       & 90.6\%           \\\midrule
 \multicolumn{2}{c}{Standard IAA metrics} \\\midrule
 $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa \approx \text{Krippendorff's~}\alpha$
  & 66.2\%           \\\bottomrule
 \end{tabular}
-\caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in Section~\ref{sec:metrics}. *based on strong typed match}
+\caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in Section~\ref{sec:metrics}. *based on strong-typed match}
 \label{tab:iaa}
 \end{table}
 
@@ -234,6 +234,7 @@ First, we identify span conflicts, then we address type-related conflicts:
 
 
 \subsubsection{Knowledge consolidation}
+\label{sec:claw_consolidation}
 The knowledge consolidation process involves the three tasks of \ac{nel}, NIL prediction, and NIL clustering. The pipeline derives from the English one presented in \textcite{ijckg2022} and described in \Cref{sec:incrementalel:pipeline} and it is composed of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for the NIL prediction, and the three-step algorithm for NIL clustering.
 
 % We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for \ac{nel}. % TODO migliorare
@@ -241,16 +242,17 @@ The knowledge consolidation process involves the three tasks of \ac{nel}, NIL pr
 As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 
 For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
-As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages. 
+As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages.
+In the remaining of this work we will refer to the BLINK model trained for the Italian language as \blinkita.
 
 % spostare negli experiments
-% We conduct a first evaluation of $BLINK_{ITA}$ on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
+% We conduct a first evaluation of \blinkita on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
 
 % TODO voxel multilingual \ac{nel} dataset
 
-% Although a systematic comparison is not possible (as further discussed in ~\ref{app:blink}), our goal is to have some insights on the performance of $BLINK_{ITA}$ in a challenging linking scenario~\cite{basile2016neelit}.
+% Although a systematic comparison is not possible (as further discussed in ~\ref{app:blink}), our goal is to have some insights on the performance of \blinkita in a challenging linking scenario~\cite{basile2016neelit}.
 
-% The insights suggest that $BLINK_{ITA}$ achieves reasonable performance, despite some known limitations of its current implementation (see~\ref{app:blink}).
+% The insights suggest that \blinkita achieves reasonable performance, despite some known limitations of its current implementation (see~\ref{app:blink}).
 % todo ?
 
 %the 
@@ -331,12 +333,12 @@ Indeed in some contexts, ``partially-correct'' annotations might be acceptable, 
 
 The adopted criteria---taken from~\cite{tsai2006various} and extended to provide both a typed and untyped evaluation---allow us to assess the behavior of the algorithms at different severity levels. The metrics are defined as follows:
 \begin{enumerate}
-    \item \textit{strong:} the predicted entity has an exact span match with the ground truth annotations;
-    \item \textit{strong typed:} the predicted entity has an exact span match and the type is correct with respect to the ground truth annotations;
-    \item \textit{approximate:} the predicted entity is contained in the correct span (or vice versa);
-    \item \textit{approximate typed:} the predicted entity is contained in the correct span (or vice versa) and the type is correct;
-    \item \textit{partial:} the predicted entity is overlapping with the correct span;
-    \item \textit{partial typed:} the predicted entity is overlapping with the correct span and the type is correct;
+    \item \textit{Strong:} the predicted entity has an exact span match with the ground truth annotations.
+    \item \textit{Strong-typed:} the predicted entity has an exact span match and the type is correct with respect to the ground truth annotations.
+    \item \textit{Approximate:} the predicted entity is contained in the correct span (or vice versa).
+    \item \textit{Approximate-typed:} the predicted entity is contained in the correct span (or vice versa) and the type is correct.
+    \item \textit{Partial:} the predicted entity is overlapping with the correct span.
+    \item \textit{Partial-typed:} the predicted entity is overlapping with the correct span and the type is correct.
 \end{enumerate}
 
 % \todo{controlla HITL}
@@ -381,7 +383,7 @@ For the joint evaluation of \textit{\ac{nel} with NIL prediction}, starting from
 % Additionally, we provide an evaluation of the entire consolidation pipeline by calculating the accuracy of the system behavior starting from a human-validated \ac{ner} for all the input mentions. We also provide distinct results for the mentions that should be linked both to KB and out-of-KB (i.e., NIL) entities. Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
 % Additionally, for the evaluation of the entire consolidation pipeline, independently by the \ac{ner}, we calculate the accuracy of the system behavior for all the input mentions, and separately for the mentions that should be linked to the KB and for the ones that should be classified as NIL. Figure~\ref{fig:expected_outcome} shows the expected system behavior of the system given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
 
-Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL prediction, we expanded the evaluation criteria for \ac{ner} defining \textit{approximate linking} and \textit{approximate typed linking} as the criteria that extend the respective \ac{ner} metric by additionally considering \ac{nel} and NIL prediction. Thus an annotation is correct only when boundaries and type (when typed) are correct, and it is linked to the correct entity (and classified as $\neg$NIL) or correctly identified as NIL. For each of the two criterion, we measure precision, recall, and F$_1$ score. 
+Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL prediction, we expanded the evaluation criteria for \ac{ner} defining \textit{approximate linking} and \textit{approximate-typed linking} as the criteria that extend the respective \ac{ner} metric by additionally considering \ac{nel} and NIL prediction. Thus an annotation is correct only when boundaries and type (when typed) are correct, and it is linked to the correct entity (and classified as $\neg$NIL) or correctly identified as NIL. For each of the two criterion, we measure precision, recall, and F$_1$ score. 
 
 % \subsubsection{Scalability, Extensibiltiy, and Availability}
 % Finally, we study the scalability of the proposed architecture by calculating the required time for the execution of the generic algorithms and of the additional rule-based extractors, which recognize postal addresses and law articles.
@@ -427,9 +429,9 @@ As expected there is a substantial difference between the results obtained using
         & P & R & F$_1$ & P & R & F$_1$ \\
         \hline
         % approximate typed % data denaro luogo organizzazione persona, ( con miscellaneous )
-        strong              & 51.9\% &	43.7\% &	47.5\% & 44.7\% &	37.7\% &	40.9\%  \\
-        approximate         & 86.9\% &	68.0\% &	76.3\% & 64.6\% &	53.1\% &	58.3\% \\
-        partial             & 87.4\% &	68.6\% &	76.9\% & 64.9\% &	53.3\% &	58.6\% \\ 
+        Strong              & 51.9\% &	43.7\% &	47.5\% & 44.7\% &	37.7\% &	40.9\%  \\
+        Approximate         & 86.9\% &	68.0\% &	76.3\% & 64.6\% &	53.1\% &	58.3\% \\
+        Partial             & 87.4\% &	68.6\% &	76.9\% & 64.9\% &	53.3\% &	58.6\% \\ 
     \end{tabular}
     \caption{\textit{Atomic} \ac{ner} evaluation (precision, recall, F$_1$ score) with different matching criteria (rows), typed and untyped. These results are obtained using the combination of the \ac{ner} algorithms and considering all the evaluated types.}
     \label{tab:nereval:bymetric}
@@ -474,7 +476,7 @@ SpaCy is effective in recognizing the types \texttt{Person} and \texttt{Location
                       & Tint    & - & - & -\\
                       & Trie\ac{ner}    & - & - & -\\
                       & Combination  & \textbf{26.4\%} & 03.9\% & 06.8\% \\
-        \hline  . \%     \textbf{Overall*} & SpaCy   & 63.8\% & 43.2\% & 51.5\%\\
+        \hline  \textbf{Overall*} & SpaCy   & 63.8\% & 43.2\% & 51.5\%\\
                       & Tint    & 74.8\% & 60.1\% & 66.6\% \\
                       & Trie\ac{ner}    & \textbf{76.7\%} & 11.3\% & 19.7\% \\
                       & Combination  & 66.0\% & \textbf{67.6\%} & \textbf{66.8\%} \\
@@ -489,7 +491,7 @@ SpaCy is effective in recognizing the types \texttt{Person} and \texttt{Location
         % WikiNER~\cite{NOTHMAN2013151} & SpaCy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
-    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate typed match}. *Miscellanea mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
+    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *Miscellanea mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
     % TODO Trie\ac{ner}
     \label{tab:nereval:bytype}
 \end{table}
@@ -509,7 +511,7 @@ For the remaining classes \texttt{Location}, \texttt{Organization}, \texttt{Date
 % \begin{table}[H]
 %     \centering
 %     \begin{tabular}{l|lll|lll}
-%         & \multicolumn{3}{l|}{strong typed} & \multicolumn{3}{l}{approximate typed} \\
+%         & \multicolumn{3}{l|}{strong-typed} & \multicolumn{3}{l}{approximate typed} \\
 %         \midrule
 %         & P & R & F$_1$ & P & R & F$_1$ \\
 %         \hline
@@ -531,7 +533,7 @@ For the remaining classes \texttt{Location}, \texttt{Organization}, \texttt{Date
 %        % Organization  & .873 & .920 & .896 \\
 %        % Miscellaneous  & .864 & .823 & .843
 %     \end{tabular}
-%     \caption{Comparison of the \ac{ner} algorithms, including their combination, according to the strong typed and approximate typed criteria. The values correspond to the micro-averaged precision, recall, and F$_1$ score of the types ``person'', ``location'', ``organization'', ``money'', and ``date'' (``miscellaneous'' is excluded).}
+%     \caption{Comparison of the \ac{ner} algorithms, including their combination, according to the strong-typed and approximate typed criteria. The values correspond to the micro-averaged precision, recall, and F$_1$ score of the types ``person'', ``location'', ``organization'', ``money'', and ``date'' (``miscellaneous'' is excluded).}
 %     \label{tab:nereval}
 % \end{table}
 
@@ -591,7 +593,7 @@ The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} e
 \end{table}
 
 % overall
-Finally, Table~\ref{tab:nereval:withlink} reports the evaluation with the end-to-end evaluation with the \textit{approximate linking} and \textit{approximate typed linking} criteria. The results obtained with \textit{approximate linking}, which ignores the recognized \ac{ner} type, are noticeably better than with \textit{approximate typed linking}: the F$_1$ score is 64.0\%, almost 8 percentage points higher. This finding suggests that, once the mention has been linked by \ac{nel}, the linked entity may also allow to correct or consolidate the type identified by \ac{ner}.
+Finally, Table~\ref{tab:nereval:withlink} reports the evaluation with the end-to-end evaluation with the \textit{approximate linking} and \textit{approximate-typed linking} criteria. The results obtained with \textit{approximate linking}, which ignores the recognized \ac{ner} type, are noticeably better than with \textit{approximate-typed linking}: the F$_1$ score is 64.0\%, almost 8 percentage points higher. This finding suggests that, once the mention has been linked by \ac{nel}, the linked entity may also allow to correct or consolidate the type identified by \ac{ner}.
 % todo we leave this to future works
 
 
@@ -600,9 +602,9 @@ Finally, Table~\ref{tab:nereval:withlink} reports the evaluation with the end-to
     \begin{tabular}{l|lll}
         & P & R & F$_1$ \\
         \hline
-        % approximate typed % luogo organizzazione persona, no altro data denaro 
+        % approximate-typed % luogo organizzazione persona, no altro data denaro 
         approximate linking      & 59.8\% & 68.9\% & 64.0\% \\
-        approximate typed linking & 52.3\% & 60.9\% & 56.3\% \\
+        approximate-typed linking & 52.3\% & 60.9\% & 56.3\% \\
     \end{tabular}
     \caption{\textit{end-to-end} \ac{ner}, \ac{nel}, and NIL prediction evaluation.}
     \label{tab:nereval:withlink}
