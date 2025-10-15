@@ -66,11 +66,11 @@ The annotations were carried out by two annotators using \textit{doccano}~\cite{
 Based on~\cite{jha2017all}, a detailed set of annotation guidelines was prepared and provided to the annotators to reduce inconsistencies arising from different annotation styles. During the annotation process, the guidelines were iteratively refined by recording and addressing the annotators' doubts and edge cases.
 
 The guidelines cover both span selection and type assignment.  
-For span selection---for example, in the case of nested entities, the span corresponding to the most informative and specific entity type should be annotated: \textit{``\underline{Main Street 18, London}[LOC]''} should be preferred over \textit{``\underline{Main Street 18}[LOC], \underline{London}[LOC]''}.
-For type assignment---for example, the entity type should be determined from the surrounding context: \textit{``John Smith, born in \underline{France}[LOC]''} versus \textit{``\underline{France}[ORG] announced new trade regulations''}.  
-Each entity type also has its own specific guidelines to handle particular exceptions---for instance, \textit{``exclude titles from person names''}: \textit{``Dr. \underline{John Smith}[PER]''} is preferred over \textit{``\underline{Dr. John Smith}[PER]''}.  
+For span selection---for example, in the case of nested entities, the span corresponding to the most informative and specific entity type should be annotated: ``\underline{Main Street 18, London}[LOC]'' should be preferred over ``\underline{Main Street 18}[LOC], \underline{London}[LOC]''.
+For type assignment---for example, the entity type should be determined from the surrounding context: ``John Smith, born in \underline{France}[LOC]'' versus ``\underline{France}[ORG] announced new trade regulations''.  
+Each entity type also has its own specific guidelines to handle particular exceptions---for instance, ``Exclude titles from person names.'': ``Dr. \underline{John Smith}[PER]'' is preferred over ``\underline{Dr. John Smith}[PER]''.  
 
-Finally, we also decided to annotate mentions such as \textit{``the Judge''} or \textit{``the Court''}, which are not strictly within the scope of \ac{ner} but are closely related to coreference resolution, as these entities are particularly relevant in the legal domain.
+Finally, we also decided to annotate mentions such as ``the Judge'' or ``the Court'', which are not strictly within the scope of \ac{ner} but are closely related to coreference resolution, as these entities are particularly relevant in the legal domain.
 
 
 
@@ -138,11 +138,11 @@ $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa 
 The annotation for the knowledge consolidation process---i.e., \ac{nel}, NIL prediction and clustering---has been performed semi-automatically from the \ac{ner} labels of the 30 documents used to compute the IAA. The guidelines, based on the assumptions in~\cite{jha2017all}, are simpler in this case and be summed up with the following two steps.
 
 \begin{enumerate}
-    \item If the mention refers to a known entity in the KB (Italian Wikipedia and manually added entities) label it with the entity URI and mark the mention as $\neg$NIL.
+    \item If the mention refers to a known entity in the \ac{kr} (Italian Wikipedia and manually added entities) label it with the entity URI and mark the mention as $\neg$NIL.
     \item Otherwise, mark the mention as NIL, create a new entity, and label the mention with the new entity URI. This latter step is necessary to trace which NIL mentions refer to the same unknown entity (NIL clustering). 
 \end{enumerate}
 
-% In addition, other entity-level guidelines (e.g., \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (e.g., a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of KB entity) have been defined during the annotation process when particular cases were found. 
+% In addition, other entity-level guidelines (e.g., \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (e.g., a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of \ac{kr} entity) have been defined during the annotation process when particular cases were found. 
 
 To enhance the efficiency of the annotation procedure an application was developed, incorporating both Wikipedia search API and a fuzzy search mechanism. On average documents required $\approx$15 minutes to be annotated for \ac{nel}, NIL prediction, and NIL clustering. Out of the 3,006 annotated mentions, 467 refer to Wikipedia entities, and 1,753 to NIL entities. The remaining 786 mentions, of class \texttt{Date} and \texttt{Money}, were not assigned to any entity.
 
@@ -227,7 +227,7 @@ Finally, we merge the annotations produced by the different algorithms.
 Each \ac{ner} annotation consists of a text span associated with a type, so conflicts may arise when spans overlap or when overlapping spans have inconsistent types---for example:
 \begin{quote}
 ``\underline{Mr. Cityville}[PER]'' (from one algorithm) vs. ``\underline{Cityville}[LOC]'' (from another),  
-or ``Italy'' labeled both as \textit{Location} and \textit{Organization}.
+or ``Italy'' labeled both as \texttt{Location} and \texttt{Organization}.
 \end{quote}
 
 We resolve these conflicts as follows:
@@ -245,15 +245,32 @@ We resolve these conflicts as follows:
 
 \subsubsection{Knowledge consolidation}
 \label{sec:claw_consolidation}
-The knowledge consolidation process involves the three tasks of \ac{inel}, NIL prediction, and NIL clustering. The pipeline derives from the English one presented in \textcite{ijckg2022} and described in \Cref{sec:ijckg:pipeline} and it is composed of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for the NIL prediction, and the three-step algorithm for NIL clustering. Although we do not evaluate an incremental scenario with legal documents, we chose a bi-encoder-based pipeline because it allows to represent new entities, as descibed in \Cref{sec:ijckg}---a relevant property for the legal domain.
-
 % We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for \ac{nel}. % TODO migliorare
 % Provato a scriverla meglio
 % As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
+The knowledge consolidation process comprises three tasks: \ac{inel}, NIL prediction, and NIL clustering.  
+The pipeline is adapted from the English version introduced in \textcite{ijckg2022} and detailed in \Cref{sec:ijckg:pipeline}. It consists of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for NIL prediction, and a three-step algorithm for NIL clustering.  
+Although we do not evaluate an incremental scenario with legal documents, we adopt a bi-encoder-based architecture because it supports the representation of new entities---a crucial property for the legal domain.
 
-For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
-As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages.
-In the remaining of this work we will refer to the BLINK model trained for the Italian language as \blinkita.
+To enable \ac{nel} for the Italian language, we trained a bi-encoder following the methodology proposed by the BLINK~\cite{blink} authors for English.  
+We initialized the encoder with weights from the Italian BERT-base model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}~\cite{stefan_schweter_2020_4263142} and fine-tuned it on 9 million mention--entity pairs derived from Italian Wikipedia hyperlinks.  
+Training was conducted for four epochs with in-batch random negatives, using the AdamW optimizer~\cite{loshchilov2018decoupled} with an initial learning rate of $1 \times 10^{-5}$ and a batch size of 20.  
+A fifth epoch was then performed using hard negatives---one per sample---selected as the incorrect entity with the highest linking score for the given mention.  
+The knowledge base contains approximately 1.5M entities extracted from Italian Wikipedia\footnote{\url{https://it.wikipedia.org}} after removing redirects and disambiguation pages.  
+In the remainder of this work, we refer to the resulting model as \blinkita.
+
+For NIL prediction, we use the same Wikipedia-based dataset employed to train the \ac{nel} model.  
+As in \Cref{sec:ijckg:pipeline}, we adopt a \textit{logistic regression classifier} that takes as input:
+\begin{enumerate}
+    \item the \ac{nel} score of the top-ranked entity; and
+    \item the difference between the top score and that of the second-best candidate (\textit{secondiff}).
+\end{enumerate}
+The classifier outputs a probability $p \in [0,1]$, where $p = 1$ indicates that the top-ranked entity is likely correct for the given mention, and $p = 0$ indicates the opposite.  
+In the latter case, the mention is treated as NIL, under the assumption that if the correct entity is not top-ranked, it is not present in the \ac{kr}.
+
+Finally, NIL clustering follows the three-step procedure described in \Cref{sec:ijckg:pipeline}.  
+The clustering thresholds are determined through grid search on the same Wikipedia-based dataset used for \ac{nel} training.
+
 
 % spostare negli experiments
 % We conduct a first evaluation of \blinkita on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in Table~\ref{tab:nereval:atomic}.
@@ -268,20 +285,10 @@ In the remaining of this work we will refer to the BLINK model trained for the I
 %the 
 %Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016neelit}, that is composed of tweets in the Italian language; see Table~\ref{tab:blink_ita_eval}.
 
-NIL prediction has been trained with the same Wikipedia-based dataset used to train the \ac{nel} model. Different combinations of input features have been evaluated. The ones we are currently using are the \ac{nel} score of the top-ranked entity and the difference between the top score and the score of the second-best candidate.\todo{simlarly to ijckg??}
-
-For NIL prediction, as in \textcite{ijckg2022} and \Cref{sec:ijckg:pipeline}, we use a \textit{logistic regression classifier} considering as input features:
-\begin{enumerate}
-    \item the \ac{nel} score of the top-ranked entity;
-    \item the difference between the top-ranked entity score and the second-best one (\textit{secondiff}).
-\end{enumerate}
-It produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is correct for linking the mention, while $0$ means the opposite. In this latter case, we consider the mention NIL, assuming that if the correct entity is not in the top-ranked position, then it is not in the \ac{kr}.
 
 % The NIL clustering sub-service is a three-step algorithm~\cite{simone_24}: initially, the mentions are clustered using their surface form (i.e., edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise), then inside each cluster we apply a hierarchical clustering algorithm by using a predefined threshold to split clusters, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
 % In this way, each cluster from the first step is divided into sub-clusters.
 % Finally, semantically similar sub-clusters are merged together, according to the distance between their medoid vectors.
-
-The NIL clustering approach is the three-step clustering method described in \Cref{sec:ijckg:pipeline}, where thresholds are obtained with grid search using the same Wikipedia-based dataset used to train the \ac{nel} model.
 
 % The NIL prediction and NIL clustering approaches are based on incremental extraction methods from English documents~\cite{ijckg2022}.
 
@@ -296,18 +303,21 @@ The NIL clustering approach is the three-step clustering method described in \Cr
 
 
 
-\subsection{Evaluation on Italian Civil Judgments}
+\subsection{Baseline Evaluation on Italian Civil Judgments}
 \label{sec:judgment_ee_eval}
 
 We evaluate the entity extraction pipeline in the following experimental settings:
 \begin{enumerate}
-    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practise, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use ICCJ146-EE as the evaluation dataset and ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization} (see Section~\ref{sec:entityextractionservice}). This analysis aligns with the concept of human-in-the-loop validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (see Section~\ref{sec:metrics}).  
+    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practise, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use the 146-documents ICCJ146-EE as the evaluation dataset and the 30-documents subset ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization}. This analysis aligns with the concept of \acf{hitl} validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (see Section~\ref{sec:metrics}).  
     \item \textit{\ac{nel} with NIL prediction}: we study the combined performance of \ac{nel} and NIL prediction, since these two tasks are closely related, isolating them from \ac{ner} errors. To achieve this, we execute \ac{nel} and NIL prediction on ground truth \ac{ner} annotations from ICCJ30-\ac{inel}.
-    \item \textit{End-to-end}: we analyze the behaviour of our system on each mention of ICCJ30-\ac{inel} for the tasks \ac{ner}, \ac{nel}, and NIL prediction (as done in the NEEL challenge~\cite{basile2016neelit}), wherein an input mention can be finally linked to an entity in the KB or classified as NIL. NIL clustering is not included in the end-to-end evaluation because it complicates the evaluation since it would require evaluating whether a NIL mention was grouped in the correct cluster, leading to a too broad space of possible outcomes---e.g., the NIL mention is grouped with one correct and one wrong mention, the NIL mention is grouped with only one correct mention out of $n$.
+    \item \textit{End-to-end}: we evaluate the performance of our system on each mention in ICCJ30-\ac{inel}, considering \ac{ner}, \ac{nel}, and NIL prediction---as done, for example, in the NEEL challenge~\cite{basile2016neelit}. In this setting, each mention can be either linked to an entity in the \ac{kr} or classified as NIL. We exclude NIL clustering from this evaluation, since assessing whether a NIL mention is in the correct cluster would overly complicate the analysis; instead, clustering is evaluated separately in the \textit{atomic} setting.
+
+
 \end{enumerate}
 To better study the difficulty of the domain we compare with \ac{ner} and \ac{nel} results on standard benchmarks in the Italian language: WikiNER~\cite{NOTHMAN2013151} and I-CAB~\cite{magnini-etal-2006-cab} for \ac{ner}; Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT~\cite{basile2016neelit} for \ac{nel}.
 
 In the remainder of this section, we present the evaluation metrics and the evaluation results.
+The different tasks are analyzed according to the following metrics and criteria.
 
 % The following sections contain the explanation of the evaluation metrics (Section~\ref{sec:metrics})
 % %, the description of the ground truth (Section~\ref{sec:gold_standard}),
@@ -333,11 +343,10 @@ In the remainder of this section, we present the evaluation metrics and the eval
 %
 % The types involved in each step of the experimentation are listed in Table~\ref{tab:algotypes}.
 
-The different tasks are analyzed according to the following metrics and criteria.
 \subsubsection{Evaluation Metrics and Criteria}\label{sec:metrics}
 % \paragraph{\ac{ner}}
 For the \textit{atomic} evaluation of \ac{ner}, we calculate precision, recall, and F$_1$ score with different matching criteria that determine when an extracted mention is correct with respect to the human-annotated ground truth.
-Indeed in some contexts, ``partially-correct'' annotations might be acceptable, e.g., identifying ``A4 Highway'' instead of ``A4 Highway Torino-Trieste'' might be informative enough~\cite{nadeau2007survey, tsai2006various}. Furthermore, in a human-in-the-loop scenario, we prefer to detect partially-correct annotations rather than to miss them, since a human can quickly correct annotation boundaries.
+Indeed in some contexts, ``partially-correct'' annotations might be acceptable---for instance, identifying ``A4 Highway'' instead of ``A4 Highway Torino-Trieste'' might be informative enough in some settings~\cite{nadeau2007survey, tsai2006various}. Furthermore, in a \ac{hitl} scenario, we prefer to detect partially-correct annotations rather than to miss them, since a human can quickly correct annotation boundaries.
 
 % The metrics used for the evaluation of \ac{ner} are inspired by~\cite{tsai2006various}, and have different criteria to mark a prediction as correct. In this way, it is possible to compute precision, recall, and F$_1$ score at different severity levels, thus providing a better overview of the effectiveness of the algorithm.
 
@@ -353,7 +362,16 @@ The adopted criteria---taken from~\cite{tsai2006various} and extended to provide
 
 % \todo{controlla HITL}
 
-For the sake of clarity, given $c$ is the chosen criterion from the above, $Y^i_c$ the number of correctly predicted annotations according to $c$, $Y^i$ the total number of predicted annotations, and $Y_G$ the expected number of annotations in the ground truth, precision is defined as $P = \frac{Y^i_c}{Y^i}$, that is the number of correctly predicted annotations divided by the total number of predicted annotations. Recall is $R = \frac{Y^i_c}{Y_G}$, the ratio of correctly predicted annotations and the expected number of annotations, and, finally F$_1$ score is the harmonic mean of $P$ and $R$: $F_1 = 2 * \frac{P * R}{P + R}$.
+For the sake of clarity, let $c$ denote the chosen evaluation criterion, $Y^i_c$ the number of correctly predicted annotations according to $c$, $Y^i$ the total number of predicted annotations, and $Y_{GT}$ the number of annotations in the ground truth.  
+Precision, recall, and F$_1$ score are then defined as:
+\begin{equation}
+P = \frac{Y^i_c}{Y^i}, \qquad
+R = \frac{Y^i_c}{Y_{GT}}, \qquad
+F_1 = 2 \times \frac{P \times R}{P + R}.
+\end{equation}
+Here, $P$ measures the fraction of correct predictions, $R$ measures coverage over the ground truth, and F$_1$ represents their harmonic mean.
+
+
 \todo{speak about metrics in rw}
 
 % \paragraph{Knowledge consolidation} % (\ac{nel}, NIL prediction, NIL clustering)
@@ -363,19 +381,41 @@ For the sake of clarity, given $c$ is the chosen criterion from the above, $Y^i_
 % Each consolidation step, namely \ac{nel}, NIL prediction, and NIL clustering, has been evaluated atomically to exclude the effects of error propagation. This evaluation setting is also in line with the scenario in which a human-in-the-loop validates the output of each step.
 
 % \todo{valutare se la figura si può togliere}
-% Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
+% Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
 
 % \paragraph{\ac{nel}}
 \ac{nel} is \textit{atomically} evaluated on accuracy, that is the number of mentions linked to the correct entity divided by the total number of mentions to link, and recall@k. This latter metric assesses whether the correct entity is among the top-k candidates with the highest linking score (in our case accuracy and recall@1 are equivalent). Note that \ac{nel}, and also NIL prediction and NIL clustering, is evaluated solely on the types \texttt{Person}, \texttt{Location}, \texttt{Organization}. 
 
+\ac{nel} is evaluated \textit{atomically} using accuracy and recall@k.  
+
+\begin{equation}
+\text{Accuracy} = \frac{\text{Number of correctly linked mentions}}{\text{Total number of mentions to link}},
+\end{equation}
+
+\begin{equation}
+\text{Recall@k} = \frac{\text{Number of mentions for which the correct entity is among the top-}k\text{ candidates}}{\text{Total number of mentions to link}}.
+\end{equation}
+\todo{define metrics in sota and refer to there}
+
+In our setting, accuracy and recall@1 are equivalent.  
+We evaluate \ac{nel}, as well as NIL prediction and NIL clustering, only on the entity types \texttt{Person}, \texttt{Location}, and \texttt{Organization}.
+
+
+
 % \paragraph{\ac{nel}}
 % \paragraph{NIL prediction}
-For the \textit{atomic} evaluation of the NIL prediction classifier, we calculate precision, recall, and F$_1$ score for both the NIL and $\neg$NIL classes. The NIL prediction task strongly relies on the \ac{nel} score, thus to evaluate it independently from \ac{nel} we consider correct when mentions linked to a wrong entity are classified as NIL: in this case, the top-ranked entity, according to \ac{nel}, is not the correct one and the NIL prediction classifier is based on the assumption that when the correct entity is not the top-ranked one, then, it does not exist in the KB.
+For the \textit{atomic} evaluation of the NIL prediction classifier, we calculate precision, recall, and F$_1$ score for both the NIL and $\neg$NIL classes. The NIL prediction task strongly relies on the \ac{nel} score, thus to evaluate it independently from \ac{nel} we consider correct when mentions linked to a wrong entity are classified as NIL: in this case, the top-ranked entity, according to \ac{nel}, is not the correct one and the NIL prediction classifier assumes that when the correct entity is not the top-ranked one, then, it does not exist in the \ac{kr}.
 
 NIL clustering, similarly to coreference resolution tasks~\cite{streaming_crossdoc_coreference}, is evaluated \textit{atomically} with the metrics metrics MUC, B$_3$, and CEAF$_e$. For each of them, we calculate precision, recall, and F$_1$ score.
 For the evaluation to be independent of error propagation, we run the clustering algorithm only for the NIL mentions from the ground truth.
 
-For the joint evaluation of \textit{\ac{nel} with NIL prediction}, starting from the ground truth \ac{ner} annotations, we calculate the accuracy on 1) all the mentions, 2) on the mentions that should be linked to the KB, and 3) on the mentions that should be classified as NIL. They respectively represent the ratio of all the mentions, of the $\neg$NIL mentions, and of the NIL mentions that were correctly processed.
+For the joint evaluation of \textit{\ac{nel} with NIL prediction}, we start from the ground truth \ac{ner} annotations and, following \Cref{sec:ijckg:evaluation_procedure}, we calculate the accuracy on
+\begin{enumerate}
+    \item the mentions that should be linked to the \ac{kr}---same as (a) in \Cref{sec:ijckg:evaluation_procedure},
+    \item the mentions that should be classified as NIL---(b),
+    \item and on all the mentions---(d).
+\end{enumerate}
+They respectively represent the ratio of the $\neg$NIL mentions, of the NIL mentions, and of all the mentions that were correctly processed.
 
 % \begin{figure}
 %     \centering
@@ -384,16 +424,17 @@ For the joint evaluation of \textit{\ac{nel} with NIL prediction}, starting from
 %     keepaspectratio]
 %     {experiments_expected.drawio.png}
 %     \caption{Schema of the expected outcome of the consolidation tasks, given a mention m
-% referring to an entity E, when (a) E is known ``a priori'' in the KB or (b) E is not in the
-% KB (NIL).}
+% referring to an entity E, when (a) E is known ``a priori'' in the \ac{kr} or (b) E is not in the
+% \ac{kr} (NIL).}
 %     \label{fig:expected_outcome}
 % \end{figure}
 
 % Each task has been atomically evaluated to avoid error propagation and with the assumption that a human-in-the-loop validated the output from the previous step.
-% Additionally, we provide an evaluation of the entire consolidation pipeline by calculating the accuracy of the system behavior starting from a human-validated \ac{ner} for all the input mentions. We also provide distinct results for the mentions that should be linked both to KB and out-of-KB (i.e., NIL) entities. Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
-% Additionally, for the evaluation of the entire consolidation pipeline, independently by the \ac{ner}, we calculate the accuracy of the system behavior for all the input mentions, and separately for the mentions that should be linked to the KB and for the ones that should be classified as NIL. Figure~\ref{fig:expected_outcome} shows the expected system behavior of the system given a mention $m$ when it refers to an entity that exists in the KB and when it is NIL.
+% Additionally, we provide an evaluation of the entire consolidation pipeline by calculating the accuracy of the system behavior starting from a human-validated \ac{ner} for all the input mentions. We also provide distinct results for the mentions that should be linked both to \ac{kr} and out-of-\ac{kr} (i.e., NIL) entities. Figure~\ref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
+% Additionally, for the evaluation of the entire consolidation pipeline, independently by the \ac{ner}, we calculate the accuracy of the system behavior for all the input mentions, and separately for the mentions that should be linked to the \ac{kr} and for the ones that should be classified as NIL. Figure~\ref{fig:expected_outcome} shows the expected system behavior of the system given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
 
-Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL prediction, we expanded the evaluation criteria for \ac{ner} defining \textit{approximate linking} and \textit{approximate-typed linking} as the criteria that extend the respective \ac{ner} metric by additionally considering \ac{nel} and NIL prediction. Thus an annotation is correct only when boundaries and type (when typed) are correct, and it is linked to the correct entity (and classified as $\neg$NIL) or correctly identified as NIL. For each of the two criterion, we measure precision, recall, and F$_1$ score. 
+Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL prediction, we define two extended criteria: \textit{approximate linking} and \textit{approximate-typed linking}. These criteria consider an annotation correct only if its \ac{ner} boundaries (and \ac{er} type, for typed linking) are correct, it is linked to the correct entity and classified as $\neg$NIL or correctly classified as NIL. For both criteria, we report precision, recall, and F$_1$ score.
+
 
 % \subsubsection{Scalability, Extensibiltiy, and Availability}
 % Finally, we study the scalability of the proposed architecture by calculating the required time for the execution of the generic algorithms and of the additional rule-based extractors, which recognize postal addresses and law articles.
@@ -401,13 +442,15 @@ Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL p
 %\todo{la teniamo questa considerazione sui processi asincroni commentata? nella discussione?}
 % We argue that several operations are performed by independent systems that can run asynchronously in any order (apart for workflows), as they produce independent annotations. These operations include the \ac{ner} algorithms and the rule-based additional extractors, while other services like \ac{nel} strictly depend on the previous steps.
 
-The hyperparameters for the combination rules are determined with preliminary tests. The weights assigned to each algorithm are as follows: 0.3 for \spacy, 0.1 for Tint, and 0.6 for Trie\ac{ner}.
+The hyperparameters for the combination rules were set by prioritizing Trie\ac{ner}, followed by \spacy, and then Tint. This choice reflects the reliability of Trie\ac{ner}, which leverages in-domain knowledge from metadata, and the fact that \spacy employs more recent models than Tint. The resulting weights are 0.6 for Trie\ac{ner}, 0.3 for \spacy, and 0.1 for Tint, ensuring that in cases of type conflict, Trie\ac{ner}'s prediction---based on metadata---takes precedence.
+
 
 % \paragraph{Overall}
 
 % \input{gold_standard.tex}
 
 \subsubsection{Results}\label{sec:results}
+\todo{paraphrase}
 
 % \subsubsection{\ac{ner}}
 % Since the actual experimentation does not involve algorithms for class specialization, which is left for future works, the types of \textit{Judge}, \textit{Lawyer}, \textit{Court}, \textit{Plaintiff}, \textit{Defendant}, and \textit{Law Article} have been excluded from the evaluation.
@@ -425,14 +468,14 @@ The hyperparameters for the combination rules are determined with preliminary te
         Tint & I-CAB~\cite{magnini-etal-2006-cab} & 84.4 & 80.0 & 82.1 \\
         \bottomrule
     \end{tabular}
-    \caption{Results obtained by our algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers the type ``miscellaneous''.}
+    \caption{Results obtained by our algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers the type \texttt{Miscellaneous}.}
     \label{tab:sotaner}
 \end{table}
 
-First, we present a comparative table (Table \ref{tab:sotaner}) with the outcomes achieved by two of our \ac{ner} algorithms, \spacy (combined with BERT$_{BASE}$ and Tint, across benchmark datasets. We also include the results from two other recent and competitive approaches for reference. It is visible that our \spacy algorithm, which exploits a BERT encoder, is competitive with recent approaches.
+First, we present a comparative table (Table \ref{tab:sotaner}) with the outcomes achieved by two of our \ac{ner} algorithms, \spacy and Tint, across public benchmark datasets. We also include the results from two other recent and competitive approaches~\cite{gilberto,muffo2023bertino} for reference. It is visible that our \spacy algorithm, which exploits a BERT encoder, is competitive with recent approaches.
 
 In Table~\ref{tab:nereval:bymetric} we show the results for the \textit{atomic} evaluation of \ac{ner}.
-As expected there is a substantial difference between the results obtained using \textit{strong} and \textit{approximate} criteria, highlighting that our system in several cases is able to identify entities but struggles to find the best boundaries. However, boundary errors can be fixed relatively quickly with human-in-the-loop intervention. Furthermore, the difference between \textit{approximate} and \textit{partial} criteria is minimal, thus, we consider the \textit{approximate} criteria permissive enough and we omit the \textit{partial} criteria in the remainder of the section.
+As expected there is a substantial difference between the results obtained using \textit{strong} and \textit{approximate} criteria, highlighting that our system in several cases is able to identify entities but struggles to find the best boundaries. However, boundary errors can be fixed relatively quickly with human-in-the-loop intervention. Furthermore, the difference between \textit{approximate} and \textit{partial} criteria is minimal, thus, we consider the \textit{approximate} criteria permissive enough and we omit the \textit{partial} criteria in the remainder of the evaluation.
 
 \begin{table}[H]
     \centering
@@ -507,18 +550,18 @@ In Table~\ref{tab:nereval:bytype} we report a per-type comparison of the \textit
         % WikiNER~\cite{NOTHMAN2013151} & \spacy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
-    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *Miscellanea mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
+    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
     % TODO Trie\ac{ner}
     \label{tab:nereval:bytype}
 \end{table}
 
-Our combination rules achieved a good compromise between precision and recall even if they do not outperform the best algorithm for each type: an F$_1$ score of 66.8\% was obtained with the \textit{approximate matching} criterion.s
+Our combination rules achieved a good compromise between precision and recall even if they do not outperform the best algorithm for each type: an F$_1$ score of 66.8\% was obtained with the \textit{approximate matching} criterion.
 %This is also visible in Table~\ref{tab:nereval} which shows an overall comparison of the \ac{ner} algorithms with the combination.
 % With the \textit{approximate matching} criterion, the combination rules obtain an F$_1$ score of 0.668.
 
 The results of \spacy and Tint on standard benchmarks confirm the challenging and diverse nature of the domain: by comparing Tables~\ref{tab:sotaner} and \ref{tab:nereval:bymetric} it is evident that 
 \ac{ner} algorithms experience a noticeable decline in performance when applied to domain-specific data.
-Looking at per-type performances (Table~\ref{tab:nereval:bytype}), across almost all types we observe lower performance compared to the results of the evaluation on benchmark datasets. Notably, in handling the class \texttt{Person} our proposed system demonstrates relatively similar outcomes (F$_1 > 80\%$), while the identification of miscellanea mentions proves highly ineffective. This result can likely be attributed to the distinct characteristics of domain-specific miscellanea, which differ significantly from the miscellanea found in standard benchmarks.
+Looking at per-type performances (Table~\ref{tab:nereval:bytype}), across almost all types we observe lower performance compared to the results of the evaluation on benchmark datasets. Notably, in handling the class \texttt{Person} our proposed system demonstrates relatively similar outcomes (F$_1 > 80\%$), while the identification of \texttt{Miscellanea} mentions proves highly ineffective. This result can likely be attributed to the distinct characteristics of domain-specific \texttt{Miscellanea}, which differ significantly from the \texttt{Miscellanea} found in standard benchmarks.
 For the remaining classes \texttt{Location}, \texttt{Organization}, \texttt{Date}, and \texttt{Money} the evaluation exhibits F$_1$ scores ranging between 50\% and 70\%. This suggests that the tested algorithms, trained on the available benchmark datasets, have the capability to process these types, although there is still significant room for improvement, e.g., via domain-specific fine-tuning.
 
 
@@ -563,7 +606,7 @@ With respect to NIL prediction, the classifier is effective in identifying NIL m
 The biggest weakness of the consolidation process is the NIL clustering component which obtains low F$_1$ score values for B$^3$ and CEAF$_e$ metrics.
 
 % TODO perchè?
-The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} errors) results in the 79.1\% of mentions correctly processed. These include NIL mentions that the system identified with a very high accuracy of 91.9\%, while for the mentions that should be linked to the KB, the accuracy is 46.8\%; this can be explained by a bias in the NIL prediction that tends to predict the NIL class. 
+The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} errors) results in the 79.1\% of mentions correctly processed. These include NIL mentions that the system identified with a very high accuracy of 91.9\%, while for the mentions that should be linked to the \ac{kr}, the accuracy is 46.8\%; this can be explained by a bias in the NIL prediction that tends to predict the NIL class. 
 
 \begin{table}[h]
     \centering
@@ -598,7 +641,7 @@ The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} e
         & CEAF$_{e}$ & 7.2 & 31.7 & 11.7 \\
         \midrule
         % \multicolumn{1}{l|}{\textbf{\ac{nel} \& NIL prediction}} & Accuracy & & \\
-        % in KB     & .468  &   &   \\ 
+        % in \ac{kr}     & .468  &   &   \\ 
         % NIL    & .919  &   &   \\
         % All               & .791  &   &   \\
         \textbf{\Ac{nel} \& NIL prediction} & & \textbf{in \ac{kr}} & \textbf{NIL} & \textbf{All} \\
@@ -628,3 +671,33 @@ Finally, Table~\ref{tab:nereval:withlink} reports the evaluation with the end-to
     \caption{\textit{end-to-end} \ac{ner}, \ac{nel}, and NIL prediction evaluation.}
     \label{tab:nereval:withlink}
 \end{table}
+
+\subsection{Discussion}
+
+We now discuss the results focusing on the limitations of the proposed solution and their impact on the specific application domain.
+
+
+
+% entity extraction --> domain-specific fine tuning
+% knowledge consolidation --> NEL ok, NIL problematiche e NIL clustering anche
+In the \textit{end-to-end} evaluation our system achieved an F$_{1}$ score of 64.0\% (with the \textit{approximate linking} criterion). This means that more than one mention out of two is correctly processed by \ac{ner}, \ac{nel}, and NIL prediction. Taking into account the high specificity of the domain, the noisy input, and the absence of in-domain training or fine-tuning, we believe that the baseline for identifying and linking entities is promising. However, the final NIL clustering step achieved unsatisfactory results according to B$^3$ and CEAF$_e$ metrics, although MUC metrics seem satisfactory. Providing an intuitive interpretation of the clustering scores is more complicated. Results obtained by state-of-the-art NIL clustering algorithms on benchmark data in English vary significantly, across measures and datasets~\cite{logan2021benchmarking}. An ineffective NIL clustering step badly affects the knowledge consolidation process of NIL mentions. A possible solution is to optimize the clustering hyperparameters (i.e., clustering thresholds) on a domain-specific dataset, indeed, recent work~\cite{logan2021benchmarking} suggests that in-domain optimization may be beneficial.
+\todo{ricorda perche succedeva. singleton?}
+
+Also the observed bias of the NIL prediction algorithm towards the NIL class may be mitigated by domain-specific training.
+Nevertheless, it's important to note that within court judgments, this concern holds minor significance, given that the most relevant entities are usually NIL (e.g., plaintiff, defendants, judges, and attorneys). 
+
+The results also reveal that \ac{ner} algorithms trained on accessible datasets and applied to the specific domain exhibit a performance reduction witg the only exception of the type \texttt{Person}. Considering that \ac{ner} holds the first position within the pipeline, it significantly affects all the subsequent tasks. For this reason, we underscore the importance of domain-specific fine-tuning for the \ac{ner} algorithms, whose study has been published in \textcite{aixia_2023} and is reported in the next section (\Cref{sec:aixia}).
+
+% We proved the impact of domain-specific fine-tuning in~\cite{PozziAIxIA23} in which we fine-tuned the SpaCy approach, which utilizes a BERT encoder, on our gold standard, achieving an F$_1$ score of 0.822, with the strictest \textit{strong typed match} criterion. This increase by about 100\% (see Table~\ref{tab:nereval:bymetric}) has an impact also on the performance evaluated in the \textit{end-to-end} experiment that with the domain-specific \ac{ner} model achieves an F$_1$ of 0.661 with the \textit{strong typed match} criterion (10\% higher of the results calculated with \textit{approximate typed} in Table~\ref{tab:nereval:withlink}). 
+
+The results discussed so far provide insights into the feasibility, in terms of effectiveness and efficiency, of a solution that extracts and semantically consolidates entity mentions from Italian judgments. Our architecture additionally offers the capability of \acl{hitl} revision of the annotations produced by the algorithms.
+Furthermore, the \ac{hitl} process we used for creating the gold standard enabled us to estimate 30 minutes as the average required time to fully revise the automatic annotations of an Italian judgment. This translates to the revision of 320 judgments per month by a single full-time annotator. This estimation serves as an upper limit for assessing the costs linked to human-involved entity extraction.
+
+\subsection{Conclusion}
+\todo{remove and merge at the end}
+In the second part of the paper, we described  experiments to demonstrate the feasibility of the solution and the main challenges to scaling the system at a national level. In particular, the results obtained in annotating data with different low-resource methods and with solutions designed to combine these approaches in a meaningful way were reported. An essential aspect of the proposed solution is a human-in-the-loop approach to control the output of the annotation algorithms in agreement with the organizational processes in place in Italian courts. Based on these results, the feasibility of the proposed approach was advocated and the challenges that must be addressed to ensure the scalability and robustness of the proposed solution were discussed.
+
+% We note that, although our experiments are focused on a national case study, the system can be used to manage legal documents from other countries and in other languages with little changes. Namely, only the Service Systems should be replaced, as they use language-specific models and rules, and the Entity Registry metamodel should be checked, as some codes or conventions used to identify persons, laws and so on may depend on the country.
+% Finally, after a complete revision of the entity types, the system could deal with documents related to other subjects.
+
+We observe that while our experiments are focused on a national case study, the system can be adapted to handle legal documents from different countries and languages with minor adjustments. Specifically, only the Service Systems need replacement, as they employ language-specific models and rules, and the Entity Registry metamodel should be reviewed to accommodate country-specific codes and conventions for identifying persons, laws, etc. Furthermore, after a thorough entity type revision, the system could handle documents related to other subjects.
