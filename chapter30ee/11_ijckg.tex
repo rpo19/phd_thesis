@@ -31,7 +31,7 @@ The following sections describe, in order, the baseline pipeline with the motiva
 \subsection{A Baseline Pipeline for Incremental Entity Linking}
 \label{sec:ijckg:pipeline}
 
-The proposed baseline pipeline consists of three main modules: \ac{nel}, NIL prediction, and NIL clustering. As illustrated in Figure~\ref{fig:pipeline}, the process operates as follows. Given a mention and its context, the linking module retrieves the most suitable candidate from a \emph{\acf{bgkr}}. The NIL prediction module then verifies whether this candidate is correct. If so, the mention is linked to the \ac{bgkr}; otherwise, it is marked as NIL. All NIL mentions in the current batch are subsequently passed to the NIL clustering module, which groups together those referring to the same unseen entity. Each resulting cluster corresponds to a new entity, which is added to the \emph{\acf{newkr}} to support future linking tasks. Although the distinction between \ac{bgkr} and \ac{newkr} is not strictly necessary---as \ac{inel} could also be achieved by storing all entities in a single reference \ac{kr}---we maintain this conceptual separation for greater clarity.
+The proposed baseline pipeline consists of three main modules: \ac{nel}, NIL prediction, and NIL clustering. As illustrated in \Cref{fig:pipeline}, the process operates as follows. Given a mention and its context, the linking module retrieves the most suitable candidate from a \emph{\acf{bgkr}}. The NIL prediction module then verifies whether this candidate is correct. If so, the mention is linked to the \ac{bgkr}; otherwise, it is marked as NIL. All NIL mentions in the current batch are subsequently passed to the NIL clustering module, which groups together those referring to the same unseen entity. Each resulting cluster corresponds to a new entity, which is added to the \emph{\acf{newkr}} to support future linking tasks. Although the distinction between \ac{bgkr} and \ac{newkr} is not strictly necessary---as \ac{inel} could also be achieved by storing all entities in a single reference \ac{kr}---we maintain this conceptual separation for greater clarity.
 
 \begin{figure}[htbp]
     \centering
@@ -52,7 +52,7 @@ In our experiments, we used the pre-trained BLINK~\cite{blink} bi-encoder, publi
 
 \paragraph{NIL Prediction} Given a mention and the scored entity candidates produced by the linking system, NIL prediction determines whether the top-ranked candidate entity is correct, without altering the ranking produced by the \ac{nel} module. According to this prediction, the mention is either linked to the top-ranked entity or marked as NIL.
 
-Our implementation employs a logistic regression model whose input features include the score of the top candidate (the dot product between bi-encoder mention and entity embeddings) and the difference between the top and second-best scores (\textit{secondiff}). This configuration was selected through an ablation study (Table~\ref{tab:feature_ablation_study}) conducted using the training set for model fitting and the development set for evaluation. The study explored additional features such as textual similarity between the mention and the entity title---using Levenshtein~\cite{levenshtein1966} and Jaccard~\cite{jaccard1901etude} similarities---and basic statistics of the scores of the top-$k$ candidates---namely mean, median, and standard deviation.
+Our implementation employs a logistic regression model whose input features include the score of the top candidate (the dot product between bi-encoder mention and entity embeddings) and the difference between the top and second-best scores (\textit{secondiff}). This configuration was selected through an ablation study (\Cref{tab:feature_ablation_study}) conducted using the training set for model fitting and the development set for evaluation. The study explored additional features such as textual similarity between the mention and the entity title---using Levenshtein~\cite{levenshtein1966} and Jaccard~\cite{jaccard1901etude} similarities---and basic statistics of the scores of the top-$k$ candidates---namely mean, median, and standard deviation.
 
 The logistic regression output lies in $[0,1]$ and represents the confidence that the top candidate is correct (values close to~0 indicate NIL). If the prediction is NIL, the mention is passed to the NIL clustering step to identify possible coreferent NIL mentions.
 % Note that the bi-encoder scores used in this model are unnormalized (dot-product based) and highly dependent on the embedding space.
@@ -96,7 +96,7 @@ We evaluated three strategies for representing new entities from the clusters of
     \item or including \textit{all} mention vectors in the \ac{kb}, treating them as separate entries.
 \end{itemize}
 
-Table~\ref{tab:new_entities_recall} reports the recall values obtained by the bi-encoder for each strategy, together with the corresponding time and storage requirements, as measured on the AIDA dataset~\cite{aida}.
+\Cref{tab:new_entities_recall} reports the recall values obtained by the bi-encoder for each strategy, together with the corresponding time and storage requirements, as measured on the AIDA dataset~\cite{aida}.
 Although including all mention vectors yields the highest recall, we adopt the medoid-based strategy as a compromise between efficiency and effectiveness. It achieves comparable performance while requiring only 5\% of the time and 22\% of the storage of the full approach.
 \begin{table}[!htbp]
 \centering
@@ -149,9 +149,9 @@ p_{NIL}(e) = p^{\frac{\#e}{M}} \hspace{10pt} \in (0, 1],
 where $M$ is the median entity frequency in the training set. We use the median rather than the mean because the mean is skewed by the long tail of low-frequency entities. This monotonically decreasing function ensures that entities mentioned only once are more likely to be marked as new, reflecting the real-world scenario in which many entities occur rarely, while only a few become popular over a short period.
 
 
-In this work, we set $p = 0.1$ to obtain 10\% of NIL entities, following~\cite{agarwal_2021_arborescence_arxiv} and apply Bernoulli trial with probability $p_{NIL}(e)$ to decide, for each $e$, whether to flag it as NIL. Entities marked as NIL are removed from the \ac{bgkr} and treated as unknown. To increase the number of new entities in the development and test sets, some mentions of NIL entities are randomly transplanted from the training set. Both development and test sets are assigned 500 new mentions each to ensure robust evaluation (see Table \ref{tab:dataset_nils}).
-
-Finally, the test set is split into 10 batches using stratified sampling based on entity frequencies and NIL status. Table \ref{tab:dataset_stats_extended} reports detailed per-batch statistics.
+In this work, we set $p = 0.1$ to obtain 10\% of NIL entities, following~\cite{agarwal_2021_arborescence_arxiv} and apply Bernoulli trial with probability $p_{NIL}(e)$ to decide, for each $e$, whether to flag it as NIL. Entities marked as NIL are removed from the \ac{bgkr} and treated as unknown. To increase the number of new entities in the development and test sets, some mentions of NIL entities are randomly transplanted from the training set. Both development and test sets are assigned 500 new mentions each to ensure robust evaluation (see \Cref{tab:dataset_nils}).
+%
+Finally, the test set is split into 10 batches using stratified sampling based on entity frequencies and NIL status. \Cref{tab:dataset_stats_extended} reports detailed per-batch statistics.
 
 \begin{table}[htbp]
     \centering
@@ -217,56 +217,33 @@ $ALL$ &         100k &           6.5k &                501 &                    
 %In fact, the updating process, consisting only in the addition of the new vectors in the index, does not require a train phase, and therefore model weights have a constant value during all the test process: the only component which is modified, guaranteeing an incremental procedure, is the index of entities.
 
 % mostrare challenge dell'incremental
+To evaluate \ac{inel}, we must consider that the correct handling of a mention $m$ referring to an entity $e$ may depend on previous batches. If $e$ is not present in the \ac{bgkr} at time $t_i$, $m$ should be classified as NIL. However, if a previous batch already contained a mention of $e$, the system should have added it to the \ac{newkr}, and $m$ should be linked to $e$. \Cref{fig:evluation_outcome} summarizes how mentions should be processed depending on the entity they refer to.
 
-To evaluate \ac{inel} we need to consider that, given a mention $m$ that refers to an entity $e$, the correct behavior may depend also on previous batches: in case $e$ is not present in the \ac{bgkr} at time $t_i$, $m$ should be classified as $NIL$; but, if one of the previous batches contained a mention of $e$, the system should have already added it to the \ac{newkr} and therefore $m$ should be linked to $e$.
-Figure \ref{fig:evluation_outcome} summarizes how mentions should be processed according to the entity to which they refer.
-
-The evaluation procedure for the I-\ac{nel} task should calculate the overall performance of a given system as well as 
-its specific performance on the subset of mentions that, in each batch, needs to be (a) linked to the \ac{bgkr}, (b) classified as NIL, or (c) linked to the \ac{newkr} (see Figure \ref{fig:evluation_outcome}).
-
-Finally, to better understand the impact of the error propagation between batches, the I-\ac{nel} evaluation needs to be comparable with a standard single-batch approach.
+The evaluation procedure for the \ac{inel} task should measure both the overall system performance and the performance on subsets of mentions that, in each batch, need to be: (a) linked to the \ac{bgkr}, (b) classified as NIL, or (c) linked to the \ac{newkr} (see \Cref{fig:evluation_outcome}).  
+%
+Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
 
 \subsubsection{Evaluation Measures} \label{sec:evaluation2}
-The evaluation of an incremental pipeline is not intuitive compared to a single model, since the error propagates not only through the pipeline but also through time (in the meaning of batches).
-%, since the last component has side-effects.
 
-First, we define the measures to evaluate the whole pipeline on the I-\ac{nel} task:
-\begin{itemize}
-    \item (a) the ``Link to \ac{bgkr}'': the accuracy with the mentions that should be linked to the \ac{bgkr};
-    \item (b) the ``NIL'': the accuracy with the mentions that should be classified as NIL;
-    \item (c) the ``Link to \ac{newkr}'': the accuracy with the mentions that should be linked to the \ac{newkr};
-    \item (d) the ``Overall Accuracy'' as an overall score on all the mentions.
-\end{itemize}
+Evaluating an incremental pipeline is more complex than evaluating a single model, since errors propagate both through the pipeline and across time (i.e., batches).
+%
+First, we define measures for the overall \ac{inel} pipeline:  
 
-Then, in order to understand how each component of the pipeline behaves for its specific task, we additionally evaluate each module separately:
-\begin{itemize}
-    \item \ac{nel}: we calculate $Recall@1$ for the candidate generation task; since the linking is made with the first candidate. Note that this metric coincides with accuracy.
-    \item NIL predictor: we calculate precision, recall, and f1-score of the ``NIL'' class.
-    %Being a strongly unbalanced class, scores are normalized by the support.
-    \item NIL clustering: similar to the co-reference resolution task~\cite{streaming_crossdoc_coreference}, we calculate precision, recall, and f1-score of the three metrics $MUC$, $B_3$, and $CEAF_e$. We also provide the average of the f1-scores.
-    %\item Whole pipeline: we calculated results also on the whole output, with separate metrics for ``Link'' (to \ac{bgkr}) and ``Link new'' (to the \ac{newkr}). Results are accompanied to micro-$F_1$ as global score.
-\end{itemize}
+\begin{enumerate}[leftmargin=*, label=(\alph*), ref=(\alph*)]
+    \item \textbf{Link to \ac{bgkr}:} accuracy for mentions that should be linked to the \ac{bgkr};
+    \item \textbf{NIL:} accuracy for mentions that should be classified as NIL;
+    \item \textbf{Link to \ac{newkr}:} accuracy for mentions that should be linked to the \ac{newkr};
+    \item \textbf{Overall Accuracy:} accuracy across all mentions.
+\end{enumerate}
 
-The clustering procedure, however, requires some further explanations for the error analysis.
-In particular, remember that after clustering novel entities are added to the \ac{kb}:
-%a mention which should be linked to an entity added in the \ac{newkr} is considered correct in future steps if it is linked by the \ac{nel} module.
-%If it is labeled as NIL, it is considered wrong.
-%This precaution avoids that goodness scores are maximum in case the NIL clustering presents each mention as a novel entity.
-a mention which refers to an entity previously added in the \ac{newkr} is treated correctly if linked to that new entity, while labeling it as NIL is an error.
-This precaution avoids obtaining high performance in case the NIL clustering presents each mention as a novel entity.
+Secondly, to understand how each component of the pipeline performs on its specific task, we also evaluate the modules separately. In particular, for the \ac{nel} module, we measure Recall@1\todo{dire che in el accruracy e recall@1 coicidono?}. For the NIL predictor, we compute precision, recall, and F1-score for the NIL class. Finally, for NIL clustering, following the co-reference evaluation methodology~\cite{streaming_crossdoc_coreference}, we calculate precision, recall, and F1 for MUC, B$^3$, and CEAF$_e$, also reporting the average F1 score.\todo{spiegare queste metriche? dove? in sota?}
 
-%In addition, the NIL prediction mitigates \ac{nel} errors, since, if the linking is wrong but the NIL predictor classify the result as a NIL entity, despite its presence in the \ac{bgkr}, the result of NIL predictor is considered as right.
-%This because NIL entities are not included by definition in the \ac{bgkr} and therefore the \ac{nel} result is always wrong.
-%Obviously, if the NIL predictor does not classify the mention of a novel entity as NIL, the linking is considered an error.
 
-In addition, the NIL prediction mitigates \ac{nel} errors: if the linking is wrong, the NIL predictor would ideally classify the mention as NIL because the entity offered by the linker is not correct, despite the presence of the correct entity in the \ac{bgkr}.
-Obviously, if the NIL predictor does not classify the mention of a novel entity as NIL, it is considered as an error.
+Note that the handling of a mention $m$ referring to an entity $e$ previously added to the \ac{newkr} is considered correct only if it consist linking $m$ to $e$, while labeling $m$ as NIL is considered an error. This ensures that the system does not achieve artificially high scores by treating every mention as a new entity.\todo{rimuovere?}
 
-%Finally, if an entity of the \ac{bgkr} presents a false representation given by a false positive of the NIL prediction and clustering, each mention linked to the false representation is considered as wrong.
-%This kind of error can be easily fixed by manually combine the cluster into the ``canonical'' entity representation; however in an end to end pipeline it should be considered as an error.
+NIL prediction outcomes can also mitigate \ac{nel} errors. If the linking is incorrect, the NIL predictor should ideally classify the mention as NIL because the suggested entity is wrong---even if the correct entity exists in the \ac{bgkr}\todo{force the nil assumption}. Conversely, if the NIL predictor fails to classify a new entity as NIL, it is considered an error.
 
-Finally, if a new entity is erroneously created due to a false positive in the NIL prediction while the correct entity already exists in the \ac{bgkr}, each mention linked to this incorrect new entity is considered as an error.
-
+Finally, if a false positive in NIL prediction creates a new entity while the correct entity already exists in the \ac{bgkr}, all mentions linked to this incorrect new entity are treated  as errors.
 
 \subsection{Experiments}
 \label{sec:ijckg:experiments}
@@ -281,8 +258,8 @@ This second experiment is the focus of the present work and simulates the arriva
 Note that the evaluation process is different in the two experiments, since the NIL clustering has side-effects: it adds novel entities to the \ac{newkr} that are linkable in the following batches.
 The first experiment has two main purposes: it provides results comparable with other models in literature %(despite the fact that our model uses a smaller train set and is tested with an higher number of unseen entities) 
 and permits to estimate the drop in performance of the incremental procedure.
-We evaluated the three baselines (that differ in the clustering approach) using these two experimental setup, although in table \ref{tab:superresults} we report only the NIL clustering performance for all the baselines, while the remaining metrics are obtained using the top-performing clustering approach ($3Steps$).
-Finally, we run another experiment, called ``correct'', that corrects the output of previous components before proceeding through the batches and the pipeline, to better study the error-propagation. In able \ref{tab:superresults} we show the ``correct'' performance only of the top-performing pipeline ($3Steps$).
+We evaluated the three baselines (that differ in the clustering approach) using these two experimental setup, although in \Cref{tab:superresults} we report only the NIL clustering performance for all the baselines, while the remaining metrics are obtained using the top-performing clustering approach ($3Steps$).
+Finally, we run another experiment, called ``correct'', that corrects the output of previous components before proceeding through the batches and the pipeline, to better study the error-propagation. In \Cref{tab:superresults} we show the ``correct'' performance only of the top-performing pipeline ($3Steps$).
 %Lower performances are, in fact, expected since the clustering process in initial steps has less information about new entities, which may be spoken further.
 
 \begin{figure}
@@ -303,14 +280,14 @@ In order to investigate which component of the pipeline has a stronger contribut
 % questo perché le rappresentazioni delle nuove entità sono sub-ottimali rispetto alla distribuzione.
 % le performance totali sono migliori, nel senso che non "degenerano" andando avanti con l'aggiungere entità all'indice
 
-The results of the most relevant experiments are reported in table \ref{tab:superresults}.
+The results of the most relevant experiments are reported in \Cref{tab:superresults}.
 We can see that the performance of the \ac{nel} module is competitive compared to more complex models of state of the art: in particular, GENRE~\cite{decao2021autoregressive} obtains a $R@1_{total} = 74.7$ and $R@1_{unseen} = 70.4$, which are quite similar to ours (excluding error propagation).
 %Results are not compared against other models to prevent the temptation of a direct comparison, regardless dataset modifications (as described above) and the different task (which, in our case, is incremental through time).
 The drop in performance, as expected, is due to the error propagation in the incremental procedure and not to a poor \ac{nel} model. Indeed, in the ``correct'' experiment, there is no performance drop caused by the error propagation.
 
 % Being a binary classification, the NIL predictor performance is measured with precision and recall,
 % TODO ENSURE (normalized by the support)
-%As shown in table \ref{scores:nil_predictor}.
+%As shown in \Cref{scores:nil_predictor}.
 The NIL prediction component, despite the high precision, yields a high number of false negatives (entities that are predicted to be in the \ac{kb} while they were new).
 A low recall translates in a low number of false NILs, which drastically decreases the error propagation through time.
 
@@ -327,7 +304,7 @@ The NIL predictor introduces two critical problems in the pipeline: false positi
 For this reason, to mitigate error propagation through time, it is preferable to achieve higher precision than higher recall.
 % This happens since the surface form, varies between train and test set~\cite{Onoe_Durrett_2020}
 % Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
-To visualize an overview of the process, figure \ref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected.
+To visualize an overview of the process, \Cref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected.
 A higher precision translates in a lower number of clusters, for the most representing novel entities; while a higher recall translates in a higher number of false representations of entities already included in the \ac{bgkr}.
 
 \begin{figure}
@@ -407,7 +384,7 @@ Those errors could be mitigated by a HITL process, which merges clusters represe
 
 \subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
 \label{sec:ijckg:discussion}
-The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in table \ref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
+The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in \Cref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
 
 % hitl
 
@@ -418,7 +395,7 @@ The results demonstrate that error propagation across batches is a key challenge
 % In addition, it can be used also as a distance score between mentions in order to cluster them in the NIL clustering step.
 %This module, however, increases the whole complexity and computational cost at inference time, losing the interactivity of the pipeline.
 
-As previously explained, a major source of errors came from the false positives introduced by the management of NILs, suggesting that effective NIL prediction is an important challenge for the I-\ac{nel} task; in fact, low precision leads to the introduction of error into the pipeline and, therefore, to performance deterioration. % even if the classifier obtains relatively high precision levels (see table \ref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
+As previously explained, a major source of errors came from the false positives introduced by the management of NILs, suggesting that effective NIL prediction is an important challenge for the \ac{inel} task; in fact, low precision leads to the introduction of error into the pipeline and, therefore, to performance deterioration. % even if the classifier obtains relatively high precision levels (see \Cref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
 
 %In addition, the NIL predictor, which at the moment uses a logistic regression, may be improved by the use of linear transformations, since the use of non-linear and more complex models (such as random forest) offer no better results.
 %A future version may include more features, based on candidates distribution, as well as a standardization layer so that it can be pre-trained on a different dataset.
@@ -426,8 +403,8 @@ As previously explained, a major source of errors came from the false positives 
 
 % challenge and future work
 
-Finally, in our experiments, we use a single vector for novel entity representation: the medoid obtained from the clusters of the NIL mentions. Evidence (see Table \ref{tab:new_entities_recall}) show that this method is sub-optimal, despite being more efficient.
-The problem of how to represent new entities, for instance using more than one vector per cluster or with different strategies (e.g. bounding-boxes), is another important challenge in the I-\ac{nel} task that is worth studying in order to find a better compromise between effectiveness and efficiency. We leave this exploration to future works.
+Finally, in our experiments, we use a single vector for novel entity representation: the medoid obtained from the clusters of the NIL mentions. Evidence (see \Cref{tab:new_entities_recall}) show that this method is sub-optimal, despite being more efficient.
+The problem of how to represent new entities, for instance using more than one vector per cluster or with different strategies (e.g. bounding-boxes), is another important challenge in the \ac{inel} task that is worth studying in order to find a better compromise between effectiveness and efficiency. We leave this exploration to future works.
 % future work
 Also the problem of deciding when to update the \ac{kb} is quite interesting (the index is now updated after having processed the first batch in which the new mention appears): it may be the case that collecting more observations of a new entity is necessary to obtain a good representation, possibly considering a confidence score.
 This aspect was ignored at the moment since it is highly correlated to the long-tail entities problem (in the meaning of ``mentioned few times''): in fact the dataset was modified in order to add a high number of new entities mentioned only once.
@@ -442,11 +419,11 @@ Finding a good trade-off between getting useful representations and handle entit
 
 \subsection{Conclusion}
 \todo{remove and put conlusion at the end of chapter}
-In this work, we introduce the task of incremental \ac{nel} (I-\ac{nel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
+In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
 %&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
 
 % The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
-Our experiments show that a main challenge for I-\ac{nel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, i.e., entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
+Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, i.e., entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
 Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
 %A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
 %, obtaining worse and worse performance.
