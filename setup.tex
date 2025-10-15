@@ -17,6 +17,7 @@
 \usepackage{color}
 \usepackage{eurosym}
 \usepackage{calc}
+\usepackage{xspace}
 \usepackage{float}
 \usepackage{epsfig}
 \usepackage{dsfont}
@@ -167,7 +168,7 @@
 }
 
 \DeclareAcronym{inel}{
-  short = I-EL,
+  short = IncEL,
   long = incremental entity linking,
 }
 % todo maybe IncEl i better?
@@ -180,6 +181,18 @@
 \DeclareAcronym{rag}{
   short = RAG,
   long = retrieval augmented generation,
+}
+
+
+\DeclareAcronym{bgkr}{
+  short = BgKR,
+  long = background knowledge repository,
+}
+
+
+\DeclareAcronym{newkr}{
+  short = NewKR,
+  long = new knowledge repository,
 }
 
 
@@ -396,6 +409,7 @@
 
 \newcommand{\la}{\left\langle}
 \newcommand{\ra}{\right\rangle}
-\newcommand{\phd}{Ph.D.\ }
-\newcommand{\nilchallenge}{\emph{novel entity challenge}\ }
-\newcommand{\blinkita}{BLINK$_\text{ITA}$}
+
+\newcommand{\phd}{Ph.D.\xspace}
+\newcommand{\nilchallenge}{\emph{novel entity challenge}\xspace}
+\newcommand{\blinkita}{BLINK$_\text{ITA}$\xspace}
