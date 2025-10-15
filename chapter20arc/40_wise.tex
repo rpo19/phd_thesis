@@ -302,7 +302,7 @@ The main reason to choose a property graph and Neo4j over semantic web standards
 While we plan to increase support for multimedia content, our current pipeline processes audio only, as this is the most time-consuming type of multimedia for the investigators we collaborated with.
 To transcribe audio files we utilized Whisper~\cite{radford23a-whisper}, an automatic speech recognition (ASR) system developed by OpenAI.
 This decision followed an evaluation of various ASR systems. We randomly selected 500 Italian audio files and their validated transcription from three sources: Mailabs\footnote{https://www.caito.de/2019/01/03/the-m-ailabs-speech-dataset/}, CommonVoice~\cite{ardila-etal-2020-common} and VoxForge\footnote{https://www.voxforge.org/}.\todo{footnote or citations?}
-Given the high quality of these audio files, we added artificial noise to better reflect the quality of WhatsApp voice messages, which typically contain various environmental noises. We applied different distortion techniques, including Gaussian noise, background noise, speed up, pitch shift, delay, and distortion. We then evaluated the systems using two measures: word error rate (WER) and BERT score (F1 score). The best-performing model was Whisper (Large), which achieved a BERT score of 0.908 and a WER of 0.282.
+Given the high quality of these audio files, we added artificial noise to better reflect the quality of WhatsApp voice messages, which typically contain various environmental noises. We applied different distortion techniques, including Gaussian noise, background noise, speed up, pitch shift, delay, and distortion. We then evaluated the systems using two measures: word error rate (WER) and BERT score (F$_1$ score). The best-performing model was Whisper (Large), which achieved a BERT score of 0.908 and a WER of 0.282.
 
 
 
@@ -612,7 +612,7 @@ The statistics also show that 2361 mentions of persons have been linked to entit
 % \hline
 % \textbf{STATS} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Entities} & \multicolumn{4}{c|}{\textbf{NER Evaluation}}\\
 % \hline
-% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F$_1$} \\
 % \hline
 % \hline
 % Per & 7765 & 520 & 2361* & 5404 & 5701 & Strong Match & 51.2 & 25.2 & 33.7 \\
@@ -656,7 +656,7 @@ The statistics also show that 2361 mentions of persons have been linked to entit
     \caption{NER Evaluation. \textit{Strong} counts perfect matches of span and type. \textit{Partial} counts as correct when there is an overlap between predictions and gold annotations.}
     \begin{tabularx}{\textwidth}{X|X|X|X|}
       \cline{2-4}
-      & \centering{}\textbf{Prec} & \centering{}\textbf{Rec} & \centering{}\arraybackslash{}\textbf{F1} \\
+      & \centering{}\textbf{Prec} & \centering{}\textbf{Rec} & \centering{}\arraybackslash{}\textbf{F$_1$} \\
       \hline
       \multicolumn{1}{|l|}{Strong} & \centering{}44.0 & \centering{}21.4 & \centering{}\arraybackslash{}28.8 \\
       \multicolumn{1}{|l|}{Partial} & \centering{}71.4 & \centering{}35.1 & \centering{}\arraybackslash{}47.0 \\
@@ -710,7 +710,7 @@ The statistics also show that 2361 mentions of persons have been linked to entit
 %  'data': 53,
 %  'altro': 1}
 
-% performance P R F1
+% performance P R F$_1$
 % strong 0.511737089	0.251538462	0.337287261
 % strong typed 0.439749609	0.216153846	0.289840124
 % approx 0.683881064	0.33954934	0.453790239

@@ -6,7 +6,7 @@
 % %
 
 % The gold standard dataset we use for training and evaluation is composed of 146 annotated judgments derived from a corpus of 900,000 legal judgments, organized as follows: 102 documents as the training set, 14 for development, and a test set of 30 documents. Unfortunately, we are unable to publish the corpus due to the sensitive nature of the data it contains. However, upon request, we are open to exploring the possibility of sharing it through bilateral agreements. 
-% The annotations in the corpus have been performed by two annotators. The inter-annotator agreement (IAA) has been calculated using the F1-measure to assess the coherence between the annotations in terms of both class and span and using Cohen's Kappa, obtaining respectively $80.8\%$ and $66.2\%$.
+% The annotations in the corpus have been performed by two annotators. The inter-annotator agreement (IAA) has been calculated using the F$_1$-measure to assess the coherence between the annotations in terms of both class and span and using Cohen's Kappa, obtaining respectively $80.8\%$ and $66.2\%$.
 % % \input{table/dataset_stats}
 % \todo{use table dataset stats}
 
@@ -60,11 +60,11 @@ Please note that the ICCJ146-EE training set is only used to fine-tune the \ac{n
 \subsubsection{\ac{ner}}
 \ac{ner} is evaluated using strong and partial matching measures, which is a quite common practice in evaluating \ac{ner} approaches~\cite{tsai2006various}. Both measures rigorously require that the predicted class matches the gold standard one, while they differ with respect to span detection: the former measure considers an annotation correct when the predicted boundaries perfectly match the gold standard, the latter when there is an overlap between them.
 Considering both measures is useful also for two other reasons: 1) we can investigate to what extent some correct annotations are returned by the algorithms, even when the span of the mention is not perfectly identified; 2) by considering the gap between strong and partial matching measures in a per-class performance analysis, we can investigate which classes are more affected by boundary identification issues.
-For each of the measures, as in a multiclass classification problem, we calculate \textit{precision}, \textit{recall}, and \textit{F1-measure}, micro and macro-averaged on the class, and separately for each class.
+For each of the measures, as in a multiclass classification problem, we calculate \textit{precision}, \textit{recall}, and \textit{F$_1$-measure}, micro and macro-averaged on the class, and separately for each class.
 
 \subsubsection{Comparison of Backbone Transformers for \ac{ner}}
-The comparison of backbone transformers for \ac{ner} considers five different random weight initializations for each backbone. We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F1-measure} of the five initializations for each transformer.
-We identify the top-performing model based on its \textit{F1-measure} and utilize it as the foundation of the \ac{ner} component for subsequent evaluations.
+The comparison of backbone transformers for \ac{ner} considers five different random weight initializations for each backbone. We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} of the five initializations for each transformer.
+We identify the top-performing model based on its \textit{F$_1$-measure} and utilize it as the foundation of the \ac{ner} component for subsequent evaluations.
 
 \subsubsection{\ac{nel}}
 We evaluate the \ac{nel} component in terms of \textit{accuracy} and \textit{recall@100}, similarly to recent work~\cite{blink}, on the ICCJ146-EE test set, additionally comparing to the news-based benchmark VoxEL~\cite{rosales2018voxel}.
@@ -72,13 +72,13 @@ We evaluate the \ac{nel} component in terms of \textit{accuracy} and \textit{rec
 It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}.
 
 \subsubsection{NIL Prediction}
-The NIL prediction component is evaluated as a binary classifier with \textit{precision}, \textit{recall}, and \textit{F1-measure} calculated for both classes (NIL and $\neg$NIL). It is important to emphasize that, to evaluate the NIL prediction independently from \ac{nel} errors, we consider it correct when the NIL prediction classifies as NIL the mentions incorrectly linked by the \ac{nel} component. We attribute a positive value to this behavior as it showcases the ability of the NIL prediction to effectively identify \ac{nel} errors, thereby mitigating their impact.
+The NIL prediction component is evaluated as a binary classifier with \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} calculated for both classes (NIL and $\neg$NIL). It is important to emphasize that, to evaluate the NIL prediction independently from \ac{nel} errors, we consider it correct when the NIL prediction classifies as NIL the mentions incorrectly linked by the \ac{nel} component. We attribute a positive value to this behavior as it showcases the ability of the NIL prediction to effectively identify \ac{nel} errors, thereby mitigating their impact.
 
 \subsubsection{\ac{nel} \& NIL Prediction}
 We evaluate \ac{nel} with NIL prediction independently from \ac{ner} errors by calculating 1) the \textit{recall} of the \textit{mentions to link}, 2) the \textit{recall} of \textit{NIL mentions}, and 3) the \textit{accuracy} of all the mentions.
 
 \subsubsection{End-to-end}
-Finally, we evaluate the end-to-end \ac{ee}\todo{maybe replace ee with nel} pipeline using strong and partial matching measures; in this case, an annotation is considered correct when 1) the predicted class matches the gold standard, 2) the span matches the gold standard according to the measure, and 3) the mention is linked to the correct entity (if $\neg$NIL) or correctly identified as NIL. We calculate \textit{precision}, \textit{recall}, \textit{F1-measure} micro and macro-averaged for each class, exactly as in the \ac{ner} evaluation.
+Finally, we evaluate the end-to-end \ac{ee}\todo{maybe replace ee with nel} pipeline using strong and partial matching measures; in this case, an annotation is considered correct when 1) the predicted class matches the gold standard, 2) the span matches the gold standard according to the measure, and 3) the mention is linked to the correct entity (if $\neg$NIL) or correctly identified as NIL. We calculate \textit{precision}, \textit{recall}, \textit{F$_1$-measure} micro and macro-averaged for each class, exactly as in the \ac{ner} evaluation.
 
 \subsection{Results}
 
@@ -86,7 +86,7 @@ Finally, we evaluate the end-to-end \ac{ee}\todo{maybe replace ee with nel} pipe
 Table \ref{tab:result_5seed} shows the results for the comparison of the 5 backbone transformers for \ac{ner}.
 Based on the sample mean, the encoder that gives the best results is ITA+LGL+ICCJ900k, while the worst one is LGL+ICCJ900k.
 
-In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the \textit{F1-measure}. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pre-training on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
+In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the \textit{F$_1$-measure}. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pre-training on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
 
 Surprisingly, the findings suggest that employing a domain-specific legal BERT does not result in a substantial enhancement in \ac{ner} performance compared to a generic Italian BERT. This observation extends to the adaptation to the corpus of judgments (ICCJ900k) as well. Furthermore, we emphasize that the use of a pre-trained generic Italian BERT significantly reduces the effort required for adaptation in terms of time, costs, and environmental imprint.
 

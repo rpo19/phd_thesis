@@ -123,7 +123,7 @@ The final dataset includes 1,311 annotated entity mentions, distributed across f
 
 % approcci confrontati: Whisper-Large, Wav2Vec, DeepSpeech
 % WER 0.12 0.19 0.27
-% BERTScore-F1 0.91 0.84 0.78
+% BERTScore-F$_1$ 0.91 0.84 0.78
 % transcription time of 9h audio, 1h16m 2h07m 3h02m
 
 
@@ -132,20 +132,20 @@ To transcribe audio files, we employed Whisper (Large)~\cite{radford23a-whisper}
 
 Since these datasets contain high-quality recordings, we artificially degraded the audio to better approximate the conditions of \ac{ima} voice messages, which often exhibit environmental noise and compression artifacts. We applied various distortion techniques: Gaussian noise, background noise, speed variation, pitch shifting, delay, and signal distortion.  
 
-We evaluated the transcription quality using two complementary metrics: the \textit{Word Error Rate} (WER)~\cite{jm3} and the \textit{BERTScore}~\cite{zhang2020bertscore} (F1).  
+We evaluated the transcription quality using two complementary metrics: the \textit{Word Error Rate} (WER)~\cite{jm3} and the \textit{BERTScore}~\cite{zhang2020bertscore} (F$_1$).  
 The WER measures the edit distance between the predicted transcription and the reference, normalized by the reference length~\cite{jm3}:  
 \begin{equation}
   \mathrm{WER} = \frac{\text{Insertions} + \text{Substitutions} + \text{Deletions}}{\text{Number of words in Ground-truth transcript}}
 \end{equation}
 Lower WER values indicate better performance.  
 
-BERTScore~\cite{zhang2020bertscore} instead measures the semantic similarity between two sentences based on contextual embeddings from a pre-trained BERT model~\cite{devlin-etal-2019-bert}. It computes precision, recall, and F1 by aligning words in the reference and candidate transcriptions according to cosine similarity in embedding space.
+BERTScore~\cite{zhang2020bertscore} instead measures the semantic similarity between two sentences based on contextual embeddings from a pre-trained BERT model~\cite{devlin-etal-2019-bert}. It computes precision, recall, and F$_1$ by aligning words in the reference and candidate transcriptions according to cosine similarity in embedding space.
 Unlike WER, BERTScore captures paraphrastic and semantic equivalence beyond exact word matching.
 
 
 % approcci confrontati: Whisper-Large, Wav2Vec, DeepSpeech
 % WER 0.12 0.19 0.27
-% BERTScore-F1 0.91 0.84 0.78
+% BERTScore-F$_1$ 0.91 0.84 0.78
 % dati approssimati
 % transcription time of 9h audio, 1h16m 2h07m 3h02m
 
@@ -243,7 +243,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
 % \hline
 % \textbf{STATS} & \multicolumn{2}{c|}{\textbf{\#Mentions}} & \multicolumn{2}{c|}{\textbf{\#Links}} & \textbf{\#Entities} & \multicolumn{4}{c|}{\textbf{\ac{ner} Evaluation}}\\
 % \hline
-% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F1} \\
+% & \textbf{Text}  & \textbf{Audio} & \textbf{to KB} & \textbf{NIL} && & \textbf{Prec} & \textbf{Rec} & \textbf{F$_1$} \\
 % \hline
 % \hline
 % Per & 7765 & 520 & 2361* & 5404 & 5701 & Strong Match & 51.2 & 25.2 & 33.7 \\
@@ -284,7 +284,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
     \centering
     \begin{tabular}{lccc}
       \toprule
-      & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+      & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
       \midrule
       Strong-typed & 44.0 & 21.4 & 28.8 \\
       Partial-typed & 71.4 & 35.1 & 47.0 \\
@@ -338,7 +338,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
 %  'data': 53,
 %  'altro': 1}
 
-% performance P R F1
+% performance P R F$_1$
 % strong 0.511737089	0.251538462	0.337287261
 % strong typed 0.439749609	0.216153846	0.289840124
 % approx 0.683881064	0.33954934	0.453790239
