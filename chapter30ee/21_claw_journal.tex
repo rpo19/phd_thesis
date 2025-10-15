@@ -59,8 +59,8 @@ The annotation process focused the entities of class \texttt{Person}, \texttt{Lo
 To obtain an objective measure of the quality of the \ac{ner} annotations, which served as the starting point for subsequent annotation processes, we calculated an \acf{iaa} measure.\todo{mention knowledge consolidation? maybe in I-EL section}
 
 \paragraph{\ac{ner} Annotation Process}
-A \ac{ner} label---as described in \Cref{sec:rw:ner}---is composed of the indexes of start and end characters, and by the type of the mentioned entity ($(i_{start},i_{end},t^i)$).
-The annotations were carried out by two annotators using doccano~\cite{doccano} a web-based application for labeling tasks. Each annotator was assigned 88 documents, with 15 documents overlapping between them, resulting in 30 documents $(15 + 15)$ annotated by both. These overlapping documents were used to measure \acl{iaa}.
+A \ac{ner} label---as described in \Cref{sec:rw:ner}---is composed of the indexes of start and end characters, and by the type of the mentioned entity $(i_{start},i_{end},t^i)$.
+The annotations were carried out by two annotators using \textit{doccano}~\cite{doccano} a web-based application for labeling tasks. Each annotator was assigned 88 documents, with 15 documents overlapping between them, resulting in 30 documents $(15 + 15)$ annotated by both. These overlapping documents were used to measure \acl{iaa}.
 
 
 Based on~\cite{jha2017all}, a detailed set of annotation guidelines was prepared and provided to the annotators to reduce inconsistencies arising from different annotation styles. During the annotation process, the guidelines were iteratively refined by recording and addressing the annotators' doubts and edge cases.
@@ -131,7 +131,6 @@ $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa 
 
 \paragraph{Knowledge Consolidation}
 \todo{speak about knowledge consolidation in inel rw}
-
 The annotation for the knowledge consolidation process---i.e., \ac{nel}, NIL prediction and clustering---has been performed semi-automatically from the \ac{ner} labels of the 30 documents used to compute the IAA. The guidelines, based on the assumptions in~\cite{jha2017all}, are simpler in this case and be summed up with the following two steps.
 
 \begin{enumerate}
@@ -141,7 +140,7 @@ The annotation for the knowledge consolidation process---i.e., \ac{nel}, NIL pre
 
 % In addition, other entity-level guidelines (e.g., \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (e.g., a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of KB entity) have been defined during the annotation process when particular cases were found. 
 
-To enhance the efficiency of the annotation procedure an application was developed, incorporating both Wikipedia search API and a fuzzy search mechanism. On average documents required $\approx$15 minutes to be annotated for \ac{nel}, NIL prediction, and NIL clustering. Out of the 3,006 annotated mentions, 467 refer to Wikipedia entities, and 1,753 to NIL entities. The remaining 786 mentions, of class \textit{Date} and \textit{Money}, were not assigned to any entity.
+To enhance the efficiency of the annotation procedure an application was developed, incorporating both Wikipedia search API and a fuzzy search mechanism. On average documents required $\approx$15 minutes to be annotated for \ac{nel}, NIL prediction, and NIL clustering. Out of the 3,006 annotated mentions, 467 refer to Wikipedia entities, and 1,753 to NIL entities. The remaining 786 mentions, of class \texttt{Date} and \texttt{Money}, were not assigned to any entity.
 
 % \paragraph{NIL clustering}
 
@@ -152,15 +151,15 @@ The larger portion of 814 refers to NIL entities, as expected within the conside
 \subsection{Italian Incremental Entity Linking Pipeline}
 \todo{pipeline in italian}
 \todo{compare and merge with incremental pipeline}
-\todo{ner here uses combination of spacy, tint, triener. ground triener as an efficient dictionary based approach (cite giang-ner-gazetteer-trie-2014)}
+\todo{ner here uses combination of \spacy, tint, triener. ground triener as an efficient dictionary based approach (cite giang-ner-gazetteer-trie-2014)}
 \todo{aixia no clustering, wise clustering updated}
 % example trie gazzeteer link.springer.com/chapter/10.1007/978-3-319-06569-4_19
 \label{sec:italia_ee_pipeline}
 
-Inspired by the \ac{inel} pipeline introduced in previous work~\cite{ijckg2022} (described in \Cref{sec:incrementalel:pipeline}) and by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
-With \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE. These methods are described in detail in the remainder of this section.
+Inspired by the \ac{inel} pipeline described in \Cref{sec:ijckg:pipeline} and inspired by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline-based system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
+For \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE. These methods are described in detail in the remainder of this section.
 
-Figure~\ref{tab:algotypes} illustrates the supported types for each \ac{ner} extractor, as well as the \ac{nel}, NIL prediction, and NIL clustering algorithms. Notably, for the latter three tasks, we exclusively consider the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. This decision is based on the fact that \texttt{Date} and \texttt{Money} are not directly associated with any linkable entity. With respect to the \texttt{Miscellaneous} class, during an exploratory phase, we found that the quality of the prediction for this class---significantly lower than for the other classes---was not promising enough to proceed with the knowledge consolidation process. We further discuss this issue in the experimental evaluation.
+Figure~\ref{tab:algotypes} illustrates the supported types by each \ac{ner} extractor, as well as by the \ac{nel}, NIL prediction, and NIL clustering algorithms. Notably, for the latter three tasks, we exclusively consider the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. This decision is based on the fact that \texttt{Date} and \texttt{Money} are not directly associated with any linkable entity. With respect to the \texttt{Miscellaneous} class, during an exploratory phase, we found that the quality of the prediction for this class---significantly lower than for the other classes---was not promising enough to proceed with the knowledge consolidation process. We further discuss this issue in the experimental evaluation.
 
 
 % Our primary objective is to assess the performance of existing algorithms, trained on publicly available training data, on civil judgments.
@@ -171,7 +170,7 @@ Figure~\ref{tab:algotypes} illustrates the supported types for each \ac{ner} ext
     \scalebox{.7}{
         \begin{tabular}{l|cccc|c|c|c}
             \multirow{2}{*}{Types}      & \multicolumn{4}{c|}{\ac{ner}}              & \multirow{2}{*}{\ac{nel}}  & \multirow{2}{*}{NIL pred.}    & \multirow{2}{*}{NIL clust.} \\
-                                    & SpaCy & Tint  & Trie\ac{ner}*  & Combination    &                       &                               & \\
+                                    & \spacy & Tint  & Trie\ac{ner}*  & Combination    &                       &                               & \\
             \midrule
             Person         & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
             Location       & \ding{51} & \ding{51} & -             & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
@@ -194,32 +193,33 @@ By using multiple \ac{ner} algorithms, it becomes necessary to combine the extra
 
 
 
-\subsubsection{Entity Recognition}          
 
 
 % TODO SCHEMA
 
 % TODO pipeline
 
+\subsubsection{Entity Recognition}          
 %We implement the entity extraction service as a pipeline of different sub-services.
-For the \ac{ner} task, two general-domain ML-based algorithms for the Italian language have been selected: SpaCy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}.
+For the \ac{ner} task, two general-domain ML-based algorithms for the Italian language have been selected: \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}.
 In addition, we developed a rule-based service, to which we refer to with Trie\ac{ner}, supporting efficient retrieval from a gazetteer. Each algorithm recognizes a different set of types. \Cref{tab:algotypes} shows which entity types in our benchmark dataset are recognized by each algorithm including the combination of them.  
 
-SpaCy~\cite{honnibal2020spacy} is a NLP library designed to be production-ready, able to perform \ac{ner} in several languages including Italian. \ac{ner} is performed by first obtaining a vector representation of the input, in our case with a pre-trained Italian transformer (dbmdz/bert-base-italian-uncased\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}), then the vectors are processed by a neural transition-based parser(see \Cref{sec:rw:ner} for more details). We fine-tuned the SpaCy \ac{ner} pipeline, including the transformer and the transition-based parsed, on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is composed of Wikipedia articles annotated with mentions of \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous}.
+% \Spacy~\cite{honnibal2020spacy} is a NLP library designed to be production-ready, able to perform \ac{ner} in several languages including Italian.
+\ac{ner} with \spacy is performed by first obtaining a vector representation of the input, in our case with an Italian transformer ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pre-trained by \textcite{stefan_schweter_2020_4263142}, then the vectors are processed by a neural transition-based parser(see \Cref{sec:rw:ner} for more details). We fine-tuned the \spacy \ac{ner} pipeline, including the transformer and the transition-based parsed, on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is composed of Wikipedia articles annotated with mentions of \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous}.
 %The results for the evaluation on the WikiNER dev set are shown in~\ref{app:blink}.
     % TODO mouvere in appendices
 
-Tint~\cite{2018tint2} is an Italian NLP library based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}. The \ac{ner} task is based on Conditional Random Fields (CRF)~\cite{Lafferty2001} sequence taggers, combined with rule-based systems to extract money, numbers, and temporal expressions.
+Tint~\cite{2018tint2} is an Italian NLP library based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}. The \ac{ner} task is based on conditional random fields (CRF)~\cite{Lafferty2001} sequence taggers, combined with rule-based systems to identify mentions of type \texttt{Money}, \texttt{Number}, and temporal expressions (\texttt{Time}).
 %The service is available via API and returns all the tags for an input sentence.  
 
 The Trie\ac{ner} approach is based on a gazetteer efficiently accessed with a prefix tree or trie~\cite{s-yata-marisa-trie}. Indeed, tree-based structures can be used for performing efficient \ac{ner} with gazetteers~\cite{Nguyen_tree_ner_2014}.
-The gazetteer is composed of entity labels derived from documents metadata. Entity labels are tokenized, personal names are enriched by their permutations, and then the tokens are added to the trie index. This algorithm also identifies partial matches---e.g. the name of a person without the surname.
-This service is not limited to \ac{ner}, indeed, besides knowing the matched pattern is part of an entity label we are also aware of which entity---or which entities if more entities share the same pattern---from which the pattern has been derived. This pattern-based algorithm is used to exploit metadata attached to the judgments, which cover plaintiffs, defendants, and judges. Although these metadata are incomplete, Trie\ac{ner} is introduced to increase the likelihood that, when an entity appears in the metadata, it is also identified by the \ac{ner} component. Supposing that ``Jane Smith'' is listed as a plaintiff in the metadata, Trie\ac{ner} would search for all the tokens and their permutation in the text, finding mentions like ``Ms. Smith'' (with a partial match on the token ``Smith'') and ``Smith Jane''.
+Our gazetteer is composed of entity labels derived from documents metadata. Entity labels are tokenized, personal names are enriched by their permutations, and then the tokens are added to the trie index. This algorithm also identifies partial matches---e.g. the name of a person without the surname.
+This service is not limited to \ac{ner}, indeed, besides knowing the matched pattern is part of an entity label we are also aware of which entity---or which entities if more entities share the same pattern---from which the pattern has been derived. This pattern-based algorithm is used to exploit metadata attached to the judgments, which cover plaintiffs, defendants, and judges. Although these metadata are incomplete, Trie\ac{ner} is introduced to increase the likelihood that, when an entity appears in the metadata, it is also identified by the \ac{ner} component. Supposing that ``Jane Smith'' is listed as a plaintiff in the metadata, Trie\ac{ner} would search for all the tokens and their permutation in the text, finding mentions like ``Smith''---as a partial match---and ``Smith Jane''.
 
 %\paragraph{Combining \ac{ner} annotations}
 % As we use multiple \ac{ner} services, we combine the annotations obtained by each of them. Every \ac{ner} annotation consists of a text span associated to a type, thus conflicts may arise when the spans of two annotations overlap and when the types of two overlapping annotations are inconsistent.
 
-Finally, we need to combine the annotations produced by the different algorithms. Each \ac{ner} annotation consists of a text span associated with a type, thus conflicts may arise when the spans of two annotations overlap---e.g., in ``Mr. Cityville'' we may have a first algorithm that identifies ``[Mr. Cityville (PER)]'' while a second algorithm identifies ``[Cityville (LOC)]''---or when the types of two overlapping annotations are inconsistent---e.g., ``Italy'' identified both as \textit{Location} and \textit{Organization}.
+Finally, we need to combine the annotations produced by the different algorithms. Each \ac{ner} annotation consists of a text span associated with a type, thus conflicts may arise when the spans of two annotations overlap---e.g., in ``Mr. Cityville'' we may have a first algorithm that identifies ``\underline{Mr. Cityville}[PER]'' while a second algorithm identifies ``\underline{Cityville}[LOC]''---or when the types of two overlapping annotations are inconsistent---e.g., ``Italy'' identified both as \textit{Location} and \textit{Organization}.
 
 First, we identify span conflicts, then we address type-related conflicts:
 \begin{enumerate}
@@ -241,7 +241,7 @@ The knowledge consolidation process involves the three tasks of \ac{nel}, NIL pr
 % Provato a scriverla meglio
 As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 
-For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base\footnote{https://huggingface.co/dbmdz/bert-base-italian-uncased}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
+For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
 As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages.
 In the remaining of this work we will refer to the BLINK model trained for the Italian language as \blinkita.
 
@@ -391,7 +391,7 @@ Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL p
 %\todo{la teniamo questa considerazione sui processi asincroni commentata? nella discussione?}
 % We argue that several operations are performed by independent systems that can run asynchronously in any order (apart for workflows), as they produce independent annotations. These operations include the \ac{ner} algorithms and the rule-based additional extractors, while other services like \ac{nel} strictly depend on the previous steps.
 
-The hyperparameters for the combination rules are determined with preliminary tests. The weights assigned to each algorithm are as follows: 0.3 for SpaCy, 0.1 for Tint, and 0.6 for Trie\ac{ner}.
+The hyperparameters for the combination rules are determined with preliminary tests. The weights assigned to each algorithm are as follows: 0.3 for \spacy, 0.1 for Tint, and 0.6 for Trie\ac{ner}.
 
 % \paragraph{Overall}
 
@@ -407,17 +407,17 @@ The hyperparameters for the combination rules are determined with preliminary te
     \begin{tabular}{l|ccc}
         & P & R & F$_1$ \\
         \hline
-        SpaCy on WikiNER~\cite{NOTHMAN2013151} & 91.9\% & 91.9\% & 91.9\% \\
+        \spacy on WikiNER~\cite{NOTHMAN2013151} & 91.9\% & 91.9\% & 91.9\% \\
         GilBERTo\footnote{https://github.com/idb-ita/GilBERTo} on WikiNER & 92.7\% & 92.7\% &	92.8\% \\
         BERTino on WikiNER~\cite{muffo2023bertino} & - & - & 90.4\% \\
         BERTino Teacher Model on WikiNER~\cite{muffo2023bertino} & - & - & 91.8\% \\
         Tint on I-CAB~\cite{magnini-etal-2006-cab} & 84.4\% & 80.0\% & 82.1\% \\
     \end{tabular}
-    \caption{Results obtained by our algorithms (SpaCy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers the type ``miscellaneous''.}
+    \caption{Results obtained by our algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers the type ``miscellaneous''.}
     \label{tab:sotaner}
 \end{table}
 
-First, we present a comparative table (Table \ref{tab:sotaner}) with the outcomes achieved by two of our \ac{ner} algorithms, SpaCy (combined with BERT$_{BASE}$ and Tint, across benchmark datasets. We also include the results from two other recent and competitive approaches for reference. It is visible that our SpaCy algorithm, which exploits a BERT encoder, is competitive with recent approaches.
+First, we present a comparative table (Table \ref{tab:sotaner}) with the outcomes achieved by two of our \ac{ner} algorithms, \spacy (combined with BERT$_{BASE}$ and Tint, across benchmark datasets. We also include the results from two other recent and competitive approaches for reference. It is visible that our \spacy algorithm, which exploits a BERT encoder, is competitive with recent approaches.
 
 In Table~\ref{tab:nereval:bymetric} we show the results for the \textit{atomic} evaluation of \ac{ner}.
 As expected there is a substantial difference between the results obtained using \textit{strong} and \textit{approximate} criteria, highlighting that our system in several cases is able to identify entities but struggles to find the best boundaries. However, boundary errors can be fixed relatively quickly with human-in-the-loop intervention. Furthermore, the difference between \textit{approximate} and \textit{partial} criteria is minimal, thus, we consider the \textit{approximate} criteria permissive enough and we omit the \textit{partial} criteria in the remainder of the section.
@@ -437,46 +437,46 @@ As expected there is a substantial difference between the results obtained using
     \label{tab:nereval:bymetric}
 \end{table}
 
-In Table~\ref{tab:nereval:bytype} we report a per-type comparison of the \textit{atomic} evaluation of \ac{ner} algorithms and of their combination. The types \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous} are recognized by a single algorithm, Tint for the former two and SpaCy for the latter. The different results obtained by the combination may seem counterintuitive, but this difference is caused by boundary conflicts that can also happen between mentions of different types.
+In Table~\ref{tab:nereval:bytype} we report a per-type comparison of the \textit{atomic} evaluation of \ac{ner} algorithms and of their combination. The types \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous} are recognized by a single algorithm, Tint for the former two and \spacy for the latter. The different results obtained by the combination may seem counterintuitive, but this difference is caused by boundary conflicts that can also happen between mentions of different types.
 % TODO verify that this is the reason why these results are different
 
-SpaCy is effective in recognizing the types \texttt{Person} and \texttt{Location} while Tint is superior for organizations. The evaluation of Trie\ac{ner} obtains high precision and low recall. Indeed, this approach misses all the entities that are not included in its dictionary (in the experiments the dictionary is mostly composed of persons and a few organizations).
+\Spacy is effective in recognizing the types \texttt{Person} and \texttt{Location} while Tint is superior for organizations. The evaluation of Trie\ac{ner} obtains high precision and low recall. Indeed, this approach misses all the entities that are not included in its dictionary (in the experiments the dictionary is mostly composed of persons and a few organizations).
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|l|ccc}
          Type         & Algorithm &   P   &   R   &   F$_1$ \\
         \midrule
-        Person        & SpaCy   & \textbf{92.1\%} & 76.3\% & \textbf{83.5\%}\\
+        Person        & \spacy   & \textbf{92.1\%} & 76.3\% & \textbf{83.5\%}\\
               & Tint    & 90.3\% & 62.1\% & 73.6\%\\
               & Trie\ac{ner}    & 76.7\% & 34.6\% & 47.7\%\\
               & Combination  & 81.5\% & \textbf{79.9\%} & 80.7\%\\
         \hline
-        Location      & SpaCy   & 35.4\% & \textbf{90.8\%} & 51.0\%\\
+        Location      & \spacy   & 35.4\% & \textbf{90.8\%} & 51.0\%\\
                       & Tint    & 49.2\% & 82.6\% & \textbf{61.7\%}\\
                       & Trie\ac{ner}    & - & - & -\\
                       & Combination  & \textbf{59.9\%} & 60.1\% & 60.0\%\\
         \hline
-        Organization  & SpaCy   & 58.2\% & 40.9\% & 48.1\%\\
+        Organization  & \spacy   & 58.2\% & 40.9\% & 48.1\%\\
                       & Tint    & 65.6\% & 56.5\% & \textbf{60.7\%}\\
                       & Trie\ac{ner}    & \textbf{90.0\%} & 00.2\% & 00.5\%\\ % TODO togliere: we omit trie org because the number of org is not statistically relevant
                       & Combination  & 34.2\% & \textbf{92.0\%} & 49.9\%\\
         \hline
-        Date          & SpaCy   & - & - & -\\
+        Date          & \spacy   & - & - & -\\
                       & Tint    & \textbf{83.7\%} & \textbf{55.2\%} & 66.5\%\\
                       & Trie\ac{ner}    & - & - & -\\
                       & Combination  & \textbf{83.7\%} & 55.1\% & 66.5\%\\
         \hline
-        Money         & SpaCy   & - & - & -\\
+        Money         & \spacy   & - & - & -\\
                       & Tint    & \textbf{98.1\%} & \textbf{57.3\%} & \textbf{72.3\%}\\
                       & Trie\ac{ner}    & - & - & -\\
                       & Combination  & \textbf{98.1\%} & 56.9\% & 72.0\%\\
         \hline
-        Miscellaneous & SpaCy   & .251 & \textbf{04.1\%} & \textbf{07.0\%}\\
+        Miscellaneous & \spacy   & .251 & \textbf{04.1\%} & \textbf{07.0\%}\\
                       & Tint    & - & - & -\\
                       & Trie\ac{ner}    & - & - & -\\
                       & Combination  & \textbf{26.4\%} & 03.9\% & 06.8\% \\
-        \hline  \textbf{Overall*} & SpaCy   & 63.8\% & 43.2\% & 51.5\%\\
+        \hline  \textbf{Overall*} & \spacy   & 63.8\% & 43.2\% & 51.5\%\\
                       & Tint    & 74.8\% & 60.1\% & 66.6\% \\
                       & Trie\ac{ner}    & \textbf{76.7\%} & 11.3\% & 19.7\% \\
                       & Combination  & 66.0\% & \textbf{67.6\%} & \textbf{66.8\%} \\
@@ -488,7 +488,7 @@ SpaCy is effective in recognizing the types \texttt{Person} and \texttt{Location
         % \hline
         % \multicolumn{5}{c}{Benchmark Comparison**} \\
         % \hline
-        % WikiNER~\cite{NOTHMAN2013151} & SpaCy & .919 & .919 & .919 \\ % per org loc misc
+        % WikiNER~\cite{NOTHMAN2013151} & \spacy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
     \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *Miscellanea mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
@@ -500,7 +500,7 @@ Our combination rules achieved a good compromise between precision and recall ev
 %This is also visible in Table~\ref{tab:nereval} which shows an overall comparison of the \ac{ner} algorithms with the combination.
 % With the \textit{approximate matching} criterion, the combination rules obtain an F$_1$ score of 0.668.
 
-The results of SpaCy and Tint on standard benchmarks confirm the challenging and diverse nature of the domain: by comparing Tables~\ref{tab:sotaner} and \ref{tab:nereval:bymetric} it is evident that 
+The results of \spacy and Tint on standard benchmarks confirm the challenging and diverse nature of the domain: by comparing Tables~\ref{tab:sotaner} and \ref{tab:nereval:bymetric} it is evident that 
 \ac{ner} algorithms experience a noticeable decline in performance when applied to domain-specific data.
 Looking at per-type performances (Table~\ref{tab:nereval:bytype}), across almost all types we observe lower performance compared to the results of the evaluation on benchmark datasets. Notably, in handling the class \texttt{Person} our proposed system demonstrates relatively similar outcomes (F$_1 > 80\%$), while the identification of miscellanea mentions proves highly ineffective. This result can likely be attributed to the distinct characteristics of domain-specific miscellanea, which differ significantly from the miscellanea found in standard benchmarks.
 For the remaining classes \texttt{Location}, \texttt{Organization}, \texttt{Date}, and \texttt{Money} the evaluation exhibits F$_1$ scores ranging between 50\% and 70\%. This suggests that the tested algorithms, trained on the available benchmark datasets, have the capability to process these types, although there is still significant room for improvement, e.g., via domain-specific fine-tuning.
@@ -516,14 +516,14 @@ For the remaining classes \texttt{Location}, \texttt{Organization}, \texttt{Date
 %         & P & R & F$_1$ & P & R & F$_1$ \\
 %         \hline
 %         % approximate typed % data denaro luogo organizzazione persona, no altro
-%         SpaCy  & .490 & .339 & .401 & .638 & .432 & .515 \\
+%         \spacy  & .490 & .339 & .401 & .638 & .432 & .515 \\
 %         Tint   & \textbf{.511} & .417 & .459 & .748 & .601 & .666 \\
 %         Trie\ac{ner}   & .174 & .026 & .045 & \textbf{.767} & .113 & .197 \\
 %         Combination & .461 & \textbf{.488} & \textbf{.474} & .660 & \textbf{.676} & \textbf{.668} \\
 %         % \midrule
 %         % Macro avg & P & R & F$_1$ & P & R & F$_1$ \\
 %         % \hline
-%         % SpaCy &&&&&& \\
+%         % \spacy &&&&&& \\
 %         % Tint &&&&&& \\
 %         % Trie\ac{ner} &&&&&& \\
 %         % Combination &&&&&& \\

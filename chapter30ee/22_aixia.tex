@@ -21,7 +21,7 @@
 
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
 
-As in the previous Section, \Cref{sec:eejudgements}, for \ac{ner}, we use spaCy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers.
+As in the previous Section, \Cref{sec:eejudgements}, for \ac{ner}, we use \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers.
 As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders that vary in the pre-training data. We consider three classes of pre-training data. From the most generic to the most specific, they are general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus of $\approx$900,000 Italian civil court judgments.
 \Cref{tab:backbones} shows all the five different configurations of the \ac{ner} backbone transormer---one per column---and on which data they have been pre-trained\todo{uniform pre-trained or pretrained} with \acf{mlm}. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data without any previous training on generic Italian data.
 
@@ -29,7 +29,7 @@ As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2
 
 As a baseline, we consider the general-domain model \textit{ITA}---which is available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}.
 Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with \ac{mlm}.
-Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the SpaCy library with early stopping on the developement set and AdamW~\cite{loshchilov2018decoupled} as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
+Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the \spacy library with early stopping on the developement set and AdamW~\cite{loshchilov2018decoupled} as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
 
 \input{table/dataset_stats}
 

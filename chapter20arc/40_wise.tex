@@ -321,7 +321,7 @@ while the entity clustering used is specific to this study.
 Figure~\ref{fig:neel} depicts an example application of the NEEL pipeline on chat messages.
 In the remainder of this section, we describe each component of the NEEL pipeline.
 
-The NER component is based on the library SpaCy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the SpaCy transition-based parser with the contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
+The NER component is based on the library spacy-transformers\footnote{https://spacy.io/universe/project/spacy-transformers} and uses the \spacy transition-based parser with the contextualized token representations obtained from a transformer~\cite{Vaswani2017}.
 The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal-bert_2022},
 % , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
 additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for NER on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
