@@ -5,7 +5,7 @@
 % \subsection{Italian Civil Court Judgment Corpus and \ac{ner} classes} \label{sez:dataset}
 % %
 
-% The gold standard dataset we use for training and evaluation is composed of 146 annotated judgments derived from a corpus of 900,000 legal judgments, organized as follows: 102 documents as the training set, 14 for validation, and a test set of 30 documents. Unfortunately, we are unable to publish the corpus due to the sensitive nature of the data it contains. However, upon request, we are open to exploring the possibility of sharing it through bilateral agreements. 
+% The gold standard dataset we use for training and evaluation is composed of 146 annotated judgments derived from a corpus of 900,000 legal judgments, organized as follows: 102 documents as the training set, 14 for development, and a test set of 30 documents. Unfortunately, we are unable to publish the corpus due to the sensitive nature of the data it contains. However, upon request, we are open to exploring the possibility of sharing it through bilateral agreements. 
 % The annotations in the corpus have been performed by two annotators. The inter-annotator agreement (IAA) has been calculated using the F1-measure to assess the coherence between the annotations in terms of both class and span and using Cohen's Kappa, obtaining respectively $80.8\%$ and $66.2\%$.
 % % \input{table/dataset_stats}
 % \todo{use table dataset stats}
@@ -29,11 +29,11 @@ As the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2
 
 As a baseline, we consider the general-domain model \textit{ITA}---which is available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}.
 Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with \ac{mlm}.
-Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the SpaCy library with early stopping on the validation set and AdamW~\cite{loshchilov2018decoupled} as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
+Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the SpaCy library with early stopping on the developement set and AdamW~\cite{loshchilov2018decoupled} as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
 
 \input{table/dataset_stats}
 
-For the \ac{ner} fine-tuning data, we use the annotated corpus ICCJ146-EE, divided in three splits. The 30 documents also annotated for \ac{inel} represents the test set, while for the validation set we randomly select 12 documents from the remaining ones, ending up with 102 training documents.  
+For the \ac{ner} fine-tuning data, we use the annotated corpus ICCJ146-EE, divided in three splits. The 30 documents also annotated for \ac{inel} represents the test set, while for the development set we randomly select 12 documents from the remaining ones, ending up with 102 training documents.  
 \Cref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
 
 
