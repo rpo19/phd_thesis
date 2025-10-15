@@ -160,7 +160,7 @@ What is common to all the aforementioned approaches is the idea of building an a
 % \begin{enumerate}
 %     \item Generalizability to heterogeneous documents and to new use cases, since certain investigation may require ad-hoc workflows.
 %     \item Traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
-%     \item Error-correcton capability to allow users to correct errors when identified and improving the system quality with a human-in-the-loop~\cite{} approach.\todo{citare qualcosa per human-in-the loop? è un po' buttato li?}
+%     \item Error-correcton capability to allow users to correct errors when identified and improving the system quality with a \acl{hitl}~\cite{} approach.\todo{citare qualcosa per human-in-the loop? è un po' buttato li?}
 %     \item Scalability to vast document collections.
 % \end{enumerate}
 % \todo{something about kc or incremental knowledge. support long tail entities,... and also exploit availbel known entities wikipedia wd, legal codes,...}
@@ -192,7 +192,7 @@ The proposed architecture is guided by the following principles:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
     \item \textbf{Traceability and Verifiability}, ensuring that the origin of any extracted information can always be verified. For instance, a user searching for documents mentioning a person must be able to read the exact mention within its context, while a \acl{qa} system should provide references to the text passages supporting its answers.
-    \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality through a human-in-the-loop approach~\cite{klie-etal-2020-zero}.\todo{hitl implica che il modello migliori?}
+    \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality with a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach.
     \item \textbf{Scalability} to large and continuously growing document collections.
 \end{enumerate}
 

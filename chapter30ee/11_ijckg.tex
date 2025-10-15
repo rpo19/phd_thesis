@@ -373,24 +373,22 @@ $\text{GNN}_\text{F}$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.3
 \textbf{Pred} & R            &   43.32 &  42.43 &   45.47 &   43.02 &  43.57 &  43.44 &   42.22 &   44.91 &  42.30 &   43.08 &  43.38 & \\
 & F1           &   48.63 &  47.97 &   49.73 &   47.99 &  48.83 &  48.78 &   48.13 &   49.93 &  48.13 &   48.08 &  48.62 & \\
 \hline
-\textbf{NIL} & MUC F1       &  100.0 &  80.00 &    - &  100.0 &  66.67 &  66.67 &    - &  100.0 &   - &    - &  51.33 & \\
+\textbf{NIL} & MUC F1       &  100.0 &  80.00 &    -- &  100.0 &  66.67 &  66.67 &    -- &  100.0 &   -- &    -- &  51.33 & \\
 \textbf{Clust} & B3 F1        &  100.0 &  97.26 &  100.0 &  100.0 &  95.65 &  97.78 &  100.0 &  100.0 &  97.14 &  100.0 &  98.78 & \\
 3-step & CEAF F1      &  100.0 &  96.89 &  100.0 &  100.0 &  94.53 &  96.12 &  100.0 &  100.0 &  95.24 &  100.0 &  98.28 & \\
 & $\overline{F1}$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``-'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table*}
 \end{landscape}
 
-Those errors could be mitigated by a HITL process, which merges clusters representing the same entities (fixing errors of the NIL predictor) or splits a cluster, removing wrong mentions.
+These errors can be mitigated through a \acl{hitl} validation process, where a user, using dedicated \acp{ui}, can merge clusters referring to the same entity or split those that incorrectly group different mentions.\todo{This functionality has been implemented in our system.}
+
 
 
 \subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
-\label{sec:ijckg:discussion}
-The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in \Cref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the single-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
-
 % hitl
 
 
@@ -400,26 +398,31 @@ The results demonstrate that error propagation across batches is a key challenge
 % In addition, it can be used also as a distance score between mentions in order to cluster them in the NIL clustering step.
 %This module, however, increases the whole complexity and computational cost at inference time, losing the interactivity of the pipeline.
 
-As previously explained, a major source of errors came from the false positives introduced by the management of NILs, suggesting that effective NIL prediction is an important challenge for the \ac{inel} task; in fact, low precision leads to the introduction of error into the pipeline and, therefore, to performance deterioration. % even if the classifier obtains relatively high precision levels (see \Cref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
+
+% even if the classifier obtains relatively high precision levels (see \Cref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
 
 %In addition, the NIL predictor, which at the moment uses a logistic regression, may be improved by the use of linear transformations, since the use of non-linear and more complex models (such as random forest) offer no better results.
 %A future version may include more features, based on candidates distribution, as well as a standardization layer so that it can be pre-trained on a different dataset.
 %All those improvements however are not trivial both to train and test in order to obtain a model not based on dataset scores.
-
-% challenge and future work
-
-Finally, in our experiments, we use a single vector for novel entity representation: the medoid obtained from the clusters of the NIL mentions. Evidence (see \Cref{tab:new_entities_recall}) show that this method is sub-optimal, despite being more efficient.
-The problem of how to represent new entities, for instance using more than one vector per cluster or with different strategies (e.g. bounding-boxes), is another important challenge in the \ac{inel} task that is worth studying in order to find a better compromise between effectiveness and efficiency. We leave this exploration to future works.
-% future work
-Also the problem of deciding when to update the \ac{kb} is quite interesting (the index is now updated after having processed the first batch in which the new mention appears): it may be the case that collecting more observations of a new entity is necessary to obtain a good representation, possibly considering a confidence score.
-This aspect was ignored at the moment since it is highly correlated to the long-tail entities problem (in the meaning of ``mentioned few times''): in fact the dataset was modified in order to add a high number of new entities mentioned only once.
-Finding a good trade-off between getting useful representations and handle entities mentioned only once, is an interesting problem for future work.
 
 % \begin{enumerate}
 %     \item Improve NIL prediction.
 %     \item Improve NIL clustering.
 %     \item Further investigate on how the system behaves with long-tailed entities.
 % \end{enumerate}
+
+\label{sec:ijckg:discussion}
+
+The results show that error propagation across batches is a major challenge in incremental entity extraction. A performance drop is especially evident in the \ac{nel} results. As reported in \Cref{tab:superresults}, the first batch achieves scores comparable to those of the single-pass ($\varnothing$) and ``correct'' experiments, but performance progressively degrades in subsequent batches.
+
+As discussed earlier, a main source of errors lies in false positives (false NILs) introduced during NIL management. This confirms that accurate NIL prediction is a crucial challenge in the \ac{inel} task: lower precision amplifies the propagation of errors throughout the pipeline, ultimately degrading performance.
+
+
+In our experiments, novel entities are represented by a single vector---the medoid of their NIL mention cluster. However, evidence from \Cref{tab:new_entities_recall} indicates that this representation is sub-optimal, although more efficient. Exploring alternative strategies, such as using multiple vectors per cluster or different representation schemes---for example, using box embeddings, which encode inclusion relations via geometric containment~\cite{atzeni-etal-2023-polar}---constitutes a promising direction for future work to achieve a better trade-off between effectiveness and efficiency.
+
+Another open problem concerns when to update the \ac{kr}. In the current setup, the index is updated after processing the first batch in which a new mention appears, but collecting additional observations might yield more reliable representations, possibly guided by a confidence score.
+% We leave this aspect for future work, as it is tightly connected to the long-tail entity problem (i.e., entities mentioned only once). In fact, our dataset was enriched with many such entities.
+Balancing the need for informative representations with the challenge of handling rare entities remains an interesting avenue for further research.
 
 
 \subsection{Conclusion}
