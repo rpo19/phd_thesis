@@ -79,11 +79,11 @@ Max, Secondiff                     &  51.4 &  83.1 &          67.3 \\
 
 \paragraph{NIL Clustering} NIL clustering is performed in multiple stages, considering both the mention surface form and its embedding representation. This approach helps prevent errors due to homonymy. For each cluster of mentions, we then obtain a representation of the corresponding entity using the cluster medoid vector.
 
-We evaluated three clustering strategies. The first, $GNN_B$, applies a greedy nearest-neighbor (GNN) algorithm on the dense mention vectors obtained from the bi-encoder. Each mention $m$ is clustered with others whose similarity with $m$ exceeds a predefined threshold. This method, combined with various vectorizers, has shown promising results in \textcite{streaming_crossdoc_coreference}.
+We evaluated three clustering strategies. The first, \textit{$\text{GNN}_\text{B}$}, applies a greedy nearest-neighbor (GNN) algorithm on the dense mention vectors obtained from the bi-encoder. Each mention $m$ is clustered with others whose similarity with $m$ exceeds a predefined threshold. This method, combined with various vectorizers, has shown promising results in \textcite{streaming_crossdoc_coreference}.
 
-The second method, $GNN_F$, also relies on GNN but uses a feature-based vectorizer following \textcite{shrimpton-etal-2015-sampling}. Mentions are encoded as character skip-bigram indicator vectors for surface text and TF-IDF vectors for context. For both $GNN_B$ and $GNN_F$.
+The second method, \textit{$\text{GNN}_\text{F}$}, also relies on GNN but uses a feature-based vectorizer following \textcite{shrimpton-etal-2015-sampling}. Mentions are encoded as character skip-bigram indicator vectors for surface text and TF-IDF vectors for context. For both $\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$.
 
-The third method, referred to as \emph{three-step clustering}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance (Damerau-Levenshtein edit distance~\cite{damerau1964}) $\le 3$ are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (e.g., \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on semantic similarity derived from bi-encoder embeddings, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
+The third method, referred to as \emph{three-step clustering (3-step)}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance (Damerau-Levenshtein edit distance~\cite{damerau1964}) $\le 3$ are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (e.g., \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on semantic similarity derived from bi-encoder embeddings, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
 
 All clustering thresholds were tuned via grid search so that the number of predicted clusters on the development set roughly matched the number of unique entities---as in \textcite{streaming_crossdoc_coreference}.
 
@@ -247,20 +247,14 @@ Finally, if a false positive in NIL prediction creates a new entity while the co
 
 \subsection{Experiments}
 \label{sec:ijckg:experiments}
-% \subsection{Training \& Testing}
-% \todo{cambiare}
-To allow the comparison with other models, we decided to test our baselines with the following experiments: the first one
-%trains the NIL prediction model (we use a pre-trained bi-encoder, and the clustering does not require training) on the train set and
-runs the evaluation on the whole unbatched test set---in \textit{one-pass} ($\varnothing$)---with only one step of clustering; the second experiment, instead,
-%takes the same models, trained in the same way, but
-is an incremental evaluation on the 10 batches of the test set.
-This second experiment is the focus of the present work and simulates the arrival of new documents in the pipeline.
-Note that the evaluation process is different in the two experiments, since the NIL clustering has side-effects: it adds novel entities to the \ac{newkr} that are linkable in the following batches.
-The first experiment has two main purposes: it provides results comparable with other models in literature %(despite the fact that our model uses a smaller train set and is tested with an higher number of unseen entities) 
-and permits to estimate the drop in performance of the incremental procedure.
-We evaluated the three baselines (that differ in the clustering approach) using these two experimental setup, although in \Cref{tab:superresults} we report only the NIL clustering performance for all the baselines, while the remaining metrics are obtained using the top-performing clustering approach ($3Steps$).
-Finally, we run another experiment, called ``correct'', that corrects the output of previous components before proceeding through the batches and the pipeline, to better study the error-propagation. In \Cref{tab:superresults} we show the ``correct'' performance only of the top-performing pipeline ($3Steps$).
-%Lower performances are, in fact, expected since the clustering process in initial steps has less information about new entities, which may be spoken further.
+
+To enable comparison with other models, we tested our baselines using two experiments. The first experiment evaluates the models on the entire unbatched test set in a \emph{single pass} ($\varnothing$), performing only one step of clustering. The second experiment conducts an incremental evaluation over the 10 batches of the test set, which is the main focus of this work and simulates the arrival of new documents to the pipeline. Note that the evaluation procedures differ between the two experiments because NIL clustering adds novel entities to the \ac{newkr} that can be linked in subsequent batches.
+
+The first experiment serves two purposes: it provides results comparable to those reported in the literature, and it allows us to estimate the performance drop introduced by the incremental procedure. We evaluated the three baselines, which differ in their clustering approach, using both experimental setups. In \Cref{tab:superresults}, we report only the NIL clustering performance for all baselines, while the remaining metrics are obtained using the top-performing clustering approach (3-step).
+
+Finally, we conducted an additional experiment, called ``correct'', in which the outputs of previous components are corrected before proceeding through the batches. This setup helps to better analyze error propagation. In \Cref{tab:superresults}, we report the ``correct'' performance only for the top-performing pipeline (3-step).
+
+
 
 \begin{figure}
     \centering
@@ -268,7 +262,7 @@ Finally, we run another experiment, called ``correct'', that corrects the output
     width=.5\textwidth,
     keepaspectratio]
     {images/ijckg/experiments_expected.drawio.png}
-    \caption{Schema of the expected outcome of the system, given a mention m referring to an entity E, when (a) E is known ``a priori'', (b) E has already been added while processing the previous batches, (c) E is not in the \ac{kb}.}
+    \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
     \label{fig:evluation_outcome}
 \end{figure}
 
@@ -280,32 +274,42 @@ In order to investigate which component of the pipeline has a stronger contribut
 % questo perché le rappresentazioni delle nuove entità sono sub-ottimali rispetto alla distribuzione.
 % le performance totali sono migliori, nel senso che non "degenerano" andando avanti con l'aggiungere entità all'indice
 
-The results of the most relevant experiments are reported in \Cref{tab:superresults}.
-We can see that the performance of the \ac{nel} module is competitive compared to more complex models of state of the art: in particular, GENRE~\cite{decao2021autoregressive} obtains a $R@1_{total} = 74.7$ and $R@1_{unseen} = 70.4$, which are quite similar to ours (excluding error propagation).
 %Results are not compared against other models to prevent the temptation of a direct comparison, regardless dataset modifications (as described above) and the different task (which, in our case, is incremental through time).
-The drop in performance, as expected, is due to the error propagation in the incremental procedure and not to a poor \ac{nel} model. Indeed, in the ``correct'' experiment, there is no performance drop caused by the error propagation.
 
 % Being a binary classification, the NIL predictor performance is measured with precision and recall,
 % TODO ENSURE (normalized by the support)
 %As shown in \Cref{scores:nil_predictor}.
-The NIL prediction component, despite the high precision, yields a high number of false negatives (entities that are predicted to be in the \ac{kb} while they were new).
-A low recall translates in a low number of false NILs, which drastically decreases the error propagation through time.
+% The NIL prediction component show high precision scores that grow from $b_0$ to $b_9$. Intuitively, this means that the number of false positives---non-NIL mentions predicted as NIL, in our case---is decreasing over the batches. 
 
+% This happens since the surface form, varies between train and test set~\cite{Onoe_Durrett_2020}
+% Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
+
+The results of the most relevant experiments are reported in \Cref{tab:superresults}.
+We can see that the performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive compared to more complex models of state of the art: in particular, GENRE~\cite{decao2021autoregressive} obtains a R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$---on mention-entity paris unseen at training-time---which are quite similar to ours (excluding error propagation).
+
+The drop in performance, as expected, is due to the error propagation in the incremental procedure and not to a poor \ac{nel} model. Indeed, in the ``correct'' experiment, there is no performance drop caused by the error propagation.
+
+
+
+
+The NIL prediction component, despite the high precision, suffers in recall, therefore yielding a high number of false negatives---or \emph{false link},mentions that are predicted as non-NIL and linked to the \ac{kr} while they were NIL referring to a new entity.
+Errors from the NIL predictor introduce two critical problems in the pipeline. First, each false positive---or \emph{false NIL}, a non-NIL mentions predicted as NIL---produce a new entity. This adds redundant representations of the same entities to the \ac{newkr} and increases error propagation through batches, since all the mentions linked to these incrrect and redudant entities in the next time-steps are errors.
+For this reason, to mitigate error propagation through time, it is preferable to achieve higher precision than higher recall, since \emph{false links} are errors but do not cause error propagation by populating the \ac{newkr} with redundant entities.
+
+To visualize an overview of the process, \Cref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected in the test set.
+High precision and low recall translates in a lower number of clusters, for the most representing novel entities; while a high recall and low precition translates in a higher number of false representations of entities already included in the \ac{bgkr}.
 
 
 With respect to the NIL clustering, analyzing and well understanding this component is fundamental, since it has side effects that propagate through following steps, and therefore presents different results if run one batch by one or on a single pass.
-Among the evaluated approaches the top-performing one is the $3Steps$; the reason could be that this method exploit a combination of lexical and semantic similarities between the mentions, while the other two ($GNN_B$ and $GNN_F$) only exploit semantic dense representations.
+Among the evaluated approaches the top-performing one is the 3-step; the reason could be that this method exploit a combination of lexical and semantic similarities between the mentions, while the other two ($\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$) only exploit semantic dense representations.
+
+
 % Results, as expected, are higher in the single-pass experiment than in the incremental one: this is due to the propagation of error through time in the index updating.
 % In fact, the high B3 Recall is due to the high frequencies of single-mentioned entities in the dataset which are presented to the NIL clustering component (remember that the function that assigns NIL values is a decreasing monotonous function).
 % This translates in a high number of clusters correctly composed by a single mention.
 % Having a suboptimal representation of those entities, which is given by a single observation and not by a textual description or more examples, the index begins suffering due to data quality problems.
 
-The NIL predictor introduces two critical problems in the pipeline: false positives of the NIL predictor propagate errors through batches causing the \ac{newkr} to be full of redundant representations of the same entities; on the other hand, when NIL mentions are erroneously identified as not-NIL, the pipeline misses mentions useful to represent a new entity.
-For this reason, to mitigate error propagation through time, it is preferable to achieve higher precision than higher recall.
-% This happens since the surface form, varies between train and test set~\cite{Onoe_Durrett_2020}
-% Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
-To visualize an overview of the process, \Cref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected.
-A higher precision translates in a lower number of clusters, for the most representing novel entities; while a higher recall translates in a higher number of false representations of entities already included in the \ac{bgkr}.
+
 
 \begin{figure}
     \centering
@@ -337,20 +341,20 @@ A higher precision translates in a lower number of clusters, for the most repres
 \midrule
 % & NIL Clust    &&&&&&&&&&&& \\
 % & Three step    &&&&&&&&&&&& \\
-\multicolumn{14}{l}{\textbf{NIL Clust:} comparison among $3Steps$, $GNN_B$, $GNN_F$: best results highlighted in bold}  \\
-$3Steps$ & MUC F1       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
+\multicolumn{14}{l}{\textbf{NIL Clust:} comparison among 3-step, $\text{GNN}_\text{B}$, $\text{GNN}_\text{F}$: best results highlighted in bold}  \\
+3-step & MUC F1       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
 & B3 F1        &  \textbf{97.43} &  \textbf{97.07} & \textbf{96.73} &  \textbf{96.25} &  \textbf{96.48} &  \textbf{96.66} &  \textbf{96.11} &  \textbf{97.14} &  \textbf{95.79} &  \textbf{96.55} &  \textbf{96.62} & \textbf{94.36} \\
 & CEAF F1      &  \textbf{95.16} &  \textbf{94.43} &  \textbf{93.10} &  \textbf{93.02} &  \textbf{92.56} &  \textbf{93.15} &  \textbf{92.38} &  \textbf{93.35} &  \textbf{92.49} &  \textbf{93.26} &  \textbf{93.29} & \textbf{82.27} \\
 & $\overline{F1}$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
 \hline
 % & Greedy    &&&&&&&&&&&& \\
-$GNN_B$ & MUC F1       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
+$\text{GNN}_\text{B}$ & MUC F1       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
 & B3 F1        &  91.33 &  90.12 &  89.07 &  90.34 &  90.92 &  90.74 &  90.36 &  91.69 &  91.72 &  91.92 &  90.82 & 86.46 \\
 & CEAF F1      &  84.96 &  83.94 &  80.62 &  81.65 &  80.95 &  81.58 &  80.77 &  82.57 &  81.38 &  81.14 & 81.96  & 64.61  \\
 & $\overline{F1}$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
 \hline
 % & Feature    &&&&&&&&&&&& \\
-$GNN_F$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
+$\text{GNN}_\text{F}$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
 & B3 F1        &  71.66 &  65.16 &  58.68 &  56.80 &  55.03 &  54.78 &  53.31 &  54.40 &  51.89 &  51.16 &  57.29 & 48.83 \\
 & CEAF F1      &  62.72 &  56.91 &  49.09 &  47.01 &  44.90 &  44.60 &  43.24 &  44.22 &  41.66 &  40.46 &  47.48 & 35.89 \\
 & $\overline{F1}$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
@@ -370,11 +374,11 @@ $GNN_F$ & MUC F1       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  
 \hline
 \textbf{NIL} & MUC F1       &  100.0 &  80.00 &    - &  100.0 &  66.67 &  66.67 &    - &  100.0 &   - &    - &  51.33 & \\
 \textbf{Clust} & B3 F1        &  100.0 &  97.26 &  100.0 &  100.0 &  95.65 &  97.78 &  100.0 &  100.0 &  97.14 &  100.0 &  98.78 & \\
-$3Steps$ & CEAF F1      &  100.0 &  96.89 &  100.0 &  100.0 &  94.53 &  96.12 &  100.0 &  100.0 &  95.24 &  100.0 &  98.28 & \\
+3-step & CEAF F1      &  100.0 &  96.89 &  100.0 &  100.0 &  94.53 &  96.12 &  100.0 &  100.0 &  95.24 &  100.0 &  98.28 & \\
 & $\overline{F1}$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the $3Steps$ clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched \emph{one-pass} experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``-'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``-'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F1} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table*}
 \end{landscape}
@@ -384,7 +388,7 @@ Those errors could be mitigated by a HITL process, which merges clusters represe
 
 \subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
 \label{sec:ijckg:discussion}
-The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in \Cref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the one-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
+The results demonstrate that error propagation across batches is a key challenge in incremental entity extraction. A drop in performance can be especially observed on \ac{nel} results, as shown in \Cref{tab:superresults}: the results obtained in the first batch are comparable to the ones obtained in the single-pass ($\varnothing$) experiment and with the ``correct'' experiment, while they deteriorate in the following batches.
 
 % hitl
 
