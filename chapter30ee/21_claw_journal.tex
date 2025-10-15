@@ -200,46 +200,52 @@ By using multiple \ac{ner} algorithms, it becomes necessary to combine the extra
 % TODO pipeline
 
 \subsubsection{Entity Recognition}          
-%We implement the entity extraction service as a pipeline of different sub-services.
-For the \ac{ner} task, two general-domain ML-based algorithms for the Italian language have been selected: \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}.
-In addition, we developed a rule-based service, to which we refer to with Trie\ac{ner}, supporting efficient retrieval from a gazetteer. Each algorithm recognizes a different set of types. \Cref{tab:algotypes} shows which entity types in our benchmark dataset are recognized by each algorithm including the combination of them.  
+For the \ac{ner} task, we selected two general-domain, ML-based algorithms for Italian: \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}. 
+In addition, we developed a rule-based service, referred to as Trie\ac{ner}, which performs efficient gazetteer-based lookup using a prefix tree.  
+Each algorithm recognizes a different set of entity types. \Cref{tab:algotypes} reports the correspondence between the entity types in our benchmark dataset and those detected by each algorithm, including their combination.  
 
-% \Spacy~\cite{honnibal2020spacy} is a NLP library designed to be production-ready, able to perform \ac{ner} in several languages including Italian.
-\ac{ner} with \spacy is performed by first obtaining a vector representation of the input, in our case with an Italian transformer ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pre-trained by \textcite{stefan_schweter_2020_4263142}, then the vectors are processed by a neural transition-based parser(see \Cref{sec:rw:ner} for more details). We fine-tuned the \spacy \ac{ner} pipeline, including the transformer and the transition-based parsed, on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is composed of Wikipedia articles annotated with mentions of \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous}.
-%The results for the evaluation on the WikiNER dev set are shown in~\ref{app:blink}.
-    % TODO mouvere in appendices
+\ac{ner} with \spacy is carried out using the Italian transformer model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pre-trained by \textcite{stefan_schweter_2020_4263142}.  
+The model produces contextual representations that are then processed by a neural transition-based parser (see \Cref{sec:rw:ner}).  
+We fine-tuned the \spacy pipeline---including both the transformer and the parser---on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which contains Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
 
-Tint~\cite{2018tint2} is an Italian NLP library based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}. The \ac{ner} task is based on conditional random fields (CRF)~\cite{Lafferty2001} sequence taggers, combined with rule-based systems to identify mentions of type \texttt{Money}, \texttt{Number}, and temporal expressions (\texttt{Time}).
-%The service is available via API and returns all the tags for an input sentence.  
+Tint~\cite{2018tint2} is an Italian NLP suite based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}.  
+Its \ac{ner} module combines CRF-based sequence taggers~\cite{Lafferty2001} with rule-based recognizers for \texttt{Money}, \texttt{Number}, and temporal expressions (\texttt{Time}).
 
-The Trie\ac{ner} approach is based on a gazetteer efficiently accessed with a prefix tree or trie~\cite{s-yata-marisa-trie}. Indeed, tree-based structures can be used for performing efficient \ac{ner} with gazetteers~\cite{Nguyen_tree_ner_2014}.
-Our gazetteer is composed of entity labels derived from documents metadata. Entity labels are tokenized, personal names are enriched by their permutations, and then the tokens are added to the trie index. This algorithm also identifies partial matches---e.g. the name of a person without the surname.
-This service is not limited to \ac{ner}, indeed, besides knowing the matched pattern is part of an entity label we are also aware of which entity---or which entities if more entities share the same pattern---from which the pattern has been derived. This pattern-based algorithm is used to exploit metadata attached to the judgments, which cover plaintiffs, defendants, and judges. Although these metadata are incomplete, Trie\ac{ner} is introduced to increase the likelihood that, when an entity appears in the metadata, it is also identified by the \ac{ner} component. Supposing that ``Jane Smith'' is listed as a plaintiff in the metadata, Trie\ac{ner} would search for all the tokens and their permutation in the text, finding mentions like ``Smith''---as a partial match---and ``Smith Jane''.
+Trie\ac{ner} relies on a gazetteer efficiently indexed with a prefix tree (trie)~\cite{s-yata-marisa-trie}, following prior work on tree-based \ac{ner}~\cite{Nguyen_tree_ner_2014}.  
+Our gazetteer is built from document metadata: entity labels are tokenized, enriched with all name permutations (for personal names), and inserted into the trie.  
+The algorithm supports partial matches---e.g., detecting ``Smith'' when the full label ``Jane Smith'' exists in the gazetteer.  
+Unlike standard \ac{ner}, Trie\ac{ner} also provides the link between the matched text and the originating entity (or entities, if shared).  
+This approach leverages metadata fields such as plaintiffs, defendants, and judges to increase the likelihood that these entities are also recognized in the text.
 
-%\paragraph{Combining \ac{ner} annotations}
-% As we use multiple \ac{ner} services, we combine the annotations obtained by each of them. Every \ac{ner} annotation consists of a text span associated to a type, thus conflicts may arise when the spans of two annotations overlap and when the types of two overlapping annotations are inconsistent.
+Suppose ``Jane Smith'' is listed as a plaintiff in the metadata: Trie\ac{ner} searches all token permutations and detects both ``Smith'' (partial match) and ``Smith Jane''.
 
-Finally, we need to combine the annotations produced by the different algorithms. Each \ac{ner} annotation consists of a text span associated with a type, thus conflicts may arise when the spans of two annotations overlap---e.g., in ``Mr. Cityville'' we may have a first algorithm that identifies ``\underline{Mr. Cityville}[PER]'' while a second algorithm identifies ``\underline{Cityville}[LOC]''---or when the types of two overlapping annotations are inconsistent---e.g., ``Italy'' identified both as \textit{Location} and \textit{Organization}.
+Finally, we merge the annotations produced by the different algorithms.  
+Each \ac{ner} annotation consists of a text span associated with a type, so conflicts may arise when spans overlap or when overlapping spans have inconsistent types---for example:
+\begin{quote}
+``\underline{Mr. Cityville}[PER]'' (from one algorithm) vs. ``\underline{Cityville}[LOC]'' (from another),  
+or ``Italy'' labeled both as \textit{Location} and \textit{Organization}.
+\end{quote}
 
-First, we identify span conflicts, then we address type-related conflicts:
+We resolve these conflicts as follows:
 \begin{enumerate}
-    \item two overlapping annotations may be totally overlapping (i.e., they share the same exact boundaries) or partially overlapping. In the latter case, we prefer the longest annotation, assuming it is the most informative one. Exceptionally, for the annotations of type \texttt{Person}, we down-prioritize annotations whose span is longer than $k$ tokens\footnote{We heuristically found that $k=6$ fit the court judgment dataset.},
-    \item with respect to type-related conflicts, different algorithms may predict different types. Consequently, we assign a weight to each algorithm and, in case of type-related conflicts, we perform a \textit{weighted majority vote} to select the type with the highest score (in case two or more algorithms predicted the same type, the score of the type is given by the sum of the algorithms' weights).
-    This mechanism allows us to control the impact of each algorithm on the final prediction.
-    
-    % the control of the impact of each algorithm to the final decision by modifying its weight. Additionally, it can be further improved by learning optimal weights for the voting, eventually differentiating the weights of the types recognized by the same algorithm.
-
+    \item Span conflicts: overlapping annotations can be total (same boundaries) or partial.  
+    In partial overlaps, we select the longest annotation, assuming it provides the most information.  
+    As an exception, for entities of type \texttt{Person}, we deprioritize spans longer than $k$ tokens, using $k=6$ after identifying it as the maximum number of tokens for names from ICCJ900k metadata.
+    \item Type conflicts: different algorithms may predict different types.  
+    To handle this, we assign a weight to each algorithm and perform a \textit{weighted majority vote} to select the final type.  
+    If multiple algorithms predict the same type, their weights are summed.  
+    This mechanism allows us to control each algorithm's influence on the final decision.
 \end{enumerate}
 
 
 
 \subsubsection{Knowledge consolidation}
 \label{sec:claw_consolidation}
-The knowledge consolidation process involves the three tasks of \ac{nel}, NIL prediction, and NIL clustering. The pipeline derives from the English one presented in \textcite{ijckg2022} and described in \Cref{sec:incrementalel:pipeline} and it is composed of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for the NIL prediction, and the three-step algorithm for NIL clustering.
+The knowledge consolidation process involves the three tasks of \ac{inel}, NIL prediction, and NIL clustering. The pipeline derives from the English one presented in \textcite{ijckg2022} and described in \Cref{sec:ijckg:pipeline} and it is composed of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for the NIL prediction, and the three-step algorithm for NIL clustering. Although we do not evaluate an incremental scenario with legal documents, we chose a bi-encoder-based pipeline because it allows to represent new entities, as descibed in \Cref{sec:ijckg}---a relevant property for the legal domain.
 
 % We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for \ac{nel}. % TODO migliorare
 % Provato a scriverla meglio
-As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
+% As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 
 For the \ac{nel} system to support the Italian language, we trained the bi-encoder following the approach of BLINK~\cite{blink} authors for the English language. We initialize the bi-encoder with the weights from Italian BERT-base model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}~\cite{stefan_schweter_2020_4263142}, then we fine-tune them on 9 million training samples from Italian Wikipedia hyperlinks, following the original work. We repeat for 4 epochs with in-batch random negatives, using AdamW~\cite{loshchilov2018decoupled} optimizer with the initial learning rate set to $1 \times 10^{-5}$ and a batch size of 20. Then, we train for an additional epoch with hard negatives---considering a single hard negative for each training sample, identified as the incorrect entity with the highest estimated linking score for the considered mention.
 As the linking KB, we use $\sim1.5M$ entities obtained from Italian Wikipedia\footnote{https://it.wikipedia.org} after filtering out redirects and disambiguation pages.
@@ -277,11 +283,11 @@ The NIL clustering approach is the three-step clustering method described in \Cr
 
 
 % Per stabilire quale span di testo preferire, nel caso in cui si tratti di persona
-% o categorie correlate ad essa, si sceglie l’annotazione più lunga, a patto che
+% o categorie correlate ad essa, si sceglie l'annotazione più lunga, a patto che
 % essa sia composta da un numero di token inferiore o uguale al massimo
 % determinato per via empirica nel corpus (6 elementi nel caso in esame), nel
 % caso di altre categorie o qualora non sia possibile stabilire una categoria,
-% viene preferita l’annotazione più lunga.
+% viene preferita l'annotazione più lunga.
 
 
 
