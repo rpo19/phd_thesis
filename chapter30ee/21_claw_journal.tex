@@ -113,16 +113,16 @@ These differences between F$_1$ scores---calculated with harder and softer match
 \toprule
 \textbf{Metric}                     & \textbf{Value} \\\toprule
 \multicolumn{2}{c}{F$_1$ score-based metrics} \\\midrule
-Strong                              & 83.9\%           \\
-Strong-typed (instance-level)       & 80.8\%           \\
-Strong-typed (token-level)          & 88.6\%           \\
-Approximate                         & 96.6\%           \\
-Approximate-typed                   & 90.4\%           \\
-Partial                             & 96.9\%           \\
-Partial-typed                       & 90.6\%           \\\midrule
+Strong                              & 83.9           \\
+Strong-typed (instance-level)       & 80.8           \\
+Strong-typed (token-level)          & 88.6           \\
+Approximate                         & 96.6           \\
+Approximate-typed                   & 90.4           \\
+Partial                             & 96.9           \\
+Partial-typed                       & 90.6           \\\midrule
 \multicolumn{2}{c}{Standard IAA metrics} \\\midrule
 $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa \approx \text{Krippendorff's~}\alpha$
- & 66.2\%           \\\bottomrule
+ & 66.2           \\\bottomrule
 \end{tabular}
 \caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in Section~\ref{sec:metrics}. *based on strong-typed match}
 \label{tab:iaa}
@@ -410,14 +410,16 @@ The hyperparameters for the combination rules are determined with preliminary te
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|ccc}
-        & P & R & F$_1$ \\
-        \hline
-        \spacy on WikiNER~\cite{NOTHMAN2013151} & 91.9\% & 91.9\% & 91.9\% \\
-        GilBERTo\footnote{https://github.com/idb-ita/GilBERTo} on WikiNER & 92.7\% & 92.7\% &	92.8\% \\
-        BERTino on WikiNER~\cite{muffo2023bertino} & - & - & 90.4\% \\
-        BERTino Teacher Model on WikiNER~\cite{muffo2023bertino} & - & - & 91.8\% \\
-        Tint on I-CAB~\cite{magnini-etal-2006-cab} & 84.4\% & 80.0\% & 82.1\% \\
+    \begin{tabular}{ll|rrr}
+        \toprule
+        \textbf{Model} & \textbf{Datset} & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
+        \midrule
+        \spacy & WikiNER~\cite{NOTHMAN2013151} & 91.9 & 91.9 & 91.9 \\
+        GilBERTo~\cite{gilberto} & WikiNER~\cite{NOTHMAN2013151} & 92.7 & 92.7 &	92.8 \\
+        BERTino~\cite{muffo2023bertino} & WikiNER~\cite{NOTHMAN2013151} & - & - & 90.4 \\
+        BERTino Teacher Model~\cite{muffo2023bertino} & WikiNER~\cite{NOTHMAN2013151} & - & - & 91.8 \\
+        Tint & I-CAB~\cite{magnini-etal-2006-cab} & 84.4 & 80.0 & 82.1 \\
+        \bottomrule
     \end{tabular}
     \caption{Results obtained by our algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers the type ``miscellaneous''.}
     \label{tab:sotaner}
@@ -430,14 +432,16 @@ As expected there is a substantial difference between the results obtained using
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|ccc|ccc}
-        & \multicolumn{3}{c|}{Untyped} & \multicolumn{3}{c}{Typed} \\
-        & P & R & F$_1$ & P & R & F$_1$ \\
-        \hline
+    \begin{tabular}{l|rrr|rrr}
+        \toprule
+        & \multicolumn{3}{c|}{\textbf{Untyped}} & \multicolumn{3}{c}{\textbf{Typed}} \\
+        & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
+        \midrule
         % approximate typed % data denaro luogo organizzazione persona, ( con miscellaneous )
-        Strong              & 51.9\% &	43.7\% &	47.5\% & 44.7\% &	37.7\% &	40.9\%  \\
-        Approximate         & 86.9\% &	68.0\% &	76.3\% & 64.6\% &	53.1\% &	58.3\% \\
-        Partial             & 87.4\% &	68.6\% &	76.9\% & 64.9\% &	53.3\% &	58.6\% \\ 
+        Strong              & 51.9 &	43.7 &	47.5 & 44.7 &	37.7 &	40.9  \\
+        Approximate         & 86.9 &	68.0 &	76.3 & 64.6 &	53.1 &	58.3 \\
+        Partial             & 87.4 &	68.6 &	76.9 & 64.9 &	53.3 &	58.6 \\ 
+        \bottomrule
     \end{tabular}
     \caption{\textit{Atomic} \ac{ner} evaluation (precision, recall, F$_1$ score) with different matching criteria (rows), typed and untyped. These results are obtained using the combination of the \ac{ner} algorithms and considering all the evaluated types.}
     \label{tab:nereval:bymetric}
@@ -450,50 +454,52 @@ In Table~\ref{tab:nereval:bytype} we report a per-type comparison of the \textit
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|l|ccc}
-         Type         & Algorithm &   P   &   R   &   F$_1$ \\
+    \begin{tabular}{l|l|rrr}
+        \toprule
+         \textbf{Type}         & \textbf{Algorithm} &   \textbf{Precision}   &   \textbf{Recall}   &   \textbf{F$_1$} \\
         \midrule
-        Person        & \spacy   & \textbf{92.1\%} & 76.3\% & \textbf{83.5\%}\\
-              & Tint    & 90.3\% & 62.1\% & 73.6\%\\
-              & Trie\ac{ner}    & 76.7\% & 34.6\% & 47.7\%\\
-              & Combination  & 81.5\% & \textbf{79.9\%} & 80.7\%\\
-        \hline
-        Location      & \spacy   & 35.4\% & \textbf{90.8\%} & 51.0\%\\
-                      & Tint    & 49.2\% & 82.6\% & \textbf{61.7\%}\\
+        \texttt{Person}        & \spacy   & \textbf{92.1} & 76.3 & \textbf{83.5}\\
+              & Tint    & 90.3 & 62.1 & 73.6\\
+              & Trie\ac{ner}    & 76.7 & 34.6 & 47.7\\
+              & Combination  & 81.5 & \textbf{79.9} & 80.7\\
+        \midrule
+        \texttt{Location}      & \spacy   & 35.4 & \textbf{90.8} & 51.0\\
+                      & Tint    & 49.2 & 82.6 & \textbf{61.7}\\
                       & Trie\ac{ner}    & - & - & -\\
-                      & Combination  & \textbf{59.9\%} & 60.1\% & 60.0\%\\
-        \hline
-        Organization  & \spacy   & 58.2\% & 40.9\% & 48.1\%\\
-                      & Tint    & 65.6\% & 56.5\% & \textbf{60.7\%}\\
-                      & Trie\ac{ner}    & \textbf{90.0\%} & 00.2\% & 00.5\%\\ % TODO togliere: we omit trie org because the number of org is not statistically relevant
-                      & Combination  & 34.2\% & \textbf{92.0\%} & 49.9\%\\
-        \hline
-        Date          & \spacy   & - & - & -\\
-                      & Tint    & \textbf{83.7\%} & \textbf{55.2\%} & 66.5\%\\
+                      & Combination  & \textbf{59.9} & 60.1 & 60.0\\
+        \midrule
+        \texttt{Organization}  & \spacy   & 58.2 & 40.9 & 48.1\\
+                      & Tint    & 65.6 & 56.5 & \textbf{60.7}\\
+                      & Trie\ac{ner}    & \textbf{90.0} & 0.2 & 0.5\\ % TODO togliere: we omit trie org because the number of org is not statistically relevant
+                      & Combination  & 34.2 & \textbf{92.0} & 49.9\\
+        \midrule
+        \texttt{Date}          & \spacy   & - & - & -\\
+                      & Tint    & \textbf{83.7} & \textbf{55.2} & 66.5\\
                       & Trie\ac{ner}    & - & - & -\\
-                      & Combination  & \textbf{83.7\%} & 55.1\% & 66.5\%\\
-        \hline
-        Money         & \spacy   & - & - & -\\
-                      & Tint    & \textbf{98.1\%} & \textbf{57.3\%} & \textbf{72.3\%}\\
+                      & Combination  & \textbf{83.7} & 55.1 & 66.5\\
+        \midrule
+        \texttt{Money}         & \spacy   & - & - & -\\
+                      & Tint    & \textbf{98.1} & \textbf{57.3} & \textbf{72.3}\\
                       & Trie\ac{ner}    & - & - & -\\
-                      & Combination  & \textbf{98.1\%} & 56.9\% & 72.0\%\\
-        \hline
-        Miscellaneous & \spacy   & .251 & \textbf{04.1\%} & \textbf{07.0\%}\\
+                      & Combination  & \textbf{98.1} & 56.9 & 72.0\\
+        \midrule
+        \texttt{Miscellaneous} & \spacy   & 25.1 & \textbf{4.1} & \textbf{7.0}\\
                       & Tint    & - & - & -\\
                       & Trie\ac{ner}    & - & - & -\\
-                      & Combination  & \textbf{26.4\%} & 03.9\% & 06.8\% \\
-        \hline  \textbf{Overall*} & \spacy   & 63.8\% & 43.2\% & 51.5\%\\
-                      & Tint    & 74.8\% & 60.1\% & 66.6\% \\
-                      & Trie\ac{ner}    & \textbf{76.7\%} & 11.3\% & 19.7\% \\
-                      & Combination  & 66.0\% & \textbf{67.6\%} & \textbf{66.8\%} \\
-        % \hline
+                      & Combination  & \textbf{26.4} & 3.9 & 6.8 \\
+        \midrule  \textbf{Overall*} & \spacy   & 63.8 & 43.2 & 51.5\\
+                      & Tint    & 74.8 & 60.1 & 66.6 \\
+                      & Trie\ac{ner}    & \textbf{76.7} & 11.3 & 19.7 \\
+                      & Combination  & 66.0 & \textbf{67.6} & \textbf{66.8} \\
+        \bottomrule
+        % \midrule
         % \multicolumn{5}{c}{Additional Rule-based Extractors} \\
-        % \hline
+        % \midrule
         % Postal Address       & rule-based & .902 & .881 & .892 \\
         % Law Articles  & rule-based & 1.0 & .702 & .825 \\
-        % \hline
+        % \midrule
         % \multicolumn{5}{c}{Benchmark Comparison**} \\
-        % \hline
+        % \midrule
         % WikiNER~\cite{NOTHMAN2013151} & \spacy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
@@ -557,13 +563,14 @@ The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} e
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{r|ccc}
+    \begin{tabular}{l|rrr}
         % \multicolumn{2}{c|}{\textbf{Task}} & \multicolumn{3}{c}{\textbf{Metric}} \\
-        % \midrule
-        & s-VoxEL-it & r-VoxEL-it & NEEL-IT \\
-        \hline
-        Accuracy  & 88.9\% & 64.7\% & 69.0\% \\
-        R@100 & 96.8\% & 91.5\% & - \\
+        \toprule
+        & \textbf{s-VoxEL-it} & \textbf{r-VoxEL-it} & \textbf{NEEL-IT} \\
+        \midrule
+        \textbf{Accuracy}  & 88.9 & 64.7 & 69.0 \\
+        \textbf{Recall@100} & 96.8 & 91.5 & - \\
+        \bottomrule
     \end{tabular}
     \caption{\ac{nel} results on benchmark datasets: strict (s-) and relaxed (r-) version of Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT@Evalita 2016~\cite{basile2016neelit}. for NEEL-IT, Twitter profile tags (@username) and hashtags (\#tag) were filtered out.}
     \label{tab:nelsota}
@@ -571,28 +578,28 @@ The joint evaluation of \ac{nel} and NIL prediction (independent from \ac{ner} e
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{r|cccc}
+    \begin{tabular}{lr|rrrr}
         % \multicolumn{2}{c|}{\textbf{Task}} & \multicolumn{3}{c}{\textbf{Metric}} \\
-        % \midrule
-        \multicolumn{1}{l|}{\textbf{\ac{nel}}} & & & & \\
-        Accuracy & 73.5\% & & & \\
-        R@100 & 90.8\% & & & \\
+        \toprule
+        \textbf{\Acl{nel}} & Accuracy & 73.5 & & & \\
+        & Recall@100 & 90.8 & & & \\
         \midrule
-        \multicolumn{1}{l|}{\textbf{NIL prediction}} & P & R & F$_1$ \\
-        NIL & 92.2\% & 86.5\% & 89.2\% \\
-        $\neg$NIL & 58.5\% & 72.0\% & 64.5\% \\
+        \textbf{NIL prediction} & & \textbf{Precison} & \textbf{Recall} & \textbf{F$_1$} \\
+        & NIL & 92.2 & 86.5 & 89.2 \\
+        & $\neg$NIL & 58.5 & 72.0 & 64.5 \\
         \midrule
-        \multicolumn{1}{l|}{\textbf{NIL clustering}} & P & R & F$_1$ \\
-        MUC & 71.9\% & 83.9\% & 77.4\% \\
-        B$^{3}$ & 16.4\% & 60.1\% & 25.8\% \\
-        CEAF$_{e}$ & 07.2\% & 31.7\% & 11.7\% \\
+        \textbf{NIL clustering} & & \textbf{Precison} & \textbf{Recall} & \textbf{F$_1$} \\
+        & MUC & 71.9 & 83.9 & 77.4 \\
+        & B$^{3}$ & 16.4 & 60.1 & 25.8 \\
+        & CEAF$_{e}$ & 7.2 & 31.7 & 11.7 \\
         \midrule
         % \multicolumn{1}{l|}{\textbf{\ac{nel} \& NIL prediction}} & Accuracy & & \\
         % in KB     & .468  &   &   \\ 
         % NIL    & .919  &   &   \\
         % All               & .791  &   &   \\
-        \multicolumn{1}{l|}{\textbf{\ac{nel} \& NIL prediction}} & in KB & NIL & All \\
-        Accuracy & 46.8\% & 91.9\% & 79.1\% \\
+        \textbf{\Ac{nel} \& NIL prediction} & & \textbf{in \ac{kr}} & \textbf{NIL} & \textbf{All} \\
+        & Accuracy & 46.8 & 91.9 & 79.1 \\
+        \bottomrule
     \end{tabular}
     \caption{\textit{Atomic} evaluation of the knowledge consolidation tasks.}
     \label{tab:nereval:atomic}
@@ -605,12 +612,14 @@ Finally, Table~\ref{tab:nereval:withlink} reports the evaluation with the end-to
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|lll}
-        & P & R & F$_1$ \\
-        \hline
+    \begin{tabular}{lrrr}
+        \toprule
+        & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
+        \midrule
         % approximate-typed % luogo organizzazione persona, no altro data denaro 
-        approximate linking      & 59.8\% & 68.9\% & 64.0\% \\
-        approximate-typed linking & 52.3\% & 60.9\% & 56.3\% \\
+        Approximate linking      & 59.8 & 68.9 & 64.0 \\
+        Approximate-typed linking & 52.3 & 60.9 & 56.3 \\
+        \bottomrule
     \end{tabular}
     \caption{\textit{end-to-end} \ac{ner}, \ac{nel}, and NIL prediction evaluation.}
     \label{tab:nereval:withlink}
