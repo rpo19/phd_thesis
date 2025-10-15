@@ -284,24 +284,25 @@ In order to investigate which component of the pipeline has a stronger contribut
 % This happens since the surface form, varies between train and test set~\cite{Onoe_Durrett_2020}
 % Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
 
-The results of the most relevant experiments are reported in \Cref{tab:superresults}.
-We can see that the performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive compared to more complex models of state of the art: in particular, GENRE~\cite{decao2021autoregressive} obtains a R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$---on mention-entity paris unseen at training-time---which are quite similar to ours (excluding error propagation).
+The results of the experiments are reported in \Cref{tab:superresults}.
+The performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive with more complex models, such as GENRE~\cite{decao2021autoregressive}, which achieves R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$---on mention--entity pairs unseen at training time---values that are very close to ours (excluding error propagation).
 
-The drop in performance, as expected, is due to the error propagation in the incremental procedure and not to a poor \ac{nel} model. Indeed, in the ``correct'' experiment, there is no performance drop caused by the error propagation.
+As expected, the observed performance drop is mainly due to error propagation in the incremental procedure rather than to limitations of the \ac{nel} model itself. 
+Indeed, in the ``correct'' experiment, where errors are prevented from propagating, the performance remains stable across batches.
+
+The NIL prediction component, despite its high precision, suffers from low recall, leading to a large number of false negatives---or \emph{false links}, that is, mentions incorrectly predicted as non-NIL and linked to the \ac{kr} while actually referring to new entities.
+Errors from the NIL predictor introduce two critical issues in the pipeline.
+First, each false positive---or \emph{false NIL}, i.e., a non-NIL mention incorrectly classified as NIL---creates a spurious entity.
+This results in redundant representations of the same entity in the \ac{newkr} and increases error propagation across batches, since mentions linked to these spurious entities in later steps are counted as errors.
+For this reason, to mitigate error propagation over time, achieving higher precision is preferable to higher recall, as \emph{false links} count as local errors but do not cause propagation by polluting the \ac{newkr} with redundant entities.
+
+\Cref{fig:clusters} shows the number of predicted clusters as a function of their size, together with the expected distribution. 
+The general agreement between the two indicates that the pipeline does not overproduce clusters, and that the high precision yields cluster sizes broadly consistent with the expected values.
 
 
 
-
-The NIL prediction component, despite the high precision, suffers in recall, therefore yielding a high number of false negatives---or \emph{false link},mentions that are predicted as non-NIL and linked to the \ac{kr} while they were NIL referring to a new entity.
-Errors from the NIL predictor introduce two critical problems in the pipeline. First, each false positive---or \emph{false NIL}, a non-NIL mentions predicted as NIL---produce a new entity. This adds redundant representations of the same entities to the \ac{newkr} and increases error propagation through batches, since all the mentions linked to these incrrect and redudant entities in the next time-steps are errors.
-For this reason, to mitigate error propagation through time, it is preferable to achieve higher precision than higher recall, since \emph{false links} are errors but do not cause error propagation by populating the \ac{newkr} with redundant entities.
-
-To visualize an overview of the process, \Cref{fig:clusters} shows that the number and size of clusters predicted by the pipeline is approximately as expected in the test set.
-High precision and low recall translates in a lower number of clusters, for the most representing novel entities; while a high recall and low precition translates in a higher number of false representations of entities already included in the \ac{bgkr}.
-
-
-With respect to the NIL clustering, analyzing and well understanding this component is fundamental, since it has side effects that propagate through following steps, and therefore presents different results if run one batch by one or on a single pass.
-Among the evaluated approaches the top-performing one is the 3-step; the reason could be that this method exploit a combination of lexical and semantic similarities between the mentions, while the other two ($\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$) only exploit semantic dense representations.
+% Regarding NIL clustering, analyzing and understanding this component is crucial, since it produces side effects that propagate through subsequent steps, leading to different outcomes when evaluated incrementally versus in a single pass.
+Among the evaluated approaches, the top-performing one is the \textit{3-step} method, likely because it combines both lexical and semantic similarities between mentions, while the other two ($\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$) rely exclusively on dense semantic representations.
 
 
 % Results, as expected, are higher in the single-pass experiment than in the incremental one: this is due to the propagation of error through time in the index updating.
