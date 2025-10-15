@@ -63,7 +63,7 @@ The logistic regression output lies in $[0,1]$ and represents the confidence tha
     \centering
 \begin{tabular}{lrrr}
 \toprule
-F$_1$ &  NIL &  not-NIL &  $\overline{F$_1$}$  \\
+F$_1$ &  NIL &  $\neg$NIL &  macro F$_1$  \\
 
 \midrule
 Max                               &  15.2 &  82.7 &          48.9 \\
@@ -103,7 +103,7 @@ Although including all mention vectors yields the highest recall, we adopt the m
 \begin{threeparttable}
     \caption{Recall@k results of the linking from scratch experiment (on AIDA~\cite{aida}) with retrieval time and the disk usage of each indexing configuration. The indexes were created using FAISS~\cite{faiss} IndexFlatIP class\tnote{1}.}
     \label{tab:new_entities_recall}
-    \begin{tabular}{l|cccc|ccc}
+    \begin{tabular}{l|rrrr|rrr}
         \toprule
          & \textbf{R@1} & \textbf{R@3} & \textbf{R@10} & \textbf{R@30} & \textbf{Vectors} & \textbf{Time (s)} & \textbf{Disk Usage (MB)} \\
          \midrule
@@ -279,7 +279,7 @@ In order to investigate which component of the pipeline has a stronger contribut
 % Being a binary classification, the NIL predictor performance is measured with precision and recall,
 % TODO ENSURE (normalized by the support)
 %As shown in \Cref{scores:nil_predictor}.
-% The NIL prediction component show high precision scores that grow from $b_0$ to $b_9$. Intuitively, this means that the number of false positives---non-NIL mentions predicted as NIL, in our case---is decreasing over the batches. 
+% The NIL prediction component show high precision scores that grow from $b_0$ to $b_9$. Intuitively, this means that the number of false positives---$\neg$NIL mentions predicted as NIL, in our case---is decreasing over the batches. 
 
 % This happens since the surface form, varies between train and test set~\cite{Onoe_Durrett_2020}
 % Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
@@ -290,9 +290,9 @@ The performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is compet
 As expected, the observed performance drop is mainly due to error propagation in the incremental procedure rather than to limitations of the \ac{nel} model itself. 
 Indeed, in the ``correct'' experiment, where errors are prevented from propagating, the performance remains stable across batches.
 
-The NIL prediction component, despite its high precision, suffers from low recall, leading to a large number of false negatives---or \emph{false links}, that is, mentions incorrectly predicted as non-NIL and linked to the \ac{kr} while actually referring to new entities.
+The NIL prediction component, despite its high precision, suffers from low recall, leading to a large number of false negatives---or \emph{false links}, that is, mentions incorrectly predicted as not NIL ($\neg$NIL) and linked to the \ac{kr} while actually referring to new entities.
 Errors from the NIL predictor introduce two critical issues in the pipeline.
-First, each false positive---or \emph{false NIL}, i.e., a non-NIL mention incorrectly classified as NIL---creates a spurious entity.
+First, each false positive---or \emph{false NIL}, i.e., a $\neg$NIL mention incorrectly classified as NIL---creates a spurious entity.
 This results in redundant representations of the same entity in the \ac{newkr} and increases error propagation across batches, since mentions linked to these spurious entities in later steps are counted as errors.
 For this reason, to mitigate error propagation over time, achieving higher precision is preferable to higher recall, as \emph{false links} count as local errors but do not cause propagation by polluting the \ac{newkr} with redundant entities.
 
@@ -346,19 +346,19 @@ Among the evaluated approaches, the top-performing one is the \textit{3-step} me
 3-step & MUC F$_1$       &  \textbf{96.84} &  \textbf{95.97} &  \textbf{95.89} &  \textbf{96.49} &  \textbf{96.96} &  \textbf{97.10} &  \textbf{96.94} &  \textbf{97.48} &  \textbf{97.26} &  \textbf{97.48} &  \textbf{96.84} & \textbf{97.38} \\
 & B3 F$_1$        &  \textbf{97.43} &  \textbf{97.07} & \textbf{96.73} &  \textbf{96.25} &  \textbf{96.48} &  \textbf{96.66} &  \textbf{96.11} &  \textbf{97.14} &  \textbf{95.79} &  \textbf{96.55} &  \textbf{96.62} & \textbf{94.36} \\
 & CEAF F$_1$      &  \textbf{95.16} &  \textbf{94.43} &  \textbf{93.10} &  \textbf{93.02} &  \textbf{92.56} &  \textbf{93.15} &  \textbf{92.38} &  \textbf{93.35} &  \textbf{92.49} &  \textbf{93.26} &  \textbf{93.29} & \textbf{82.27} \\
-& $\overline{F$_1$}$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
+& macro F$_1$       &  \textbf{96.48} &  \textbf{95.82} &  \textbf{95.24} &  \textbf{95.25} &  \textbf{95.33} &  \textbf{95.63} &  \textbf{95.14} &  \textbf{95.99} &  \textbf{95.18} &  \textbf{95.76} &  \textbf{95.58} & \textbf{91.34} \\
 \hline
 % & Greedy    &&&&&&&&&&&& \\
 $\text{GNN}_\text{B}$ & MUC F$_1$       &  86.48 &  84.22 &  84.55 &  87.65 &  89.23 &  89.60 &  89.30 &  91.07 &  90.88 &  91.05 &  88.40 & 91.56 \\
 & B3 F$_1$        &  91.33 &  90.12 &  89.07 &  90.34 &  90.92 &  90.74 &  90.36 &  91.69 &  91.72 &  91.92 &  90.82 & 86.46 \\
 & CEAF F$_1$      &  84.96 &  83.94 &  80.62 &  81.65 &  80.95 &  81.58 &  80.77 &  82.57 &  81.38 &  81.14 & 81.96  & 64.61  \\
-& $\overline{F$_1$}$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
+& macro F$_1$ &  87.59 &  86.09 &  84.75 &  86.54 &  87.03 &  87.31 &  86.81 &  88.44 &  87.99 &  88.04 &  87.06 & 80.88 \\
 \hline
 % & Feature    &&&&&&&&&&&& \\
 $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  28.37 &  28.16 &  27.67 &  28.53 &  26.69 &  29.17 &  29.66 &  65.18 \\
 & B3 F$_1$        &  71.66 &  65.16 &  58.68 &  56.80 &  55.03 &  54.78 &  53.31 &  54.40 &  51.89 &  51.16 &  57.29 & 48.83 \\
 & CEAF F$_1$      &  62.72 &  56.91 &  49.09 &  47.01 &  44.90 &  44.60 &  43.24 &  44.22 &  41.66 &  40.46 &  47.48 & 35.89 \\
-& $\overline{F$_1$}$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
+& macro F$_1$ &  56.82 &  51.04 &  46.27 &  44.55 &  42.77 &  42.51 &  41.41 &  42.39 &  40.08 &  40.26 &  44.81 & 49.96 \\
 \hline
 \textbf{Overall} & (a) Link     &  65.67 &  56.05 &  49.68 &  46.36 &  41.69 &  39.87 &  36.67 &  35.29 &  33.99 &  33.46 &  43.87 & \\
 & (b) NIL      &  42.00 &  38.46 &  51.35 &  32.35 &  60.00 &  50.00 &  41.18 &  46.67 &  44.44 &  37.93 &  44.44 & \\
@@ -376,7 +376,7 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 \textbf{NIL} & MUC F$_1$       &  100.0 &  80.00 &    -- &  100.0 &  66.67 &  66.67 &    -- &  100.0 &   -- &    -- &  51.33 & \\
 \textbf{Clust} & B3 F$_1$        &  100.0 &  97.26 &  100.0 &  100.0 &  95.65 &  97.78 &  100.0 &  100.0 &  97.14 &  100.0 &  98.78 & \\
 3-step & CEAF F$_1$      &  100.0 &  96.89 &  100.0 &  100.0 &  94.53 &  96.12 &  100.0 &  100.0 &  95.24 &  100.0 &  98.28 & \\
-& $\overline{F$_1$}$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
+& macro F$_1$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
     \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
