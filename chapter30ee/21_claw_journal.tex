@@ -22,7 +22,7 @@ In summary, the main contributions of this work on \ac{ee} applied to Italian ci
     \item Comparative study of domain adaptation techniques, highlighting which approaches provide the best trade-off between computational cost and performance improvement.
 \end{itemize}
 
-The remainder of this section is organized as follows: \Cref{sec:judgements_labeled_data} describes the creation of the labeled benchmark dataset; \Cref{sec:italian_ee_pipeline} presents the Italian \ac{ee} pipeline; and \Cref{sec:judgment_ee_eval} reports the experimental evaluation.
+The remainder of this section is organized as follows: \Cref{sec:judgements_labeled_data} describes the creation of the labeled benchmark dataset; \Cref{sec:italia_ee_pipeline} presents the Italian \ac{ee} pipeline; and \Cref{sec:judgment_ee_eval} reports the experimental evaluation.
 
 \todo{italian ee? where?}
 
@@ -93,7 +93,11 @@ To assess the quality of the annotations and the clarity of the guidelines we co
 % These documents were sampled at different timestamps in order to be representative since the annotators became more confident over time.
 
 
-Inter-annotator agreement measures such as \textit{Scott's~$\pi$}, \textit{Cohen's~$\kappa$}, \textit{Fleiss'~$\kappa$}, and \textit{Krippendorff's~$\alpha$} were developed to correct observed agreement for the portion that may occur purely by chance~\cite{vanOest2019}. In other words, these measures estimate how much of the observed consistency between annotators exceeds what would be expected if both raters assigned categories independently according to their own labeling probabilities~\cite{HayesKrippendorff2007}. Formally, they compare the observed agreement $P_o$ to the expected agreement $P_e$ under a chance model, and express reliability as $(P_o - P_e)/(1 - P_e)$.
+Inter-annotator agreement measures such as \textit{Scott's~$\pi$}, \textit{Cohen's~$\kappa$}, \textit{Fleiss'~$\kappa$}, and \textit{Krippendorff's~$\alpha$} were developed to correct observed agreement for the portion that may occur purely by chance~\cite{vanOest2019}. In other words, these measures estimate how much of the observed consistency between annotators exceeds what would be expected if both raters assigned categories independently according to their own labeling probabilities~\cite{HayesKrippendorff2007}.
+Formally, they compare the observed agreement $P_o$ to the expected agreement $P_e$ under a chance model, and express reliability as
+\begin{equation}
+    (P_o - P_e)/(1 - P_e).
+\end{equation}
 
 However, these measures may not be suitable for complex labeling tasks such as \ac{ner}, providing low interpretability values~\cite{braylan2022measuring}. A problem of these measures for \ac{ner} is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however thish would yield overly optimistic IAA value. For example, \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} would be considered as a perfect match and the high number of negatives---i.e., the tokens outside of entity mentions---causes the calculation of the metrics on a very imbalanced data~\cite{deleger2012building}.
 
@@ -149,12 +153,12 @@ The larger portion of 814 refers to NIL entities, as expected within the conside
 
 
 \subsection{Italian Incremental Entity Linking Pipeline}
+\label{sec:italia_ee_pipeline}
 \todo{pipeline in italian}
 \todo{compare and merge with incremental pipeline}
 \todo{ner here uses combination of \spacy, tint, triener. ground triener as an efficient dictionary based approach (cite giang-ner-gazetteer-trie-2014)}
 \todo{aixia no clustering, wise clustering updated}
 % example trie gazzeteer link.springer.com/chapter/10.1007/978-3-319-06569-4_19
-\label{sec:italia_ee_pipeline}
 
 Inspired by the \ac{inel} pipeline described in \Cref{sec:ijckg:pipeline} and inspired by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline-based system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
 For \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE. These methods are described in detail in the remainder of this section.
@@ -167,22 +171,22 @@ Figure~\ref{tab:algotypes} illustrates the supported types by each \ac{ner} extr
 
 \begin{table}[H]
     \centering
-    \scalebox{.7}{
+    % \scalebox{.7}{
         \begin{tabular}{l|cccc|c|c|c}
-            \multirow{2}{*}{Types}      & \multicolumn{4}{c|}{\ac{ner}}              & \multirow{2}{*}{\ac{nel}}  & \multirow{2}{*}{NIL pred.}    & \multirow{2}{*}{NIL clust.} \\
-                                    & \spacy & Tint  & Trie\ac{ner}*  & Combination    &                       &                               & \\
+            \multirow{2}{*}{Types}      & \multicolumn{4}{c|}{\textbf{\Acl{ner}}}              & \multirow{2}{*}{\textbf{\ac{nel}}}  & \multirow{2}{*}{\textbf{NIL pred.}}    & \multirow{2}{*}{\textbf{NIL clust.}} \\
+                                    & \Spacy & Tint  & Trie\ac{ner}*  & Combination    &                       &                               & \\
             \midrule
-            Person         & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
-            Location       & \ding{51} & \ding{51} & -             & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            \texttt{Person}         & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            \texttt{Location}       & \ding{51} & \ding{51} & --             & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
             % + Address       & RAE    & -         & -         & -             & -           & Map         & Implicit   & Implicit \\
-            Organization   & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
-            Money          & -         & \ding{51} & -             & \ding{51}   &     -        & -          & -  \\
-            Date           & -         & \ding{51} & -             & \ding{51}   &     -       & -          & -  \\
-            Miscellaneous  & \ding{51} & -         & -             & \ding{51}   &     -        & -          & -  \\
+            \texttt{Organization}   & \ding{51} & \ding{51} & \ding{51}*    & \ding{51}   & \ding{51}        & \ding{51} & \ding{51}   \\
+            \texttt{Money}          & --         & \ding{51} & --             & \ding{51}   &     --        & --          & --  \\
+            \texttt{Date}           & --         & \ding{51} & --             & \ding{51}   &     --       & --          & --  \\
+            \texttt{Miscellaneous}  & \ding{51} & --         & --             & \ding{51}   &     --        & --          & --  \\
             % + Law article   & RAE    & -         & -         & -             & -           & Normattiva  & Implicit          & Implicit  \\
         \end{tabular}
-        }
-    \caption{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type ``person'' and ``organization'', since the knowledge base (derived from documents metadata) of reference is limited to these two types.}
+        % }
+    \caption{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type \texttt{Person} and \texttt{Organization}, since the knowledge base (derived from documents metadata) of reference is limited to these two types.}
     % (``Implicit'' derives from RAE, since rule-based additional extractors perform recognition and linking as a whole)
     \label{tab:algotypes}
 \end{table}
@@ -266,7 +270,7 @@ In the remaining of this work we will refer to the BLINK model trained for the I
 
 NIL prediction has been trained with the same Wikipedia-based dataset used to train the \ac{nel} model. Different combinations of input features have been evaluated. The ones we are currently using are the \ac{nel} score of the top-ranked entity and the difference between the top score and the score of the second-best candidate.\todo{simlarly to ijckg??}
 
-For NIL prediction, as in \textcite{ijckg2022} and \Cref{sec:incrementalel:pipeline}, we use a \textit{logistic regression classifier} considering as input features:
+For NIL prediction, as in \textcite{ijckg2022} and \Cref{sec:ijckg:pipeline}, we use a \textit{logistic regression classifier} considering as input features:
 \begin{enumerate}
     \item the \ac{nel} score of the top-ranked entity;
     \item the difference between the top-ranked entity score and the second-best one (\textit{secondiff}).
@@ -277,7 +281,7 @@ It produces an output $p \in [0,1]$, where $1$ means the top-ranked entity is co
 % In this way, each cluster from the first step is divided into sub-clusters.
 % Finally, semantically similar sub-clusters are merged together, according to the distance between their medoid vectors.
 
-The NIL clustering approach is the three-step clustering method described in \Cref{sec:incrementalel:pipeline}, where thresholds are obtained with grid search using the same Wikipedia-based dataset used to train the \ac{nel} model.
+The NIL clustering approach is the three-step clustering method described in \Cref{sec:ijckg:pipeline}, where thresholds are obtained with grid search using the same Wikipedia-based dataset used to train the \ac{nel} model.
 
 % The NIL prediction and NIL clustering approaches are based on incremental extraction methods from English documents~\cite{ijckg2022}.
 
