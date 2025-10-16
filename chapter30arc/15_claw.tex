@@ -1,0 +1,150 @@
+\section{Architecture}\label{conclusionearchi}
+
+\label{sec:arch}
+%In Section~\ref{ssec:archview} we describe the main logical components and their functions, later, in Section~\ref{ssec:archimpl} we will concentrate on a specific implementation.
+%\subsection{View}
+%\label{ssec:archview}
+% \todo{ricordare gli obiettivi a cui questa sezione risponde: RQ2}
+The software architecture is the foundational structure that shapes the design and development of a software system. It serves as the blueprint for creating robust, scalable, and maintainable applications. The main characteristics of software architecture are pivotal in determining how well a system will perform, adapt, and evolve over time. These characteristics define the essence of the architecture and guide decisions throughout the development lifecycle. The main objective of our proposal is to define a full stack system capable of supporting the main functional characteristics such as: \textit{i)} document analysis and entity extraction, \textit{ii)} centralized annotation management \textit{iii)} storage persistent and univocal of the identified entities and \textit{iv)} the intra-documental and inter-documental search and entity management functions.  Furthermore, the modeling and design of the architecture must also take into consideration characteristics not related to the functionalities, in particular in our case we propose an architecture that takes into consideration the following Non-Functional Requirements (NFR):
+\begin{itemize}
+    \item scalability: it must be possible to add documents just increasing storage and computing resources, with no needs of system reconfiguration,
+    \item extensibility: it must be possible to add new document types with their metadata, new User Interfaces and new services, with no impacts on the non involved systems and data,
+    \item availability: subsystems must not suffer from changes, fixes, additions or just operation of other systems.
+\end{itemize}
+
+
+The main components of our architecture are described in the following paragraphs.
+
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=4.5in]{arch_view.png}
+\caption{Architecture sketch}
+\label{archview}
+\end{figure}
+
+%%%%%%%
+% descrivere i componenti nell'insieme con riferimento all'immagine. poi drill-down
+% spostare qui i contenuti di final considerations
+%%%%%%%
+
+% \todo{remind of RQ2 and briefly recap the objectives at high level}
+
+%\begin{enumerate}
+    %\item 
+    \textbf{The Document Storage (DS).}
+    The DS maintains document texts and  metadata as they can be found in the source systems. It is equipped with APIs to import, export, update and query the document using both text and metadata search. Multiple copies of the same document can be stored, e.g. the raw text and preprocessed versions where some data cleaning has been done. It has been implemented as an ElasticSearch\footnote{ElasticSearch (https://www.elastic.co/) is a distributed, free and open search and analytics engine for textual, numerical, geospatial, structured, and unstructured data.} repository, with the possibility to manage several indexes each with proper metadata to store different document types. 
+    All the metadata described in section~\ref{casestudy} have been used for indexing; texts have been cleaned before import.
+
+    %\item 
+    \textbf{The Query Layer (QL).} 
+    The QL interfaces the DS and the annotation database (see below) exposing APIs to query both data, so that client programs do not interface directly the data storage components. The output is in the format used by GateNLP\footnote{where GATE stands for General Architecture for Text Engineering, a suite of tools for natural language processing; see e.g.~\cite{gate2002}} to represent documents, annotations and document features. 
+    %It has been written as a python server that interfaces the data components (DS and AD) and renders the data in the GateNLP json format. 
+    Presently the QL is not equipped with a complete Access Control mechanism or component, just a simple login mechanism is provided. The main API is used to query the documents choosing logical expressions for the metadata, annotations and text content, with the option to choose which metadata must be returned; pagination is supported. Another API is used to add annotations.
+    
+    %\item 
+    \textbf{The Front End User Interfaces (UI).} 
+    %must be provided, allowing a user to manage the documents and to request run of analysis services. It is expected that the UI can show documents with highlighted annotations. The UI will of course use the QL APIs; users and roles management, login functions and the other usual front end tasks are of course provided, but we will not describe here the Access Control component. 
+    Several UI have been provided. The \textbf{Search UI} prompts the user to enter the metadata and annotations to query, with values and logical operators, the word or sentence to look for in the document text and the data to display. The output is shown in tabular form, with links to show the raw text and to open the UI for single documents. Then the user may select to run an analysis (performed by a Service System, see below) on the query result. The UI interfaces the Request Management to queue the request.
+%    that is in a hold state until the user releases it. 
+    A dedicated management section of the UI shows the pending, running and terminated requests with messages and results details. 
+    
+    The \textbf{Document UI}, shown in the bottom of Figure~\ref{fig:overview}, receives the annotated document GateNLP data from the QL and displays the text highlighting the annotations, that are quotes of entities. 
+    %Several functions are available at this stage:  
+    The user can choose the annotation sets to display/hide (i.e., showing annotations obtained using different algorithms); clicking an annotation shows details, such as its type hierarchy, links to external sources (e.g. Wikipedia, Google Maps, the database of Italian laws, etc.); alternative links. Users can modify or delete annotations. They can create new annotations and new annotation types.
+    %choosing a type in the common taxonomy or creating a new type and highlighting the text containing the quotation. 
+    Moreover the UI shows the clusters of entities quoted in the document.
+    %, that is an Entity Registry at document level. 
+    Entities, grouped by type, are shown in a side bar and can be expanded to show clusters (e.g. the cluster of mentions of John Smith) and to navigate to the related text section. 
+    
+    The \textbf{Data Scientist UI} is just a general purpose notebook, that needs programmer skills by the user. The \textbf{Entity Registry UI} has both functions to query and maintain the ER metamodel, and functions to manage the entities, that is to search entities in the documents, highlight their attributes, perform merge and split operations.
+
+    %\item 
+    \textbf{The Request Management (RM).} 
+    It is used to request that a specific service is run against a set of documents. Its APIs are called by the UI when the user wants to create a request or to check the status of their previous requests.  It must be able to store parameters provided by the users and to forward them to the service systems. This may happen using queues or any other suitable mechanisms. It has been implemented as a queue system, using Apache Kafka, an open-source distributed event streaming platform, where the SS can find parameters to get the documents to work. It maintains a table with tasks, their results and statuses.
+    
+    %\item 
+    \textbf{The Annotation Database (AD).} 
+    It stores annotations computed by the service systems. Annotations refer to specific portions of document texts and hold information about entities, sentences, sections and so on. 
+    %The AD must expose its APIs to manage the annotations, used by the QL. 
+    The AD has been implemented as a SQL database. The main columns are: the identifiers of the SS that created the annotation and of the document where it was found; the start and end position in the document; the annotation keyword (e.g., ``person'', ``organization'', etc.) and value; a field for extra features, in json format, that depend on the annotation type (e.g. external links, notes, etc.)
+
+    %\item 
+    \textbf{The Service Systems (SS).} 
+    Any SS receive as input texts and annotations and compute either new annotations or new text versions (e.g. after cleaning some type of garbage or summarizing and so on). They use the QL APIs to get the data and to store their output, read parameters from the RM system and expose standard APIs to be called by it.
+
+Examples of Service Systems include algorithms that extract fixed format expressions, such as Italian Fiscal Codes, car plates, and phone numbers, but also algorithms that extract more complex and variable expressions like postal addresses and references to law articles.
+
+% Services of the first type are based on regular expressions; services of the second types are simple parsers, that can identify some dispositions of regular expressions.
+
+%For instance, postal addresses can consist of a constant like \textit{street}, \textit{str.}, \textit{square} that can be found in a list; a name; a number (in several formats); a zip code (fixed format); a region; a city (that can be checked in a table). Some elements are optional and several dispositions are considered (e.g. starting with the street or starting with the city, and so on).
+
+
+% On a sample of 100 documents that were manually checked, containing a total of 208 postal addresses, 184 were correctly identified, 20 partly or with some errors and 4 were not found. The same sample contained 360 references to laws, of which 356 identified and 4 not found. 
+
+Finally, a basic rule-based cleaning service was provided, that removes unnecessary line feeds, page headings (e.g. page numbering, and so on), and repeated sets of lines of a few characters. This last case applies when a page, that has been scanned and processed by an Optical Character Recognizer, contained a vertical writing like a long stamp in the margin. 
+    %\item 
+    
+    \textbf{The Entity Registry (ER).}
+    The ER is a system where each entity found by the SS and stored in the AD has a unique entry used for disambiguation. Moreover, queries based on ER entries can be run against all the documents in the system. A general ER model has been described for instance in~\cite{bellandi2023} and an application to another legal context in~\cite{batini2021}.  
+It consists of a metamodel and a database of entries. The metamodel stores the entity types and, for each type, the set of attributes that suffice to completely identify an instance. An example of an entity type is ``person'' whose identifying set of attributes might be \textit{personal code} and the tuple \textit{(first name(s), last name, birth date, birth place)}.
+The ER exposes APIs to store, retrieve and manage both the metamodel and the instances. The ER has been implemented as a graph database using Neo4j\footnote{A graph databases stores nodes and relationships instead of tables or documents and Neo4j (https://neo4j.com/) is a well known implementation.} as database manager.
+    %, to hold both the metamodel and the entities themselves. 
+    A dedicated server
+    %, written in python using the Flask web application framework, 
+    interfaces Neo4j and exposes both APIs to manage the metamodel and  
+    %creation, update and query of entity types, with their attributes and identifiers; delete operations were not considered to avoid consistency problems. 
+    APIs to manage the entities.
+    %: creation, update, query and deletion of entities and their attributes, using proper identifiers for each entity type. 
+    When an entity is created, the ER assigns a unique identifier to it. Some special APIs are provided, for instance to \textbf{merge} two entities that have been belatedly recognized to be the same in the real world or to \textbf{split} one, when two real world entities have been erroneously considered the same.
+%    : extended query, merge and split. The \textbf{extended query} API allows a client program to search for an entity, given some attribute values, without knowing exactly the correspondence between attributes and values. A typical case is when a NER program recognizes that \textit{John Smith} is a person, but does not know which is the first or last name. The API looks for entities trying all the possible combinations of \textit{Name, Surname} and \textit{John Smith}. The \textbf{merge} creates a link, with label \textit{merged} between two entities that have been recognized to be the same in the real world. In this way it is not necessary to reprocess documents annotated with the original entities IDs. The \textbf{split} is used when two real world entities have been erroneously considered the same. It creates a new entity of the same type. The API receives a list of 1) attributes that must be copied to the new entity and 2) attributes that must be deleted in the old one. It may happen that, in this process, a new identifier is created in the metamodel to distinguish the split entities from each other. Several Entity Registries can be managed by the same system, the ER name being an attribute of all the entity types and entity instances.
+
+    %\item 
+    \textbf{The Service Catalog (SC).}
+    The SC stores addresses and functions of the available services and of the SS that provide them. The kernel of the SC is a table holding the addresses of the SS, with the names and parameters of the services they provide. When a new SS is added to the catalog, it is immediately callable by the RM service.
+
+    %\item 
+    \textbf{The Service Orchestrator (SO).} It manages workflows of SS to be applied at document sets and to schedule periodic operations, or task needed when a triggering event happens. Using the SO, it is possible to combine any services to implement complex workflows; for instance we created a workflow to feed the ER with entities acting as plaintiff, defendant or lawyers. The first service finds the preamble in the judgment; then are run services to find persons and organizations, fiscal codes, dates, places and postal addresses in the preambles. Finally another service links each person with their fiscal codes or place and date of birth; each organization with its fiscal code; each person and organization with their address (if specified). Resulting persons and organizations are added to the ER, using their names and fiscal codes or birth data as identifiers. %In this process multiple entities can be created when only incomplete data is available (e.g. neither fiscal code nor birth data is available). An a posteriori service is run, that looks for lawyers sharing their first and last names and addresses, suggesting the user to manually merge these instances.
+%\end{enumerate}
+
+% \todo{sposterei all inizio di questa sezione. ricordando obiettivi,...}
+\textbf{Final Considerations.}
+The situation is sketched in Figure~\ref{archview}, that highlights the main flows of data and control. The central role of the UI reflects the importance of the user in the whole process of knowledge extraction, especially for the validation and management of annotations (so called \acl{hitl}). 
+
+During the architecture design, we considered the following Non Functional Requirements (NFR):
+\begin{itemize}
+    \item scalability: it must be possible to add documents just increasing storage and computing resources, with no needs of system reconfiguration
+    \item extensibility: it must be possible to add new document types with their metadata, new User Interfaces and new services, with no impacts on the non involved systems and data
+    \item availability: subsystems must not suffer from changes, fixes, additions or just operation of other systems
+\end{itemize}
+
+
+% \todo{muovere in concllusioni o discussion risultati}
+The requirement of \textbf{scalability} is addressed by the implementation of the Document Storage and the Annotation Database. The requirement of \textbf{extensibility} to new types of documents and metadata is addressed by the implementation of the Data Storage and the Annotation Database; moreover as the Query Layer produces annotated documents in GateNLP, the consumer programs are not affected by data extensions. Extensibility of User Interfaces and services is guaranteed as they use the Query Layer to read and write the data, are registered in the Service Catalog and run through the Request Manager and the Service Orchestrator.
+The requirement of \textbf{availability} is satisfied as, provided that the data related components (DS, AD and QL) are running, the User Interface(s) and Service Systems can be registered, run, stopped, changed and so on without interfering with each other. As they can be run on different computing units, they have no impacts on the performances of other components.
+%We will give some more details on these topics in Section~\ref{discimple}
+
+%We spend some words to describe some details of the ER, as it is central for our goals (see~\cite{bellandi2023} for a more exhaustive description and~\cite{batini2021} for an application in another context).
+
+
+%An entry is created to identify any instances of each entity type, e.g. $[ID: 1, first name: John, last name: Smith, birth date: 01-01-2000, birth place: anywhere]$, where ID is an unique identifier assigned by the ER system at creation time. This ID can be used to identify quotations of this person everywhere in the documents.
+
+%It may happen that some entities are not fully identifiable at first time, in this case multiple entities can be created, that will be later merged by the user with the help of suggestions by dedicated algorithms. On the other hand, a single entity can be split if it is recognized that two different real world instances are involved.
+
+\section{Wise and Integration with dedicated \ac{kg}}
+dedicated schema/ontology with graph ui
+
+
+\section{Information Access tools}
+
+
+\paragraph{Insights on their quality}
+
+
+\section{Discussion}
+
+As for RQ2, the rule-based additional extractors (RAE) and most of the steps in the full pipeline perform operations that scale linearly with the number of input words. The only exception is NIL clustering, which is sensitive to the number of mentions to cluster that depends on the number of words. However, applying the algorithms to bounded-size documents, and eventually dividing long documents into smaller chunks, allows the system to fulfill the requirement of scalability.
+
+The implemented architecture meets scalability, extensibility, and availability requirements (see section \ref{conclusionearchi}), enabling the processing of annotations for distinct document subsets and seamless expansion by adding nodes for increased document numbers.
+Indeed, several operations are performed by independent systems that can run asynchronously. These operations include the NER algorithms and the rule-based additional extractors, while other services like NEL strictly depend on the previous steps.
+As a consequence, the architecture is compatible with the \textit{map reduce} strategy, allowing the repository of documents to be efficiently loaded and analyzed in stages, and eliminating the need for an expensive \textit{cold start} process.

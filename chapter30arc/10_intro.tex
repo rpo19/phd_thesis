@@ -1,0 +1,72 @@
+\chapter{Data Integration Architecture for Knowledge-Intensive Domains}
+\label{chap:architecture}
+
+This chapter also consolidates the architectural prototypes we implemented across the various works in my \phd.
+Indeed, starting from this works allows for a bottom up approach taking notes of the feedbacks received for the implementations in the two domains of civil judgements and criminal investigations.
+
+\todo{use cases. why useful. users. challenges motivation}
+faceted search, question answering, document exploration, annotation editing?, graph ui
+
+\todo{richiamare principi da intro}
+
+
+% \paragraph{Main challenges addressed in this work}
+% In this work, we address several key challenges that arise when integrating \ac{ai}-based systems in knowledge-intensive and legally relevant domains:
+% \begin{enumerate}[leftmargin=*,label=\textit{Ch.~\arabic*:},ref=\textit{Ch.~\arabic*}]
+%     \item \label{ch:scalability} \emph{Scalability.} Legal and investigative datasets may comprise thousands of heterogeneous documents, requiring solutions that can efficiently process and integrate large volumes of text and metadata.
+%     \item \label{ch:heterogeneity} \emph{Heterogeneity.} The documents vary widely in structure and type---ranging from judgments and contracts to chat logs and structured records---which demands flexible models capable of representing diverse sources within a unified framework.
+%     \item \label{ch:traceability} \emph{Traceability and verifiability.} Users must be able to verify the outcome of \ac{ai}-driven operations by tracing each piece of extracted or inferred information back to its source document~\cite[Art.~15]{ai_act}. Furthermore, without such mechanisms, user trust and accountability in \ac{ai}-assisted decision-making may be compromised~\cite{HAN2024121052legalasst}.
+% \end{enumerate}
+
+% \paragraph{Objectives}
+% Building on these challenges, the central objective of this \phd thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
+% The proposed architecture is guided by the following principles:
+\begin{enumerate}
+    \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
+    \item data model
+    \item uris? for external krs
+    \item kr and eventually local kb
+    \item RAE from claw
+    \item different extractors. also from other domains
+    \item standard format gatenlp. we borrow gatenlp model
+
+    \item \textbf{Traceability and Verifiability}, ensuring that the origin of any extracted information can always be verified. For instance, a user searching for documents mentioning a person must be able to read the exact mention within its context, while a \acl{qa} system should provide references to the text passages supporting its answers.
+    \item keep track of source documents
+    \item annotation-based. what and where
+
+
+    \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality with a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach.
+    \item hitl
+    \item study in claw
+    \item dave modification,\dots
+    \item pipelines (easier to correct all the steps wrt end-to-end ? check in all the thesis)
+    \item merge clusters
+
+    \item \textbf{Scalability} to large and continuously growing document collections.
+    \item microservices and parallelization
+    \item study in claw
+    \item mongo db ? are we so strict in the data db?
+    
+    \item IA UIs for the different use cases
+    
+    \item support for the investigation message use case: navigate in messages (e.g., get messages sent the same day,...)
+    \item concept of subdocument? abstract annotation as subdocument?? annotation come subdocument?
+    \item esempio 1-chat-per-doc e one-msg-per-doc. architettura deve supportare entrambi?! oppure in questi casi meglio usare neo4j?
+    \item oppure neo4j è solo l'implementazione del data model? messaggi = docs con metadati. chat può essere considerata come un documento? ha senso annotarla per intero?
+    \item idea: simulare questo use case e come farlo con data model e architettura
+\end{enumerate}
+%
+% \nilchallenge
+
+prototype? DAVE + IKBP
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\section{Data Model}
+GateNLP~\cite{cunningham-etal-2002-gate,gatenlp}
+
+
+
+
+\section{Architecture}
