@@ -5303,3 +5303,48 @@ url="https://doi.org/10.1007/0-387-25465-X_15"
   url          = {https://gatenlp.github.io/python-gatenlp/},
   note         = {Accessed: 2025-10-16}
 }
+
+@inproceedings{negar_sparse_dense_retrieval_2021,
+author = {Arabzadeh, Negar and Yan, Xinyi and Clarke, Charles L. A.},
+title = {Predicting Efficiency/Effectiveness Trade-offs for Dense vs. Sparse Retrieval Strategy Selection},
+year = {2021},
+isbn = {9781450384469},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3459637.3482159},
+doi = {10.1145/3459637.3482159},
+abstract = {Over the last few years, contextualized pre-trained transformer models such as BERT have provided substantial improvements on information retrieval tasks. Traditional sparse retrieval methods such as BM25 rely on high-dimensional, sparse, bag-of-words query representations to retrieve documents. On the other hand, recent approaches based on pre-trained transformer models such as BERT, fine-tune dense low-dimensional contextualized representations of queries and documents in embedding space. While these dense retrievers enjoy substantial retrieval effectiveness improvements compared to sparse retrievers, they are computationally intensive, requiring substantial GPU resources, and dense retrievers are known to be more expensive from both time and resource perspectives. In addition, sparse retrievers have been shown to retrieve complementary information with respect to dense retrievers, leading to proposals for hybrid retrievers. These hybrid retrievers leverage low-cost, exact-matching based sparse retrievers along with dense retrievers to bridge the semantic gaps between query and documents. In this work, we address this trade-off between the cost and utility of sparse vs dense retrievers by proposing a classifier to select a suitable retrieval strategy (i.e., sparse vs. dense vs. hybrid) for individual queries. Leveraging sparse retrievers for queries which can be answered with sparse retrievers decreases the number of calls to GPUs. Consequently, while utility is maintained, query latency decreases. Although we use less computational resources and spend less time, we still achieve improved performance. Our classifier can select between sparse and dense retrieval strategies based on the query alone. We conduct experiments on the MS MARCO passage dataset demonstrating an improved range of efficiency/effectiveness trade-offs between purely sparse, purely dense or hybrid retrieval strategies, allowing an appropriate strategy to be selected based on a target latency and resource budget.},
+booktitle = {Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
+pages = {2862–2866},
+numpages = {5},
+keywords = {dense retriever, efficiency, query latency, sparse retriever},
+location = {Virtual Event, Queensland, Australia},
+series = {CIKM '21}
+}
+
+@inproceedings{old_ir_methods_rag_2024,
+author = {Huly, Oz and Pogrebinsky, Idan and Carmel, David and Kurland, Oren and Maarek, Yoelle},
+title = {Old IR Methods Meet RAG},
+year = {2024},
+isbn = {9798400704314},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3626772.3657935},
+doi = {10.1145/3626772.3657935},
+abstract = {Retrieval augmented generation (RAG) is an important approach to provide large language models (LLMs) with context pertaining to the text generation task: given a prompt, passages are retrieved from external corpora to ground the generation with more relevant and/or fresher data. Most previous studies used dense retrieval methods for applying RAG in question answering scenarios. However, recent work showed that traditional information retrieval methods (a.k.a. sparse methods) can do as well as or even better than dense retrieval ones. In particular, it was shown that Okapi BM25 outperforms dense retrieval methods, in terms of perplexity, for the fundamental text completion task in LLMs. We extend this study and show, using two popular LLMs, that a broad set of sparse retrieval methods achieve better results than all the dense retrieval methods we experimented with, for varying lengths of queries induced from the prompt. Furthermore, we found that Okapi BM25 is substantially outperformed by a term-proximity retrieval method (MRF), which is in turn outperformed by a pseudo-feedback-based bag-of-terms approach (relevance model). Additional exploration sheds some light on the effectiveness of lexical retrieval methods for RAG. Our findings call for further study of classical retrieval methods for RAG.},
+booktitle = {Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+pages = {2559–2563},
+numpages = {5},
+location = {Washington DC, USA},
+series = {SIGIR '24}
+}
+
+@book{martin1983managing,
+  author    = {James Martin},
+  title     = {Managing the Data-Base Environment},
+  year      = {1983},
+  publisher = {Prentice-Hall},
+  address   = {Englewood Cliffs, New Jersey},
+  isbn      = {0135505828},
+  pages     = {381}
+}
