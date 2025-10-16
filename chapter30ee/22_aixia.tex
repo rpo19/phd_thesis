@@ -22,32 +22,30 @@
 
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
 
-Since we use \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers, as the backbone transformer, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders that vary in the pre-training data. We consider three classes of pre-training data. From the most generic to the most specific, they are general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus of $\approx$900,000 Italian civil court judgments.
-\Cref{tab:backbones} shows all the five different configurations of the \ac{ner} backbone transormer---one per column---and on which data they have been pre-trained\todo{uniform pre-trained or pretrained} with \acf{mlm}. It is important to note that some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are directly pre-trained on legal domain data without any previous training on generic Italian data.
+
+Since we employ \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pre-training data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
+
+\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pre-training data used for each and the masked language modeling (\acf{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
 
 \input{table/backbones}
 
-As a baseline, we consider the general-domain model \textit{ITA}---which is available pre-trained on huggingface\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}.\todo{maybe uniform the citation of hf models}
-Also, \textit{ITA+LGL}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{https://huggingface.co/dlicari/Italian-Legal-BERT-SC} are available pre-trained on huggingface, while for the \textit{ICCJ900k} versions we perform the adaptation with \ac{mlm}.
-Finally, the models, from each of the five configurations, have been fine-tuned for \ac{ner} using the \spacy library with early stopping on the developement set and AdamW~\cite{loshchilov2018decoupled} as the optimizer with the initial learning rate set to $5 \times 10^{-5}$.
+As a baseline, we use the general-domain \textit{ITA} model, which is available pre-trained on HuggingFace as ``dbmdz/bert-base-italian-xxl-cased''\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}~\cite{stefan_schweter_2020_4263142}. Additionally, the \textit{ITA+LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT}}~\cite{licari_italian-legal-bert_2022}and \textit{LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT-SC}} models—developed in a subsequent work by the same authors—are also available pre-trained on HuggingFace. For the \textit{ICCJ900k} variants, we perform adaptation using \ac{mlm}.
+
+All five configurations are then fine-tuned for \ac{ner} with the \spacy library, employing early stopping on the development set. Optimization is performed using AdamW~\cite{loshchilov2018decoupled} with an initial learning rate of $5 \times 10^{-5}$.
 
 \input{table/dataset_stats}
 
-For the \ac{ner} fine-tuning data, we use the annotated corpus ICCJ146-EE, divided in three splits. The 30 documents also annotated for \ac{inel} represents the test set, while for the development set we randomly select 12 documents from the remaining ones, ending up with 102 training documents.  
-\Cref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
+For \ac{ner} fine-tuning, we use the annotated ICCJ146-EE corpus, split into three subsets. The 30 documents annotated for \ac{inel} serve as the test set, while 12 randomly selected documents from the remaining set form the development set, leaving 102 documents for training. \Cref{tab:dataset_stats} presents detailed statistics, including the number of annotations per class.
 
-
-
-For each configuration, we consider five models with a different random weight initialization for the \ac{ner} layers (see \Cref{sec:rw:ner})\todo{describe in rw how ner is performed with BERT}, in order to minimize the bias from the initialization. As a consequence, we perform 25 \ac{ner} fine-tuning.
-
+To reduce bias from random initialization, we train five models per configuration with different random seeds for the \ac{ner} layers (see \Cref{sec:rw:ner}). This results in a total of 25 \ac{ner} fine-tuning experiments.
 
 % \subsubsection{Experimental Evaluation} \label{sez:experiments}
 \todo{adapt with before}
-We consider the same experimental settings as in \Cref{sec:judgment_ee_eval}---namely, \textit{Atomic}, \textit{\ac{nel} with NIL prediction} on ground truth \ac{ner}, and \textit{end-to-end}. Additionally, we investigate the performance with different backbone transformers and the impact of different \ac{mlm} adaptation strategies on the \ac{ner} performance.
-As before, the \ac{nel} and NIL prediction components are applied only to mentions classified as \texttt{Person}, \texttt{Location}, and \texttt{Organization} by the \ac{ner} component.
 
 \paragraph{Evaluation Settings and Measures}
-
+For the evaluation we consider the same experimental settings as in \Cref{sec:judgment_ee_eval}---namely, \textit{Atomic}, \textit{\ac{nel} with NIL prediction} on ground truth \ac{ner}, and \textit{end-to-end}. Additionally, we investigate the performance with different backbone transformers and the impact of different \ac{mlm} adaptation strategies on the \ac{ner} performance.
+As before, the \ac{nel} and NIL prediction components are applied only to mentions classified as \texttt{Person}, \texttt{Location}, and \texttt{Organization} by the \ac{ner} component.
+%
 Please note that the ICCJ146-EE training set is only used to fine-tune the \ac{ner} component. All results refer to the ICCJ146-EE test set. 
 
 % \paragraph{\Acl{ner}}
@@ -57,7 +55,8 @@ Please note that the ICCJ146-EE training set is only used to fine-tune the \ac{n
 We calculate \textit{precision}, \textit{recall}, and \textit{F$_1$-measure}, micro and macro-averaged on the class, and separately for each class.
 
 % \paragraph{Comparison of Backbone Transformers for \ac{ner}}
-The comparison of backbone transformers for \ac{ner} considers five different random weight initializations for each backbone. We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} of the five initializations for each transformer.
+\todo{continue go on}
+We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} of the five initializations for each transformer.
 We identify the top-performing model based on its \textit{F$_1$-measure} and utilize it as the foundation of the \ac{ner} component for subsequent evaluations.
 
 The subsequent evaluations repeat the experiments done in \Cref{sec:judgment_ee_eval} but using the best in-domain fine-tuned \ac{ner} approach. 
