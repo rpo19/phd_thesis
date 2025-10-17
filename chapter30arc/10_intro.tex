@@ -30,12 +30,13 @@ We also borrow the \textbf{availability} requirement from \textcite{BELLANDI2024
 \todo{annotation may be not connected to entities. anns are more general. here document-annotation-entity triad}
 
 \paragraph{Document--Annotation--Entity Triad}
-Before continuing with the functional requirements designed for support domain-specific use cases, we define three core concepts for integrating heterogeneous documents. The first is the \emph{document} itself, which in this work is used in an abstract way as a general unit of data and may be of different granularity depending on the use case---for instance, proper legal documents for precedent case retrieval, or even single chat messages for specific use cases in investigations on \ac{ima} data.\todo{doing this there is the need for propagating modifications to original documents!!! very complex but also interesting. think about it} A document of the \ac{dia} is characterized by \ac{uri}, a name, the text content, and optional key-value metadata. 
+\todo{here should be more abstract. not so specific}
+Before continuing with the functional requirements designed for support domain-specific use cases, we define three core concepts for integrating heterogeneous documents. The first is the \emph{document} itself, which in this work is used in an abstract way as a general unit of data and may be of different granularity depending on the use case---for instance, proper legal documents for precedent case retrieval, or even single chat messages for specific use cases in investigations on \ac{ima} data.\todo{doing this there is the need for propagating modifications to original documents!!! very complex but also interesting. think about it} A document of the \ac{dia} is characterized by \ac{uri}, a name, the text content, and optional key--value metadata. 
 
 The second is the \emph{entity}---a concept so ubiquitous that can integrate highly heterogeneous data, supporting the requirement of generalizability. For the entity we refer to the definition in \Cref{back:entities} and consider the \ac{uri} and the name as the only mandatory properties, while leaving the possibility to store additional properties in metadata. 
 
 Finally, the third is the \emph{annotation}, which \say{connect} \emph{documents} with the mentioned \emph{entities}---respecting the requirements of traceability and verifiability, by allowing the user to visualize where an entity has been mentioned in a document.
-To achieve this objective, an annotation must be characterized by a \ac{uri}, the \ac{uri} of the origin document\todo{force that this allows to backtrack to original documents, even when using a repository derived from annotations. and allows to identify annotations are the same and automatically propagate the modifications in this case or anyway to let the user know which annotations are affected in the original document}, the start and end positions in the document text, the annotation type---defining the purpose of the annotation, e.g., ``\ac{ner}'' or ``\ac{nel}'' for \ac{ner} or \ac{nel} annotations, respectively---and optional metadata---which can contain the \ac{ner}-type for \ac{ner}, or for \ac{nel} \ac{uri} of the entity associated to a ``link'' key.
+To achieve this objective, an annotation must be characterized by a \ac{uri}, the \ac{uri} of the origin document\todo{not true because of annsets. change. more general}\todo{force that this allows to backtrack to original documents, even when using a repository derived from annotations. and allows to identify annotations are the same and automatically propagate the modifications in this case or anyway to let the user know which annotations are affected in the original document}, the start and end positions in the document text, the annotation type---defining the purpose of the annotation, e.g., ``\ac{ner}'' or ``\ac{nel}'' for \ac{ner} or \ac{nel} annotations, respectively---and optional metadata---which can contain the \ac{ner}-type for \ac{ner}, or for \ac{nel} \ac{uri} of the entity associated to a ``link'' key.
 In fact, while we presented annotations for interlinking documents and entities, this concept generalizes beyond solely managing entities to the representation of pieces of documents, which can vary in size and purposes---from few words referring to an entity, to entire document sections.
 
 % The \emph{document--annotation--entity} triad represents, indeed, a corenerstone for our architecture.
@@ -43,12 +44,13 @@ In fact, while we presented annotations for interlinking documents and entities,
 \paragraph{}
 In addition, we define the following functional requirements for supporting the domain-specific use cases considered in this thesis---namely (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring.
 \begin{enumerate}
-    \item \emph{Support for \acf{crud}~\cite{martin1983managing} operations and \acf{uri}~\cite{berners-lee2005uri} } for creating, reading, updating, deleting and universally identifying documents, entities, and annotations---which store at least the position of a mentions in the document and the link to the entities to which it refers to. These operations are necessary to injest documents in the architecture and also to allow \acp{ui}, such as a document explorer, to acquire and show documents to the users.
+    \item \emph{\acf{crud}~\cite{martin1983managing} \acp{api}} for creating, reading, updating, deleting documents, entities, and annotations. However, an important exceptions need to be applied: since the annotations refer and depend on the document text, modifying it should normally be forbidden as it invalidates all the existing annotations. \todo{what happens if i modify a document with annotations?} % uri already required by the data model
+    \item Support for \emph{multiple repositories of documents}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
+    \item Support for \emph{annotation versioning}. Our previous architectural model~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple repositories} and ingest the processed documents in a new repository.
     \item \textit{Retrieval \acp{api}}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}---dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv)---and hybrid retrieval combining both sparce and dense~\cite{negar_sparse_dense_retrieval_2021}. In fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
-    \item \emph{Support for a query language} capable of expressing complex queries to enable advanced statistical analysis. In particular, it should provide functionalities for counting, filtering, and aggregating over documents, entities, and annotations.\todo{make clear what annotations are}
+    \item Support for a \emph{query language} capable of expressing complex queries to enable advanced statistical analysis. In particular, it should provide functionalities for counting, filtering, and aggregating over documents, entities, and annotations.\todo{make clear what annotations are}
     \item \emph{Visualization \acp{ui}} that allow users to visualie documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
     \item \emph{Error correction \acp{ui}} that allow users to access documents and automatic annotations, to correct machine errors in support of the requirement for \emph{error correction capability}.
-    \item \emph{Support for multiple documental repositories}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
 \end{enumerate}
 Moreover, to enable users in pursuing their \acl{ia} needs for the considered use cases multiple \aclp{ui} have been prototyped on top of these functional requirements. These are described in \Cref{sec:iaui}
 
@@ -72,14 +74,106 @@ In that case, using an implementation of the architecture from \textcite{BELLAND
 \todo{say something more about wise and then go for the chapter.}
 
 \todo{continue by saying that these requirements really were already developed, grounding this work. e.g. ijckg add entity}
+\todo{speak more of my papers? e.g. of adptation with rae services? yes also says we extracted articles}
 
-
-\section{Data Model and Exchange Format}
+\section{Data Model and Interchange Format}
 % data model: how data is saved and connected. db + kr? divided conceptually? not necessary at implementation.
 % annotationsets, and annotations as documents
 % properties of annotations,... gate for standard communication and existing apis
 
-GateNLP~\cite{cunningham-etal-2002-gate,gatenlp}
+% \paragraph{Document--Annotation--Entity Triad}
+As anticipated, to support the integration of heterogeneous data sources within a unified representation, we formalize three core concepts: \emph{documents}, \emph{annotations}, and \emph{entities}. These concepts establish the structural basis for storing and integrating heterogeneous data from knowledge-intensive domains. Their design is inspired by the GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} model, as described in its documentation, from which we adopt the notions of documents\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}}, annotations\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation.html}}, and annotation sets\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation_set.html}}---that allows to organize annotations in sets---as well as the use of key--value metadata, corresponding to the ``features'' property of GateNLP objects.
+%
+GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} is a Python framework for natural language processing that provides a flexible representation of documents and annotations, also offering interactive visualization in Jupyter notebooks.
+
+
+To ensure interoperability, we also use GateNLP python objects, serialized in the JSON format~\cite{rfc8259}, for data interchange operations. For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, consist of GateNLP documents serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations.
+This choice also maintain compatibility with GateNLP functions---after deserializing documents into Python objects---which support advanced operations on annotation sets, useful, for instance, to identify overlapping annotations, or annotations contained in another annotation. 
+As a real example, suppose to have a document, derived from a legal judgment, with two annotation sets, one containing annotations for the sections of the judgment, and the second containing \ac{ner} annotation for the people involved in the judgment. For identifying plaintiffs and defendants we usually focus on the beginning of the document with the section ``Identification of the parties''. So given this section, with GatenNLP \acp{api} we are able to obtain which people are mentioned in that section:
+\begin{lstlisting}[language=Python, caption={Example of using GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} \acp{api}.}, label={lst:gatenlp-section-example}]
+from gatenlp import Document
+import json
+
+# Load the JSON serialized document
+with open("judgment_doc.json") as file:
+    raw_doc = json.load(file)
+
+# Deserialize the document
+doc = Document.from_dict(raw_doc)
+
+# Get the annotation sets
+sections = doc.annset("sections")
+people = doc.annset("persons")
+
+# Select the section of interest, in this case the first
+parties_id_section = sections[0]
+
+# Retrieve all person annotations contained in that section
+mentions = people.within(parties_id_section)
+\end{lstlisting}
+
+To clearly define the components of our document--annotation--entity Triad, additionally enriched by annotation sets, we describe each element separately.
+%in the following enumeration. This structured presentation highlights the properties and relationships of documents, annotations, and annotation sets, and clarifies their role in supporting traceability, interoperability, and advanced annotation-based operations.
+
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=2em]
+  \item \textbf{Document.}  
+  A document represents a general unit of data and may vary in granularity depending on the use case---for instance, a legal judgment, a contract, or a single instant messaging message.  
+  Each document is characterized by:
+  \begin{itemize}
+    \item a unique \ac{uri}, ensuring global identifiability;
+    \item a \emph{name}, used as a human-readable label;
+    \item the \emph{text content};
+    \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary.  
+  \end{itemize}
+  Documents serve as the source layer for annotations and the reference point for traceability.
+
+  \item \textbf{Annotation.}  
+  An annotation connects a portion of a document to a specific concept or entity, thereby linking unstructured text with structured knowledge. An annotation is defined by:\todo{add uri of annotation set?}
+  \begin{itemize}
+    \item a unique \ac{uri};
+    \item the \ac{uri} of the \emph{source document}, ensuring that the annotation can always be traced back to its origin---even when processed within derived repositories;
+    \item the \ac{uri} of the \emph{annotation set} of which the annotation is part, simlarly for ensuring traceability;
+    \item the \emph{start} and \emph{end} character offsets in the document text;
+    \item the \emph{type} of the annotation, e.g., specifying its function (e.g., ``\ac{ner}'' or ``\ac{nel}'');
+    \item optional \emph{metadata}, represented as key--value pairs (e.g., the \ac{ner}-type for \ac{ner} annotations, or the linked entity \ac{uri} for \ac{nel} annotations).  
+  \end{itemize}
+  Annotations allow users to visualize, verify, and trace where entities are mentioned in documents. Beyond entity linking, this concept generalizes to any document fragment, from short spans of text to entire sections, enabling flexible annotation schemas.
+
+  \item \textbf{Annotation Set.}  
+  An annotation set is a collection of annotations organized according to a shared criterion, such as annotation type, purpose, or version. This structure allows for a better organization of the annotations and for the coexistence of multiple annotation layers over the same document (e.g., manual vs.\ automatic annotations, or distinct semantic layers), as well as for annotation versioning---which can be achieved by creating a modified annotation set, saving the vesion number, the user who modified it, and a message explaining the changes in the annotation set's metadata.  
+  Each annotation set includes:
+  \begin{itemize}
+    \item a unique \ac{uri};
+    \item the \ac{uri} of the \emph{document} to which the annotation set refers;
+    \item a \emph{name}, describing the set (e.g., ``\ac{ner}-v1'' or ``\ac{nel}-v1'');
+    \item a list of contained \emph{annotations};
+    \item optional \emph{metadata}, stored as feature key--value pairs.
+  \end{itemize}
+%   Managing annotations through sets facilitates versioning, organization by task or algorithm, and selective querying.
+  \item \textbf{Entity.}  
+    Each entity is characterized by:
+    \begin{itemize}
+        \item a unique \ac{uri}, ensuring global identifiability;
+        \item a \emph{name}, used as a human-readable label;
+        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary.
+    \end{itemize}
+    Entities provide a generalizable way to interlink heterogeneous documents and annotations.
+  
+\end{enumerate}
+
+The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and compatibility with distributed storage.
+
+
+\todo{figura pseudo uml come dice chat usando testo in draw io con colori carini e frecce senza nome ne cardinalità}
+
+\todo{also suggest versioning in annset names?}
+
+\begin{itemize}
+    \item entities
+    \item documents
+    \item annotations
+    \item annotation sets for organizing different annotation types sections nel
+\end{itemize}
 
 \section{Architectural Model}
 
