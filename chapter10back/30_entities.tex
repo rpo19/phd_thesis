@@ -1,4 +1,5 @@
 \section{Entities and How to Represent Them}
+\label{back:entities}
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018balog}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
@@ -24,9 +25,9 @@ Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~
 A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018balog}.
 \end{definition}
 
-Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., https://en.wikipedia.org/wiki/Barack\_Obama) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
+Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack\_Obama}}) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as URIs, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
 The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]

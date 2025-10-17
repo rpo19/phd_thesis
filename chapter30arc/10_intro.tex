@@ -7,33 +7,70 @@ In the past years I have collaborated in several projects, whose aim was to inte
 %
 This allowed me to acquire experience on this domain and receive feedback from legal professionals about our proposed prototypes and proof-of-concepts.
 
-To remind the reader about the architectural requirements we anticipated in \Cref{sec:intro}, I additionally report them in the following lines. The main principles, that corresponds to non-functional architectural requirements are:
+To remind the reader about the architectural requirements we anticipated in \Cref{sec:intro}, I additionally report them in the following lines. The main principles, that corresponds to the main architectural requirements are:
 \begin{enumerate}
     \item \textbf{Generalizability}, to handle heterogeneous documents and adapt to new investigative use cases.  
-    \item \textbf{Traceability and Verifiability}, to ensure that every extracted element can be traced back to its textual origin.  
-    \item \textbf{Error correction capability}, to enable users to detect and fix extraction or linking errors through human-in-the-loop validation.  
-    \item \textbf{Scalability}, to efficiently manage large and continuously growing document collections.  
+    \item \textbf{Traceability and Verifiability}, to ensure that every extracted element can be traced back to its textual origin.\todo{annotations}  
+    \item \textbf{Error correction capability}, to enable users to detect and fix extraction or linking errors through human-in-the-loop validation.\todo{this requires a UI!}
+    \item \textbf{Scalability}, to efficiently manage large and continuously growing document collections.  \todo{processing orchestration? parallelizable operations, queues,... strong scalable database systems}
+
 \end{enumerate}
 
-In addition, we define functional requirements for supporting the domain-specific use cases considered in this thesis---namely (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring.
-These functional requirements are the following:
+
+We also borrow the \textbf{availability} requirement from \textcite{BELLANDI2024}, which aims at ensuring that the \ac{dia} does not suffer from changes or failures in other services such as extractors---i.e., \acl{ee} tools that annotate documents with entities---or \aclp{ui}. Moreover this requirement extends to the ecosystem of services which will work close to the \ac{dia}. For example, extraction tools, and all the other service built around the \ac{dia}, should be designed for
+\begin{itemize}
+    \item \textbf{Atomicity}, to minimize the reliance on other services and the risk of failures,
+    \item and \textbf{Interoperability}, to support complex workflows in which several extractors are executed in sequence. For this reason, t is necessary to ensure all the services \say{speak} a \emph{uniform input-output language}, so that sequencial workflow can be seamlessly modified by adding or removing extractors.\todo{later continue saying the uni io lang is for annotated document and is gatenlp document}
+\end{itemize}
+
+\todo{annotation may be not connected to entities. anns are more general. here document-annotation-entity triad}
+
+Before continuing with the functional requirements designed for support domain-specific use cases, we define three core concepts for integrating heterogeneous documents. The first is the \emph{document} itself, which in this work is used in an abstract way as a general unit of data and may be of different granularity depending on the use case---for instance, proper legal documents for precedent case retrieval, or even single chat messages for specific use cases in investigations on \ac{ima} data. A document of the \ac{dia} is characterized by \ac{uri}, a name, the text content, and optional metadata. 
+
+The second is the \emph{entity}---a concept so ubiquitous that can integrate highly heterogeneous data, supporting the requirement of generalizability. For the entity we refer to the definition in \Cref{back:entities} and consider the \ac{uri} and the name as the only mandatory properties, while leaving the possibility to store additional properties in metadata. 
+
+Finally, the third is the \emph{annotation}, which \say{connect} \emph{documents} with the mentioned \emph{entities}---respecting the requirements of traceability and verifiability, by allowing the user to visualize where an entity has been mentioned in a document.
+To achieve this objective, an annotation must be characterized by start and end positions in the document text, in addition to the \ac{uri}, the annotation type, and optional metadata.
+Moreover, while we presented annotations for interlinking documents and entities, this concept generalize beyond solely managing entities to the representation of pieces of documents, which can vary in size and purposes---from few words referring to an entity, to entire document sections.
+
+% The \emph{document--annotation--entity} triad represents, indeed, a corenerstone for our architecture.
+
+
+In addition, we define the following functional requirements for supporting the domain-specific use cases considered in this thesis---namely (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring.
 \begin{enumerate}
-    \item support for \acs{crud}~\cite{martin1983managing} operation to \acl{crud} documents, entities, and annotations---which store at least the position of a mentions in the document and the link to the entities to which it refers to. These operations are necessary to injest documents in the architecture and also to allow \acp{ui}, such as a document explorer, to acquire and show documents to the users.
-    \item Retrieval \acp{api}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted} and dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv). If fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword, while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}.
-    \item A query language and engine to run complex queries that allow to elaborate advanced statistics (v).
+    \item \emph{Support for \acf{crud}~\cite{martin1983managing} operations and \acf{uri}~\cite{berners-lee2005uri} } for creating, reading, updating, deleting and universally identifying documents, entities, and annotations---which store at least the position of a mentions in the document and the link to the entities to which it refers to. These operations are necessary to injest documents in the architecture and also to allow \acp{ui}, such as a document explorer, to acquire and show documents to the users.
+    \item \textit{Retrieval \acp{api}}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}---dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv)---and hybrid retrieval combining both sparce and dense~\cite{negar_sparse_dense_retrieval_2021}. In fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
+    \item \emph{Support for a query language} capable of expressing complex queries to enable advanced statistical analysis. In particular, it should provide functionalities for counting, filtering, and aggregating over documents, entities, and annotations.\todo{make clear what annotations are}
+    \item \emph{Visualization \acp{ui}} that allow users to visualie documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
+    \item \emph{Error correction \acp{ui}} that allow users to access documents and automatic annotations, to correct machine errors in support of the requirement for \emph{error correction capability}.
+    \item \emph{Support for multiple documental repositories}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
 \end{enumerate}
+Moreover, to enable users in pursuing their \acl{ia} needs for the considered use cases multiple \aclp{ui} have been prototyped on top of these functional requirements. These are described in \Cref{sec:iaui}
  
-As anticipated, a core concept on which we design this architecture is the \emph{entity}---a concept so ubiquitous that can integrate highly heterogeneous data, supporting the required generalizability.
-Another core concept is the \emph{anontation}, which \say{connect} the enities with the \emph{documents} they have been mentioned in---addressing traceability and verifiability.
+As anticipated, a core concept on which we design this architecture is the \emph{entity}---a concept so ubiquitous that can integrate highly heterogeneous data, supporting the requirment of generalizability.
+Another core concept is the \emph{annotation}, which \say{connect} the entities with the \emph{documents} they have been mentioned in---addressing traceability and verifiability.
 The \emph{document--annotation--entity} triad represents, indeed, a corenerstone for our architecture.
 
 The architecture presented in this chapter builds on all these proposed prototypes, with their successes, and their issues. 
-Some architectural contributons have alredy been published~\cite{BELLANDI2024,pozzi_wise_2025}---together with the \acl{ee} contributions presented in the previuos chapter (\Cref{chap:extraction}). In \textcite{BELLANDI2024}, one of the two research questions addressed was directed to the architectural design for fulfilling the needs of legal users working with civil judgments. In that work, we defined functional and non-functional requirements, such as support for intra-document and inter-document search for the functionals, and scalability, extensibility, and availability for the non functional~\cite{BELLANDI2024}. Then, we provided an implementation of the architecture and we demostrated it fulfilled the requirements. That architecture predisposed back end and front end components, and was already based on the concepts of \emph{document--annotation--entity}---as highlighted by ``entity-centric'' in the title.
+Some architectural contributons have alredy been published~\cite{BELLANDI2024,pozzi_wise_2025}---together with the \acl{ee} contributions presented in the previuos chapter (\Cref{chap:extraction}). In \textcite{BELLANDI2024}, one of the two research questions addressed was directed to the architectural design for fulfilling the needs of legal users working with civil judgments. In that work, we defined functional and requirements, such as support for intra-document and inter-document search for the functionals, and scalability, extensibility, and availability for the non functional~\cite{BELLANDI2024}. Then, we provided an implementation of the architecture and we demostrated it fulfilled the requirements. That architecture predisposed back end (databases and extractors) and front end components (\acp{ui}), and was already based on the concepts of \emph{document--annotation--entity}.
+% our colleagues contiunued....
+
+
+In this chapter the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core. % the editing ui is required? % ui deve essere nella dia
+The only exceptions are those \acp{ui} necessary for guaranteeing some of the requirements---namely the \emph{visualization \acp{ui}} and the \emph{error correction \acp{ui}}. 
+
 
 \todo{continue by saying that these requirements really were already developed, grounding this work. e.g. ijckg add entity}
+
+
+\section{Data Model}
 % data model: how data is saved and connected. db + kr? divided conceptually? not necessary at implementation.
 % annotationsets, and annotations as documents
 % properties of annotations,... gate for standard communication and existing apis
+
+GateNLP~\cite{cunningham-etal-2002-gate,gatenlp}
+
+\section{Architectural Model}
 
 
 
@@ -50,6 +87,7 @@ Some architectural contributons have alredy been published~\cite{BELLANDI2024,po
 % \paragraph{Objectives}
 % Building on these challenges, the central objective of this \phd thesis is to design an architecture for data integration that addresses the \acl{ia} needs of professionals in the legal domain, supporting both formal legal documents---such as judgments and acts---and the heterogeneous data produced in investigative contexts.  
 % The proposed architecture is guided by the following principles:
+Finally, we summarize how the requirements, or principles, that the proposed architectural model must follow, have been addressed:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
     \item data model
@@ -93,7 +131,6 @@ prototype? DAVE + IKBP
 \end{itemize}
 
 \section{Data Model}
-GateNLP~\cite{cunningham-etal-2002-gate,gatenlp}
 
 
 
