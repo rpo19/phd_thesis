@@ -48,7 +48,7 @@ We now introduce the additional functional requirements that support the domain-
     \item Support for \emph{annotation versioning}. Our previous architectural model~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple repositories} and ingest the processed documents in a new repository.
     \item \textit{Retrieval \acp{api}}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}---dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv)---and hybrid retrieval combining both sparce and dense~\cite{negar_sparse_dense_retrieval_2021}. In fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
     \item Support for a \emph{query language} capable of expressing complex queries to enable advanced statistical analysis. In particular, it should provide functionalities for counting, filtering, and aggregating over documents, entities, and annotations.\todo{make clear what annotations are}
-    \item \emph{Visualization \acp{ui}} that allow users to visualie documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
+    \item \emph{Visualization \acp{ui}} that allow users to visualize documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
     \item \emph{Error correction \acp{ui}} that allow users to access documents and automatic annotations, to correct machine errors in support of the requirement for \emph{error correction capability}.
 \end{enumerate}
 Moreover, to enable users in pursuing their \acl{ia} needs for the considered use cases multiple \aclp{ui} have been prototyped on top of these functional requirements. These are described in \Cref{sec:iaui}
@@ -86,7 +86,7 @@ As anticipated, to support the integration of heterogeneous data sources within 
 GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} is a Python framework for natural language processing that provides a flexible representation of documents and annotations, also offering interactive visualization in Jupyter notebooks.
 
 We also chose GateNLP python objects serialized in JSON format~\cite{rfc8259} as the \emph{data interchange format}, to achieve interoperability of services. The integration of dedicated services, indeed, is supported by the designed \ac{dia} for the purpose of generalizability, as dedicated processors may be required by specific use case.
-For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, must be in GateNLP-JSON format---which means an instance of the GateNLP document object\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}} serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations.
+For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, must be in \emph{GateJSON} format---which means an instance of the GateNLP document object\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}} serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations.
 This choice also maintain compatibility with GateNLP functions---after deserializing documents into Python objects---which support advanced operations on annotation sets, useful, for instance, to identify overlapping annotations, or annotations contained in another annotation. 
 As a real example, suppose to have a document, derived from a legal judgment, with two annotation sets, one containing annotations for the sections of the judgment, and the second containing \ac{ner} annotation for the people involved in the judgment. For identifying plaintiffs and defendants we usually focus on the beginning of the document with the section ``Identification of the parties''. So given this section, with GatenNLP \acp{api} we are able to obtain which people are mentioned in that section:
 \begin{lstlisting}[language=Python, caption={Example of using GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} \acp{api}.}, label={lst:gatenlp-section-example}]
@@ -183,6 +183,26 @@ In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because e
 \todo{also suggest versioning in annset names?}
 
 \section{Architectural Model}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{images/architectural_model.drawio.pdf}
+  \caption{High-level architectural model of the \acl{dia}.}
+  \label{fig:architectural-model}
+\end{figure}
+
+A sketch of the \acl{dia} is depicted in \Cref{fig:architectural-model}.
+
+
+A sketch of the \acl{dia} is depicted in \Cref{fig:architectural-model}. The figure shows only the architectural components of the system, not the downstream applications that may consume its outputs. In particular, the architecture is organized into layers and comprises: (i) the data integration and extraction layer, (ii) the storage layer, and (iii) the API layer, together with two architectural user interfaces (visualization UI and error--correction UI) that provide human supervision capabilities over the internal state of the system.
+
+The storage layer is composed of three repositories: the \emph{annotation database}, which stores documents, annotation sets, and annotations; the \emph{knowledge repository}, which stores entities; and the \emph{retrieval index}, which stores sparse, dense, or hybrid representations for efficient access. Above the storage layer, the API layer exposes programmatic access to the documents, annotations, entities, and retrieval functionality through a set of local APIs.
+
+Two distinct information flows cross the architecture. The \emph{information extraction flow} starts from heterogeneous raw data, performs normalisation and enrichment (e.g., entity recognition, entity linking, section detection), and persists the resulting structured objects into the storage components. The \emph{information access flow} retrieves, filters, and aggregates the stored objects to support tasks such as retrieval, navigation, exploration, statistical analysis, and question answering. Only the two architectural UIs (visualization and error--correction) are part of the architecture itself; other domain--specific user interfaces---such as faceted search, interactive question answering, or analytical dashboards---are built \emph{on top of} the architecture and are therefore not shown in the figure.
+
+In the following, we describe each architectural layer and its role within the two information flows.
+
+
 
 
 
