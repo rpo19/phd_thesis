@@ -85,8 +85,8 @@ As anticipated, to support the integration of heterogeneous data sources within 
 %
 GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} is a Python framework for natural language processing that provides a flexible representation of documents and annotations, also offering interactive visualization in Jupyter notebooks.
 
-
-To ensure interoperability, we also use GateNLP python objects, serialized in the JSON format~\cite{rfc8259}, for data interchange operations. For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, consist of GateNLP documents serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations.
+We also chose GateNLP python objects serialized in JSON format~\cite{rfc8259} as the \emph{data interchange format}, to achieve interoperability of services. The integration of dedicated services, indeed, is supported by the designed \ac{dia} for the purpose of generalizability, as dedicated processors may be required by specific use case.
+For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, must be in GateNLP-JSON format---which means an instance of the GateNLP document object\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}} serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations.
 This choice also maintain compatibility with GateNLP functions---after deserializing documents into Python objects---which support advanced operations on annotation sets, useful, for instance, to identify overlapping annotations, or annotations contained in another annotation. 
 As a real example, suppose to have a document, derived from a legal judgment, with two annotation sets, one containing annotations for the sections of the judgment, and the second containing \ac{ner} annotation for the people involved in the judgment. For identifying plaintiffs and defendants we usually focus on the beginning of the document with the section ``Identification of the parties''. So given this section, with GatenNLP \acp{api} we are able to obtain which people are mentioned in that section:
 \begin{lstlisting}[language=Python, caption={Example of using GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} \acp{api}.}, label={lst:gatenlp-section-example}]
@@ -177,6 +177,7 @@ The metadata, present in each model, derive from GateNLP's general-purpose \emph
 
 \todo{annotation db vs knowledge repository. anticipate the architecture}
 In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because entities are stored and managed in the \acl{kr}, as we will describe in the next section.
+
 
 
 \todo{also suggest versioning in annset names?}
