@@ -77,6 +77,7 @@ In that case, using an implementation of the architecture from \textcite{BELLAND
 \todo{continue by saying that these requirements really were already developed, grounding this work. e.g. ijckg add entity}
 \todo{speak more of my papers? e.g. of adptation with rae services? yes also says we extracted articles}
 
+\todo{maybe add a table summarizing all the principles and requirements, if functional,..., use cases,...}
 \section{Data Model and Interchange Format}
 % data model: how data is saved and connected. db + kr? divided conceptually? not necessary at implementation.
 % annotationsets, and annotations as documents
@@ -197,9 +198,9 @@ adata}, stored as feature key--value pairs.
 
 \end{enumerate}
 
-The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and compatibility with distributed storage.
+The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and simplifies the compatibility with distributed storage.
+Furthermore, \acp{uri} allow for the seamless integration of public \acp{kr} and \acp{kb}, allowing to link annotations to entities from Wikipedia, Wikidata, or even domain specific \acp{kr}.
 
-\todo{annotation db vs knowledge repository. anticipate the architecture}
 In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because entities are stored and managed in the \acl{kr}, as we will describe in the next section.
 
 
@@ -286,9 +287,6 @@ Raw data are processed by external services, serialized in GateJSON, and injecte
 Some services both read from and write to the \ac{dia}. This includes, for example, processing systems arranged in a pipeline: they fetch a document, enrich it (e.g., by adding an annotation set), and persist the additional information. This bidirectional flow is represented by the two small arrows between the core and the \emph{Processing Services}. The \emph{Error-correction \ac{ui}} is an analogous case: it reads from the \ac{dia} and persists human-made revisions back into it.
 \end{enumerate}
 
-Together, these three flows guarantee that external services can ingest, access, and iteratively refine information, thereby simplifying the generalization of the proposed \acl{dia} to specific use cases.
-Furthermore, the possibility of running processing on top of the results from other processing and the \ac{api} layer, allow for parallel distributed processing simplifying by the possibilty of working on differen annotation sets minimizing potential conflicts. This supports the scalability principle, especially if combining the \ac{dia} with an orchestrator that schedule the running of the different services on the different documents. also the \acp{uri} allows for easy getting the documents via api.
-
 Together, these three flows ensure that external services can ingest, access, and iteratively refine information, making it possible to generalize the proposed \ac{dia} to different use cases. In addition, the ability to run processing on top of previously generated results, combined with the network-based \ac{api} layer, enables parallel and distributed execution. This is facilitated by operating on separate annotation sets, which minimizes conflicts between concurrent processes. These properties support the scalability principle, especially when the \ac{dia} is combined with an orchestrator that schedules services over different documents. Finally, the use of \acp{uri} for all resources allows documents and annotations to be retrieved unambiguously via the \acp{api}.
 
 \todo{the problems related to persisting results in parallel???}
@@ -311,43 +309,21 @@ Together, these three flows ensure that external services can ingest, access, an
 Finally, we summarize how the requirements, or principles, that the proposed architectural model must follow, have been addressed:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
-    \item data model
-    \item uris? for external krs
-    \item kr and eventually local kb
     \item RAE from claw
-    \item different extractors. also from other domains
-    \item standard format gatenlp. we borrow gatenlp model
 
     \item \textbf{Traceability and Verifiability}, ensuring that the origin of any extracted information can always be verified. For instance, a user searching for documents mentioning a person must be able to read the exact mention within its context, while a \acl{qa} system should provide references to the text passages supporting its answers.
-    \item keep track of source documents
-    \item annotation-based. what and where
 
 
     \item \textbf{Error correction capability}, allowing users to identify and correct extraction or linking errors, thus improving system quality with a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach.
     \item hitl
-    \item study in claw
     \item dave modification,\dots
-    \item pipelines (easier to correct all the steps wrt end-to-end ? check in all the thesis)
     \item merge clusters
 
     \item \textbf{Scalability} to large and continuously growing document collections.
-    \item microservices and parallelization
     \item study in claw
-    \item mongo db ? are we so strict in the data db?
     
     \item IA UIs for the different use cases
     
-    \item support for the investigation message use case: navigate in messages (e.g., get messages sent the same day,...)
-    \item concept of subdocument? abstract annotation as subdocument?? annotation come subdocument?
-    \item esempio 1-chat-per-doc e one-msg-per-doc. architettura deve supportare entrambi?! oppure in questi casi meglio usare neo4j?
-    \item oppure neo4j è solo l'implementazione del data model? messaggi = docs con metadati. chat può essere considerata come un documento? ha senso annotarla per intero?
-    \item idea: simulare questo use case e come farlo con data model e architettura
 \end{enumerate}
-%
-% \nilchallenge
 
-prototype? DAVE + IKBP
-\begin{itemize}
-    \item 
-\end{itemize}
 
