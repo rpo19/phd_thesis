@@ -30,19 +30,18 @@ We also borrow the \textbf{availability} requirement from \textcite{BELLANDI2024
 \todo{annotation may be not connected to entities. anns are more general. here document-annotation-entity triad}
 
 \paragraph{Document--Annotation--Entity Triad}
-\todo{here should be more abstract. not so specific}
-Before continuing with the functional requirements designed for support domain-specific use cases, we define three core concepts for integrating heterogeneous documents. The first is the \emph{document} itself, which in this work is used in an abstract way as a general unit of data and may be of different granularity depending on the use case---for instance, proper legal documents for precedent case retrieval, or even single chat messages for specific use cases in investigations on \ac{ima} data.\todo{doing this there is the need for propagating modifications to original documents!!! very complex but also interesting. think about it} A document of the \ac{dia} is characterized by \ac{uri}, a name, the text content, and optional key--value metadata. 
+Before introducing the functional requirements that support domain-specific use cases, we first define the three conceptual pillars that underpin our representation of heterogeneous textual data: \emph{documents}, \emph{annotations}, and \emph{entities}.
 
-The second is the \emph{entity}---a concept so ubiquitous that can integrate highly heterogeneous data, supporting the requirement of generalizability. For the entity we refer to the definition in \Cref{back:entities} and consider the \ac{uri} and the name as the only mandatory properties, while leaving the possibility to store additional properties in metadata. 
+A \emph{document} is the abstract unit of textual data in our model. Its granularity is not fixed and may range from entire legal judgments to individual chat messages, depending on the use case. Documents serve as the primary carriers of text to which structured information can be attached.
 
-Finally, the third is the \emph{annotation}, which \say{connect} \emph{documents} with the mentioned \emph{entities}---respecting the requirements of traceability and verifiability, by allowing the user to visualize where an entity has been mentioned in a document.
-To achieve this objective, an annotation must be characterized by a \ac{uri}, the \ac{uri} of the origin document\todo{not true because of annsets. change. more general}\todo{force that this allows to backtrack to original documents, even when using a repository derived from annotations. and allows to identify annotations are the same and automatically propagate the modifications in this case or anyway to let the user know which annotations are affected in the original document}, the start and end positions in the document text, the annotation type---defining the purpose of the annotation, e.g., ``\ac{ner}'' or ``\ac{nel}'' for \ac{ner} or \ac{nel} annotations, respectively---and optional metadata---which can contain the \ac{ner}-type for \ac{ner}, or for \ac{nel} \ac{uri} of the entity associated to a ``link'' key.
-In fact, while we presented annotations for interlinking documents and entities, this concept generalizes beyond solely managing entities to the representation of pieces of documents, which can vary in size and purposes---from few words referring to an entity, to entire document sections.
+An \emph{entity}, defined in \Cref{back:entities}, represents conceptual objects of interest that can be mentioned across documents. Entities enable the integration of heterogeneous sources into a unified knowledge representation, supporting the generalizability requirement.
+
+An \emph{annotation} establishes a structured link between a document and a portion of its content, optionally associating it with an entity. Annotations serve as the mechanism that enables traceability from structured representations back to their textual evidence (traceability and verifiability), and they generalize beyond entity mentions to any meaningful fragment of text. For example they can represent document sections, or events.
 
 % The \emph{document--annotation--entity} triad represents, indeed, a corenerstone for our architecture.
 \todo{document versioning as an idea somewhere. maybe mention it as "suggest to priviledge dbs supporting document versioning, such as https://docs.dolthub.com/}
 \paragraph{}
-In addition, we define the following functional requirements for supporting the domain-specific use cases considered in this thesis---namely (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring.
+We now introduce the additional functional requirements that support the domain-specific use cases considered in this thesis. As anticipated in \Cref{sec:intro}, these use cases include: (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring. The additional functional requirements are the following:
 \begin{enumerate}
     \item \emph{\acf{crud}~\cite{martin1983managing} \acp{api}} for creating, reading, updating, deleting documents, entities, and annotations. However, an important exceptions need to be applied: since the annotations refer and depend on the document text, modifying it should normally be forbidden as it invalidates all the existing annotations. \todo{what happens if i modify a document with annotations?} % uri already required by the data model
     \item Support for \emph{multiple repositories of documents}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
@@ -112,8 +111,15 @@ parties_id_section = sections[0]
 mentions = people.within(parties_id_section)
 \end{lstlisting}
 
-To clearly define the components of our document--annotation--entity Triad, additionally enriched by annotation sets, we describe each element separately.
+To clearly define the components of our document--annotation--entity triad, additionally enriched by annotation sets, we describe each element separately and provide a conceptual schema in \Cref{fig:data-model}.
 %in the following enumeration. This structured presentation highlights the properties and relationships of documents, annotations, and annotation sets, and clarifies their role in supporting traceability, interoperability, and advanced annotation-based operations.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{images/data_model.drawio.pdf}
+  \caption{Data model for documents, annotations, annotation sets, and entities.}
+  \label{fig:data-model}
+\end{figure}
 
 \begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=2em]
   \item \textbf{Document.}  
@@ -147,33 +153,33 @@ To clearly define the components of our document--annotation--entity Triad, addi
     \item the \ac{uri} of the \emph{document} to which the annotation set refers;
     \item a \emph{name}, describing the set (e.g., ``\ac{ner}-v1'' or ``\ac{nel}-v1'');
     \item a list of contained \emph{annotations};
-    \item optional \emph{metadata}, stored as feature key--value pairs.
-  \end{itemize}
-%   Managing annotations through sets facilitates versioning, organization by task or algorithm, and selective querying.
-  \item \textbf{Entity.}  
-    Each entity is characterized by:
-    \begin{itemize}
-        \item a unique \ac{uri}, ensuring global identifiability;
-        \item a \emph{name}, used as a human-readable label;
-        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary.
-    \end{itemize}
-    Entities provide a generalizable way to interlink heterogeneous documents and annotations.
-  
-\end{enumerate}
-
-The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and compatibility with distributed storage.
-
-
-\todo{figura pseudo uml come dice chat usando testo in draw io con colori carini e frecce senza nome ne cardinalità}
-
-\todo{also suggest versioning in annset names?}
-
-\begin{itemize}
+    \item optional \emph{met\begin{itemize}
     \item entities
     \item documents
     \item annotations
     \item annotation sets for organizing different annotation types sections nel
 \end{itemize}
+adata}, stored as feature key--value pairs.
+  \end{itemize}
+%   Managing annotations through sets facilitates versioning, organization by task or algorithm, and selective querying.
+  \item \textbf{Entity.}  
+    Each entity, in line with the definition in \Cref{back:entities} is characterized by:
+    \begin{itemize}
+        \item a unique \ac{uri}, ensuring global identifiability;
+        \item a \emph{name}, used as a human-readable label;
+        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary. For example, metadata may contain the entity type or types.
+    \end{itemize}
+    % Entities provide a generalizable way to interlink heterogeneous documents and annotations.
+  
+\end{enumerate}
+
+The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and compatibility with distributed storage.
+
+\todo{annotation db vs knowledge repository. anticipate the architecture}
+In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because entities are stored and managed in the \acl{kr}, as we will describe in the next section.
+
+
+\todo{also suggest versioning in annset names?}
 
 \section{Architectural Model}
 
