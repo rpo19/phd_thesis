@@ -11,7 +11,7 @@ This allowed me to acquire experience on this domain and receive feedback from l
 
 \section{Requirements}
 
-To remind the reader about the architectural requirements we anticipated in \Cref{sec:intro}, I additionally report them in the following lines. The main principles, that corresponds to the main architectural requirements are:
+To remind the reader about the \emph{architectural principlpes} we anticipated in \Cref{sec:intro}, I additionally report them in the following lines. They are:
 \begin{enumerate}
     \item \textbf{Generalizability}, to handle heterogeneous documents and adapt to new investigative use cases.  
     \item \textbf{Traceability and Verifiability}, to ensure that every extracted element can be traced back to its textual origin.\todo{annotations}  
@@ -21,11 +21,12 @@ To remind the reader about the architectural requirements we anticipated in \Cre
 \end{enumerate}
 
 
-We also borrow the \textbf{availability} requirement from \textcite{BELLANDI2024}, which aims at ensuring that the \ac{dia} does not suffer from changes or failures in other services such as extractors---i.e., \acl{ee} tools that annotate documents with entities---or \aclp{ui}. Moreover this requirement extends to the ecosystem of services which will work close to the \ac{dia}. For example, extraction tools, and all the other service built around the \ac{dia}, should be designed for
+We also borrow the \textbf{availability} requirement from \textcite{BELLANDI2024}, which aims at ensuring that the \ac{dia} does not suffer from changes or failures in other services such as extractors---i.e., \acl{ee} tools that annotate documents with entities---or \aclp{ui}. Moreover, this requirement extends to the ecosystem of services operating around the \ac{dia}. For example, extraction tools and all other services built around the \ac{dia} should be designed for
 \begin{itemize}
-    \item \textbf{Atomicity}, to minimize the reliance on other services and the risk of failures,
-    \item and \textbf{Interoperability}, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary to ensure all the services \say{speak} in a \emph{\ac{uniof}}, so that sequencial workflow can be seamlessly modified by adding or removing extractors.\todo{later continue saying the uni io lang is for annotated document and is gatenlp document}
+    \item \textbf{Loose coupling}, to minimize cross-dependencies and prevent failures or changes in one service from propagating to others;
+    \item \textbf{Interoperability}, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary that all services \emph{communicate} using a \ac{uniof}, so that sequential workflows can be seamlessly modified by adding or removing extractors.
 \end{itemize}
+
 
 \todo{annotation may be not connected to entities. anns are more general. here document-annotation-entity triad}
 
@@ -44,8 +45,8 @@ An \emph{annotation} establishes a structured link between a document and a port
 We now introduce the additional functional requirements that support the domain-specific use cases considered in this thesis. As anticipated in \Cref{sec:intro}, these use cases include: (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and performance monitoring. The additional functional requirements are the following:
 \begin{enumerate}
     \item \emph{\acf{crud}~\cite{martin1983managing} \acp{api}} for creating, reading, updating, deleting documents, entities, and annotations. However, an important exceptions need to be applied: since the annotations refer and depend on the document text, modifying it should normally be forbidden as it invalidates all the existing annotations. \todo{what happens if i modify a document with annotations?} % uri already required by the data model
-    \item Support for \emph{multiple repositories of documents}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
-    \item Support for \emph{annotation versioning}. Our previous architectural model~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple repositories} and ingest the processed documents in a new repository.
+    \item Support for \emph{multiple collections of documents}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related set of documents, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message. Finally, different document collections should be allowed to refer to different \aclp{kr}.
+    \item Support for \emph{annotation versioning}. Our previous architectural model~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple collections} and ingest the processed documents in a new collection.
     \item \textit{Retrieval \acp{api}}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}---dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv)---and hybrid retrieval combining both sparce and dense~\cite{negar_sparse_dense_retrieval_2021}. In fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
     \item Support for a \emph{\acf{ql}} capable of expressing complex queries to enable advanced statistical analysis (v).
     \item \emph{Visualization \acp{ui}} that allow users to visualize documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
@@ -59,12 +60,13 @@ Some architectural contributions have alredy been published~\cite{BELLANDI2024,p
 % orchestration: more relaxed than claw: no need of deciding request manageer,...
 
 
-In this chapter, instead, the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core. % the editing ui is required? % ui deve essere nella dia
+In this chapter, instead, the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core.
+Our objective is to define the \emph{minimum necessary} directives for guiding the implementation of a \acl{dia}---for knowledge-intensive domains and, in particular, for the legal domain---so that it provides the fundamental functionality required to satisfy the aforementioned \emph{architectural principles}.  
 The only exceptions are those \acp{ui} necessary for guaranteeing some of the requirements---namely the \emph{visualization \acp{ui}} and the \emph{error correction \acp{ui}}.
 
 This difference exists also with respect to \textcite{bellandi2025streamlining}---a work from colleagues and co-authors of \textcite{BELLANDI2024}---in which they formalize a platform, improving the one from out co-authored previous work~\cite{BELLANDI2024}, that includes data ingestion and storage tools, as well as \acp{ui} and text processing modues for legal documents such as judgements or laws. 
 
-Moreover, in this work, differently from \textcite{BELLANDI2024,bellandi2025streamlining}, we do not consider orchestration or service management tools---which manage the (parallel) execution of complex workflows---part of the architecture, but we limit to make design choices that support and simplify the use of such tools for achieving \emph{scalability} and \emph{generalizability} to the use of custom extractors or document processors. These are the aforementioned principles for the design of perimetral services---namely atomicity and interoperability, with the use of a \acl{uniof}---the use of \emph{\acp{uri}} to simplify \say{localing} the document to process, and the \emph{support for \ac{crud} \acp{api}}.
+Moreover, in this work, differently from \textcite{BELLANDI2024,bellandi2025streamlining}, we do not consider orchestration or service management tools---which manage the (parallel) execution of complex workflows---part of the architecture, but we limit to make design choices that support and simplify the use of such tools for achieving \emph{scalability} and \emph{generalizability} to the use of custom extractors or document processors. These are the aforementioned principles for the design of perimetral services---namely loose coupling and interoperability, with the use of a \acl{uniof}---the use of \emph{\acp{uri}} to simplify \say{localing} the document to process, and the \emph{support for \ac{crud} \acp{api}}.
 
 Another difference with this works is that we enlarge our focus to investigative data, that are more heterogeneus, therefore requiring more generalization. For these reason, we do not consider document sections in our data model (differently from \textcite{bellandi2025streamlining}) and we generalize the concept of annotation in such a way that can even cover sections.
 
@@ -137,11 +139,11 @@ To clearly define the components of our document--annotation--entity triad, addi
   An annotation connects a portion of a document to a specific concept or entity, thereby linking unstructured text with structured knowledge. An annotation is defined by:\todo{add uri of annotation set?}
   \begin{itemize}
     \item a unique \ac{uri};
-    \item the \ac{uri} of the \emph{source document}, ensuring that the annotation can always be traced back to its origin---even when processed within derived repositories;
+    \item the \ac{uri} of the \emph{source document}, ensuring that the annotation can always be traced back to its origin---even when processed within collections derived from another collection;
     \item the \ac{uri} of the \emph{annotation set} of which the annotation is part, simlarly for ensuring traceability;
     \item the \emph{start} and \emph{end} character offsets in the document text;
-    \item the \emph{type} of the annotation, e.g., specifying its function (e.g., ``\ac{ner}'' or ``\ac{nel}'');
-    \item optional \emph{metadata}, represented as key--value pairs (e.g., the \ac{ner}-type for \ac{ner} annotations, or the linked entity \ac{uri} for \ac{nel} annotations).  
+    \item the \emph{type} of the annotation, e.g., the \ac{ner} type, or the name of a section;
+    \item optional \emph{metadata}, as key--value pairs, representing additional properties, e.g., the linked entity \ac{uri} for \ac{nel} annotation or the version of the annotation algorithm.  
   \end{itemize}
   Annotations allow users to visualize, verify, and trace where entities are mentioned in documents. Beyond entity linking, this concept generalizes to any document fragment, from short spans of text to entire sections, enabling flexible annotation schemas.
 
@@ -167,10 +169,32 @@ adata}, stored as feature key--value pairs.
     \begin{itemize}
         \item a unique \ac{uri}, ensuring global identifiability;
         \item a \emph{name}, used as a human-readable label;
-        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary. For example, metadata may contain the entity type or types.
+        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary. For example, metadata may contain the entity type (or types).
     \end{itemize}
     % Entities provide a generalizable way to interlink heterogeneous documents and annotations.
-  
+
+  \item \textbf{Document Collection.}
+  A document collection contains multiple documents and provides a way to organize and manage different documents separately in the same \ac{dia} instance.
+  Each document collection is characterized by:
+  \begin{itemize}
+    \item a unique \ac{uri};
+    \item the \ac{uri} of the \emph{knowledge repository} considered by this collection;
+    \item a \emph{name}, used as a human-readable label;
+    \item a list of contained \emph{documents};
+    \item optional \emph{metadata}, stored as key--value pairs.
+  \end{itemize}
+
+  \item \textbf{Knowledge Repository.}
+  We additionally include the \ac{kr} in the data model to enable using different \acp{kr} with different document collections.
+  While this view is not common for \acp{kr} and \acp{kb}, it is similar to \acp{dbms} holding multiple databases.
+  A \ac{kr} is characterized by:
+  \begin{itemize}
+    \item a unique \ac{uri};
+    \item a \emph{name}, used as a human-readable label;
+    \item a list of contained \emph{entities};
+    \item optional \emph{metadata}, stored as key--value pairs.
+  \end{itemize}
+
 \end{enumerate}
 
 The metadata, present in each model, derive from GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, simplify locating resources, enabling inter-document linking, and compatibility with distributed storage.
@@ -180,7 +204,6 @@ In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because e
 
 
 
-\todo{also suggest versioning in annset names?}
 
 \section{Architectural Model}
 
@@ -204,9 +227,9 @@ On top of the storage layer sits the \ac{api} layer, which exposes interfaces to
 \begin{itemize}
   \item \emph{\ac{crud} \acp{api}} for documents, annotations, and annotation sets---stored in the \ac{ad}---and for entities---stored in the \ac{kr}.
   \item \emph{Sparse, dense, and hybrid retrieval \acp{api}} using the indexes from the \ac{ri} for efficient retrieval.
-  \item \emph{\acl{ql} \acp{api}} supporting aggregation and filtering operations required to compute statistics, derive distributions, and answer structured analytical queries over documents, annotations, and entities. These interfaces must support at least the standard family of operations found in declarative query languages---such as grouping and aggregation (e.g., counts, distinct counts, maxima/minima, or averages)---as documented in mainstream DBMSs (e.g., PostgreSQL~\cite{postgresql-agg-doc}). Such capabilities are essential to support use case~(v), i.e., statistical analysis and monitoring.
+  \item \emph{\acl{ql} \acp{api}} supporting aggregation and filtering operations required to compute statistics, derive distributions, and answer structured analytical queries over documents, annotations, and entities. These interfaces must support at least the standard family of operations found in declarative query languages---such as grouping and aggregation (e.g., counts, distinct counts, maxima/minima, or averages)---as documented in mainstream \acp{dbms} (e.g., PostgreSQL~\cite{postgresql-agg-doc}). Such capabilities are essential to support use case~(v), i.e., statistical analysis and monitoring.
 \end{itemize}
-These \acp{api} must support the GateJSON format for receiving annotated documents as input or providing them as output, in order to achieve interoperability. 
+These \acp{api} must operate over the network to support distributed deployments, enabling parallel processing and horizontal scalability. Furthermore, they must support the GateJSON format for both input and output of annotated documents, ensuring interoperability across heterogeneous components.
 
 Besides the storage and \ac{api} layers, the \ac{dia} features the two fundamental \acp{ui} for fulfilling traceability-verifiability and error-correction capability.
 The \emph{Visualization \ac{ui}} must provide the following functionalities to users:
@@ -215,15 +238,60 @@ The \emph{Visualization \ac{ui}} must provide the following functionalities to u
   \item access the properties (defined in the data model) of documents, annotation sets, annotations, and entities, while visualizing the annotated document---e.g., by clicking on an annotation to inspect annotation properties---or given the \ac{uri} of the resource;
   \item given an entity, trace which annotations mentioned it and visualize them in the document.
 \end{itemize}
-The \emph{Error correctio \ac{ui}}, on the other hand, must allow the following:
+
+\todo{dire qualcosa come un criterio del minimo indispensabile per permettere tante cose, ma non esageriamo nelle funzionalità obbligatorie}
+On the other hand, the \emph{Error correction \ac{ui}} provides functionalities to correct annotation errors from automatic tools and, in general, provides delete operations for removing automatically created resources whose creation was an error---such as duplicated entities in the \ac{kr}. While additional functinalities, such as manual ingesting of documents, may be useful, we only include the minimum necessary design principles for allowing \emph{error correction capability}.
 \begin{itemize}
-  \item remove documents and annotation sets
-  \item \todo{} fix entities, e.g. merge,.. (see claw) from the \ac{kr};
-  \item fix annotations
-  \item no mod document text
+  % \item For documents:
+  % \begin{itemize}
+  %   \item create from name, text, and metadata, assigning a URI; % not error correction...
+  % \end{itemize}
+  \item For documents it only provides the delete operation, which consequently deletes all the associated annotaiton sets and annotations.
+  \item Also for document collections it provides the delete operation, which consequently deletes all documents and annotations.
+  \item Similarly for knowledge repository it allows for deletion, which propagates to all contained entities.
+  \item For annotations:
+  \begin{itemize}
+    \item create;
+    \item delete;
+    \item move---same as modify start and end;
+    \item modify properties (type and metadata)---for example to changed the linked entity;
+    \item for versioning, each modification---with annexed the user id and a message explaining the changes---must be persisted in a \emph{history} at the annotation set level. This centralizes the annotation versioning management to the annotation set, allowing to visualize the history of the entire annotation set and to perform rollback operations. 
+  \end{itemize}
+  \item For annotation sets:
+  \begin{itemize}
+    \item delete together with all the annotations;
+    \item view history, including user ids and message for each modification;
+    \item rollback to a specific version, undoing all the modifications performed afterwards.
+  \end{itemize}
+  \item For entities it allows to:
+  \begin{itemize}
+    \item create a new entity to manually assign it to annotations;
+    \item merge two entities and consequently assign all the linked annotations to the new entity;
+    \item delete an entity and optionally chose another entity to assign to the linked annotations and get the list of affected annotations for manually revising them;
+    \item modify name and metadata.
+  \end{itemize}
 \end{itemize}
 
-\todo{speak of the workflows}
+
+Finally, we conclude the core architectural section by defining three information flows that the \ac{dia} must support. These flows cover all possible interactions with external services---such as preprocessing components, text annotators, or \acp{ui}---and assume interoperability through the GateJSON format. We also recall the design guideline of ensuring loose coupling among services to reduce cascading failures.
+
+\begin{enumerate}
+\item \emph{\Acl{ie} flow.}
+Raw data are processed by external services, serialized in GateJSON, and injected into the \ac{dia} via \acp{api}. This corresponds to the green arrow in \Cref{fig:architectural-model}, flowing from outside the system into the core of the \ac{dia}.
+
+\item \emph{\Acl{ia} flow.}
+\acp{ui} retrieve stored information in GateJSON format via read or retrieval \acp{api} and present it to end users. This corresponds to the red arrow in \Cref{fig:architectural-model}.
+
+\item \emph{Circular flow.}
+Some services both read from and write to the \ac{dia}. This includes, for example, processing systems arranged in a pipeline: they fetch a document, enrich it (e.g., by adding an annotation set), and persist the additional information. This bidirectional flow is represented by the two small arrows between the core and the \emph{Processing Services}. The \emph{Error-correction \ac{ui}} is an analogous case: it reads from the \ac{dia} and persists human-made revisions back into it.
+\end{enumerate}
+
+Together, these three flows guarantee that external services can ingest, access, and iteratively refine information, thereby simplifying the generalization of the proposed \acl{dia} to specific use cases.
+Furthermore, the possibility of running processing on top of the results from other processing and the \ac{api} layer, allow for parallel distributed processing simplifying by the possibilty of working on differen annotation sets minimizing potential conflicts. This supports the scalability principle, especially if combining the \ac{dia} with an orchestrator that schedule the running of the different services on the different documents. also the \acp{uri} allows for easy getting the documents via api.
+
+Together, these three flows ensure that external services can ingest, access, and iteratively refine information, making it possible to generalize the proposed \ac{dia} to different use cases. In addition, the ability to run processing on top of previously generated results, combined with the network-based \ac{api} layer, enables parallel and distributed execution. This is facilitated by operating on separate annotation sets, which minimizes conflicts between concurrent processes. These properties support the scalability principle, especially when the \ac{dia} is combined with an orchestrator that schedules services over different documents. Finally, the use of \acp{uri} for all resources allows documents and annotations to be retrieved unambiguously via the \acp{api}.
+
+\todo{the problems related to persisting results in parallel???}
 
 
 
