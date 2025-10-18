@@ -41,13 +41,13 @@ An \emph{annotation} establishes a structured link between a document and a port
 % The \emph{document--annotation--entity} triad represents, indeed, a corenerstone for our architecture.
 \todo{document versioning as an idea somewhere. maybe mention it as "suggest to priviledge dbs supporting document versioning, such as https://docs.dolthub.com/}
 \paragraph{}
-We now introduce the additional functional requirements that support the domain-specific use cases considered in this thesis. As anticipated in \Cref{sec:intro}, these use cases include: (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and monitoring. The additional functional requirements are the following:
+We now introduce the additional functional requirements that support the domain-specific use cases considered in this thesis. As anticipated in \Cref{sec:intro}, these use cases include: (i) case retrieval and precedent search, (ii) document navigation and content exploration, (iii) investigative retrieval, (iv) question answering over documents and collections, and (v) statistical analysis and performance monitoring. The additional functional requirements are the following:
 \begin{enumerate}
     \item \emph{\acf{crud}~\cite{martin1983managing} \acp{api}} for creating, reading, updating, deleting documents, entities, and annotations. However, an important exceptions need to be applied: since the annotations refer and depend on the document text, modifying it should normally be forbidden as it invalidates all the existing annotations. \todo{what happens if i modify a document with annotations?} % uri already required by the data model
     \item Support for \emph{multiple repositories of documents}. While, for example, storing data from different investigations in the same \ac{dia} instace may not be advisable due to risks in data protection, this requirement allows to handle different---and interlink via \acp{uri}---different but related collections of document, or to host multiple \say{models} of the same data. As a pratical exampled derived from the investigative consultancy of \textcite{pozzi_wise_2025}, investigator may need to visualize entire chats from \ac{ima} data and also to navigate single messages---e.g., searching for messages sent in a specific time interval. In the first scenario it is perferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, e.g., for visualizing the entire chat containing a message.
     \item Support for \emph{annotation versioning}. Our previous architectural model~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple repositories} and ingest the processed documents in a new repository.
     \item \textit{Retrieval \acp{api}}, supporting both sparse \ac{ir}---for standard keyword-based retrieval or faceted search (i and iii)~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}---dense semantic retrieval~\cite{negar_sparse_dense_retrieval_2021}---for question answering (iv)---and hybrid retrieval combining both sparce and dense~\cite{negar_sparse_dense_retrieval_2021}. In fact, users may benefit from both: sparse retrieval systems allow to exactly seach for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
-    \item Support for a \emph{query language} capable of expressing complex queries to enable advanced statistical analysis. In particular, it should provide functionalities for counting, filtering, and aggregating over documents, entities, and annotations.\todo{make clear what annotations are}
+    \item Support for a \emph{\acf{ql}} capable of expressing complex queries to enable advanced statistical analysis (v).
     \item \emph{Visualization \acp{ui}} that allow users to visualize documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
     \item \emph{Error correction \acp{ui}} that allow users to access documents and automatic annotations, to correct machine errors in support of the requirement for \emph{error correction capability}.
 \end{enumerate}
@@ -191,18 +191,39 @@ In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because e
   \label{fig:architectural-model}
 \end{figure}
 
-A sketch of the \acl{dia} is depicted in \Cref{fig:architectural-model}.
+An overview of the \acl{dia} is depicted in \Cref{fig:architectural-model}. The figure shows a clear division between what is part of the \ac{dia} and what is outside it.
+Inside we find the \emph{storage layer}, whose objective is to store information regarding documents, annotations, and entities, as well as to organize this information for efficient access via indexing.
+This layer is composed of:
+\begin{itemize}
+  \item \emph{\Acf{ad}}, which stores documents, annotations, and annotation sets as defined in the data model.
+  \item \emph{\Acf{kr}}, which stores local entity knowledge, according to the definitions of entity and \ac{kr} from \Cref{back:entities}. Note that, while in the \ac{dia} design this is not enforced, the \ac{kr} component can be a \acl{kb} holding facts about entities in the form of \ac{rdf} triples.
+  \item \emph{\Acf{ri}}, which holds indexes for efficient retrieval and supports sparse, dense, and hybrid retrieval paradigms.
+\end{itemize}
 
+On top of the storage layer sits the \ac{api} layer, which exposes interfaces to interact with the persisted data. This is the component that must provide the mandatory \acp{api} defined by the requirements:
+\begin{itemize}
+  \item \emph{\ac{crud} \acp{api}} for documents, annotations, and annotation sets---stored in the \ac{ad}---and for entities---stored in the \ac{kr}.
+  \item \emph{Sparse, dense, and hybrid retrieval \acp{api}} using the indexes from the \ac{ri} for efficient retrieval.
+  \item \emph{\acl{ql} \acp{api}} supporting aggregation and filtering operations required to compute statistics, derive distributions, and answer structured analytical queries over documents, annotations, and entities. These interfaces must support at least the standard family of operations found in declarative query languages---such as grouping and aggregation (e.g., counts, distinct counts, maxima/minima, or averages)---as documented in mainstream DBMSs (e.g., PostgreSQL~\cite{postgresql-agg-doc}). Such capabilities are essential to support use case~(v), i.e., statistical analysis and monitoring.
+\end{itemize}
+These \acp{api} must support the GateJSON format for receiving annotated documents as input or providing them as output, in order to achieve interoperability. 
 
-A sketch of the \acl{dia} is depicted in \Cref{fig:architectural-model}. The figure shows only the architectural components of the system, not the downstream applications that may consume its outputs. In particular, the architecture is organized into layers and comprises: (i) the data integration and extraction layer, (ii) the storage layer, and (iii) the API layer, together with two architectural user interfaces (visualization UI and error--correction UI) that provide human supervision capabilities over the internal state of the system.
+Besides the storage and \ac{api} layers, the \ac{dia} features the two fundamental \acp{ui} for fulfilling traceability-verifiability and error-correction capability.
+The \emph{Visualization \ac{ui}} must provide the following functionalities to users:
+\begin{itemize}
+  \item visualize annotated documents, selecting which annotation sets to visualize;
+  \item access the properties (defined in the data model) of documents, annotation sets, annotations, and entities, while visualizing the annotated document---e.g., by clicking on an annotation to inspect annotation properties---or given the \ac{uri} of the resource;
+  \item given an entity, trace which annotations mentioned it and visualize them in the document.
+\end{itemize}
+The \emph{Error correctio \ac{ui}}, on the other hand, must allow the following:
+\begin{itemize}
+  \item remove documents and annotation sets
+  \item \todo{} fix entities, e.g. merge,.. (see claw) from the \ac{kr};
+  \item fix annotations
+  \item no mod document text
+\end{itemize}
 
-The storage layer is composed of three repositories: the \emph{annotation database}, which stores documents, annotation sets, and annotations; the \emph{knowledge repository}, which stores entities; and the \emph{retrieval index}, which stores sparse, dense, or hybrid representations for efficient access. Above the storage layer, the API layer exposes programmatic access to the documents, annotations, entities, and retrieval functionality through a set of local APIs.
-
-Two distinct information flows cross the architecture. The \emph{information extraction flow} starts from heterogeneous raw data, performs normalisation and enrichment (e.g., entity recognition, entity linking, section detection), and persists the resulting structured objects into the storage components. The \emph{information access flow} retrieves, filters, and aggregates the stored objects to support tasks such as retrieval, navigation, exploration, statistical analysis, and question answering. Only the two architectural UIs (visualization and error--correction) are part of the architecture itself; other domain--specific user interfaces---such as faceted search, interactive question answering, or analytical dashboards---are built \emph{on top of} the architecture and are therefore not shown in the figure.
-
-In the following, we describe each architectural layer and its role within the two information flows.
-
-
+\todo{speak of the workflows}
 
 
 
@@ -262,9 +283,3 @@ prototype? DAVE + IKBP
     \item 
 \end{itemize}
 
-\section{Data Model}
-
-
-
-
-\section{Architecture}
