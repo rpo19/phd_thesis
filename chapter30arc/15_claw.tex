@@ -1,8 +1,24 @@
 \section{Prototypes from Previous Work}
 \label{sec:arch_proto}
 
+The architectural model introduced in this chapter is not a greenfield design.
+Rather, it is the outcome of successive iterations of research prototyping carried out during the \phd and published in~\cite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}.
+Among these work, only in \textcite{BELLANDI2024} we addressed the architectural design a research objective, however, all of them instantiated--- with different scope and incompleteness---several of its principles and functional requirements.
+
+Table~\ref{tab:arch-proto-support} contrasts the requirements defined in this chapter with what is actually supported in prior prototypes. The table makes explicit that these systems did not converge to an architectural core, but nonetheless provided the empirical foundation and feedback that led to the normalization and generalization presented in this chapter.
+
+In particular, in \textcite{BELLANDI2024} we delivered the first prototype integrating storage, extraction, and \ac{ia} \acsp{ui} for civil judgments. That work explicitly treated architectural concerns, prototyping search and visualization interfaces over annotated judgments, already adopted the document--annotation--entity representation as the conceptual backbone, and demonstrated generalizability and interoperability with ad-hoc services---\ie rule-based additional extractors (RAE).
+
+With \textcite{pozzi_wise_2025}, the same design was stress-tested on investigative instant-messaging data, exposing the need for generalizing the notion of document granularity (chat vs.\ messages) and revealing the lack of support for multiple document collections in the existing implementation.\todo{speak of neo4j}
+It is worth noting that in this work we used a \acl{kg}\todo{or graph database} for representing messages, due to the lack of multi doc collections and generalizable annotations. Also the graph-based visualization, powered by neo4j \ac{ui} generated positive feedback from investigators. Although we only used few relationships from chats a \ac{kg} may enable other forms of \acl{ie} and \ac{ia} as refactx (see ??), but I did not want to force a \ac{kg} in the arch since it may not be necessary, for the minimum nec princ, since \ac{kr} is a generalization of \ac{kg}.\todo{better}
+
+Finally, \textcite{Agazzi2025DAVE} explored a more \todo{evoluta} \ac{ia} interface and richer retrieval modalities, but still without addressing versioning, availability, peripheral services design principles, all explicitly mandated in the present architecture.\todo{improve}
+
+In summary, the prototypes developed during the \phd anticipated many of the building blocks of the \acl{dia}, while simultaneously exposing the gaps that motivated its explicit formalization.
+
 \todo{chiedi a ruben per dave multi collection}
 
+\todo{maybe merge some rows of the table under the big objectives. or maybe better to move functionals down and use colors}
 \begin{table}[htbp]
 \centering
 \caption{Support of DIA requirements across prior works
@@ -50,7 +66,7 @@ Interop. & \ac{uniof} & \yes GateJSON & \yes GateJSON & \yes GateJSON \\
 \multicolumn{2}{l}{Multiple Collections} & \almost not all \acp{ui} supp. & \no & \no \\
 \midrule
 
-\multicolumn{2}{l}{Annotation Versioning} & \psup w/ multi doc vers. and annsets & \psup w/ annsets & \psup w/ annsets \\
+\multicolumn{2}{l}{Annotation Versioning} & \psup multi doc vers. & \no & \no \\
 \midrule
 
 Retrieval & retrieval modes & \psup sparse only & \psup sparse only & \yes \\
