@@ -9,10 +9,10 @@ Table~\ref{tab:arch-proto-support} contrasts the requirements defined in this ch
 
 In particular, in \textcite{BELLANDI2024} we delivered the first prototype integrating storage, extraction, and \ac{ia} \acsp{ui} for civil judgments. That work explicitly treated architectural concerns, prototyping search and visualization interfaces over annotated judgments, already adopted the document--annotation--entity representation as the conceptual backbone, and demonstrated generalizability and interoperability with ad-hoc services---\ie rule-based additional extractors (RAE).
 
-With \textcite{pozzi_wise_2025}, the same design was stress-tested on investigative instant-messaging data, exposing the need for generalizing the notion of document granularity (chat vs.\ messages) and revealing the lack of support for multiple document collections in the existing implementation.\todo{speak of neo4j}
+With \textcite{pozzi_wise_2025}, a similar design was stress-tested on investigative \ac{ima} data, exposing the need for generalizing the notion of document granularity (chat vs.\ messages) and revealing the lack of support for multiple document collections in the existing implementation.\todo{speak of neo4j}
 It is worth noting that in this work we used a \acl{kg}\todo{or graph database} for representing messages, due to the lack of multi doc collections and generalizable annotations. Also the graph-based visualization, powered by neo4j \ac{ui} generated positive feedback from investigators. Although we only used few relationships from chats a \ac{kg} may enable other forms of \acl{ie} and \ac{ia} as refactx (see ??), but I did not want to force a \ac{kg} in the arch since it may not be necessary, for the minimum nec princ, since \ac{kr} is a generalization of \ac{kg}.\todo{better}
 
-Finally, \textcite{Agazzi2025DAVE} explored a more \todo{evoluta} \ac{ia} interface and richer retrieval modalities, but still without addressing versioning, availability, peripheral services design principles, all explicitly mandated in the present architecture.\todo{improve}
+Finally, \textcite{Agazzi2025DAVE} focused on enhancing \ac{ia} \aclp{ui}---these advanced \acp{ui} will be discussed in the next section (\Cref{sec:arch:ui}), also introducting the support for all the retrieval modes, but not focusing on other requirements such as support for multiple document collection\todo{verify with ruben}, annotation versioning, full error correction capability---\eg delete operation for entities or documents in not available from \acp{ui}.
 
 In summary, the prototypes developed during the \phd anticipated many of the building blocks of the \acl{dia}, while simultaneously exposing the gaps that motivated its explicit formalization.
 
@@ -23,7 +23,7 @@ In summary, the prototypes developed during the \phd anticipated many of the bui
 \centering
 \caption{Support of DIA requirements across prior works
 (\yes full,\ \almost almost, \psup partial,\ \no none).}
-\begin{tabularx}{\textwidth}{p{1.5cm} X X X X}
+\begin{tabularx}{\textwidth}{p{1cm} X X X X}
 \toprule
 \textbf{Req.} & \textbf{Aspect} & \textbf{Ref. \cite{BELLANDI2024}} & \textbf{Ref. \cite{pozzi_wise_2025}} & \textbf{Ref. \cite{Agazzi2025DAVE}} \\
 \midrule
@@ -31,16 +31,20 @@ In summary, the prototypes developed during the \phd anticipated many of the bui
 Gen. & doc--ann--ent & \yes & \yes & \yes \\
 % & multi-collection & \no & \no & \no \\
 & \ac{uri} & \psup not universal & \psup not universal & \psup not universal \\
+& multi collect. & \almost not all \acp{ui} supp. & \no & \no \\
 & service integration & \yes RAE & \yes in principle & \yes in principle \\ % not tested. GateJSON below
+& interop. \ac{uniof} & \yes GateJSON & \yes GateJSON & \yes GateJSON \\
+& loose coupl. & \yes & \no not addressed & \no not addressed \\
 \midrule
 
 Trace. & trace. annotations & \yes w/ GateNLP & \yes w/ GateNLP & \yes w/ GateNLP \\
-& Visual. \ac{ui} & \almost no entity page & \almost no entity page & \almost no entity page \\
+& visual. \ac{ui} & \almost no entity page & \yes & \yes \\
 
 \midrule
 
 ErrCorr. & version/rollback & \no & \no & \no \\
-& ErrCorr. \ac{ui} & \almost, no ent. no hist. & \almost, no ent. no hist. & \almost, no ent. no hist. \\
+& err corr. \ac{ui} & \psup no ent. no hist. & \psup no ent. no hist. & \psup no ent. no hist. \\
+& ann. versioning & \psup multi doc vers. & \no & \no \\
 \midrule
 
 Scalab. & net \ac{api} & \yes & \yes & \yes \\
@@ -51,28 +55,17 @@ Scalab. & net \ac{api} & \yes & \yes & \yes \\
 \multicolumn{2}{l}{Availability} & \yes & \no not addressed & \no not addressed \\
 \midrule
 
-\multicolumn{2}{l}{Loose Coupling} & \yes & \no not addressed & \no not addressed \\
-\midrule
-
-Interop. & \ac{uniof} & \yes GateJSON & \yes GateJSON & \yes GateJSON \\
-\midrule
-
 \multicolumn{2}{l}{Minimum-necessary} & \no orchestrator in architecture & \no & \no \\
 \midrule
 
 \multicolumn{2}{l}{\ac{crud} \acp{api}} & \yes & \yes & \yes \\
 \midrule
 
-\multicolumn{2}{l}{Multiple Collections} & \almost not all \acp{ui} supp. & \no & \no \\
+
+\multicolumn{2}{l}{Retrieval Modes} & \psup sparse only & \psup sparse only & \yes \\
 \midrule
 
-\multicolumn{2}{l}{Annotation Versioning} & \psup multi doc vers. & \no & \no \\
-\midrule
-
-Retrieval & retrieval modes & \psup sparse only & \psup sparse only & \yes \\
-\midrule
-
-\multicolumn{2}{l}{Query Language} & \yes SQL,MQL~\cite{mongodb-mql} & \yes MQL~\cite{mongodb-mql}, Cypher~\cite{neo4j-cypher} & \yes MQL~\cite{mongodb-mql} \\
+\multicolumn{2}{l}{Query Language} & \yes SQL,MQL~\cite{mongodb-mql} & \yes MQL,Cypher\cite{neo4j-cypher} & \yes MQL~\cite{mongodb-mql} \\
 \bottomrule
 \end{tabularx}
 \end{table}
