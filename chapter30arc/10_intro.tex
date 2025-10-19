@@ -75,73 +75,74 @@ However, differently from those works, the present chapter---which addresses \re
 \begin{table}[htbp]
 \centering
 \label{tab:requirements}
+\rowcolors{2}{white}{gray!15}
 \begin{tabularx}{\textwidth}{p{2cm}p{4.5cm}X}
-  \toprule
-\textbf{Type} & \textbf{Requirement} & \textbf{Motivation / Supported Use Cases} \\
+\toprule
+\textbf{Type} & \textbf{Requirement} & \textbf{Motivation / Supported Use Cases} \\%
 \midrule
 Principle &
 Generalizability &
-To support heterogeneous documents and evolving needs. \\
+To support heterogeneous documents and evolving needs. \\%
 
 Principle &
 Traceability and Verifiability &
-Needed by legal professionals to justify results of automatic operations, tracing them to the source data. \\
+Needed by legal professionals to justify results of automatic operations, tracing them to the source data. \\%
 
 Principle &
 Error Correction Capability &
-Human-in-the-loop correction is required for improving system quality in sensitive domains. \\
+Human-in-the-loop correction is required for improving system quality in sensitive domains. \\%
 
 Principle &
 Scalability &
-Necessary for handling vast document collections, as during investigations. \\
+Necessary for handling vast document collections, as during investigations. \\%
 
 Principle &
 Availability &
-Prevents \ac{dia} and services from failing when other services fail or are modified. \\
+Prevents \ac{dia} and services from failing when other services fail or are modified. \\%
 
 Principle &
 Loose Coupling &
-Reduces cascading failures in services. \\
+Reduces cascading failures in services. \\%
 
 Principle &
 Interoperability (\ac{uniof}) &
-Simplifies integration of new services and composition of pipelines. \\
+Simplifies integration of new services and composition of pipelines. \\%
 
 Principle &
 Minimum Necessary Functionality &
 To restrict the \ac{dia} design to only what is needed to support the requirements and all use cases
-\ref{uc:case-retrieval}--\ref{uc:stats}. \\
+\ref{uc:case-retrieval}--\ref{uc:stats}. \\%
 \midrule
 Functional &
 \ac{crud} \acp{api} &
 Foundation to create and revise resources required in all use cases
-\ref{uc:case-retrieval}--\ref{uc:stats}. \\
+\ref{uc:case-retrieval}--\ref{uc:stats}. \\%
 
 Functional &
 Multiple Document Collections &
-Supports generalizability to different granularities (chat vs.\ messages) useful for investigations. \\
+Supports generalizability to different granularities (chat vs.\ messages) useful for investigations. \\%
 
 Functional &
 Annotation Versioning &
-Required for traceability and error correction capability. \\
+Required for traceability and error correction capability. \\%
 
 Functional &
 Retrieval \acp{api} (sparse/dense/hybrid) &
 Required for \ref{uc:case-retrieval} case retrieval and
-\ref{uc:investigative-retrieval} investigative retrieval, and \ref{uc:qa} \ac{qa}. \\
+\ref{uc:investigative-retrieval} investigative retrieval, and \ref{uc:qa} \ac{qa}. \\%
 
 Functional &
 Support for a \ac{ql} &
-Required for \ref{uc:stats} statistical analysis and performance monitoring. \\
+Required for \ref{uc:stats} statistical analysis and performance monitoring. \\%
 
 Functional &
 Visualization \ac{ui} &
-Needed to verify and trace extracted information (\eg where an entity is mentioned). Providing basic \ref{uc:navigation} document navigation. \\
+Needed to verify and trace extracted information (\eg where an entity is mentioned). Providing basic \ref{uc:navigation} document navigation. \\%
 % Provides basic \ref{uc:navigation}
 
 Functional &
 Error Correction \ac{ui} &
-Needed for error correction capability. \\
+Needed for error correction capability. \\%
 \bottomrule
 \end{tabularx}
 \caption{Summary of architectural principles and functional requirements of the \ac{dia}.}
@@ -375,12 +376,12 @@ These three flows enable external services to ingest, access, and iteratively re
 \centering
 \caption{Support of each requirement in the proposed \ac{dia} design and data model.}
 \label{tab:req-to-support}
+\rowcolors{2}{white}{gray!15}
 \begin{tabularx}{\textwidth}{p{4.5cm}X}
 \toprule
 \textbf{Requirement} & \textbf{Support in the \ac{dia}} \\
 \midrule
 Generalizability &
-% Document--annotation--entity triad; multiple collections with \acp{uri} for interlinking. \\
 Document--annotation--entity triad; multiple collections with \acp{uri} for interlinking; easy integration of new services via \acp{api} and interoperability. \\
 
 Traceability and Verifiability &
@@ -397,7 +398,6 @@ Achieved through loose coupling and exclusion of perimetral services from the co
 
 Loose Coupling &
 Supported as a design principle for services. \\
-% Stable \acp{api}; no direct dependencies among external services. \\
 
 Interoperability (\ac{uniof}) &
 GateJSON as a unified interchange format across all services. \\

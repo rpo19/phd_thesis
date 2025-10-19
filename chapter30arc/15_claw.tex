@@ -1,9 +1,71 @@
-\section{Architectural Prototypes. Where are we now?}
+\section{Prototypes from Previous Work}
 \label{sec:arch_proto}
 
+\todo{chiedi a ruben per dave multi collection}
+
+\begin{table}[htbp]
+\centering
+\caption{Support of DIA requirements across prior works
+(\yes full,\ \almost almost, \psup partial,\ \no none).}
+\begin{tabularx}{\textwidth}{p{1.5cm} X X X X}
+\toprule
+\textbf{Req.} & \textbf{Aspect} & \textbf{Ref. \cite{BELLANDI2024}} & \textbf{Ref. \cite{pozzi_wise_2025}} & \textbf{Ref. \cite{Agazzi2025DAVE}} \\
+\midrule
+
+Gen. & doc--ann--ent & \yes & \yes & \yes \\
+% & multi-collection & \no & \no & \no \\
+& \ac{uri} & \psup not universal & \psup not universal & \psup not universal \\
+& service integration & \yes RAE & \yes in principle & \yes in principle \\ % not tested. GateJSON below
+\midrule
+
+Trace. & trace. annotations & \yes w/ GateNLP & \yes w/ GateNLP & \yes w/ GateNLP \\
+& Visual. \ac{ui} & \almost no entity page & \almost no entity page & \almost no entity page \\
+
+\midrule
+
+ErrCorr. & version/rollback & \no & \no & \no \\
+& ErrCorr. \ac{ui} & \almost, no ent. no hist. & \almost, no ent. no hist. & \almost, no ent. no hist. \\
+\midrule
+
+Scalab. & net \ac{api} & \yes & \yes & \yes \\
+& annset parallel. & \yes & \yes & \yes \\
+& other & implements service orchestrator & -- & -- \\
+\midrule
+
+\multicolumn{2}{l}{Availability} & \yes & \no not addressed & \no not addressed \\
+\midrule
+
+\multicolumn{2}{l}{Loose Coupling} & \yes & \no not addressed & \no not addressed \\
+\midrule
+
+Interop. & \ac{uniof} & \yes GateJSON & \yes GateJSON & \yes GateJSON \\
+\midrule
+
+\multicolumn{2}{l}{Minimum-necessary} & \no orchestrator in architecture & \no & \no \\
+\midrule
+
+\multicolumn{2}{l}{\ac{crud} \acp{api}} & \yes & \yes & \yes \\
+\midrule
+
+\multicolumn{2}{l}{Multiple Collections} & \almost not all \acp{ui} supp. & \no & \no \\
+\midrule
+
+\multicolumn{2}{l}{Annotation Versioning} & \psup w/ multi doc vers. and annsets & \psup w/ annsets & \psup w/ annsets \\
+\midrule
+
+Retrieval & retrieval modes & \psup sparse only & \psup sparse only & \yes \\
+\midrule
+
+\multicolumn{2}{l}{Query Language} & \yes SQL,MQL~\cite{mongodb-mql} & \yes MQL~\cite{mongodb-mql}, Cypher~\cite{neo4j-cypher} & \yes MQL~\cite{mongodb-mql} \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 
 
+
+
+In \textcite{BELLANDI2024}, we also experimented availability by addition two services---named rule-based additional extractors (RAE)---and evaluating them.
 
 
 In \textcite{BELLANDI2024}, one of the two research questions addressed was directed to the architectural design for fulfilling the needs of legal users working with civil judgments. In that work, we defined functional and requirements, such as support for intra-document and inter-document search for the functionals, and scalability, extensibility, and availability for the non functional~\cite{BELLANDI2024}. Then, we provided an implementation of the architecture and we demostrated it fulfilled the requirements. That architecture predisposed back end (databases and extractors) and front end components---such as search or visualization \acp{ui}---and was already based on the concepts of \emph{document--annotation--entity}.
@@ -15,7 +77,7 @@ In this chapter, instead, the focus is centered on the \acl{dia}. We will speak 
 Our objective is to define the \emph{minimum necessary} directives for guiding the implementation of a \acl{dia}---for knowledge-intensive domains and, in particular, for the legal domain---so that it provides the fundamental functionality required to satisfy the aforementioned \emph{architectural principles}.  
 The only exceptions are those \acp{ui} necessary for guaranteeing some of the requirements---namely the \emph{visualization \acp{ui}} and the \emph{error correction \acp{ui}}.
 
-This difference exists also with respect to \textcite{bellandi2025streamlining}---a work from colleagues and co-authors of \textcite{BELLANDI2024}---in which they formalize a platform, improving the one from out co-authored previous work~\cite{BELLANDI2024}, that includes data ingestion and storage tools, as well as \acp{ui} and text processing modues for legal documents such as judgements or laws. 
+This difference exists also with respect to \textcite{bellandi2025streamlining}---a work from the colleagues and co-authors of \textcite{BELLANDI2024}---in which they formalize a platform, improving the one from out co-authored previous work~\cite{BELLANDI2024}, that includes data ingestion and storage tools, as well as \acp{ui} and text processing modues for legal documents such as judgements or laws. 
 
 Moreover, in this work, differently from \textcite{BELLANDI2024,bellandi2025streamlining}, we do not consider orchestration or service management tools---which manage the (parallel) execution of complex workflows---part of the architecture, but we limit to make design choices that support and simplify the use of such tools for achieving \emph{scalability} and \emph{generalizability} to the use of custom extractors or document processors. These are the aforementioned principles for the design of perimetral services---namely loose coupling and interoperability, with the use of a \acl{uniof}---the use of \emph{\acp{uri}} to simplify \say{localing} the document to process, and the \emph{support for \ac{crud} \acp{api}}.
 
