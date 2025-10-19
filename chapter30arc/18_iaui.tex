@@ -1,0 +1,142 @@
+\section{User Interfaces and Supported Use Cases}
+\label{sec:iaui-from-prototypes}
+
+The prototypes developed in the previously published works do not only validate the architectural assumptions, but also demonstrate how the \ac{dia} can concretely support real user-facing tasks. In this section, we highlight the \acp{ui} that have been actually implemented in the three prototypes and we position them with respect to the five use cases introduced in~\Cref{sec:intro}.
+
+\paragraph{Visualization and inspection interfaces.}
+All three prototypes~\cite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE} include a \emph{document explorer} to visualize annotated documents and inspect entity mentions.
+These interfaces support \ref{uc:navigation} and, to some extent, enable manual verification and minor correction actions directly from the viewer.
+
+\paragraph{Search and investigative retrieval.}
+\textcite{pozzi_wise_2025} introduced a faceted-search interface for investigative retrieval over IMA data, covering \ref{uc:investigative-retrieval}.
+A conceptually analogous faceted search was later adopted in~\cite{Agazzi2025DAVE} for \ref{uc:case-retrieval}, demonstrating the reuse of the same interaction paradigm across domains.
+
+\paragraph{Graph-based exploration.}
+The WISE\todo{remove wise} prototype~\cite{pozzi_wise_2025} also included a graph-based interface tailored to investigative analysis of communication networks derived from chats, supporting complex instances of \ref{uc:investigative-retrieval} that cannot be expressed through keyword search alone.
+
+\paragraph{Question answering and conversational interaction.}
+\textcite{Agazzi2025DAVE} introduced a conversational \ac{qa} interface supporting \ref{uc:qa}, allowing users to query document collections in natural language with linked evidence.
+
+\paragraph{Error correction and refinement.}
+All three works included partial support for human correction through the document explorer. In~\cite{Agazzi2025DAVE}, this capability was extended with an interface for refining entity clusters, moving toward structured \ref{uc:investigative-retrieval} and \ref{uc:qa} pipelines with human oversight.
+
+\paragraph{Analytical inspection.}
+In \textcite{BELLANDI2024}, statistical analysis was explored in notebooks rather than via a dedicated \ac{ui}, partially addressing \ref{uc:stats} but without a deployed interface.
+
+\medskip
+
+\noindent
+As a synthesis, \Cref{tab:uc:ui} will map each \ac{ui} to the supported use cases \ref{uc:case-retrieval}--\ref{uc:stats}. Notably, no published prototype includes a \emph{\ac{ui} for \ref{uc:stats} statistical monitoring} or a \emph{dedicated \ac{ui} for \ref{uc:investigative-retrieval} error correction} beyond the lightweight interactions embedded in the document explorers. These uncovered areas motivated the architectural requirements for visualization and error-correction defined in this chapter.
+
+\begin{table}[htbp]
+\centering
+\label{tab:uc:ui}
+\begin{threeparttable}
+\caption{Published \acp{ui} and supported use cases.}
+\begin{tabularx}{\textwidth}{p{4cm} X p{1.5cm}}
+\toprule
+\textbf{\ac{ui} type} & \textbf{Supported UC / principles} & \textbf{Used in Ref.} \\
+\midrule
+
+Document explorer &
+\ref{uc:navigation} (navigation); error correction (partial) &
+\cite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE} \\
+
+Faceted search &
+\ref{uc:case-retrieval} (case retrieval);
+\ref{uc:investigative-retrieval} (investigative retrieval) &
+\cite{pozzi_wise_2025,Agazzi2025DAVE} \\
+
+Graph-based exploration &
+\ref{uc:investigative-retrieval} (investigative retrieval) &
+\cite{pozzi_wise_2025} \\
+
+Conversational \ac{qa} \ac{ui} &
+\ref{uc:qa} (\ac{qa} over documents/collections) &
+\cite{Agazzi2025DAVE} \\
+
+Cluster refinement \ac{ui} &
+error correction (partial, entity-level refinement) &
+\cite{Agazzi2025DAVE} \\
+
+Notebook-based analysi\tnote{a} &
+\ref{uc:stats} (statistical analysis, partial) &
+\cite{BELLANDI2024} \\
+\bottomrule
+\end{tabularx}
+
+\begin{tablenotes}
+    \item[a] Implemented as exploratory analysis in Jupyter notebooks \url{https://jupyter.org/}.
+\end{tablenotes}
+
+\end{threeparttable}
+\end{table}
+
+
+As shown in Table~\ref{tab:iaui-published}, the \acp{ui} prototyped so far do not cover all the intended use cases of the \ac{dia}. In particular, the following gaps remain:
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Lack of a deployed \ref{uc:stats} interface}: statistical analysis is currently supported only through notebook-based workflows and not through a dedicated, interactive \ac{ui}.
+    \item \textbf{Partial error correction}: correction is possible only indirectly through document explorers or via entity refinement, but no dedicated error-correction \ac{ui} exists.
+    \item \textbf{Limited reuse of \acp{ui} across domains}: except for the faceted search (reused in both \cite{pozzi_wise_2025} and \cite{Agazzi2025DAVE}), most implemented \acp{ui} were tailored to specific datasets or tasks rather than conceived as reusable architectural components.
+\end{enumerate}
+
+These missing capabilities directly motivated the architectural requirements for visualization and error-correction interfaces defined earlier in this chapter.
+
+
+\subsection{UI Prototypes in \textcite{BELLANDI2024}}
+\label{sec:ui-clsr}
+
+\paragraph{Document explorer.}
+Descrivere cosa permette di vedere, su quali dati era applicato (civil judgments),
+e che supporto dava per \ref{uc:navigation} e verifica.
+
+\paragraph{Faceted / investigative search (if any).}
+Breve nota se nel lavoro era presente solo a livello concettuale o implementato.
+
+\paragraph{Statistical inspection via notebooks.}
+Collegare a \ref{uc:stats}, chiarendo che non era una \ac{ui}.
+
+\medskip
+% --- next paper ---
+
+\subsection{UI Prototypes in \textcite{pozzi_wise_2025}}
+\label{sec:ui-wise}
+
+\paragraph{Faceted investigative retrieval.}
+Descrivere come veniva usata per \ref{uc:investigative-retrieval}.
+
+\paragraph{Graph-based exploration.}
+Ruolo per analisi investigativa, differenza rispetto a faceted,
+e relazione con \ref{uc:investigative-retrieval}.
+
+\paragraph{Document explorer with partial correction.}
+Richiamo a \ref{uc:navigation} e ErrCorr(partial).
+
+\medskip
+% --- next ---
+
+\subsection{UI Prototypes in \textcite{Agazzi2025DAVE}}
+\label{sec:ui-dave}
+
+\paragraph{Faceted case retrieval.}
+Riutilizzo del paradigma di WISE ma su contesto legale — mapping a \ref{uc:case-retrieval}.
+
+\paragraph{Conversational question answering.}
+Collegare a \ref{uc:qa} e differenza rispetto a faceted.
+
+\paragraph{Document explorer.}
+Come in altri paper, ma arricchito.
+
+\paragraph{Cluster refinement.}
+Menzionare come abilitazione all'ErrCorr (partial).
+
+\medskip
+
+\subsection{Cross-paper observations}
+\label{sec:ui-cross}
+
+% Qui due o tre bullet:
+- riuso della stessa interfaccia (faceted) su due domini diversi;
+- funzioni presenti in tutti (document explorer) vs. funzioni emergenti (QA/refinement);
+- limiti individuati (niente UI per \ref{uc:stats}, correzione mai completa).
