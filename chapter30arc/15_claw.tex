@@ -1,4 +1,35 @@
-\section{architectural Prototyes. Where are we now?}
+\section{Architectural Prototypes. Where are we now?}
+\label{sec:arch_proto}
+
+
+
+
+
+
+In \textcite{BELLANDI2024}, one of the two research questions addressed was directed to the architectural design for fulfilling the needs of legal users working with civil judgments. In that work, we defined functional and requirements, such as support for intra-document and inter-document search for the functionals, and scalability, extensibility, and availability for the non functional~\cite{BELLANDI2024}. Then, we provided an implementation of the architecture and we demostrated it fulfilled the requirements. That architecture predisposed back end (databases and extractors) and front end components---such as search or visualization \acp{ui}---and was already based on the concepts of \emph{document--annotation--entity}.
+% our colleagues contiunued....
+% orchestration: more relaxed than claw: no need of deciding request manageer,...
+
+
+In this chapter, instead, the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core.
+Our objective is to define the \emph{minimum necessary} directives for guiding the implementation of a \acl{dia}---for knowledge-intensive domains and, in particular, for the legal domain---so that it provides the fundamental functionality required to satisfy the aforementioned \emph{architectural principles}.  
+The only exceptions are those \acp{ui} necessary for guaranteeing some of the requirements---namely the \emph{visualization \acp{ui}} and the \emph{error correction \acp{ui}}.
+
+This difference exists also with respect to \textcite{bellandi2025streamlining}---a work from colleagues and co-authors of \textcite{BELLANDI2024}---in which they formalize a platform, improving the one from out co-authored previous work~\cite{BELLANDI2024}, that includes data ingestion and storage tools, as well as \acp{ui} and text processing modues for legal documents such as judgements or laws. 
+
+Moreover, in this work, differently from \textcite{BELLANDI2024,bellandi2025streamlining}, we do not consider orchestration or service management tools---which manage the (parallel) execution of complex workflows---part of the architecture, but we limit to make design choices that support and simplify the use of such tools for achieving \emph{scalability} and \emph{generalizability} to the use of custom extractors or document processors. These are the aforementioned principles for the design of perimetral services---namely loose coupling and interoperability, with the use of a \acl{uniof}---the use of \emph{\acp{uri}} to simplify \say{localing} the document to process, and the \emph{support for \ac{crud} \acp{api}}.
+
+Another difference with this works is that we enlarge our focus to investigative data, that are more heterogeneus, therefore requiring more generalization. For these reason, we do not consider document sections in our data model (differently from \textcite{bellandi2025streamlining}) and we generalize the concept of annotation in such a way that can even cover sections.
+
+The need for relaxing the concepts of document and annotation came, indeed, from the investigative \ac{ima} data.\todo{chiedi a ruben perchè avevamo rappresentato con i messaggi}
+In that case, using an implementation of the architecture from \textcite{BELLANDI2024}, for enabling complex use cases such as searching for messages sent in a certain date-range, we had to ingest separately the messages\footnote{\url{https://github.com/unimib-datAI/IKBP/tree/main/documents-message-based/src/models}} and the entire chats for supporting visualization \ac{ui}~\cite{pozzi_wise_2025}.\todo{footnote a github} 
+\todo{say something more about wise and then go for the chapter.}
+
+\todo{continue by saying that these requirements really were already developed, grounding this work. e.g. ijckg add entity}
+\todo{speak more of my papers? e.g. of adptation with rae services? yes also says we extracted articles}
+
+
+\section{draft}
 
 In this section we cover the architectural contributions published during my \phd and analyze which principles they follow and which they do not. Two architectural prototypes, one in \textcite{BELLANDI2024} and another in \textcite{pozzi_wise_2025}, have been developed and experimented with legal documents---respectively Italian civil judgment and Italian chat logs from \ac{ima} data acquired during an investigation.
 
