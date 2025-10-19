@@ -354,78 +354,22 @@ On the other hand, the \emph{Error correction \ac{ui}} provides functionalities 
   \end{itemize}
 \end{itemize}
 
-
-Finally, we conclude the core architectural section by defining three information flows that the \ac{dia} must support. These flows cover all possible interactions with external services---such as preprocessing components, text annotators, or \acp{ui}---and assume interoperability through the GateJSON format. We also recall the design guideline of ensuring loose coupling among services to reduce cascading failures.
+We conclude the core architectural description by defining three information flows that the \ac{dia} must support. These flows cover all interactions with external services---such as preprocessing components, text annotators, or \acp{ui}---and assume interoperability through the GateJSON format. We also recall the design guideline of ensuring loose coupling among services to reduce cascading failures.
 
 \begin{enumerate}
 \item \emph{\Acl{ie} flow.}
-Raw data are processed by external services, serialized in GateJSON, and injected into the \ac{dia} via \acp{api}. This corresponds to the green arrow in \Cref{fig:architectural-model}, flowing from outside the system into the core of the \ac{dia}.
+External services process raw data, serialize it in GateJSON, and inject it into the \ac{dia} via \acp{api}. This corresponds to the green arrows in \Cref{fig:architectural-model}, incoming from outside to the core of the \ac{dia}.
 
 \item \emph{\Acl{ia} flow.}
-\acp{ui} retrieve stored information in GateJSON format via read or retrieval \acp{api} and present it to end users. This corresponds to the red arrow in \Cref{fig:architectural-model}.
+\acp{ui} retrieve stored information in GateJSON via read or retrieval \acp{api} and present it to users. This corresponds to the outgoing red arrow in \Cref{fig:architectural-model}.
 
 \item \emph{Circular flow.}
-Some services both read from and write to the \ac{dia}. This includes, for example, processing systems arranged in a pipeline: they fetch a document, enrich it (e.g., by adding an annotation set), and persist the additional information. This bidirectional flow is represented by the two small arrows between the core and the \emph{Processing Services}. The \emph{Error-correction \ac{ui}} is an analogous case: it reads from the \ac{dia} and persists human-made revisions back into it.
+Some services both read from and write to the \ac{dia}, such as sequential processors that enrich documents (e.g.\ by adding annotation sets). The \emph{Error-correction \ac{ui}} is similar: it reads from the \ac{dia} and persists human-made revisions back into it.
 \end{enumerate}
 
-Together, these three flows ensure that external services can ingest, access, and iteratively refine information, making it possible to generalize the proposed \ac{dia} to different use cases. In addition, the ability to run processing on top of previously generated results, combined with the network-based \ac{api} layer, enables complex workflows and distributed execution. This is facilitated by the possibility of operating on separate annotation sets, which minimizes conflicts between concurrent processes. These properties---along with the loose coupling design for services---support the scalability principle, especially when the \ac{dia} is combined with an orchestrator that schedules services over different documents. Finally, the use of \acp{uri} for all resources allows documents and annotations to be retrieved unambiguously via the \acp{api}.
+These three flows enable external services to ingest, access, and iteratively refine information, allowing the \ac{dia} to generalize across use cases. Moreover, running processing on top of previously generated results, combined with network-based \acp{api}, enables complex workflows and distributed execution. Operating on separate annotation sets minimizes conflicts among concurrent processes, and loose coupling supports scalability when combined with an orchestrator. The systematic use of \acp{uri} ensures that documents and annotations can be retrieved unambiguously via the \acp{api}.
 
 
-\begin{table}[htbp]
-\centering
-\label{tab:req-to-support}
-\begin{tabularx}{\textwidth}{p{4.5cm}X}
-  \toprule
-  \textbf{Requirement} & \textbf{Support in the \ac{dia} data model and design choices} \\
-\midrule
-Generalizability &
-Achieved by the document--annotation--entity triad and by allowing multiple document collections with different granularities, while using \acp{uri} to interlink heterogeneous sources. \\
-
-Traceability and Verifiability &
-Guaranteed by storing annotations with start--end offsets over immutable document text, and by recording the source \ac{uri} for each annotation and annotation set. \\
-
-Error Correction Capability &
-Supported by explicit versioning at the annotation-set level, enabling revision while preserving history and allowing rollback. \\
-
-Scalability &
-Enabled by network-based \acp{api} (distributed execution), separation of storage from processing services, loose coupling services and independent annotation sets simplify parallelization, circular flows simplify multi-service orchestration. \\
-
-Availability &
-Enforced by loose coupling and by defining perimetral services (extractors, UIs) outside the \ac{dia} core, avoiding failure propagation. \\
-
-Loose Coupling &
-Achieved by isolating the \ac{dia} core behind stable \acp{api} and by forbidding direct dependencies between perimetral services. \\
-
-Interoperability (\ac{uniof}) &
-Ensured through the adoption of GateJSON as the unified interchange format for exchanging annotated documents across services. \\
-
-Minimum Necessary Functionality &
-Reflected in the restriction of the core to only storage + \acp{api} + minimal UIs for traceability and error correction, excluding orchestration and external services. \\
-\midrule
-\ac{crud} \acp{api} &
-Provided by the \ac{api} layer, giving controlled creation and modification of documents, entities, and annotations. \\
-
-Multiple Document Collections &
-Supported directly in the data model by associating documents with collections and linking across them via \acp{uri}. \\
-
-Annotation Versioning &
-Enabled by managing annotation history at the annotation-set level, storing user id and messages for each modification. \\
-
-Retrieval \acp{api} &
-Realized through the retrieval interface (\ac{ri}) supporting sparse, dense, and hybrid retrieval over stored resources. \\
-
-Support for a \ac{ql} &
-Implemented via the \ac{api} layer querying the \ac{ad} and \ac{kr} to compute aggregations and filters over documents, entities, and annotations. \\
-
-Visualization \ac{ui} &
-Enabled by the storage model that preserves offsets, annotation sets, and \acp{uri}, allowing inspectors to display annotated text with provenance. Functionalities clearly defined.\\
-
-Error Correction \ac{ui} &
-Supported by the versionable annotation model and by controlled write operations in the \ac{api} layer. Functionalities clearly defined \\
-\bottomrule
-\end{tabularx}
-\caption{Support of each requirement in the proposed \ac{dia} design and data model.}
-\end{table}
 
 \begin{table}[htbp]
 \centering
@@ -440,7 +384,7 @@ Generalizability &
 Document--annotation--entity triad; multiple collections with \acp{uri} for interlinking; easy integration of new services via \acp{api} and interoperability. \\
 
 Traceability and Verifiability &
-Annotations store source text spans and \acp{uri} of the originating document and set; annotation versioning records all corrections, preserving trace of changes. \\
+Annotations store source text spans and \acp{uri} of the originating document and set; annotation versioning records all corrections, preserving trace of changes. Visualization \ac{ui} to browse annotated documents and trace entity--annotation links.\\
 
 Error Correction Capability &
 Error correction \ac{ui}, coupled with annotation versioning with history and rollback. \\
@@ -477,13 +421,17 @@ Support for a \ac{ql} &
 Necessary requirements for choosing the annotation \ac{db} implementation. \\
 
 Visualization \ac{ui} &
-Enabled by offsets, annotation sets, and \acp{uri} in storage. functionalitie clearly defined\\
-
+Designed to display annotated documents, selecting annotation sets, inspecting properties, tracing entity-annotation links, supporting traceability and basic \ref{uc:navigation} navigation. \\
+ 
 Error Correction \ac{ui} &
-Backed by write operations and versionable annotations. functionalitie clearly defined \\
+Designed to revise or delete annotations and entities, with versioning to preserve history and support error correction capability. \\
+
 \bottomrule
 \end{tabularx}
 \end{table}
+
+Before proceeding with the architectural details, \Cref{tab:req-to-support} summarizes how the proposed design and data model support each requirement.
+
 
 
 \todo{ vis error ui. remove double table}
