@@ -1,17 +1,19 @@
 \chapter{Data Integration Architecture for Knowledge-Intensive Domains}
 \label{chap:architecture}
 
-In this chapter we address \ref{ob:architecture} by describing the entity-centric architectural model for integrating heterogeneous data in knowledge-intensive domains, which special focus on the legal domain.
+In this chapter we address \ref{ob:architecture} by presenting an entity-centric architectural model for integrating heterogeneous data in knowledge-intensive domains, with a particular focus on the legal domain.
 
-In the past years I have collaborated in several projects, whose aim was to integrate \ac{ai} advancements in the Italian legal domain. As evident by the document types presented in this thesis, my focus has been towards Italian civil judgments and criminal investigations. This started in 2021, when I began collaborating with my future \phd supervisor, Professor Matteo Palmonari, on the application of \acl{ee} techniques on investigative data.
+Over the past years I have contributed to several research projects aimed at incorporating \ac{ai} technologies into the Italian legal ecosystem. As shown by the document types considered in this thesis, my work has primarily concentrated on two contexts: Italian civil judgments and criminal investigations. This activity began in 2021, when I started collaborating with my future \phd supervisor, Professor Matteo Palmonari, on the application of \acl{ee} methods to investigative data.
 %
-This allowed me to acquire experience on this domain and receive feedback from legal professionals about our proposed prototypes and proof-of-concepts.
+This collaboration provided continuous exposure to real use cases and the opportunity to collect feedback from legal professionals on our prototypes and proof-of-concepts.
 
-From these projects, three works have been published (and coatuthoored by me), in chronological order:
+From these projects, three works have been published (all co-authored by me), in chronological order:
 \begin{itemize}
-  \item \textcite{BELLANDI2024} in which
-  \item \textcite{pozzi_wise_2025} in which
-  \item \textcite{Agazzi2025DAVE} in which
+\item \textcite{BELLANDI2024}, which presents an entity-centric infrastructure for managing legal documents, including architectural components, an \ac{nlp} pipeline for \ac{ee} from civil court judgments to annotate documents, and \acl{ia} \acp{ui}, such as entity-based document exploration, and a search interface. Additionally, it supported \acl{hitl} supervision with a \ac{ui} for error correction of the automatic \acl{ee} process.
+
+\item \textcite{pozzi_wise_2025}, which applies a similar entity-centric design to investigative \ac{ima} data by modeling message corpora with a \acl{kg}, enriching them with audio transcriptions and entity annotations, and exposing the resulting knowledge through graph querying visualization, as well as entity-based faceted search and the document exploration interface.
+
+\item \textcite{Agazzi2025DAVE}, which consolidates \acf{dave}, an open-source\footnote{Available from Github at \url{https://github.com/unimib-datAI/DAVE}} entity-centric framework supporting faceted search, entity-based document exploration, RAG-based\todo{introduci rag nel sota} conversational question answering, and knowledge refinement over annotated documents. %, integrating RAG-based conversational interfaces with faceted search and human-in-the-loop correction.
 \end{itemize}
 
 

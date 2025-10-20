@@ -1,33 +1,34 @@
 \section{User Interfaces and Supported Use Cases}
 \label{sec:iaui-from-prototypes}
 
-The prototypes developed in the previously published works do not only validate the architectural assumptions, but also demonstrate how the \ac{dia} can concretely support real user-facing tasks. In this section, we highlight the \acp{ui} that have been actually implemented in the three prototypes and we position them with respect to the five use cases introduced in~\Cref{sec:intro}.
-Most of the \acp{ui} applied to in-domain work~\cite{BELLANDI2024,pozzi_wise_2025} have been later consolidated in \acf{dave}~\cite{Agazzi2025DAVE}.
+The prototypes developed in the previously published works do not only validate the architectural assumptions, but also demonstrate how the \ac{dia} can concretely support real user-facing tasks. In what follows we highlight the \acp{ui} that were actually implemented in the three prototypes and position them with respect to the five use cases introduced in~\Cref{sec:intro}. Most of the \acp{ui} originally applied to in-domain work~\cite{BELLANDI2024,pozzi_wise_2025} were later consolidated in \acf{dave}~\cite{Agazzi2025DAVE}.
 
-\paragraph{Document Explorer.}
-The \emph{document explorer}, introduced in \textcite{BELLANDI2024} and continued with \textcite{pozzi_wise_2025,Agazzi2025DAVE}, allows to visualize annotated documents, select annotation sets, inspect properties, and provides entity-based document navigation---\ie the user can expand a list of entities in the document, see a preview of all the mentions, and by clicking one mention the system brings the user to that exact fraction of the document.
-These interfaces support \ref{uc:navigation} and \emph{traceability and verifiability} to a considerable extent, only lacking a global entity visualization, that is instad provided per-document.
+\paragraph{Document explorer.}
+First introduced in~\textcite{BELLANDI2024} and later continued in \acs{dave} with \textcite{pozzi_wise_2025,Agazzi2025DAVE}, the document explorer allows users to visualize annotated documents, select annotation sets, inspect properties, and navigate documents via entities. In particular, users can expand the list of entities occurring in a document, preview all mentions, and jump to a specific passage by selecting a mention. This interface supports the navigation and exploration use case (\ref{uc:navigation}) and implements \emph{traceability and verifiability} to a considerable extent, although the entity view is per-document rather than global.
+Notably, this interface has been used for semi-automatic and \acl{hitl} annotation of both Italian civil judgments and investigative \ac{ima} data, as described in~\Cref{sec:judgements_labeled_data,sec:wise_dataset}.
 
-\paragraph{Search and investigative retrieval.}
-\textcite{pozzi_wise_2025} introduced a faceted-search interface for investigative retrieval over IMA data, covering \ref{uc:investigative-retrieval}.
-A conceptually analogous faceted search was later adopted in~\cite{Agazzi2025DAVE} for \ref{uc:case-retrieval}, demonstrating the reuse of the same interaction paradigm across domains.
-
-\paragraph{Graph-based exploration.}
-The WISE\todo{remove wise} prototype~\cite{pozzi_wise_2025} also included a graph-based interface tailored to investigative analysis of communication networks derived from chats, supporting complex instances of \ref{uc:investigative-retrieval} that cannot be expressed through keyword search alone.
+\paragraph{Faceted search.}
+\textcite{pozzi_wise_2025} introduced a faceted-search interface for investigative retrieval (\ref{uc:investigative-retrieval}) over chat documents. That same work publicly described a first version of \acs{daveold}---initially standing for \acl{daveold}---providing document exploration with error correction and faceted search. This interaction paradigm was later reused for publicly available judgments in~\cite{Agazzi2025DAVE}, simulating the case retrieval use case (\ref{uc:case-retrieval}), showing cross-domain portability.
 
 \paragraph{Question answering and conversational interaction.}
-\textcite{Agazzi2025DAVE} introduced a conversational \ac{qa} interface supporting \ref{uc:qa}, allowing users to query document collections in natural language with linked evidence.
+With~\textcite{Agazzi2025DAVE}, \acs{dave} was extended with a conversational \acl{qa} interface (\ref{uc:qa}) and has been renamed to \acl{dave}. The interface supports natural language queries over a collection of documents and exposes the text passages used for answer generation to preserve traceability. At the end of this section, the \ac{dave} interfaces are shown in~\Cref{fig:dave-explorer-types,fig:dave-explorer-instance,fig:dave-facets,fig:dave-qa,fig:dave-editing}.
+
+\paragraph{Graph-based exploration.}
+\textcite{pozzi_wise_2025} also included a graph-based interface for investigative analysis of communication networks derived from chats, supporting complex instances of \ref{uc:investigative-retrieval} that cannot be expressed through keyword search alone. \Cref{fig:kg-exploration} shows this \ac{ui}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{images/wise/KGexploration.png}
+\caption[Graph-based exploration of chat-derived knowledge graph]{Graph-based exploration of chat-derived communication networks supporting complex instances of \ref{uc:investigative-retrieval}.}
+\label{fig:kg-exploration}
+\end{figure}
 
 \paragraph{Error correction and refinement.}
-All three works included partial support for human correction through the document explorer. In~\cite{Agazzi2025DAVE}, this capability was extended with an interface for refining entity clusters, moving toward structured \ref{uc:investigative-retrieval} and \ref{uc:qa} pipelines with human oversight.
+All three works provided partial support for human correction via the document explorer. In~\cite{Agazzi2025DAVE} this capability was extended with an interface for refining entity clusters---e.g.\ merge or split operations---exposing through the \ac{ui} \acl{api} already implemented in the entity registry proposed in~\textcite{BELLANDI2024}.
 
 \paragraph{Analytical inspection.}
-In \textcite{BELLANDI2024}, statistical analysis was explored in notebooks rather than via a dedicated \ac{ui}, partially addressing \ref{uc:stats} but without a deployed interface.
+None of the works provided a dedicated analytical \ac{ui} for \ref{uc:stats}. \textcite{BELLANDI2024} used instead a notebook-based\footnote{\url{https://jupyter.org/}}
 
-\medskip
-
-\noindent
-As a synthesis, \Cref{tab:uc:ui} will map each \ac{ui} to the supported use cases \ref{uc:case-retrieval}--\ref{uc:stats}. Notably, no published prototype includes a \emph{\ac{ui} for \ref{uc:stats} statistical monitoring} or a \emph{dedicated \ac{ui} for \ref{uc:investigative-retrieval} error correction} beyond the lightweight interactions embedded in the document explorers. These uncovered areas motivated the architectural requirements for visualization and error-correction defined in this chapter.
 
 \begin{table}[htbp]
 \centering
@@ -73,74 +74,56 @@ Notebook-based analysi\tnote{a} &
 \end{threeparttable}
 \end{table}
 
+\medskip
+\noindent
+Summarizing, Table~\ref{tab:iaui-published} shows that the \acp{ui} prototyped so far cover a substantial subset of the target use cases, and in some cases demonstrate successful cross-domain reuse (e.g.\ faceted search). At the same time, the current coverage is not complete and reveals significant gaps that must be addressed for a fully instantiated \ac{dia}. The following gaps remain:
 
-As shown in Table~\ref{tab:iaui-published}, the \acp{ui} prototyped so far do not cover all the intended use cases of the \ac{dia}. In particular, the following gaps remain:
-
-\begin{enumerate}[label=(\roman*)]
-    \item \textbf{Lack of a deployed \ref{uc:stats} interface}: statistical analysis is currently supported only through notebook-based workflows and not through a dedicated, interactive \ac{ui}.
-    \item \textbf{Partial error correction}: correction is possible only indirectly through document explorers or via entity refinement, but no dedicated error-correction \ac{ui} exists.
-    \item \textbf{Limited reuse of \acp{ui} across domains}: except for the faceted search (reused in both \cite{pozzi_wise_2025} and \cite{Agazzi2025DAVE}), most implemented \acp{ui} were tailored to specific datasets or tasks rather than conceived as reusable architectural components.
+\begin{enumerate}
+    \item \textbf{Lack of a deployed \ref{uc:stats} interface}: statistical analysis is currently supported only through notebook-based workflows and not through a dedicated, user-friendly \ac{ui}.
+    \item \textbf{Partial error correction}: some of the designed error correction functionalitis are still missing in the implementations (see \Cref{sec:arch_proto}).
+    % \item \textbf{Limited reuse of \acp{ui} across domains}: except for the faceted search (reused in both \cite{pozzi_wise_2025} and \cite{Agazzi2025DAVE}), most implemented \acp{ui} were tailored to specific datasets or tasks rather than conceived as reusable architectural components.
 \end{enumerate}
 
 These missing capabilities directly motivated the architectural requirements for visualization and error-correction interfaces defined earlier in this chapter.
-
-
-\subsection{UI Prototypes in \textcite{BELLANDI2024}}
-\label{sec:ui-clsr}
-
-\paragraph{Document explorer.}
-Descrivere cosa permette di vedere, su quali dati era applicato (civil judgments),
-e che supporto dava per \ref{uc:navigation} e verifica.
-
-\paragraph{Faceted / investigative search (if any).}
-Breve nota se nel lavoro era presente solo a livello concettuale o implementato.
-
-\paragraph{Statistical inspection via notebooks.}
-Collegare a \ref{uc:stats}, chiarendo che non era una \ac{ui}.
-
-\medskip
-% --- next paper ---
-
-\subsection{UI Prototypes in \textcite{pozzi_wise_2025}}
-\label{sec:ui-wise}
-
-\paragraph{Faceted investigative retrieval.}
-Descrivere come veniva usata per \ref{uc:investigative-retrieval}.
-
-\paragraph{Graph-based exploration.}
-Ruolo per analisi investigativa, differenza rispetto a faceted,
-e relazione con \ref{uc:investigative-retrieval}.
-
-\paragraph{Document explorer with partial correction.}
-Richiamo a \ref{uc:navigation} e ErrCorr(partial).
-
-\medskip
-% --- next ---
-
-\subsection{UI Prototypes in \textcite{Agazzi2025DAVE}}
-\label{sec:ui-dave}
-
-\paragraph{Faceted case retrieval.}
-Riutilizzo del paradigma di WISE ma su contesto legale — mapping a \ref{uc:case-retrieval}.
-
-\paragraph{Conversational question answering.}
-Collegare a \ref{uc:qa} e differenza rispetto a faceted.
-
-\paragraph{Document explorer.}
-Come in altri paper, ma arricchito.
-
-\paragraph{Cluster refinement.}
-Menzionare come abilitazione all'ErrCorr (partial).
-
-\medskip
-
-\subsection{Cross-paper observations}
-\label{sec:ui-cross}
-
-% Qui due o tre bullet:
-- riuso della stessa interfaccia (faceted) su due domini diversi;
-- funzioni presenti in tutti (document explorer) vs. funzioni emergenti (QA/refinement);
-- limiti individuati (niente UI per \ref{uc:stats}, correzione mai completa).
-
-
 \todo{cercare di fare screen in inglese e mostrare ui. descrivere un po' e concludere. magari evidenziare cosa manca}
+
+
+\medskip
+% \paragraph{Screenshots from \ac{dave}}
+% \FloatBarrier
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/dave/dave_explorer_all_types.png}
+  \caption[\ac{dave} document explorer (types)]{\ac{dave} document explorer showing entity types and navigation.}
+  \label{fig:dave-explorer-types}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/dave/dave_explorer_ockla_city.png}
+  \caption[\ac{dave} document explorer (instance navigation)]{\ac{dave} document explorer with instance-level navigation by entities.}
+  \label{fig:dave-explorer-instance}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/dave/faceted_search.png}
+  \caption[\ac{dave} faceted search]{\ac{dave} faceted search interface for entity-based filtering and investigative retrieval.}
+  \label{fig:dave-facets}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/dave/dave_qa.png}
+  \caption[\ac{dave} conversational QA]{\ac{dave} RAG-based conversational \acl{qa} interface with grounded answer inspection.}
+  \label{fig:dave-qa}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/dave/dave_editing_clusters.png}
+  \caption[\ac{dave} cluster refinement]{\ac{dave} interface for refinement of entity clusters through merge and split operations.}
+  \label{fig:dave-editing}
+\end{figure}
+% \FloatBarrier
+\clearpage
