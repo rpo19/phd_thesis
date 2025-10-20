@@ -1,6 +1,5 @@
-\section{Contribution: ReFactX}
-%
-%
+\chapter{Efficient Question Answering over External Knowledge}
+
 \section{Introduction}
 
 Large Language Models (LLMs) have demonstrated a variety of capabilities, ranging from natural language understanding and generation to reasoning, especially when enhanced with techniques like Chain-of-Thought (CoT) prompting~\cite{wei2022chainofthought}. However, LLMs are prone to hallucinations~\cite{maynez-etal-2020-faithfulness-hallucination} and their internal knowledge remains limited to their training data~\cite{cheng2024dateddatatracingknowledge,li2024knowledgeboundarylargelanguage}. This complicates their application to knowledge-intensive tasks such as Question Answering (QA), especially when these tasks necessitate accessing information beyond the parametric knowledge of LLMs, including time-sensitive data or confidential corporate information.
@@ -42,31 +41,6 @@ We can summarize the main contributions of this work as follows:
 \end{itemize}
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Related Work}
-\label{sec:rw}
-
-Several approaches have been proposed to incorporate external knowledge into LLMs~\cite{gao2024retrievalaugmentedgenerationlargelanguage}. In our work, we focus on Question Answering (QA)---more specifically, on \textbf{Knowledge-Enhanced QA (KE-QA)}, where a model acquires external knowledge for answering questions.
-
-Most of approaches can be classified as \textbf{input-based KE-QA}.
-They rely on external tools, such as search engines or dense retrievers~\cite{karpukhin-etal-2020-dense}, which can be arranged in pipeline-based workflows~\cite{lewis2020retrievalaugmented,xu2023retrieval} or actively called by LLMs~\cite{yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e,lehmann2024beyond}. These approaches usually feed external knowledge as input (either in plain text or with dense embeddings) to the LLMs. Input-based KE-QA approaches, while effective in reducing hallucinations~\cite{shuster-etal-2021-retrieval-augmentation}, require additional models or services for retrieving external information that can introduce delays, especially when calling remote APIs, increase training complexity~\cite{sun2025zerosearchincentivizesearchcapability},
-and raise substantially the number of input tokens~\cite{yang2024memory3}, leading to higher response time and resource usage.
-
-Other approaches can be classified as \textbf{memory-based KE-QA}. They propose memory modules, separated from model parameters, which make the models' internal mechanisms interact with external knowledge, e.g., by using cross-attention to incorporate external vectors~\cite{yang2024memory3,wu-etal-2022-efficient}. While memory-based KE-QA approaches fuse external knowledge into LLMs' generation process more deeply, they typically require architectural modifications, complicating the use of pretrained LLMs.
-
-
-
-
-Constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}, described in detail in Section~\ref{sec:constrained-gen}, is a promising technique to avoid the drawbacks of input-based and memory-based KE-QA approaches. It has been successfully applied to various tasks, including code generation~\cite{scholak-etal-2021-picard}, guaranteeing that the model produces syntactically correct code, as well as entity linking~\cite{cao2021autoregressive} and information retrieval~\cite{bevilacqua2022autoregressive}.
-%
-It has also been applied to instruction-following LLMs for several tasks that require the LLM to produce a specifically structured output, such as entity disambiguation~\cite{geng-etal-2023-grammar}.
-
-
-Two recent studies~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning} proposed \textbf{constrained generation for KE-QA}, especially for guiding LLMs through paths from a knowledge graph (KG). However, they do not address the problem of accessing facts from large knowledge bases in a scalable way (800 million facts, in our case),  and still rely on entity linking systems for extracting question entities, similarly to input-based approaches. 
-%
-A first approach, \textit{Decoding on Graphs (DoG)}~\cite{li2024decodinggraphsfaithfulsound}, generates triples from a knowledge graph in a reasoning process similar to CoT~\cite{wei2022chainofthought} but grounded on KG knowledge, also allowing the model to alternate the constrained generation of triples and the reasoning with normal generation.
-A second approach, \textit{Graph-Constrained Reasoning (GCR)}~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} generates entire paths from a KG using a fine-tuned LLM to find answer hypotheses, and then asks a top-tier language model to give a final answer based on the paths.
 
 
 

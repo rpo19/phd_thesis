@@ -94,6 +94,16 @@ To illustrate the practical needs for accessing information---namely \ac{ia}---i
     \item \label{uc:stats} \emph{Statistical analysis and monitoring:} Authorities, such as the Ministry of Justice, may require aggregated statistics, e.g., the number of new cases per court per year or the average trial duration, to support performance monitoring, policy assessment, and resource planning~\cite{bellandi2025streamlining}.
 \end{enumerate}
 
+\paragraph{motivation}
+These use cases reveal a recurrent pattern: professionals operate on large and
+heterogeneous corpora, leading to time-consuming~\cite{pirzada2024framework}
+and often manual workflows~\cite{buey2016}, which slows down legal and
+investigative analysis. There is therefore a strong motivation to design \ac{ia}
+methods and infrastructures that can accelerate these tasks---\eg through
+faceted navigation, entity-based retrieval, question answering, and statistical
+exploration.
+
+
 
 
 
@@ -225,7 +235,8 @@ Entities serve as conceptual anchors that connect information within and across 
 They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance.  
 As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---enabling aggregation operations, such as computing counts or groupings over certain entities or entity types, and faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}. In this context, faceted search allows users to filter items---such as legal documents or chat messages---mentioning specific locations, persons, or laws, as well as to compose more complex queries combining multiple facets, for instance a location, a date, and certain persons.
 
-\par
+\medskip
+\noindent
 This \phd thesis is organized as follows. \Cref{chap:background_soa} described background concept required for the understanding of this work, including \aclp{llm} and the Italian legal system. Then, the state-of-the-art on data integration architectures for knowledge-intensive domains and on the experimented \acl{ie} tasks (\acl{ner}, \acl{ner}, and novel entity prediction and clustering). \Cref{chap:architecture} focuses on \ref{ob:architecture}, \Cref{chap:extraction} focuses on \ref{ob:extraction_assessment}, \Cref{chap:refactx} on \ref{ob:refactx}. Finally, \Cref{chap:conclusion} draws the conclusion of this work.
 
 
