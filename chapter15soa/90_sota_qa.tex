@@ -1,117 +1,47 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{State of the Art on Question Answering with External Knowledge}
 \label{sec:sota:qa}
 
-\todo{add new work with constrained}
+% from refact dog gcr
+\todo{improve}
 
-\begin{itemize}
-    \item what is qa
-    \item which qa we focus open? yes with big kg (wikidata)\cite{zaib2022conversationalqasurvey}
-    \item external kg
-    \item ke qa
-\end{itemize}
+Open-domain Question Answering (QA) seeks to answer user queries without restricting the
+domain of the questions or assuming that the required knowledge is contained in the model
+parameters alone~\cite{zaib2022conversationalqasurvey}. Since parametric LLMs are not guaranteed to store
+factual knowledge faithfully or up-to-date, recent work has focused on incorporating \emph{external
+knowledge} into the answering process.
 
-Several approaches have been proposed to incorporate external knowledge into LLMs~\cite{gao2024retrievalaugmentedgenerationlargelanguage}. In our work, we focus on Question Answering (QA)---more specifically, on \textbf{Knowledge-Enhanced QA (KE-QA)}, where a model acquires external knowledge for answering questions.
+Two main paradigms exist for injecting external knowledge. The first is \emph{input-based KE-QA},
+where the model is provided with external knowledge as input (plain text or dense vectors).
+This is instantiated by retrieval-augmented methods~\cite{gao2024retrievalaugmentedgenerationlargelanguage,karpukhin-etal-2020-dense,lewis2020retrievalaugmented},
+including agent-style prompting that calls tools at inference time~\cite{yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e}.
+Such methods reduce hallucination~\cite{shuster-etal-2021-retrieval-augmentation} but increase latency and complexity,
+and inflate the number of input tokens~\cite{yang2024memory3,sun2025zerosearchincentivizesearchcapability}.
+The second is \emph{memory-based KE-QA}, where architectures are equipped with non-parametric memory
+modules coupled to the LLM via cross-attention or learned keys~\cite{wu-etal-2022-efficient,yang2024memory3}.
+These integrate knowledge more tightly but require architectural modifications, reducing plug-and-play
+applicability of existing pretrained LLMs.
 
-Most of approaches can be classified as \textbf{input-based KE-QA}.
-They rely on external tools, such as search engines or dense retrievers~\cite{karpukhin-etal-2020-dense}, which can be arranged in pipeline-based workflows~\cite{lewis2020retrievalaugmented,xu2023retrieval} or actively called by LLMs~\cite{yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e,lehmann2024beyond}. These approaches usually feed external knowledge as input (either in plain text or with dense embeddings) to the LLMs. Input-based KE-QA approaches, while effective in reducing hallucinations~\cite{shuster-etal-2021-retrieval-augmentation}, require additional models or services for retrieving external information that can introduce delays, especially when calling remote APIs, increase training complexity~\cite{sun2025zerosearchincentivizesearchcapability},
-and raise substantially the number of input tokens~\cite{yang2024memory3}, leading to higher response time and resource usage.
+\paragraph{KGQA as a subcase of knowledge-enhanced QA.}
+Knowledge Graph QA (KGQA) historically pursued access to external knowledge through \emph{executable
+queries} on a graph store. Semantic-parsing approaches~\cite{Lan_Jiang_2020,Ye_2022,Yu_2023} translate questions
+into logical queries (e.g.\ SPARQL) and execute them against the KG. This can be viewed as a
+KE-QA instance where KG access is \emph{delegated to a query compiler} rather than retrieved textually.
+However, such pipelines require gold logical forms for training and may generate non-executable queries.
 
-Other approaches can be classified as \textbf{memory-based KE-QA}. They propose memory modules, separated from model parameters, which make the models' internal mechanisms interact with external knowledge, e.g., by using cross-attention to incorporate external vectors~\cite{yang2024memory3,wu-etal-2022-efficient}. While memory-based KE-QA approaches fuse external knowledge into LLMs' generation process more deeply, they typically require architectural modifications, complicating the use of pretrained LLMs.
+More recently, LLM-based KGQA~\cite{Salnikov_2023,Wu_2023,He_2024} has aligned with the two KE-QA paradigms above:
+(i) input-based KGQA, where KG facts are first retrieved (explicitly or via learned retrievers) and fed to
+an LLM~\cite{Jin_2024,Sun_2024b,Ren_2024,Luo_2024,Mavromatis_Karypis_2024,Zhuang_2024}; and (ii) interaction-based KGQA, where LLMs
+are prompted to traverse the KG step by step (e.g.\ ToG~\cite{Sun_2024a} or Tree-of-Traversals~\cite{Markowitz_2024}),
+thus using the KG as an external structured search space. Both classes ultimately turn KG knowledge
+into textual input to an LLM, thus inheriting input-growth and latency issues.
 
-
-
-
-Constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}, described in detail in Section~\ref{sec:constrained-gen}, is a promising technique to avoid the drawbacks of input-based and memory-based KE-QA approaches. It has been successfully applied to various tasks, including code generation~\cite{scholak-etal-2021-picard}, guaranteeing that the model produces syntactically correct code, as well as entity linking~\cite{cao2021autoregressive} and information retrieval~\cite{bevilacqua2022autoregressive}.
-%
-It has also been applied to instruction-following LLMs for several tasks that require the LLM to produce a specifically structured output, such as entity disambiguation~\cite{geng-etal-2023-grammar}.
-
-
-Two recent studies~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning} proposed \textbf{constrained generation for KE-QA}, especially for guiding LLMs through paths from a knowledge graph (KG). However, they do not address the problem of accessing facts from large knowledge bases in a scalable way (800 million facts, in our case),  and still rely on entity linking systems for extracting question entities, similarly to input-based approaches. 
-%
-A first approach, \textit{Decoding on Graphs (DoG)}~\cite{li2024decodinggraphsfaithfulsound}, generates triples from a knowledge graph in a reasoning process similar to CoT~\cite{wei2022chainofthought} but grounded on KG knowledge, also allowing the model to alternate the constrained generation of triples and the reasoning with normal generation.
-A second approach, \textit{Graph-Constrained Reasoning (GCR)}~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} generates entire paths from a KG using a fine-tuned LLM to find answer hypotheses, and then asks a top-tier language model to give a final answer based on the paths.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\paragraph{KGQA}
-
-%%%%% dog
-
-Previous attempts on solving knowledge graph
-question answering (KGQA) often involve seman-
-tic parsing (Lan et al., 2022; Yu et al., 2023)
-that transforms questions into logical queries (e.g.,
-SPARQL) to be executed over KG for answers
-
-(Lan and Jiang, 2020; Ye et al., 2022). These meth-
-ods may require ground-truth logical queries for
-training, and model-generated queries might be
-non-executable due to syntax or semantic errors
-(Yu et al., 2023; Luo et al., 2024; Mavromatis
-and Karypis, 2024). Recently, researchers have
-been exploring the joint use of KGs and large lan-
-guage models (LLMs) for KGQA, leveraging the
-advanced capabilities of LLMs for enhanced rea-
-soning (Salnikov et al., 2023; Wu et al., 2023; He
-et al., 2024). Various approaches (Jin et al., 2024;
-Sun et al., 2024b) iteratively prompt LLMs to syn-
-ergize with KGs to select relevant information step
-by step (Ren et al., 2024). ToG (Sun et al., 2024a)
-prompts LLMs to explore relevant facts hop-by-
-hop using beam search on KG. Tree-of-Traversals
-(Markowitz et al., 2024) is a zero-shot reasoning al-
-gorithm motivated by Tree-of-Thoughts (Yao et al.,
-2023). Instead of focusing on one hop at a time,
-D O G uses the entire question graph as input, en-
-abling reasoning over complete knowledge. Addi-
-tionally, these prompting approaches overly rely
-on the instruction-following abilities of LLMs, pos-
-ing challenges when applied to compact LLMs.
-Some studies (He et al., 2024) focus on training
-specialized retrievers to extract key information
-from KG and the retrieved knowledge as input to
-
-LLMs. RoG (Luo et al., 2024) and GNN-RAG
-(Mavromatis and Karypis, 2024) train in-domain
-LLM and GNN retrievers respectively. StructLM
-(Zhuang et al., 2024), on the other hand, trains gen-
-eralist models over large amount of structured data
-to augment the structured knowledge grounding
-capabilities of LLMs. However, fine-tuning large
-scale models is computationally expensive, and spe-
-cialized training suffers from limited generalization
-capabilities. Conversely, D O G employs a general
-graph-aware decoding approach, eliminating the
-need for external retrievers or specialized training.
-
-%%%%%%%%%
-% gcr
-%reasoning
-LLM reasoning. Many studies have been proposed to analyze and improve the reasoning ability
-of LLMs (Wei et al., 2022; Wang et al., 2024; Yao et al., 2024). To elicit the reasoning ability
-of LLMs, Chain-of-thought (CoT) reasoning (Wei et al., 2022) prompts the model to generate a
-chain of reasoning steps in response to a question. Wang et al. (2024) propose a self-consistency
-mechanism that generates multiple reasoning paths and selects the most consistent answer across
-them. The tree-of-thought (Yao et al., 2024) structures reasoning as a branching process, exploring
-multiple steps in a tree-like structure to find optimal solutions. Other studies focus on fine-tuning
-LLMs on various reasoning tasks to improve reasoning abilities (Yu et al., 2022; Hoffman et al.,
-2024). For instance, OpenAI (2024c) adopts reinforcement learning to train their most advanced
-LLMs called “OpenAI o1” to perform complex reasoning, which produces a long internal chain of
-thought before final answers.
-
-%reasoning for qa
-KG-enhanced LLM reasoning. To mitigate the knowledge gap and hallucination issues in LLM
-reasoning, research incorporates KGs to enhance LLM reasoning (Pan et al., 2024). KD-CoT (Wang
-et al., 2023) retrieve facts from an external knowledge graph to guide the CoT performed by LLMs.
-RoG (Luo et al., 2024) proposes a planning-retrieval-reasoning framework that retrieves reasoning
-paths from KGs to guide LLMs conducting faithful reasoning. To capture graph structure, GNN-
-RAG (Mavromatis & Karypis, 2024) adopts a lightweight graph neural network to effectively re-
-trieve from KGs. Instead of retrieving, StructGPT (Jiang et al., 2023) and ToG (Sun et al., 2024)
-treat LLMs as agents to interact with KGs to find reasoning paths leading to the correct answers.
-
-%rag
-rag \cite{gao2024ragsurvey}
-
-qa with cot \cite{yoran-etal-2023-answering}
+\paragraph{Constrained generation for KE-QA.}
+A third, more recent direction incorporates external knowledge not by feeding or storing it, but by
+\emph{constraining the search space of generation}~\cite{cao2021autoregressive,scholak-etal-2021-picard,bevilacqua2022autoregressive,geng-etal-2023-grammar}.
+Constrained decoding enforces that output tokens conform to a target grammar or vocabulary space,
+without injecting external text. When applied to KE-QA with KGs~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning},
+the model is guided to generate KG-consistent triples or paths, grounding reasoning in the graph while
+avoiding explicit retrieval. Existing constrained KE-QA approaches, however, either assume access to
+small KGs or still depend on entity linking for grounding, thus retaining some limitations of input-based
+pipelines. Our work positions itself in this constrained generation line, using constrained decoding
+directly over large-scale KG facts (Wikidata-scale) without relying on retrieval or architectural changes.
