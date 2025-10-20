@@ -11,7 +11,9 @@ Notably, this interface has been used for semi-automatic and \acl{hitl} annotati
 \textcite{pozzi_wise_2025} introduced a faceted-search interface for investigative retrieval (\ref{uc:investigative-retrieval}) over chat documents. That same work publicly described a first version of \acs{daveold}---initially standing for \acl{daveold}---providing document exploration with error correction and faceted search. This interaction paradigm was later reused for publicly available judgments in~\cite{Agazzi2025DAVE}, simulating the case retrieval use case (\ref{uc:case-retrieval}), showing cross-domain portability.
 
 \paragraph{Question answering and conversational interaction.}
-With~\textcite{Agazzi2025DAVE}, \acs{dave} was extended with a conversational \acl{qa} interface (\ref{uc:qa}) and has been renamed to \acl{dave}. The interface supports natural language queries over a collection of documents and exposes the text passages used for answer generation to preserve traceability. At the end of this section, the \ac{dave} interfaces are shown in~\Cref{fig:dave-explorer-types,fig:dave-explorer-instance,fig:dave-facets,fig:dave-qa,fig:dave-editing}.
+With~\textcite{Agazzi2025DAVE}, \acs{dave} was extended with a conversational \acl{qa} interface (\ref{uc:qa}) and has been renamed to \acl{dave}. The interface supports natural language queries over a collection of documents and exposes the text passages used for answer generation to preserve traceability. At the end of this section, the \ac{dave} interfaces are shown in~\Cref{fig:dave-explorer-types,fig:dave-explorer-instance,fig:dave-facets,fig:dave-qa,fig:dave-editing}, illustrated using court documents from proceedings concerning the 1995 Oklahoma City bombing.\footnote{\url{https://en.wikipedia.org/wiki/Oklahoma_City_bombing}}
+
+
 
 \paragraph{Graph-based exploration.}
 \textcite{pozzi_wise_2025} also included a graph-based interface for investigative analysis of communication networks derived from chats, supporting complex instances of \ref{uc:investigative-retrieval} that cannot be expressed through keyword search alone. \Cref{fig:kg-exploration} shows this \ac{ui}.
@@ -27,7 +29,7 @@ With~\textcite{Agazzi2025DAVE}, \acs{dave} was extended with a conversational \a
 All three works provided partial support for human correction via the document explorer. In~\cite{Agazzi2025DAVE} this capability was extended with an interface for refining entity clusters---e.g.\ merge or split operations---exposing through the \ac{ui} \acl{api} already implemented in the entity registry proposed in~\textcite{BELLANDI2024}.
 
 \paragraph{Analytical inspection.}
-None of the works provided a dedicated analytical \ac{ui} for \ref{uc:stats}. \textcite{BELLANDI2024} used instead a notebook-based\footnote{\url{https://jupyter.org/}}
+None of the works provided a dedicated analytical \ac{ui} for \ref{uc:stats}. \textcite{BELLANDI2024} used instead a notebook-based one.\footnote{\url{https://jupyter.org/}}
 
 
 \begin{table}[htbp]
