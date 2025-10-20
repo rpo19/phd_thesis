@@ -3,16 +3,18 @@
 
 % from refact dog gcr
 \todo{improve}
+\begin{definition}[Question Answering]
+    \emph{\Acf{qa}} refers to the task of producing a concise and relevant answer to a question expressed in natural language~\cite{entityorientedsearch2018balog}.
+\end{definition}
+\Ac{qa} systems may be focused on a specific domain, \eg supporting only questions regarding law---in this cas we speak of \emph{closed-domain \acl{qa}}, or designed to support broad domain-free questions, \eg questions referring to large general-purpose \ac{kr}, such as Wikipedia~\cite{zaib2022conversationalqasurvey}. As a consequence, open-domain \ac{qa} systems tend to more generalizable~\cite{zaib2022conversationalqasurvey}, thus, in this thesis we concentrate on open-domain \ac{qa}.
 
-Open-domain Question Answering (QA) seeks to answer user queries without restricting the
-domain of the questions or assuming that the required knowledge is contained in the model
-parameters alone~\cite{zaib2022conversationalqasurvey}. Since parametric LLMs are not guaranteed to store
-factual knowledge faithfully or up-to-date, recent work has focused on incorporating \emph{external
-knowledge} into the answering process.
+These system must acquire external information to answer the given question and this information is generally acquired from unstructured textual document collections, structured \aclp{kb}, or a combination of both~\cite{caballero2021brief}. Modern \acp{llm} contain considerable factual knowledge in the parameters~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, but information is constantly evolving and updating \ac{llm} knowledge generally requires expensive fine-tuning~\cite{kg_editing_survey_2024}.
+
+% retrieval reader
 
 Two main paradigms exist for injecting external knowledge. The first is \emph{input-based KE-QA},
 where the model is provided with external knowledge as input (plain text or dense vectors).
-This is instantiated by retrieval-augmented methods~\cite{gao2024retrievalaugmentedgenerationlargelanguage,karpukhin-etal-2020-dense,lewis2020retrievalaugmented},
+This is instantiated by \acf{rag} methods~\cite{gao2024retrievalaugmentedgenerationlargelanguage,karpukhin-etal-2020-dense,lewis2020retrievalaugmented},
 including agent-style prompting that calls tools at inference time~\cite{yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e}.
 Such methods reduce hallucination~\cite{shuster-etal-2021-retrieval-augmentation} but increase latency and complexity,
 and inflate the number of input tokens~\cite{yang2024memory3,sun2025zerosearchincentivizesearchcapability}.
@@ -20,6 +22,8 @@ The second is \emph{memory-based KE-QA}, where architectures are equipped with n
 modules coupled to the LLM via cross-attention or learned keys~\cite{wu-etal-2022-efficient,yang2024memory3}.
 These integrate knowledge more tightly but require architectural modifications, reducing plug-and-play
 applicability of existing pretrained LLMs.
+
+\todo{go on}
 
 \paragraph{KGQA as a subcase of knowledge-enhanced QA.}
 Knowledge Graph QA (KGQA) historically pursued access to external knowledge through \emph{executable
