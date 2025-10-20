@@ -2,10 +2,11 @@
 \label{sec:iaui-from-prototypes}
 
 The prototypes developed in the previously published works do not only validate the architectural assumptions, but also demonstrate how the \ac{dia} can concretely support real user-facing tasks. In this section, we highlight the \acp{ui} that have been actually implemented in the three prototypes and we position them with respect to the five use cases introduced in~\Cref{sec:intro}.
+Most of the \acp{ui} applied to in-domain work~\cite{BELLANDI2024,pozzi_wise_2025} have been later consolidated in \acf{dave}~\cite{Agazzi2025DAVE}.
 
-\paragraph{Visualization and inspection interfaces.}
-All three prototypes~\cite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE} include a \emph{document explorer} to visualize annotated documents and inspect entity mentions.
-These interfaces support \ref{uc:navigation} and, to some extent, enable manual verification and minor correction actions directly from the viewer.
+\paragraph{Document Explorer.}
+The \emph{document explorer}, introduced in \textcite{BELLANDI2024} and continued with \textcite{pozzi_wise_2025,Agazzi2025DAVE}, allows to visualize annotated documents, select annotation sets, inspect properties, and provides entity-based document navigation---\ie the user can expand a list of entities in the document, see a preview of all the mentions, and by clicking one mention the system brings the user to that exact fraction of the document.
+These interfaces support \ref{uc:navigation} and \emph{traceability and verifiability} to a considerable extent, only lacking a global entity visualization, that is instad provided per-document.
 
 \paragraph{Search and investigative retrieval.}
 \textcite{pozzi_wise_2025} introduced a faceted-search interface for investigative retrieval over IMA data, covering \ref{uc:investigative-retrieval}.
