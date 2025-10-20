@@ -3,8 +3,13 @@
 \label{sec:sota:qa}
 
 \todo{add new work with constrained}
-\todo{add kgqa}
-\todo{focus rag kgqa constrained}
+
+\begin{itemize}
+    \item what is qa
+    \item which qa we focus open? yes with big kg (wikidata)\cite{zaib2022conversationalqasurvey}
+    \item external kg
+    \item ke qa
+\end{itemize}
 
 Several approaches have been proposed to incorporate external knowledge into LLMs~\cite{gao2024retrievalaugmentedgenerationlargelanguage}. In our work, we focus on Question Answering (QA)---more specifically, on \textbf{Knowledge-Enhanced QA (KE-QA)}, where a model acquires external knowledge for answering questions.
 
@@ -27,3 +32,86 @@ Two recent studies~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrain
 A first approach, \textit{Decoding on Graphs (DoG)}~\cite{li2024decodinggraphsfaithfulsound}, generates triples from a knowledge graph in a reasoning process similar to CoT~\cite{wei2022chainofthought} but grounded on KG knowledge, also allowing the model to alternate the constrained generation of triples and the reasoning with normal generation.
 A second approach, \textit{Graph-Constrained Reasoning (GCR)}~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} generates entire paths from a KG using a fine-tuned LLM to find answer hypotheses, and then asks a top-tier language model to give a final answer based on the paths.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paragraph{KGQA}
+
+%%%%% dog
+
+Previous attempts on solving knowledge graph
+question answering (KGQA) often involve seman-
+tic parsing (Lan et al., 2022; Yu et al., 2023)
+that transforms questions into logical queries (e.g.,
+SPARQL) to be executed over KG for answers
+
+(Lan and Jiang, 2020; Ye et al., 2022). These meth-
+ods may require ground-truth logical queries for
+training, and model-generated queries might be
+non-executable due to syntax or semantic errors
+(Yu et al., 2023; Luo et al., 2024; Mavromatis
+and Karypis, 2024). Recently, researchers have
+been exploring the joint use of KGs and large lan-
+guage models (LLMs) for KGQA, leveraging the
+advanced capabilities of LLMs for enhanced rea-
+soning (Salnikov et al., 2023; Wu et al., 2023; He
+et al., 2024). Various approaches (Jin et al., 2024;
+Sun et al., 2024b) iteratively prompt LLMs to syn-
+ergize with KGs to select relevant information step
+by step (Ren et al., 2024). ToG (Sun et al., 2024a)
+prompts LLMs to explore relevant facts hop-by-
+hop using beam search on KG. Tree-of-Traversals
+(Markowitz et al., 2024) is a zero-shot reasoning al-
+gorithm motivated by Tree-of-Thoughts (Yao et al.,
+2023). Instead of focusing on one hop at a time,
+D O G uses the entire question graph as input, en-
+abling reasoning over complete knowledge. Addi-
+tionally, these prompting approaches overly rely
+on the instruction-following abilities of LLMs, pos-
+ing challenges when applied to compact LLMs.
+Some studies (He et al., 2024) focus on training
+specialized retrievers to extract key information
+from KG and the retrieved knowledge as input to
+
+LLMs. RoG (Luo et al., 2024) and GNN-RAG
+(Mavromatis and Karypis, 2024) train in-domain
+LLM and GNN retrievers respectively. StructLM
+(Zhuang et al., 2024), on the other hand, trains gen-
+eralist models over large amount of structured data
+to augment the structured knowledge grounding
+capabilities of LLMs. However, fine-tuning large
+scale models is computationally expensive, and spe-
+cialized training suffers from limited generalization
+capabilities. Conversely, D O G employs a general
+graph-aware decoding approach, eliminating the
+need for external retrievers or specialized training.
+
+%%%%%%%%%
+% gcr
+%reasoning
+LLM reasoning. Many studies have been proposed to analyze and improve the reasoning ability
+of LLMs (Wei et al., 2022; Wang et al., 2024; Yao et al., 2024). To elicit the reasoning ability
+of LLMs, Chain-of-thought (CoT) reasoning (Wei et al., 2022) prompts the model to generate a
+chain of reasoning steps in response to a question. Wang et al. (2024) propose a self-consistency
+mechanism that generates multiple reasoning paths and selects the most consistent answer across
+them. The tree-of-thought (Yao et al., 2024) structures reasoning as a branching process, exploring
+multiple steps in a tree-like structure to find optimal solutions. Other studies focus on fine-tuning
+LLMs on various reasoning tasks to improve reasoning abilities (Yu et al., 2022; Hoffman et al.,
+2024). For instance, OpenAI (2024c) adopts reinforcement learning to train their most advanced
+LLMs called “OpenAI o1” to perform complex reasoning, which produces a long internal chain of
+thought before final answers.
+
+%reasoning for qa
+KG-enhanced LLM reasoning. To mitigate the knowledge gap and hallucination issues in LLM
+reasoning, research incorporates KGs to enhance LLM reasoning (Pan et al., 2024). KD-CoT (Wang
+et al., 2023) retrieve facts from an external knowledge graph to guide the CoT performed by LLMs.
+RoG (Luo et al., 2024) proposes a planning-retrieval-reasoning framework that retrieves reasoning
+paths from KGs to guide LLMs conducting faithful reasoning. To capture graph structure, GNN-
+RAG (Mavromatis & Karypis, 2024) adopts a lightweight graph neural network to effectively re-
+trieve from KGs. Instead of retrieving, StructGPT (Jiang et al., 2023) and ToG (Sun et al., 2024)
+treat LLMs as agents to interact with KGs to find reasoning paths leading to the correct answers.
+
+%rag
+rag \cite{gao2024ragsurvey}
+
+qa with cot \cite{yoran-etal-2023-answering}
