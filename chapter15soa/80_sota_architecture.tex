@@ -1,3 +1,22 @@
 \section{State of the Art on Data Integration and Management Architectures for Knowledge-Intensive Domain}
 \todo{maybe move to chapter?}
 \todo{management risky?}
+
+
+\paragraph{ai/nlp for legal soa. judgements and similar}
+Several systems for assisting legal professionals have been developed over time~\cite{amato2008,buey2016,breit_legal_permits_2020,HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}.
+Early work by \textcite{amato2008} introduced a document management system for the legal domain that leverages ontologies and entity extraction, focusing primarily on notary documents.
+\textcite{buey2016} focused on a wider range of legal documents---such as public acts and private agreements---by employing ontologies that model document structures and specify which entities should be extracted from each section.
+\textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits\todo{add description once verified}.
+More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
+The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
+\todo{adele}
+\todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
+\todo{maybe order historically}
+\todo{add approaches for criminal investigations from claw}
+
+\paragraph{soa criminal}
+\todo{add whatsapp}
+On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
+% both focus also on scalability
+\textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
