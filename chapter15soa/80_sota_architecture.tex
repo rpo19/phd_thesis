@@ -1,6 +1,22 @@
-\section{State of the Art on Data Integration and Management Architectures for Knowledge-Intensive Domain}
-\todo{maybe move to chapter?}
-\todo{management risky?}
+\section{State of the Art on Data Integration and Management Architectures for the Legal Domain}
+% \section{State of the Art on Data Integration and Management Architectures for Knowledge-Intensive Domain}
+
+% knowledge management
+\acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
+
+\paragraph{entire kg mana systems / architectures}
+Eunomos~\cite{boella2016eunomos} is a legal knowledge management system that combines legislative XML for representing statutes in a structured, versioned form with legal ontologies capturing legal concepts and relations (e.g.\ replaced-by for amendments). The system automatically collects legislation (e.g.\ from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains multiple temporal versions of each provision. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic, allowing manual error correction. The authors target use cases such as compliance in financial regulation, support for law firms and public bodies in tracking changes and structuring knowledge, and citizen-facing services. By integrating structured legislation with a concept layer, it goes beyond keyword retrieval and enables controlled, ontology-based access to evolving legal norms.
+
+On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
+
+% both focus also on scalability
+\textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
+
+\todo{bellandi streamlining}
+\todo{paper architectural sota}
+
+\paragraph{other more specific legal systems}
+they are not \acp{kms} but do something related \eg legal case retrieval,...
 
 
 \paragraph{ai/nlp for legal soa. judgements and similar}
@@ -17,6 +33,3 @@ The latter developed a prototype for legal case retrieval that guides profession
 
 \paragraph{soa criminal}
 \todo{add whatsapp}
-On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
-% both focus also on scalability
-\textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
