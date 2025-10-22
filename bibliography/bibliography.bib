@@ -627,16 +627,7 @@ numpages = {390}
   volume        = {35},
   year          = {2022}
 }
-@misc{li2024decodinggraphsfaithfulsound,
-  title         = {Decoding on Graphs: Faithful and Sound Reasoning on Knowledge Graphs through Generation of Well-Formed Chains},
-  author        = {Kun Li and Tianhua Zhang and Xixin Wu and Hongyin Luo and James Glass and Helen Meng},
-  year          = {2024},
-  eprint        = {2410.18415},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL},
-  url           = {https://arxiv.org/abs/2410.18415},
-  note          = {arXiv preprint arXiv:2410.18415}
-}
+
 @misc{luo2024graphconstrainedreasoningfaithfulreasoning,
   title         = {Graph-constrained Reasoning: Faithful Reasoning on Knowledge Graphs with Large Language Models},
   author        = {Linhao Luo and Zicheng Zhao and Chen Gong and Gholamreza Haffari and Shirui Pan},
@@ -5887,7 +5878,7 @@ url={https://openreview.net/forum?id=rJXMpikCZ},
 
 @article{ZHANG2022102933,
 title = {ARL: An adaptive reinforcement learning framework for complex question answering over knowledge base},
-journal = {Information Processing & Management},
+journal = {Information Processing \& Management},
 volume = {59},
 number = {3},
 pages = {102933},
@@ -5897,7 +5888,6 @@ doi = {https://doi.org/10.1016/j.ipm.2022.102933},
 url = {https://www.sciencedirect.com/science/article/pii/S0306457322000565},
 author = {Qixuan Zhang and Xinyi Weng and Guangyou Zhou and Yi Zhang and Jimmy Xiangji Huang},
 keywords = {Question answering, Knowledge base, Text mining, Reinforcement learning},
-abstract = {Recently, reinforcement learning (RL)-based methods have achieved remarkable progress in both effectiveness and interpretability for complex question answering over knowledge base (KBQA). However, existing RL-based methods share a common limitation: the agent is usually misled by aimless exploration, as well as sparse and delayed rewards, leading to a large number of spurious relation paths. To address this issue, a new adaptive reinforcement learning (ARL) framework is proposed to learn a better and interpretable model for complex KBQA. First, instead of using a random walk agent, an adaptive path generator is developed with three atomic operations to sequentially generate the relation paths until the agent reaches the target entity. Second, a semantic policy network is presented with both character-level and sentence-level information to better guide the agent. Finally, a new reward function is introduced by considering both the relation paths and the target entity to alleviate sparse and delayed rewards. The empirical results on five benchmark datasets show that our model is more effective than state-of-the-art approaches. Compared with the strong baseline model SRN, the proposed model achieves performance improvements of 23.7% on MetaQA-3 using the metric Hits@1.}
 }
 
 @misc{peng2024graphretrievalaugmentedgenerationsurvey,
@@ -5996,4 +5986,83 @@ abstract = {Lots of learning tasks require dealing with graph data which contain
     doi = "10.18653/v1/2023.findings-emnlp.631",
     pages = "9410--9421",
     abstract = "While large language models (LLMs) have made considerable advancements in understanding and generating unstructured text, their application in structured data remains underexplored. Particularly, using LLMs for complex reasoning tasks on knowledge graphs (KGs) remains largely untouched. To address this, we propose KG-GPT, a multi-purpose framework leveraging LLMs for tasks employing KGs. KG-GPT comprises three steps: Sentence Segmentation, Graph Retrieval, and Inference, each aimed at partitioning sentences, retrieving relevant graph components, and deriving logical conclusions, respectively. We evaluate KG-GPT using KG-based fact verification and KGQA benchmarks, with the model showing competitive and robust performance, even outperforming several fully-supervised models. Our work, therefore, marks a significant step in unifying structured and unstructured data processing within the realm of LLMs."
+}
+
+@inproceedings{yu-etal-2022-kg,
+    title = "{KG}-{F}i{D}: Infusing Knowledge Graph in Fusion-in-Decoder for Open-Domain Question Answering",
+    author = "Yu, Donghan  and
+      Zhu, Chenguang  and
+      Fang, Yuwei  and
+      Yu, Wenhao  and
+      Wang, Shuohang  and
+      Xu, Yichong  and
+      Ren, Xiang  and
+      Yang, Yiming  and
+      Zeng, Michael",
+    editor = "Muresan, Smaranda  and
+      Nakov, Preslav  and
+      Villavicencio, Aline",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.340/",
+    doi = "10.18653/v1/2022.acl-long.340",
+    pages = "4961--4974",
+    abstract = "Current Open-Domain Question Answering (ODQA) models typically include a retrieving module and a reading module, where the retriever selects potentially relevant passages from open-source documents for a given question, and the reader produces an answer based on the retrieved passages. The recently proposed Fusion-in-Decoder (FiD) framework is a representative example, which is built on top of a dense passage retriever and a generative reader, achieving the state-of-the-art performance. In this paper we further improve the FiD approach by introducing a knowledge-enhanced version, namely KG-FiD. Our new model uses a knowledge graph to establish the structural relationship among the retrieved passages, and a graph neural network (GNN) to re-rank the passages and select only a top few for further processing. Our experiments on common ODQA benchmark datasets (Natural Questions and TriviaQA) demonstrate that KG-FiD can achieve comparable or better performance in answer prediction than FiD, with less than 40{\%} of the computation cost."
+}
+
+@inproceedings{deJong2022MentionMemory,
+  title     = {Mention Memory: incorporating textual knowledge into Transformers through entity mention attention},
+  author    = {de Jong, Michiel and Zemlyanskiy, Yury and FitzGerald, Nicholas and Sha, Fei and Cohen, William W.},
+  booktitle = {Proceedings of the International Conference on Learning Representations (ICLR)},
+  year      = {2022}, % add if you have the openreview link
+}
+
+
+@inproceedings{NEURIPS2022_882d801f,
+ author = {Li, Zonglin and Guo, Ruiqi and Kumar, Sanjiv},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {S. Koyejo and S. Mohamed and A. Agarwal and D. Belgrave and K. Cho and A. Oh},
+ pages = {21698--21710},
+ publisher = {Curran Associates, Inc.},
+ title = {Decoupled Context Processing for Context Augmented Language Modeling},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2022/file/882d801fb1017f955547d5a816ade0fc-Paper-Conference.pdf},
+ volume = {35},
+ year = {2022}
+}
+
+@InProceedings{pmlr-v162-borgeaud22a,
+  title = 	 {Improving Language Models by Retrieving from Trillions of Tokens},
+  author =       {Borgeaud, Sebastian and Mensch, Arthur and Hoffmann, Jordan and Cai, Trevor and Rutherford, Eliza and Millican, Katie and Van Den Driessche, George Bm and Lespiau, Jean-Baptiste and Damoc, Bogdan and Clark, Aidan and De Las Casas, Diego and Guy, Aurelia and Menick, Jacob and Ring, Roman and Hennigan, Tom and Huang, Saffron and Maggiore, Loren and Jones, Chris and Cassirer, Albin and Brock, Andy and Paganini, Michela and Irving, Geoffrey and Vinyals, Oriol and Osindero, Simon and Simonyan, Karen and Rae, Jack and Elsen, Erich and Sifre, Laurent},
+  booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
+  pages = 	 {2206--2240},
+  year = 	 {2022},
+  editor = 	 {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},
+  volume = 	 {162},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {17--23 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v162/borgeaud22a/borgeaud22a.pdf},
+  url = 	 {https://proceedings.mlr.press/v162/borgeaud22a.html},
+  abstract = 	 {We enhance auto-regressive language models by conditioning on document chunks retrieved from a large corpus, based on local similarity with preceding tokens. With a 2 trillion token database, our Retrieval-Enhanced Transformer (RETRO) obtains comparable performance to GPT-3 and Jurassic-1 on the Pile, despite using 25{\texttimes} fewer parameters. After fine-tuning, RETRO performance translates to downstream knowledge-intensive tasks such as question answering. RETRO combines a frozen Bert retriever, a differentiable encoder and a chunked cross-attention mechanism to predict tokens based on an order of magnitude more data than what is typically consumed during training. We typically train RETRO from scratch, yet can also rapidly RETROfit pre-trained transformers with retrieval and still achieve good performance. Our work opens up new avenues for improving language models through explicit memory at unprecedented scale.}
+}
+
+@inproceedings{izacard-grave-2021-leveraging,
+    title = "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+    author = "Izacard, Gautier  and
+      Grave, Edouard",
+    editor = "Merlo, Paola  and
+      Tiedemann, Jorg  and
+      Tsarfaty, Reut",
+    booktitle = "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume",
+    month = apr,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.eacl-main.74/",
+    doi = "10.18653/v1/2021.eacl-main.74",
+    pages = "874--880",
+    abstract = "Generative models for open domain question answering have proven to be competitive, without resorting to external knowledge. While promising, this approach requires to use models with billions of parameters, which are expensive to train and query. In this paper, we investigate how much these models can benefit from retrieving text passages, potentially containing evidence. We obtain state-of-the-art results on the Natural Questions and TriviaQA open benchmarks. Interestingly, we observe that the performance of this method significantly improves when increasing the number of retrieved passages. This is evidence that sequence-to-sequence models offers a flexible framework to efficiently aggregate and combine evidence from multiple passages."
 }

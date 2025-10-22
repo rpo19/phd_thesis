@@ -11,7 +11,7 @@
 These system must acquire external information to answer the given question and this information is generally acquired from unstructured textual document collections, structured \aclp{kb}, or a combination of both~\cite{caballero2021brief}. Modern \acp{llm} contain considerable factual knowledge in the parameters that allows them to answer general domain questions~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, but information is constantly evolving and updating \ac{llm} knowledge generally requires expensive fine-tuning~\cite{kg_editing_survey_2024} or introduces the risk of side effects~\cite{li2024unveiling,cohen-etal-2024-rippleeffects}.
 
 
-Two main paradigms exist for injecting external knowledge. The first is \emph{input-based KE-QA},
+Two main paradigms exist for injecting external knowledge. The first is \emph{input-based knowledge injection},
 where the external knowledge is provided in the model's input---either as plain text or dense vectors---together with the question.
 % retrieval reader
 \todo{dense retrieval}
@@ -20,142 +20,40 @@ For the retriever, both sparse and dense methods have been used~\cite{zhu2021ret
 
 Also the more recent \acf{rag} paradigm~\cite{gao2024retrievalaugmentedgenerationlargelanguage,karpukhin-etal-2020-dense,lewis2020retrievalaugmented} belongs to this class of input-based methods. Indeed \ac{rag}---at least with the simplest naive implementation---retrieves relevant passages from a document collection and then passes them---as text~\cite{karpukhin-etal-2020-dense} or dense vectors~\cite{lewis2020retrievalaugmented}---as input to a generative models that generates the final answer. Essentially, this can be considered as the retriever-reader paradigm applied to \acp{llm}, with the advantage that these models can act as readers directly with \acl{icl}, without fine-tuning~\cite{gao2024retrievalaugmentedgenerationlargelanguage}. More advanced proposals to improve the \ac{rag} pipeline include the addition of pre-retrieval and post-retrieval operations and by involving \acp{llm} more \say{actively}, inspired by techniques for improve \acp{llm} reasoning, such as \acl{cot} prompting~\cite{wei2022chainofthought}. For example, \textcite{shao-etal-2023-enhancing} exploited the model generation for subsequent retrieve-generate iterations, while \textcite{asai2023selfrag} instructed a model to perform retrieval on-demand and to \say{reflect} on retrieved passages.
 
-Following the same direction, agentic \acp{llm}~\cite{xi2025rise,plaat2025agenticlargelanguagemodels,yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e}---which perform actions, such as calling retrieval tools, and receive \say{observations}~\cite{yao2023react}---can be considered as a continuation of this trend that increases the involvement of \acp{llm} in actively retrieve external knowledge when needed.
+Following the same direction, agentic \acp{llm}~\cite{xi2025rise,plaat2025agenticlargelanguagemodels,yao2023reactsynergizingreasoningacting,NEURIPS2023_d842425e,thoppilan2022lamdalanguagemodelsdialog,lehmann2024beyond}---which perform actions, such as calling retrieval tools, and receive \say{observations}~\cite{yao2023react}---can be considered as a continuation of this trend that increases the involvement of \acp{llm} in actively retrieve external knowledge when needed.
 Same as \ac{rag}, agentic methods insert the external knowledge, resulting from tools' output, into the model input. 
 
-In general, input-based methods are able to reduce hallucination~\cite{shuster-etal-2021-retrieval-augmentation} but increase latency,  complexity, and inflate the number of input tokens~\cite{yang2024memory3,sun2025zerosearchincentivizesearchcapability}.
+In general, input-based methods help mitigate hallucination~\cite{shuster-etal-2021-retrieval-augmentation}, but they rely on external retrieval components, which increases latency and system complexity, and inflates the number of input tokens~\cite{yang2024memory3,sun2025zerosearchincentivizesearchcapability}. Moreover, pipeline- or service-based designs require tuning a larger number of components and hinder effective back-propagation of supervision to early stages~\cite{zhou2025openragoptimizingragendtoend}. Such architectures are vulnerable to error propagation~\cite{le-fokkens-2017-tackling}, and propagating knowledge updates across all submodules (\eg QA and entity-linking KBs) can be non-trivial.
+
 
 \medskip
 \noindent
-Alternatively, in \emph{memory-based KE-QA}, model architectures are equipped with non-parametric---\ie outside of model parameters---memory
-modules coupled to the \ac{llm} via cross-attention or learned keys~\cite{wu-etal-2022-efficient,yang2024memory3}.
-These integrate knowledge more tightly but require architectural modifications, reducing plug-and-play
-applicability of existing pretrained \aclp{llm} with \ac{icl}.
-\todo{qui si potrebbe espandere un po', magari con kgqa}
 
-\todo{go on}
+Alternatively, in \emph{latent-interaction knowledge injection} the external knowledge is incorporated \emph{within} the model architecture rather than through the input. A prominent family of approaches relies on non-parametric---\ie external to model parameters---memory modules integrated via cross-attention or learned keys~\cite{wu-etal-2022-efficient,yang2024memory3,deJong2022MentionMemory,NEURIPS2022_882d801f,pmlr-v162-borgeaud22a}. These architectures integrate knowledge more tightly but require architectural modifications, thus reducing the plug-and-play applicability of pretrained \acp{llm} in \ac{icl} settings.
+\emph{Fusion-in-Decoder}~\cite{izacard-grave-2021-leveraging} can also be regarded as a latent-interaction method: in encoder--decoder architectures, the information from multiple retrieved passages is first encoded and then injected into the decoder. However, since it still depends on an external retriever and concatenates all encoded passages before decoding, it is less distant from input-based methods than architectures with explicit memory modules.
 
-\paragraph{KGQA as a subcase of knowledge-enhanced QA.}
+
+\paragraph{Knowledge Graph Question Answering}
 
 
 When considering \acl{kg} as the source of external knowledge instead of document collections, we speak of \emph{\acf{kgqa}}: the answer is derived from \ac{kg} facts rather than from unstructured text~\cite{lan2022complex}. Two main lines exist~\cite{lan2022complex}. A preliminary step shared by both paradigms is to identify a topic entity by performing \acl{nel}. In the \emph{semantic-parsing} paradigm, the question is translated into an executable logical form (e.g.\ SPARQL~\cite{prudhommeaux2008sparql}) which is then executed over the \ac{kg}. These methods are interpretable but depend on parser quality~\cite{lan2022complex} and typically require question--SPARQL supervision~\cite{mavromatis-karypis-2025-gnn,li-etal-2025-decoding-graphs}. Common implementations include: ranking-based systems that enumerate candidate queries (from templates or by traversing the \ac{kg}) and score them with hand-crafted features or BERT~\cite{devlin-etal-2019-bert}; coarse-to-fine methods that predict a query skeleton and then ground it via \ac{nel}; and transformer-based generation~\cite{vaswani_transformers_2017} also coupled with constrained decoding to ensure well-formed queries~\cite{kbqa_sem_parsing_2022}.
 
-Conversely, \acl{ir}-based \ac{kgqa} better supports weak supervision, training only on question--answer pairs~\cite{mavromatis-karypis-2025-gnn}. These methods retrieve a question-specific subgraph and then rank or generate answers from it~\cite{lan2022complex}. Typically, the question and candidate answers (\ack{kg} nodes) are encoded into dense representations and compared by semantic similarity. Early work used neural encoders with hand-crafted features; more recent work leverages \ac{kg}-embeddings, graph-attention~\cite{velickovic2018graph}, or \acp{gnn}~\cite{ZHOU202057}. Many systems operate in a pipeline composed of entity extraction, generation of candidate paths (often restricted to 1--2 hops), and neural ranking or filtering~\cite{ZHANG2022102933,lan2022complex}.
+Conversely, \acl{ir}-based \ac{kgqa} better supports weak supervision, training only on question--answer pairs~\cite{mavromatis-karypis-2025-gnn}. These methods retrieve a question-specific subgraph and then rank or generate answers from it~\cite{lan2022complex}. Typically, the question and candidate answers (\ac{kg} nodes) are encoded into dense representations and compared by semantic similarity. Early work used neural encoders with hand-crafted features; more recent work leverages \ac{kg}-embeddings, graph-attention~\cite{velickovic2018graph}, or \acp{gnn}~\cite{ZHOU202057}. Many systems operate in a pipeline composed of entity extraction, generation of candidate paths (often restricted to 1--2 hops), and neural ranking or filtering~\cite{ZHANG2022102933,lan2022complex}.
 
 
 
-\paragraph{LLMs for KGQA}
+% \paragraph{LLMs for KGQA}
 
-More recently, \acp{llm} have been applied to \ac{kgqa}~\cite{peng2024graphretrievalaugmentedgenerationsurvey}.
-Unlike text-based RAG, which feeds retrieved passages directly to the generator, graph-based \ac{kgqa} first retrieves a relevant subgraph and then converts it into an LLM-compatible representation before generation~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. The retrieval phase can be handled with graph search algorithms, by identifying topic entities with \acl{nel} and consider their neiborhood~\cite{lan2022complex}. Other approaches use \acp{gnn} by encode graph data and subsequently score different
-retrieval granularities based on their similarity to the query. For example, GNN-RAG~\cite{mavromatis-karypis-2025-gnn} first
-encodes the graph, assigns a score to each entity, and retrieves entities relevant to the query based
-on a threshold. Encoder-based \acp{lm} have been used also in the retrieval phase, \eg by iteratively selecting relations to expand paths starting from a topic entity~\cite{zhang-etal-2022-subgraph}. Also \acp{clm} have been used for building question subgraphs, \eg to map sentences to relations of question entities~\cite{kim-etal-2023-kg}.
-\todo{improve}
-\todo{add how to generate form survey sec 7}
-\todo{add latent gnn fusion to memory augmented above from GNN-RAG}
+More recently, \acp{llm} have been applied to \ac{kgqa}~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. Unlike text-based \ac{rag}, which feeds retrieved passages directly to the generator, graph-based \ac{kgqa} first retrieves a relevant subgraph and then converts it into an \ac{llm}-compatible representation before generation~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. The retrieval phase can be implemented with graph search algorithms, for example by identifying topic entities via \acl{nel} and expanding their neighborhoods~\cite{lan2022complex}. Other approaches use \acp{gnn} to encode graph data and then score candidate subgraphs by similarity to the query~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. For instance, GNN-RAG~\cite{mavromatis-karypis-2025-gnn} encodes the graph, assigns scores to nodes, and retrieves those above a threshold. \acp{lm} have been used to derive question-specific subgraphs, \eg by iteratively selecting relations adjacent to the question entities~\cite{zhang-etal-2022-subgraph,kim-etal-2023-kg}.
+
+For answer generation, \ac{kgqa} systems either employ \acp{gnn} or encoder-only \acp{lm} to perform discriminative answer selection (\eg for multiple-choice questions), or otherwise verbalize the retrieved subgraph and feed it to a \ac{clm} for generation~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. Verbalization strategies range from triple templates (\eg ``subject -> predicate -> object''~\cite{mavromatis-karypis-2025-gnn}) to code-like or markup-based formats~\cite{peng2024graphretrievalaugmentedgenerationsurvey}. All these methods correspond to input-based knowledge injection methods.
+
+% An alternative line of work bypasses explicit verbalization by using embeddings to represent subgraphs (\eg with \acp{gnn}) and injecting them with \emph{fusion-in-decoder}~\cite{yu-etal-2022-kg}---a memory-based knowledge injection mechanisms.\todo{maybe memory based is not the best name}
 
 
+\paragraph{Constrained generation for \ac{qa}}
 
-%%%%% draft
-Recent work combines such graph-to-text conditioning with LLM reasoning~\cite{salnikov2023,wu2023,he2024}, either by injecting verbalized \ac{kg} evidence into the prompt or by iteratively prompting the LLM to traverse the \ac{kg} hop-by-hop~\cite{jin2024,sun2024b,ren2024,sun2024a,markowitz2024}. Other approaches improve the retrieval stage itself by training specialized retrievers (LLM-based or GNN-based) to extract only the relevant graph regions before verbalization~\cite{mavromatis-karypis-2025-gnn,luo2024}. Structured pre-training (e.g.\ StructLM~\cite{zhuang2024}) aims to endow LLMs with better grounding on structured inputs, whereas in-domain fine-tuned retrievers offer higher precision at the cost of computational expense and weaker cross-domain generalization~\cite{li-etal-2025-decoding-graphs}.
-
-
-Unlike text-based RAG, which feeds retrieved passages directly to the generator, graph-based approaches first convert retrieved \ac{kg} facts into a verbalized LLM-compatible representation before generation~\cite{peng2024graphretrievalaugmentedqgenerationsurvey}. Recent work combines such graph-to-text conditioning with LLM reasoning for \ac{kgqa}~\cite{salnikov2023,wu2023,he2024}, either by injecting verbalized facts inqo prompts~\cite{} or by iteratively prompting the LLM to explore the \ac{kg} hop by hop~\cite{jin2024,sun2024b,ren2024,sun2024a,markowitz2024}. A parallel line improves the retrieval side rather than the prompting side, training specialized retrievers---either LLM-based or GNN-based---to extract only the relevant subgraph before verbalization~\cite{mavromatis-karypis-2025-gnn,luo2024}. Generalist structured pre-training (e.g.\ StructLM~\cite{zhuang2024}) aims to endow LLMs with stronger grounding on structured inputs, whereas in-domain fine-tuning of retrievers yields higher precision at the cost of computational expense and weaker cross-domain generalization~\cite{li-etal-2025-decoding-graphs}.
-
-~\cite{dehghan-etal-2024-ewek} combines text and kg as ~\cite{lehmann2024beyond}
-
-
-Unlike
-RAG, which uses retrieved text directly for generation, GraphRAG requires converting the retrieved graph
-information into patterns acceptable to generators to enhance the task performance.~\cite{peng2024graphretrievalaugmentedgenerationsurvey}
-
-LLMs have recently been combined with \acp{kg} for \ac{kgqa}, exploiting LLM reasoning while still grounding answers in structured facts~\cite{salnikov2023,w u2023,he2024}. A common strategy is to verbalize graph evidence and inject it into the LLM prompt, or to iteratively prompt the LLM to select relevant facts hop by hop~\cite{jin2024,sun2024b,ren2024}. For example, ToG explores the \ac{kg} beam-wise via prompting~\cite{sun2024a}, and Tree-of-Traversals performs zero-shot hop-wise reasoning akin to Tree-of-Thoughts~\cite{markowitz2024}. Other work trains dedicated retrievers to supply high-quality graph context to LLMs; these include specialized LLM-based retrievers and GNN-based retrievers tailored to the target \ac{kg}~\cite{mavromatis-karypis-2025-gnn,luo2024}. More generalist approaches (e.g.\ StructLM) pre-train on large structured corpora to improve structured grounding~\cite{zhuang2024}, whereas fine-tuned in-domain retrievers offer higher precision at the cost of computational expense and limited generalization~\cite{li-etal-2025-decoding-graphs}.
+Constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}---which is described in \Cref{sec:constrained-gen} for generating \ac{kg} facts for \acl{kgqa}---offers a promising alternative to input- and memory-based knowledge integration by restricting the output space of \acp{llm} during decoding to sequences that satisfy structural, syntactic, or semantic constraints. It has been successfully applied to code generation~\cite{scholak-etal-2021-picard}, entity linking~\cite{cao2021autoregressive}, information retrieval~\cite{bevilacqua2022autoregressive}, and more recently to instruction-following tasks such as entity disambiguation~\cite{geng-etal-2023-grammar}. Two recent works have extended constrained generation to \ac{qa}~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, guiding \acp{llm} through \ac{kg} paths during decoding. In particular, DoG~\cite{li-etal-2025-decoding-graphs} alternates constrained triple generation with free-form reasoning in a \ac{kg}-grounded \ac{cot}-style process, while GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} produces full \ac{kg} paths with a fine-tuned model and delegates the final answer to a larger \ac{llm}. However, both still depend on external entity linking and do not address scalability to very large knowledge bases, which remains a key open challenge for advancing constrained generation in \ac{kgqa}.
 
 
 
-\todo{do not use graphrag term}
-GraphRAG usually refers to the
-general approach of inserting verbalized graph in-
-formation at the context of LLMs (Peng et al., 2024;
-Wei et al., 2024) or leveraging additional graph in-
-formation when retrieving context for RAG (Edge
-et al., 2024; Gutiérrez et al., 2024). For instance,
-verbalizing graph information obtained by KGs has
-been widely applied in GraphRAG (Xie et al., 2022;
-Baek et al., 2023; Jiang et al., 2023a; Jin et al.,
-2024; Liu et al., 2024b; Zhao et al., 2024; Li et al.,
-2024a; Luo et al., 2024b). However, GraphRAG
-performance downgrades when the graph informa-
-tion retrieved is noisy and irrelevant to the ques-
-tion (Wu et al., 2023; He et al., 2024). To improve
-retrieval in KGQA, G NN -R AG employs a graph
-neural framework, which tailors graph retrieval for
-the KG at hand. By optimizing GNNs to iden-
-tify the right graph information for answering the
-questions, G NN -R AG achieves superior retrieval
-performance compared to existing approaches in
-KGQA~\cite{mavromatis-karypis-2025-gnn}.
-
-
-Recently, researchers have
-been exploring the joint use of KGs and large lan-
-guage models (LLMs) for KGQA, leveraging the
-advanced capabilities of LLMs for enhanced rea-
-soning (Salnikov et al., 2023; Wu et al., 2023; He
-et al., 2024). Various approaches (Jin et al., 2024;
-Sun et al., 2024b) iteratively prompt LLMs to syn-
-ergize with KGs to select relevant information step
-by step (Ren et al., 2024). ToG (Sun et al., 2024a)
-prompts LLMs to explore relevant facts hop-by-
-hop using beam search on KG. Tree-of-Traversals
-(Markowitz et al., 2024) is a zero-shot reasoning al-
-gorithm motivated by Tree-of-Thoughts (Yao et al.,
-2023).
-Some studies (He et al., 2024) focus on training
-specialized retrievers to extract key information
-from KG and the retrieved knowledge as input to
-LLMs. RoG (Luo et al., 2024) and GNN-RAG
-(Mavromatis and Karypis, 2024) train in-domain
-LLM and GNN retrievers respectively. StructLM
-(Zhuang et al., 2024), on the other hand, trains gen-
-eralist models over large amount of structured data
-to augment the structured knowledge grounding
-capabilities of LLMs. However, fine-tuning large
-scale models is computationally expensive, and spe-
-cialized training suffers from limited generalization
-capabilities.~\cite{li-etal-2025-decoding-graphs}
-
-
-LLMs are increasingly used either to \emph{generate} symbolic paths/queries (LLM-as-parser), to \emph{traverse} the KG step-by-step, or in \emph{RAG} settings where KG facts/paths are verbalized and appended as context. However, LLM-only retrieval/traversal may be inefficient on complex, multi-hop or multi-entity questions, and long-context inputs can be wasteful if retrieval is noisy. :contentReference[oaicite:5]{index=5}
-
-\paragraph{LLM+GNN: an example approach}
-GNN-RAG is a representative LLM+GNN pipeline: a deep GNN first ranks candidate answer nodes on a dense subgraph and extracts shortest paths from question entities to those candidates; these paths are verbalized and provided to the LLM via RAG for final answer generation. This decouples graph retrieval (GNN) from language reasoning (LLM), improving both effectiveness on multi-hop/entity questions (e.g., +8.9--15.5 F1 points vs.\ LLM-based retrieval) and efficiency (e.g., about 9x fewer KG tokens than long-context retrieval) on WebQSP/CWQ. :contentReference[oaicite:6]{index=6} :contentReference[oaicite:7]{index=7} :contentReference[oaicite:8]{index=8}
-The framework highlights a practical route: tailor graph retrieval with a GNN, then let the LLM reason over compact, faithful graph evidence. :contentReference[oaicite:9]{index=9}
-
-
-
-
-Knowledge Graph QA (KGQA) historically pursued access to external knowledge through \emph{executable
-queries} on a graph store. Semantic-parsing approaches~\cite{Lan_Jiang_2020,Ye_2022,Yu_2023} translate questions
-into logical queries (e.g.\ SPARQL) and execute them against the KG. This can be viewed as a
-KE-QA instance where KG access is \emph{delegated to a query compiler} rather than retrieved textually.
-However, such pipelines require gold logical forms for training and may generate non-executable queries.
-
-More recently, LLM-based KGQA~\cite{Salnikov_2023,Wu_2023,He_2024} has aligned with the two KE-QA paradigms above:
-(i) input-based KGQA, where KG facts are first retrieved (explicitly or via learned retrievers) and fed to
-an LLM~\cite{Jin_2024,Sun_2024b,Ren_2024,Luo_2024,Mavromatis_Karypis_2024,Zhuang_2024}; and (ii) interaction-based KGQA, where LLMs
-are prompted to traverse the KG step by step (e.g.\ ToG~\cite{Sun_2024a} or Tree-of-Traversals~\cite{Markowitz_2024}),
-thus using the KG as an external structured search space. Both classes ultimately turn KG knowledge
-into textual input to an LLM, thus inheriting input-growth and latency issues.
-
-\paragraph{Constrained generation for KE-QA.}
-A third, more recent direction incorporates external knowledge not by feeding or storing it, but by
-\emph{constraining the search space of generation}~\cite{cao2021autoregressive,scholak-etal-2021-picard,bevilacqua2022autoregressive,geng-etal-2023-grammar}.
-Constrained decoding enforces that output tokens conform to a target grammar or vocabulary space,
-without injecting external text. When applied to KE-QA with KGs~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning},
-the model is guided to generate KG-consistent triples or paths, grounding reasoning in the graph while
-avoiding explicit retrieval. Existing constrained KE-QA approaches, however, either assume access to
-small KGs or still depend on entity linking for grounding, thus retaining some limitations of input-based
-pipelines. Our work positions itself in this constrained generation line, using constrained decoding
-directly over large-scale KG facts (Wikidata-scale) without relying on retrieval or architectural changes.

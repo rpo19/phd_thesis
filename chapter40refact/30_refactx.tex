@@ -1,5 +1,5 @@
 \chapter{Efficient Question Answering over External Knowledge}
-
+\todo{metti github}
 \section{Introduction}
 
 Large Language Models (LLMs) have demonstrated a variety of capabilities, ranging from natural language understanding and generation to reasoning, especially when enhanced with techniques like Chain-of-Thought (CoT) prompting~\cite{wei2022chainofthought}. However, LLMs are prone to hallucinations~\cite{maynez-etal-2020-faithfulness-hallucination} and their internal knowledge remains limited to their training data~\cite{cheng2024dateddatatracingknowledge,li2024knowledgeboundarylargelanguage}. This complicates their application to knowledge-intensive tasks such as Question Answering (QA), especially when these tasks necessitate accessing information beyond the parametric knowledge of LLMs, including time-sensitive data or confidential corporate information.
@@ -8,7 +8,7 @@ Large Language Models (LLMs) have demonstrated a variety of capabilities, rangin
 Retrieval-Augmented Generation (RAG)~\cite{lewis2020retrievalaugmented,xu2023retrieval} and tool-use~\cite{yao2023reactsynergizingreasoningacting,thoppilan2022lamdalanguagemodelsdialog,lehmann2024beyond} represent two prominent families of solutions. They enable LLMs to consult external knowledge bases (KBs) or execute external tools to enrich their responses with grounded information. We will refer to these methods as Knowledge-Enhanced QA (KE-QA). They often rely on additional components such as retrievers, entity linking systems, or auxiliary models, which are orchestrated in information processing pipelines.
 However, such pipeline-based or service-based solutions have a number of drawbacks. They require the optimization of a larger number of parameters and make it difficult to effectively back-propagate supervision signals to early components of the pipeline~\cite{zhou2025openragoptimizingragendtoend}. These approaches are susceptible to error-propagation~\cite{le-fokkens-2017-tackling}, and knowledge updates may be complex to propagate to all the different components (e.g., to QA and entity linking knowledge bases).
 
-An interesting technique that may overcome such limitations is constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}, which restricts the model's output space during decoding to sequences that satisfy predefined structural, syntactic, or semantic constraints. A few recent approaches have applied constrained generation to KE-QA, achieving promising results~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning}.
+An interesting technique that may overcome such limitations is constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}, which restricts the model's output space during decoding to sequences that satisfy predefined structural, syntactic, or semantic constraints. A few recent approaches have applied constrained generation to KE-QA, achieving promising results~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}.
 However, as the application of this technique to KE-QA is quite novel, there is an important research challenge to address to advance these techniques: the scalability to large knowledge bases. Can these approaches be applied to large KBs such as Wikidata\footnote{\url{https://www.wikidata.org}}?
 In this paper, we present Reliable Fact eXtractor (ReFactX), an approach that addresses this challenge and poses itself as an alternative to pipeline-based solution.  
 %
@@ -433,7 +433,7 @@ Figure~\ref{fig:dataset_distribution} shows the distribution of questions and an
 
 2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, to which we refer as 2WikiMH, is composed of multi-hop, comparative, and generic questions derived from Wikipedia and Wikidata. For this dataset, we evaluate on the \textit{dev} set, as the ground truth for the test set is not publicly available.
 WebQSP~\cite{yih-etal-2016-value} contains generic questions annotated with Freebase~\cite{freebase_2008}. %
-These two dataset are used by the existing KE-QA approaches based on constrained generation~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into ReFactX's performance relative to prior work.
+These two dataset are used by the existing KE-QA approaches based on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into ReFactX's performance relative to prior work.
 %
 For computational efficiency, we consider a limited sample of 200 questions for each public dataset, stratifying by question type.
 
@@ -446,7 +446,7 @@ We verbalize the triples, also adding inverted facts, so that ReFactX can use ta
 %
 
 %
-The choice of public benchmark datasets reflects two main considerations. First, we prioritized datasets that natively use only or also include Wikidata---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li2024decodinggraphsfaithfulsound,luo2024graphconstrainedreasoningfaithfulreasoning}. Additionally, we include the proprietary \textit{Bank} dataset to evaluate on data free from any data contamination.
+The choice of public benchmark datasets reflects two main considerations. First, we prioritized datasets that natively use only or also include Wikidata---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}. Additionally, we include the proprietary \textit{Bank} dataset to evaluate on data free from any data contamination.
 
 
 \subsubsection{Metrics}
@@ -480,7 +480,7 @@ Precision and accuracy are calculated in two settings: (i) Exact Match: comparin
 We first evaluate the same LLMs used with ReFactX without constrained generation. In this setting, referred as \textit{LLM-only}, we use the same settings and prompts, so that models generates not-grounded facts based solely on their parametric-knowledge, giving us clues on how important is to access external knowledge and, furthermore, on how much each dataset can be answered using only the LLM's internal knowledge.
 %
 
-Then, we compare against KE-QA methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li2024decodinggraphsfaithfulsound} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
+Then, we compare against KE-QA methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li-etal-2025-decoding-graphs} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
 Additionally, we include Hybrid-QA (HQA)~\cite{lehmann2024beyond}---an input-based KE-QA approach. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
 
 %
@@ -489,9 +489,9 @@ HQA~\cite{lehmann2024beyond} achieves state-of-the-art results on Mintaka~\cite{
 % 
 Given a question, HQA first selects a limited set of few-shot examples maximizing their relevance for the question and the diversity between the examples, then, via ICL~\cite{dong2024survey} with the selected few-shot examples, instructs the LLM to acquire external information with tools, such as a Wikipedia search engine and a Wikidata SPARQL query engine, and finally answers the question.
 
-DoG~\cite{li2024decodinggraphsfaithfulsound} and GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} are both based on constrained generation, while they consider smaller question-based prefix trees with respect to ReFactX.
+DoG~\cite{li-etal-2025-decoding-graphs} and GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} are both based on constrained generation, while they consider smaller question-based prefix trees with respect to ReFactX.
 % DoG
-DoG~\cite{li2024decodinggraphsfaithfulsound},
+DoG~\cite{li-etal-2025-decoding-graphs},
 incorporates constrained generated triples from a KG inside a reasoning process similar to CoT~\cite{wei2022chainofthought}, instructing the model with ICL~\cite{dong2024survey}, and alternating normal and constrained generation.
 The KG, composed of up to 120 triples, is constructed for each question, from the triples within 2-4 hops from question entities. Then, at inference time, a query-centric subgraph of the KG is obtained from the triples containing the question entities (extracted with an entity linking system). The model is allowed to generate only the triples from this query-centric subgraph, and at each generation, the subgraph is expanded with all the adjacent triples, allowing the model to form a reasoning path from question entities to the answer.
 % 
@@ -574,7 +574,7 @@ $\text{Qwen}^{2.5}_{7B}$ & 21.7 & 18.0 & 45.3 & 41.0 & 21.6 & 18.0 & 10.9 & 10.5
 \textbf{ReFactX} $\text{Qwen}^{2.5}_{72B}$$^\dagger$ & 82.8 & 55.5 & 96.4 & \textbf{92.5} & 84.8 & 65.5 \\
 \textbf{ReFactX} $\text{Qwen}^{2.5}_{7B}$$^\dagger$ & 78.2 & 39.5 & 91.2 & 73.0 & 78.7 & 55.5 \\
 \midrule
-DoG\cite{li2024decodinggraphsfaithfulsound}$^*$ $\text{Qwen}^{2.5}_{7B}$ & -- & -- & -- & 84.2 & -- & \textbf{92.7} \\
+DoG\cite{li-etal-2025-decoding-graphs}$^*$ $\text{Qwen}^{2.5}_{7B}$ & -- & -- & -- & 84.2 & -- & \textbf{92.7} \\
 GCR\cite{luo2024graphconstrainedreasoningfaithfulreasoning}$^*$ $\text{Llama}^{3.1}_{8B} + \text{GPT}^{\text{4o-mini}}$ & -- & -- & -- & -- & 92.2$^{\S}$ & 74.1$^{\S}$ \\
 HQA\cite{lehmann2024beyond} GPT$^{3.5}$$^\ddagger$ & -- & 85.9 & -- & -- & -- & -- \\
 HQA\cite{lehmann2024beyond} GPT$^4$$^\ddagger$ & -- & \textbf{95.9} & -- & -- & -- & -- \\
