@@ -13,13 +13,31 @@ However, they do not describe an architecture but more a workflow for extracting
 
 \textcite{balansay2024development} focus on notary documents and aim at reducing the time-consuming manual operations of professionals for document management. They create a management system with a database for storing documents, organizing them in folder, search them, and sharing them with colleagues. All these functionalities from a web-based \ac{ui}.
 
-\textcite{pham2025improving,icaart23,enase22} focus on Vietnamese legislation. propose legal-onto model, an ontology framework based on concepts, relations, and rules. use conceptual graph to link key phrases to legal concepts with tf-idf. \todo{cita anche prev work} also address the problem of updating the ontology (involvve parsing and structuring legal documents, extracting key
-phrases, and constructing the conceptual graph.) and also allows to compare versions \eg with vector similarities. building conceptual graph from legal docs. arch: graph, legal database, relational db
+\textcite{pham2025improving,icaart23,enase22} focus on Vietnamese legislation. propose legal-onto model~\cite{enase22}, an ontology framework based on concepts, relations, and rules. use conceptual graph to link key phrases to legal concepts. \todo{cita anche prev work} also address the problem~\cite{pham2025improving} of updating the ontology (involvve parsing and structuring legal documents, extracting key
+phrases, and constructing the conceptual graph.) and also allows to compare versions \eg with vector similarities. building conceptual graph from legal docs. the architecture is composed by the conceptual graph and the legal database, which contains parsed and "divided in sections, articles,..." legal documents, user interfaces for search~\cite{icaart23,enase22}
 
 
+Lynx: apis, uris, legal knowledge graph, document has id and metadata, part of documents, search (also annotations), question answering. architecture: based on microservices (Docker), document manager, apis, services, workflow manager (orchestrator? to run operations on documents (similar to \cite{BELLANDI2024})), validation controller to mantain data and system integrity (documents must be valid according to data model: text, metadata, id, type).
+Legal
+Knowledge Graph “of legal and regulatory data towards compliance, in which heterogeneous data sources
+from different jurisdictions, languages and orders are aggregated and interlinked by a collection of
+advanced services”.
 
+The Knowledge Graphs represented as RDF in the web have a singular nature:
+they are unbounded. In the Linked Data Cloud, entities in one server are connected to entities in other
+server, in turn connected to others and so on. There is no clear cut on what can be of interest --hence the
+Legal Knowledge Graph, in the broader sense, spans the entire online space. However, some of the
+entities are key for the Lynx platform to exist --hence some of the entities are served by Lynx servers.
 
-and address the problem of keeping legal knowledge up to date when laws are amended. They propose a knowledge-driven platform in which legal documents are parsed, represented with a domain ontology, and compared across versions using a Vietnamese SBERT model to detect structural and content changes. The system stores the structured legal knowledge in a dedicated backend and supports semantic retrieval and knowledge update workflows, rather than manual re-analysis of documents.
+different types of entities that are
+represented, which are mainly documents (grey boxes) -LynxDocuments, comprising standards, acts,
+directives, etc.-, concepts and terminological information in concept schemes (white boxes) and other
+less relevant entities such as organizations and companies.
+
+The document manager is implemented in a flexible manner using two different data storages: Elastic
+Search (ES) and the Trellis Linked Data Platform (LDP). By utilizing the flexibility of JSON-LD (use of json-ld interoperability data format) and the
+capabilities of an LDP, the DCM is the main building component of the Lynx Legal Knowledge Graph (LKG)
+and where the LKG is stored.
 
 
 
