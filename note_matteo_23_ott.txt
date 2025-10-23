@@ -1,0 +1,3 @@
+dave introdurre meglio
+combinare ricerca faceted, qa, alimentato dalla struttura dati del paper. copio dal paper.
+prima overview e poi approfondisco. anche immagine con schema layer integrazione

@@ -9,7 +9,26 @@
 % % knowledge management
 % \Acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
 
-\paragraph{entire kg mana systems / architectures}
+
+% they are not \acp{kms} but do something related \eg legal case retrieval,...
+
+
+% \paragraph{ai/nlp for legal soa. judgements and similar}
+
+\todo{paraphrase}
+Several systems for assisting legal professionals have been developed over time~\cite{amato2008,buey2016,breit_legal_permits_2020,HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}.
+Early work by \textcite{amato2008} introduced a document management system for the legal domain that leverages ontologies and entity extraction, focusing primarily on notary documents.
+\textcite{buey2016} focused on a wider range of legal documents---such as public acts and private agreements---by employing ontologies that model document structures and specify which entities should be extracted from each section.
+\textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits\todo{add description once verified}.
+More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
+The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
+
+While these work devlop ontologies or multiple services including extraction and visualization tools, they do not focus much the architecture design or implementation.
+
+
+\paragraph{proper legal data management systems}
+\todo{organizza per mostrare challenge, obiettivi e casi d'uso}
+
 Eunomos~\cite{boella2016eunomos} is a legal data management system that integrates legislative XML --- used to represent statutes in a structured and versioned form --- with legal ontologies encoding legal concepts and relations (e.g., \emph{replaced-by} for amendments). The platform automatically acquires legislation (e.g., from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
 
 \textcite{boella2019semi} extend Eunomos with improved \ac{nlp} services to reduce the manual effort of knowledge population via semi-automatic classification of norms, concept and relation extraction, amendment extraction, and \acl{el} using pattern-matching rules. A web-based \acl{hitl} interface is provided for validating the \ac{el} outputs, and a similar \ac{ui} is envisioned for supporting semi-automatic refinement of amendment extraction.
@@ -33,8 +52,111 @@ On the other hand, approaches supporting criminal investigations have targeted i
 \textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
 
 
+\textcite{bellandi2025streamlining} present an evolution of the work in~\textcite{BELLANDI2024}, which constitutes one of the contributions of this \phd. The resulting IDJ platform enforces streamlined management and analysis of legal documents (e.g., court decisions, orders) to serve different legal actors through service pipelines. Its architecture is modular and aligns with the principles underlying \ref{ob:architecture}: a text-processing layer handles ingestion, storage (ElasticSearch for texts/metadata, SQL for annotations), and basic NLP pre-processing, while a dedicated NLP layer performs \ac{ner}, \ac{nel}, and concept extraction. A graph database is used as an entity registry, exposed through dedicated APIs. Pipelines are orchestrated through a Kafka-based mechanism and expose all services through standard APIs. The platform supports entity-based analytics (e.g., entity distributions, paths between entities across documents) and concept-based document exploration, enabling navigation, search, and statistics over the corpus using extracted entities and concepts. Front-end modules provide UIs for exploration and analytics, extending the interfaces in~\textcite{BELLANDI2024}. Overall, the work focuses on operationalizing document--annotation--entity principles through an extensible pipeline architecture, rather than proposing a standalone theoretical model.
 
-\todo{bellandi streamlining}
+
+% \todo{bellandi streamlining}~\cite{bellandi2025streamlining} this paper is an evolution of \textcite{BELLANDI2024} which is one of the contributions of my \phd. Our collogues continued the work improving it essentially. this is why this work shares similarities with the architecture proposed for \ref{ob:architecture}.
+
+% designed to enforce the streamlined
+% management of legal documents, such as court decisions or
+% orders, to serve a multiplicity of legal actors and processes.
+% The IDJ platform consists of a set of modules, repositories,
+% and data flows that interoperate to realize service pipe-
+% lines enforcing legal document analytics and exploration
+
+% The IDJ platform provides a text processing mod-
+% ule, implementing basic services for document processing
+% typically used at ingestion time (e.g., text/metadata storage,
+% tokenization, full-text search), and a NLP module, imple-
+% menting advanced natural language processing services,
+% used for knowledge extraction from ingested documents
+% (e.g., named entity extraction, named entity linking, concept
+% extraction). End-user analytics and exploration processes
+% over legal documents are realized by service pipelines that
+% accomplish the process goal through the interoperation of
+% selected text processing/NLP modules, repositories, and data
+% flows of the IDJ platform.
+
+% the entity-based document analytics, which enforces
+% entity-based statistics generation over the document reposi-
+% tory, thus allowing for example to analyze entity distribution
+% over the document corpus; (ii) the concept-based document
+% exploration, which enforces the document repository explo-
+% ration according to concept-based similarity criteria. The
+% IDJ platform is flexible, in that new service pipelines can be
+% realized to enforce new stakeholders analysis requirements
+% arising over time.
+
+% graph database for the entity registry
+
+% The storage layer exposes the EReg APIs to manage
+% both the entity types (the EReg metamodel) and the entity
+% instances
+
+% Document texts and metadata
+% are stored in an ElasticSearch instance, while annotations in
+% a SQL database
+
+% e back-end components and the em front-end compo-
+% nents constitute the backbone of the proposed platform. In
+% back-end components, we distinguish modules for text pro-
+% cessing and NLP. About the text processing module, it can be
+% considered a proxy for client utilities like indexing, embed-
+% ding, and full-text search.
+
+% Further services are included in
+% the text processing module to process the incoming data at
+% ingestion time, and to create manipulated versions of the
+% original documents through activities like tokenization,
+% lemmatization, cleaning, and filtering.
+
+% Named Entity Recognition
+% (NER) and Named Entity Linking (NEL), as well as concept
+% extraction are also included
+
+% %orchestration
+% A Kafka queue is created when a NLP service is
+% invoked, with all the information needed to get the proper
+% data. All the NLP services must expose standard APIs for
+% interaction with other platform components; they must read
+% the Kafka queue and use the parameters found in it to obtain
+% the input texts. In the end, the invoked NLP service passes
+% back the output to the text processing module for storage in
+% the annotation database and the entity registry.
+
+% In front-end components, we extend our previous work in
+% [2] and we distinguish modules for exploration and analyt-
+% ics.
+
+% service for brows-
+% ing the corpus according to their common entities and/or
+% concepts extracted by the NLP module. Analytics allows to
+% examine the corpus through summary/statistical views built
+% over data, such as for example the distribution of an entity
+% or concept in the corpus, the shortest path (through docu-
+% ments) between given concepts or entities, and the centrality
+% of entities and concepts.
+
+% reference data model charac-
+% terized by documents, entities, and annotations
+
+% document has text and metadata (key value)
+% document has sections and chunks
+
+% entities has type and features. information that allows to distinguish/identify an entity is called key and depende on the type (e.g., fiscal code for person)
+
+% graph-based concept exploration
+
+% example concept: banking contract
+
+% they use special entity types identified form the corpus of court judgment.
+
+% concept-based document exploration
+
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
 \todo{paper architectural sota}
 
 \paragraph{other more specific legal systems}
@@ -51,6 +173,23 @@ The latter developed a prototype for legal case retrieval that guides profession
 
 
 \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, i.e., the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
+
+\todo{adele}
+\todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
+\todo{maybe order historically}
+\todo{add approaches for criminal investigations from claw}
+
+\paragraph{soa criminal}
+\todo{add whatsapp}
+
+
+
+\todo{paper architectural sota}
+
+\paragraph{other more specific legal systems}
+
+
+% \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, i.e., the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
 \todo{adele}
 \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
