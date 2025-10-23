@@ -1,14 +1,20 @@
 \section{State of the Art on Data Integration and Management Architectures for the Legal Domain}
 % \section{State of the Art on Data Integration and Management Architectures for Knowledge-Intensive Domain}
-\todo{maybe cite some requirements for legal: eg.g. semi automatic, traceability}
-% knowledge management
-\acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
+
+% some kms for investigations refer to sharing knowledge across individuals. e.g. tell others how i did this
+% kms is not relevant!
+% data management system
+
+% \todo{maybe cite some requirements for legal: eg.g. semi automatic, traceability}
+% % knowledge management
+% \Acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
 
 \paragraph{entire kg mana systems / architectures}
-Eunomos~\cite{boella2016eunomos} is a legal knowledge management system that integrates legislative XML --- used to represent statutes in a structured and versioned form --- with legal ontologies encoding legal concepts and relations (e.g., \emph{replaced-by} for amendments). The platform automatically acquires legislation (e.g., from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
+Eunomos~\cite{boella2016eunomos} is a legal data management system that integrates legislative XML --- used to represent statutes in a structured and versioned form --- with legal ontologies encoding legal concepts and relations (e.g., \emph{replaced-by} for amendments). The platform automatically acquires legislation (e.g., from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
 
 \textcite{boella2019semi} extend Eunomos with improved \ac{nlp} services to reduce the manual effort of knowledge population via semi-automatic classification of norms, concept and relation extraction, amendment extraction, and \acl{el} using pattern-matching rules. A web-based \acl{hitl} interface is provided for validating the \ac{el} outputs, and a similar \ac{ui} is envisioned for supporting semi-automatic refinement of amendment extraction.
 
+% error correction? traceability?
 \textcite{beniamino_strada_2022} acknowledge the importance of organizing the documentation attached to legal trials and propose a workflow for automatically determining the \emph{proposability} of the instances presented to Courts, with the goal of reducing the burden on judges. They build a combined ontology from proposability, juridical, and road-accident ontologies, and train an ad-hoc \ac{ner} model to recognize domain-specific entities in trial documents (e.g.\ \emph{injured party}, \emph{tax identification code}, \emph{description of the facts}, \emph{lawyer}, \emph{statement}). Proposability is then computed by logical inference over the extracted entities. This work shares similarities with some of the contributions of this \phd, since it adopts an entity-centric approach and employs \ac{ner} for knowledge extraction, as in \textcite{BELLANDI2024,aixia_2023,pozzi_wise_2025}. It also releases an annotated dataset for training \ac{ner}, as in \textcite{BELLANDI2024,pozzi_wise_2025}. In addition, the authors provide user-facing \acp{ui} for visualizing proposability analysis and for displaying \ac{ner} annotations highlighted on documents side-by-side with the ontology, similarly to the \acp{ui} presented in \textcite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}. However, the work does not describe a general legal architecture; it rather specifies a workflow for extracting ontology concepts with \ac{ner} to support the specific proposability task.
 
 \textcite{balansay2024development} focus on notarial documents and aim to reduce the time-consuming manual operations carried out by professionals for document management. They develop a management system with a database for storing documents, organizing them into folders, searching them, and sharing them with colleagues — all provided through a web-based \ac{ui}.
@@ -20,7 +26,7 @@ Lynx~\cite{MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP} provides 
 
 
 
-
+% heterogeneus
 On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
 
 % both focus also on scalability
@@ -43,10 +49,8 @@ Early work by \textcite{amato2008} introduced a document management system for t
 More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
 The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
 
-\textcite{CHIEN2024105902} focused on Legal Judgment Prediction from indictments, the sub-task which predicts possible legal article, charges and
-sentences based on the input facts. A criminal
-indictment typically includes the cause of charge, the main text (facts
-and reasons), prosecution law and legal provisions.
+
+\textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, i.e., the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
 \todo{adele}
 \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
