@@ -1,16 +1,35 @@
 \section{State of the Art on Data Integration and Management Architectures for the Legal Domain}
 % \section{State of the Art on Data Integration and Management Architectures for Knowledge-Intensive Domain}
-
+\todo{maybe cite some requirements for legal: eg.g. semi automatic, traceability}
 % knowledge management
 \acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
 
 \paragraph{entire kg mana systems / architectures}
 Eunomos~\cite{boella2016eunomos} is a legal knowledge management system that combines legislative XML for representing statutes in a structured, versioned form with legal ontologies capturing legal concepts and relations (e.g.\ replaced-by for amendments). The system automatically collects legislation (e.g.\ from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains multiple temporal versions of each provision. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic, allowing manual error correction. The authors target use cases such as compliance in financial regulation, support for law firms and public bodies in tracking changes and structuring knowledge, and citizen-facing services. By integrating structured legislation with a concept layer, it goes beyond keyword retrieval and enables controlled, ontology-based access to evolving legal norms.
+With \textcite{boella2019semi} Eunomos has been extended with improved \ac{nlp} services to reduce manual time-consuming operations, but in a semi-automatic manner. These include classifications of norms, concept and relational extraction, extraction of legal amendments, and \acl{el}---with pattern-matching rules. They provide a web interface for \acl{hitl} validation \ac{ui} of \ac{el}, in which users verify the correctness of the automaic predictions and plan to create a \ac{ui} for semi-automatic improvement of the amendments extraction.
+
+\textcite{beniamino_strada_2022} acknowledge the importance of organizing the documentation attached to legal trials and proposed a workflow for automatically determine the proposability of the instances presented to Courts, for simplifying judge work. They create a combined ontology from proposability, juridical, and road accident ontologies. They train ad-hoc \ac{ner} model for recognizing specific elements from the trial documents, \eg danneggiato, codice fis., descrizione fatto, avvocato, dichiarazione\todo{traduci}. And determine the proposability with logical inference. This work shares similarities with some of my \phd contributions, since they focus on entities and use \ac{ner} tools for the identification---as in \textcite{BELLANDI2024,aixia_2023,pozzi_wise_2025}. They also prepare an annotated dataset for training \ac{ner} (as in \textcite{BELLANDI2024,pozzi_wise_2025}. Also they provided user with visualizations \acp{ui}, for showing the proposability analysis and for visualizing \ac{ner} annotation highlithed on documents with the ontology side by side (as in \textcite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}).
+However, they do not describe an architecture but more a workflow for extracting ontology concepts with \ac{ner}.
+
+\textcite{balansay2024development} focus on notary documents and aim at reducing the time-consuming manual operations of professionals for document management. They create a management system with a database for storing documents, organizing them in folder, search them, and sharing them with colleagues. All these functionalities from a web-based \ac{ui}.
+
+\textcite{pham2025improving,icaart23,enase22} focus on Vietnamese legislation. propose legal-onto model, an ontology framework based on concepts, relations, and rules. use conceptual graph to link key phrases to legal concepts with tf-idf. \todo{cita anche prev work} also address the problem of updating the ontology (involvve parsing and structuring legal documents, extracting key
+phrases, and constructing the conceptual graph.) and also allows to compare versions \eg with vector similarities. building conceptual graph from legal docs. arch: graph, legal database, relational db
+
+
+
+
+and address the problem of keeping legal knowledge up to date when laws are amended. They propose a knowledge-driven platform in which legal documents are parsed, represented with a domain ontology, and compared across versions using a Vietnamese SBERT model to detect structural and content changes. The system stores the structured legal knowledge in a dedicated backend and supports semantic retrieval and knowledge update workflows, rather than manual re-analysis of documents.
+
+
+
 
 On the other hand, approaches supporting criminal investigations have targeted illicit Web data~\cite{kejriwal2017searchengine,kejriwal2018}, particularly in efforts to combat human trafficking. These works propose an entity-centric scalable architecture that constructs a \acl{kg}---according to a domain-specific ontology---and provides advanced \acl{ia} \acp{ui}, such as faceted search interfaces and map-based visualizations. Although the architecture could be generalized to other types of documents---with a different ontology---they did no experiment with multimedia data and implement the extraction services for specific challenges of illicit data, such as information that is often hidden in plain sight, such as phone numbers deliberately obfuscated by mixing digits and words.
 
 % both focus also on scalability
 \textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
+
+
 
 \todo{bellandi streamlining}
 \todo{paper architectural sota}
@@ -26,6 +45,12 @@ Early work by \textcite{amato2008} introduced a document management system for t
 \textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits\todo{add description once verified}.
 More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
 The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
+
+\textcite{CHIEN2024105902} focused on Legal Judgment Prediction from indictments, the sub-task which predicts possible legal article, charges and
+sentences based on the input facts. A criminal
+indictment typically includes the cause of charge, the main text (facts
+and reasons), prosecution law and legal provisions.
+
 \todo{adele}
 \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
 \todo{maybe order historically}
