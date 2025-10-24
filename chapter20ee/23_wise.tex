@@ -19,7 +19,7 @@ Investigators often need to explore and extract insights from large volumes of h
 
 During my \phd, I collaborated with prosecutors and judicial police officers from two public prosecutor's offices in the context of two separate investigations. While the work presented in this thesis refers exclusively to the second case---an investigation into suspected corruption---\Cref{tab:chatstats} reports the statistics of the chat logs extracted and processed---by the metadata extraction (\Cref{sec:wise:metdata_extraction})---in both investigations, to better illustrate the volume of data that investigators must handle.
 
-Our work was conducted under an official consultancy agreement within the framework of judicial investigations. All data, due to the private information contained, was stored locally and accessed only by authorized consultants, through a secure VPN with user-password authentication; no external \acp{api} have been used at any stage.
+Our work was conducted under an official consultancy agreement within the framework of judicial investigations. All data, due to the private information contained, was stored locally and accessed only by authorized consultants, through a secure virtual private network (VPN) with user-password authentication; no external \acp{api} have been used at any stage.
 
 
 Accordingly, this section focuses on the extraction and organization of entities from \ac{ima} data. Messages---including transcribed voice notes---were modeled within a knowledge graph designed to represent the network of contacts of the main suspect (\Cref{chap:architecture}). An improved version of the \ac{nel} pipeline introduced in \Cref{sec:incrementalel:pipeline} was then applied and evaluated on a labeled message corpora. The evaluation relied on a labeled dataset created through a procedure similar to the one employed for legal judgments~\Cref{sec:eejudgements}. As in that case, the availability of labeled data for \ac{ima} analysis is limited by the presence of personal and sensitive information\todo{verify}.
@@ -91,7 +91,7 @@ And each message is described by
     \textbf{2) Corruption} & 1,442 & 1,442  & 364,690 & 63,24 (51,532-6,273-4,066) & 2,351 \\
     \hline
   \end{tabulary}
-  \caption{Statistics about two invatigation in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
+  \caption{Statistics about two investigations in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
   \label{tab:chatstats}
 \end{table}
 
@@ -182,7 +182,7 @@ Using this model in the experiments can give us clues on how the best model for 
 
 % \subsubsection{\ac{nel}}
 
-For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} otained from Italian Wikipedia---as in \Cref{sec:claw_consolidation}---additionally populated with the chat participants from the chat \ac{kg}.
+For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} obtained from Italian Wikipedia---as in \Cref{sec:claw_consolidation}---additionally populated with the chat participants from the chat \ac{kg}.
 To represent chat participants, we leverage BLINK zero-shot capability to encode an entity given its title and textual description. For each of them, we obtain a representation by giving the following input to the bi-encoder:
 \begin{lstlisting}
 [CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP].

@@ -21,7 +21,7 @@ The contributions to \acl{inel} are described in the next sections and can be su
     \item A dataset for \ac{inel}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering in the incremental scenario. The dataset was created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying the proposed adaptation methodology.
     \item A baseline pipeline, constructed on the BLINK bi-encoder~\cite{blink}, additionally supporting NIL prediction and clustering.
     \item Evaluation procedures for incremental \ac{nel}.
-    \item An assessment of the performance and main challeges of the baseline pipeline on the incremental scenario.
+    \item An assessment of the performance and main challenges of the baseline pipeline on the incremental scenario.
 \end{enumerate}
 
 \todo{dire che non facciamo ner e perche?}
@@ -237,7 +237,7 @@ First, we define measures for the overall \ac{inel} pipeline:
     \item \textbf{Overall Accuracy:} accuracy across all mentions.
 \end{enumerate}
 
-Secondly, to understand how each component of the pipeline performs on its specific task, we also evaluate the modules separately. In particular, for the \ac{nel} module, we measure Recall@1\todo{dire che in el accruracy e recall@1 coicidono?}. For the NIL predictor, we compute precision, recall, and F$_1$-score for the NIL class. Finally, for NIL clustering, following the co-reference evaluation methodology~\cite{streaming_crossdoc_coreference}, we calculate precision, recall, and F$_1$ for MUC, B$^3$, and CEAF$_e$, also reporting the average F$_1$ score.\todo{spiegare queste metriche? dove? in sota?}
+Secondly, to understand how each component of the pipeline performs on its specific task, we also evaluate the modules separately. In particular, for the \ac{nel} module, we measure Recall@1\todo{dire che in el accuracy e recall@1 coinciding?}. For the NIL predictor, we compute precision, recall, and F$_1$-score for the NIL class. Finally, for NIL clustering, following the co-reference evaluation methodology~\cite{streaming_crossdoc_coreference}, we calculate precision, recall, and F$_1$ for MUC, B$^3$, and CEAF$_e$, also reporting the average F$_1$ score.\todo{spiegare queste metriche? dove? in sota?}
 
 
 Note that the handling of a mention $m$ referring to an entity $e$ previously added to the \ac{newkr} is considered correct only if it consist linking $m$ to $e$, while labeling $m$ as NIL is considered an error. This ensures that the system does not achieve artificially high scores by treating every mention as a new entity.\todo{rimuovere?}
@@ -427,7 +427,7 @@ Balancing the need for informative representations with the challenge of handlin
 
 
 \subsection{Conclusion}
-\todo{remove and put conlusion at the end of chapter}
+\todo{remove and put conclusion at the end of chapter}
 In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
 %&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
 

@@ -52,7 +52,7 @@ The annotations include labels for \ac{ner}, \ac{nel}, NIL prediction, and NIL c
 These tasks are executed sequentially, thus, each annotation step has been performed by manually refining the output of previous tasks. For this reason, we can consider the annotation process as a \say{simulation} of a real \emph{\acf{hitl}} use case, where humans manually verify and correct automatic annotations, for enhancing their quality.
 Furthermore, this \say{simulation} allows to estimate the amount of time required by the final users-in-the-loop to correct automatic annotations obtained with the \ac{ee} pipeline described in \Cref{sec:italia_ee_pipeline}.
 
-Initially, \ac{er} annonations have been labeled on all the 146 documents by two annotators. Later, a subset of 30 documents has been additionally labeled for \ac{inel}. We will use ICCJ30-\ac{inel} to specifycally refer to this subset.
+Initially, \ac{er} annotations have been labeled on all the 146 documents by two annotators. Later, a subset of 30 documents has been additionally labeled for \ac{inel}. We will use ICCJ30-\ac{inel} to specifically refer to this subset.
 The annotation process focused the entities of class \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Money}, \texttt{Date}, and \texttt{Miscellaneous}.\todo{say something about anonymization?}
 
 
@@ -99,11 +99,11 @@ Formally, they compare the observed agreement $P_o$ to the expected agreement $P
     (P_o - P_e)/(1 - P_e).
 \end{equation}
 
-However, these measures may not be suitable for complex labeling tasks such as \ac{ner}, providing low interpretability values~\cite{braylan2022measuring}. A problem of these measures for \ac{ner} is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however thish would yield overly optimistic IAA value. For example, \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} would be considered as a perfect match and the high number of negatives---i.e., the tokens outside of entity mentions---causes the calculation of the metrics on a very imbalanced data~\cite{deleger2012building}.
+However, these measures may not be suitable for complex labeling tasks such as \ac{ner}, providing low interpretability values~\cite{braylan2022measuring}. A problem of these measures for \ac{ner} is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however this would yield overly optimistic IAA value. For example, \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} would be considered as a perfect match and the high number of negatives---i.e., the tokens outside of entity mentions---causes the calculation of the metrics on a very imbalanced data~\cite{deleger2012building}.
 
 Also, the aforementioned IAA coefficients differ primarily in how the expected-by-chance term $P_e$ is estimated~\cite{vanOest2019}, with Fleiss'~$\kappa$ and Scott's~$\pi$ being equivalent when considering two annotators, since the former is a generalization of the latter~\cite{HayesKrippendorff2007}. Thus, when there are only two annotators and the category proportions are highly unequal---as is common in \ac{ner}, where most tokens belong to the ``outside-of-entity-mention'' class---both annotators exhibit almost identical marginal label distributions. Consequently, these coefficients tend to converge toward similar values in such settings.
 
-For these reasons, we adopted the \ac{ner} F$_1$ score as the main metric is a more robust alternative to the classic metrics~\cite{hripcsak2005agreement, grouin2011proposal}.\todo{add evalution metrics in rw??}
+For these reasons, we adopted the \ac{ner} F$_1$ score as the main metric is a more robust alternative to the classic metrics~\cite{hripcsak2005agreement, grouin2011proposal}.\todo{add evaluation metrics in rw??}
 %, wang2021nero}.
 The F$_1$ score---calculated with the matching criteria described in \Cref{sec:metrics}---is pair-wisely computed between annotators: for each combination, the labels from an annotator are used as the ground truth to evaluate the labels from another annotator; an average is computed in case of more than two annotators. 
 
@@ -308,7 +308,7 @@ The clustering thresholds are determined through grid search on the same Wikiped
 
 We evaluate the entity extraction pipeline in the following experimental settings:
 \begin{enumerate}
-    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practise, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use the 146-documents ICCJ146-EE as the evaluation dataset and the 30-documents subset ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization}. This analysis aligns with the concept of \acf{hitl} validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (see \Cref{sec:metrics}).  
+    \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practice, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use the 146-documents ICCJ146-EE as the evaluation dataset and the 30-documents subset ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization}. This analysis aligns with the concept of \acf{hitl} validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (see \Cref{sec:metrics}).  
     \item \textit{\ac{nel} with NIL prediction}: we study the combined performance of \ac{nel} and NIL prediction, since these two tasks are closely related, isolating them from \ac{ner} errors. To achieve this, we execute \ac{nel} and NIL prediction on ground truth \ac{ner} annotations from ICCJ30-\ac{inel}.
     \item \textit{End-to-end}: we evaluate the performance of our system on each mention in ICCJ30-\ac{inel}, considering \ac{ner}, \ac{nel}, and NIL prediction---as done, for example, in the NEEL challenge~\cite{basile2016neelit}. In this setting, each mention can be either linked to an entity in the \ac{kr} or classified as NIL. We exclude NIL clustering from this evaluation, since assessing whether a NIL mention is in the correct cluster would overly complicate the analysis; instead, clustering is evaluated separately in the \textit{atomic} setting.
 
@@ -459,7 +459,7 @@ The hyperparameters for the combination rules were set by prioritizing Trie\ac{n
     \centering
     \begin{tabular}{ll|rrr}
         \toprule
-        \textbf{Model} & \textbf{Datset} & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
+        \textbf{Model} & \textbf{Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
         \midrule
         \spacy & WikiNER~\cite{NOTHMAN2013151} & 91.9 & 91.9 & 91.9 \\
         GilBERTo~\cite{gilberto} & WikiNER~\cite{NOTHMAN2013151} & 92.7 & 92.7 &	92.8 \\
@@ -620,11 +620,11 @@ When jointly evaluating \ac{nel} and NIL prediction (disregarding \ac{ner} error
         \textbf{\Acl{nel}} & Accuracy & 73.5 & & & \\
         & Recall@100 & 90.8 & & & \\
         \midrule
-        \textbf{NIL prediction} & & \textbf{Precison} & \textbf{Recall} & \textbf{F$_1$} \\
+        \textbf{NIL prediction} & & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
         & NIL & 92.2 & 86.5 & 89.2 \\
         & $\neg$NIL & 58.5 & 72.0 & 64.5 \\
         \midrule
-        \textbf{NIL clustering} & & \textbf{Precison} & \textbf{Recall} & \textbf{F$_1$} \\
+        \textbf{NIL clustering} & & \textbf{Precision} & \textbf{Recall} & \textbf{F$_1$} \\
         & MUC & 71.9 & 83.9 & 77.4 \\
         & B$^{3}$ & 16.4 & 60.1 & 25.8 \\
         & CEAF$_{e}$ & 7.2 & 31.7 & 11.7 \\
