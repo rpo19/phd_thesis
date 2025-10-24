@@ -67,7 +67,7 @@ Y^I = \{(0, 1, \texttt{Person}), (5, 8, \texttt{Date})\}.
 \end{equation}
 The first tuple correspond to ``Barack Obama'' (\texttt{Person})---from token 0 to token 1, while the second to ``Aug 04, 1961'' (\texttt{Date})---from token 5 to token 8.
 
-Tipically, \ac{ner} systems are modeled as sequence labeling tasks~\cite{jm3,keraghel2024recentadvancesnamedentity,entityorientedsearch2018balog}, where---in the simplest case---each token $x_i$ in the input sequence $X$ is assigned a label $l_i \in L$, where $L$ is defined as follow:
+Typically, \ac{ner} systems are modeled as sequence labeling tasks~\cite{jm3,keraghel2024recentadvancesnamedentity,entityorientedsearch2018balog}, where---in the simplest case---each token $x_i$ in the input sequence $X$ is assigned a label $l_i \in L$, where $L$ is defined as follow:
 \begin{equation}
     T = \{\texttt{I-PER}, \texttt{I-LOC}, \texttt{I-ORG}, \texttt{O}\},
 \end{equation}
@@ -75,19 +75,19 @@ Tipically, \ac{ner} systems are modeled as sequence labeling tasks~\cite{jm3,ker
 \begin{equation}
 L^I = [\texttt{I-PER}, \texttt{I-PER}, \texttt{O}, \texttt{O}, \texttt{O}, \texttt{I-DATE}, \texttt{I-DATE}, \texttt{O}, \texttt{I-DATE}, \texttt{O}].
 \end{equation}
-The \emph{IO} scheme is the simplest labeling scheme for \ac{ner} and it cannot distinguish between consecutive entities of the same type~\cite{alshammari2021impact}. For example, consider the sentence ``Barack Obama Michelle Obama'' from the keywords of a newpaper, the IO scheme would label it as:
+The \emph{IO} scheme is the simplest labeling scheme for \ac{ner} and it cannot distinguish between consecutive entities of the same type~\cite{alshammari2021impact}. For example, consider the sentence ``Barack Obama Michelle Obama'' from the keywords of a newspaper, the IO scheme would label it as:
 \begin{equation}
 L^{II} = [\texttt{I-PER}, \texttt{I-PER}, \texttt{I-PER}, \texttt{I-PER}],
 \end{equation}
-thus failing to recognize the two distinct mentions of \texttt{Person}. More sofisticated and informative schemes exists, such as the \emph{BIO}~\cite{ramshaw-marcus-1995-text-bio-scheme}, which introduces the \texttt{B-}\textit{TYPE} label to indicate that the token is at the \texttt{B}eginning of an entity of type \texttt{TYPE}. WIth BIO, the above example would be labeled as:
+thus failing to recognize the two distinct mentions of \texttt{Person}. More sophisticated and informative schemes exists, such as the \emph{BIO}~\cite{ramshaw-marcus-1995-text-bio-scheme}, which introduces the \texttt{B-}\textit{TYPE} label to indicate that the token is at the \texttt{B}eginning of an entity of type \texttt{TYPE}. With BIO, the above example would be labeled as:
 \begin{equation}
 L^{II} = [\texttt{B-PER}, \texttt{I-PER}, \texttt{B-PER}, \texttt{I-PER}],
 \end{equation}
 thus correctly distinguishing two mentions of \texttt{Person}.
 Refer to \textcite{alshammari2021impact} for a comparison of different annotation schemes for \ac{ner} and their impact on model performance.
 
-Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches tipically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
-Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
+Early \ac{ner} systems were based on rule-based or manually engineered features, rules, or gazetteers. These approaches typically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
+Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden Markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
 With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---e.g., BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards} or BiLSTM-CNN-CRF~\cite{ma-hovy-2016-end}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
 
 
@@ -106,7 +106,7 @@ For further information on recent advancements, refer to \textcite{keraghel2024r
 \todo{order: definition, example figure, literature and advancements, "production" libraries eg spacy, tint,...}
 \todo{ner for italian (and legal)?}
 
-Finally, several ready-to-use libraries exist for \ac{ner}, such as \spacy~\cite{honnibal2020spacy}, Flair~\cite{akbik2019flair}, Stanza~\cite{qi2020stanza}, Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, and Transformers~\cite{wolf-etal-2020-transformers}. These libraries provide pre-trained models for multiple languages, and can be easily integrated into applications. For instance, \spacy offers efficient and accurate \ac{ner} models that can be fine-tuned on custom datasets~\cite{honnibal2020spacy}. Its models are based on a transition-based parser~\cite{AliEtAl2023UnintendedMemorization} that maps structured prediction tasks, such as \ac{ner} and dependency parsing, into a sequence of state transitions~\cite{lample-etal-2016-neural}. The underlying architecture combines multiple subnetworks. The tok2vec component encodes tokens into embeddings enriched with sub-word features (e.g., prefixes, suffixes, or shapes such as ``xxxXx'' for ``spaCy'') using a CNN-based encoder. A lower subnet then constructs representations for each token by combining these features, while an optional upper feed-forward network refines the representation to predict action scores. When the upper network is not used, the lower subnet directly produces the scores~\cite{AliEtAl2023UnintendedMemorization}. SpaCy also provide transformer-based models in which the tok2vec component is replaced by a transformer---for example the ``en\_core\_web\_trf'' model\footnote{\url{https://spacy.io/models/en\#en\_core\_web\_trf}}.
+Finally, several ready-to-use libraries exist for \ac{ner}, such as \spacy~\cite{honnibal2020spacy}, Flair~\cite{akbik2019flair}, Stanza~\cite{qi2020stanza}, Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, and Transformers~\cite{wolf-etal-2020-transformers}. These libraries provide pre-trained models for multiple languages, and can be easily integrated into applications. For instance, \spacy offers efficient and accurate \ac{ner} models that can be fine-tuned on custom datasets~\cite{honnibal2020spacy}. Its models are based on a transition-based parser~\cite{AliEtAl2023UnintendedMemorization} that maps structured prediction tasks, such as \ac{ner} and dependency parsing, into a sequence of state transitions~\cite{lample-etal-2016-neural}. The underlying architecture combines multiple subnetworks. The tok2vec component encodes tokens into embeddings enriched with sub-word features (e.g., prefixes, suffixes, or shapes such as ``xxxXx'' for ``spaCy'') using a CNN-based encoder. A lower subnetwork then constructs representations for each token by combining these features, while an optional upper feed-forward network refines the representation to predict action scores. When the upper network is not used, the lower subnetwork directly produces the scores~\cite{AliEtAl2023UnintendedMemorization}. SpaCy also provide transformer-based models in which the tok2vec component is replaced by a transformer---for example the ``en\_core\_web\_trf'' model\footnote{\url{https://spacy.io/models/en\#en\_core\_web\_trf}}.
 
 \todo{how to perform ner with BERT, training objective, eval metrics}
 
