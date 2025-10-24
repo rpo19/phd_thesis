@@ -41,6 +41,12 @@ clean:
 		-name "*.xdv" \
 	\) -delete
 
+spell:
+	@if [ -z "$(FILE)" ]; then \
+	    echo "Usage: make spell FILE=yourfile.tex"; exit 1; \
+	fi
+	aspell --mode=tex --lang=en_US check $(FILE)
+
 # Remove everything including the PDF
 distclean: clean
 	find . -type f -name "*.pdf" -delete

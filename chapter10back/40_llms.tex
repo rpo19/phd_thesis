@@ -29,7 +29,7 @@ Recently, the introduction of transformer architectures~\cite{vaswani_transforme
 % formalization
 We speak about \emph{tokens} instead of words because modern \ac{lm} do not operate at the word level but rather on subword units, which can be whole words, word parts, symbols, or characters~\cite{comprensive_overview_llm_2025}. The use of a token-based vocabulary, instead of a word-based or character-based one, derives from the need to balance vocabulary size and coverage. Word-based vocabularies suffer from the issue of out-of-vocabulary words. Character-based vocabularies, on the other hand, can lead to longer sequences and increased computational costs~\cite{sun-etal-2023-characters}. Token-based tokenizers, such as Byte-Pair Encoding (BPE)~\cite{sennrich-etal-2016-neural}, can represent frequent words using a single token, still allowing the representation of rare or novel words by combining multiple tokens.\todo{verify correctness}
 
-This definition of \ac{lm} is in-line with \emph{casual language modeling (CLM)}, that predicts the next token given the previous ones~\cite{jain-etal-2023-cl-for-causal-lm,jm3}, and these models are also reffered to as \emph{autoregressive models}~\cite{jm3}, i.e. ``models regressing the outcomes on previous values of the same time series''~\cite{regis2022_autoregressive}, where in \ac{nlp} we have a sequence of tokens instead of a time series.
+This definition of \ac{lm} is in-line with \emph{casual language modeling (CLM)}, that predicts the next token given the previous ones~\cite{jain-etal-2023-cl-for-causal-lm,jm3}, and these models are also referred to as \emph{autoregressive models}~\cite{jm3}, i.e. ``models regressing the outcomes on previous values of the same time series''~\cite{regis2022_autoregressive}, where in \ac{nlp} we have a sequence of tokens instead of a time series.
 \todo{causal lm objective and dl training and formulation}
 
 \subsubsection{Causal Language Modeling}
@@ -68,20 +68,20 @@ The training loss, corresponding to maximum likelihood estimation over the maske
 While \acp{clm} are suited for text generation, \acp{mlm} are typically used for sequence labeling or token classification tasks, taking advantage of the context from both sides~\cite{jm3}. Examples of such tasks include \acf{pos} tagging, where each token is assigned a part-of-speech category such as \texttt{Noun}, \texttt{Verb}, or \texttt{Adj}, and \acf{ner}---described in \todo{sect ner}---where each token is assigned a label indicating whether it is part of a named entity and its type, such as \texttt{Person}, \texttt{Location}, or \texttt{Organization}~\cite{jm3}.
 
 \subsubsection{Transformers}
-\emph{Transformers} have been introduced in 2017 and evaluated on the machine translation, a language modeling task, demonstrating superior performance and higher parallization at training-time compared to previous architectures~\cite{vaswani_transformers_2017}.
+\emph{Transformers} have been introduced in 2017 and evaluated on the machine translation, a language modeling task, demonstrating superior performance and higher parallelization at training-time compared to previous architectures~\cite{vaswani_transformers_2017}.
 \todo{say why machine translation is language modeling}
-The transformer uses an encoder-decoder architecture and it is cabable of modeling sequences of tokens relying on the \emph{attention mechanism}~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
-\todo{briefly introduce representation learning, word embeddings and maybe knowledge grah embeddings. jm3 or repr learn 4 nlp}
+The transformer uses an encoder-decoder architecture and it is capable of modeling sequences of tokens relying on the \emph{attention mechanism}~\cite{vaswani_transformers_2017}.\todo{describe encoder decoder, attention and self attention}.
+\todo{briefly introduce representation learning, word embeddings and maybe knowledge graph embeddings. jm3 or repr learn 4 nlp}
 An \emph{encoder} processes tokens as input and transforms each into a vector representation, commonly referred to as an embedding~\cite{jm3}.
 % To place this concept in context, it can be connected to the broader field of \emph{representation learning}, which---with respect to text---aims at automatically learn useful representations of words, sentences, or documents~\cite{jm3}.
 
 \paragraph{Vector Semantics and Representation Learning}
 To place the concept of \emph{embedding} in context, it can be connected to the fields of \emph{representation learning} and \emph{vector semantics}.
 \emph{Representation learning} provides methods for learning useful representations from data, including text (words, sentences, documents)~\cite{bengio_representation_learning_2013}.\todo{ragiona se togliere repr learning}
-With respect to \emph{vector semantics}, its origin can be traced to the 1950s with the \emph{distributional hypothesis}~\cite{Harris01081954}---i.e., words occurring in similar contexts tend to have similar meanings~\cite{jm3}---and the idea of using points in a three-dimentional space for representing words connotation~\cite{osgood1957}. Words like ``car'' and ``automobile'' are synonyms, but their \say{similarity} cannot be captured via string similarity (e.g., edit distance~\cite{jm3}). Also ``cats'' and ``dogs'', or ``coffee'' and ``cup'' can be considered similar or related.\todo{paraphrase the examples}
-The intuition of vector semantics is to assign each word an \emph{embedding}, i.e., a vector for representing a word in a multi-dimentional semantic space, where similarities between embeddings would reflect the similarities of words' meanings~\cite{jm3}.
+With respect to \emph{vector semantics}, its origin can be traced to the 1950s with the \emph{distributional hypothesis}~\cite{Harris01081954}---i.e., words occurring in similar contexts tend to have similar meanings~\cite{jm3}---and the idea of using points in a three-dimensional space for representing words connotation~\cite{osgood1957}. Words like ``car'' and ``automobile'' are synonyms, but their \say{similarity} cannot be captured via string similarity (e.g., edit distance~\cite{jm3}). Also ``cats'' and ``dogs'', or ``coffee'' and ``cup'' can be considered similar or related.\todo{paraphrase the examples}
+The intuition of vector semantics is to assign each word an \emph{embedding}, i.e., a vector for representing a word in a multi-dimensional semantic space, where similarities between embeddings would reflect the similarities of words' meanings~\cite{jm3}.
 
-Different techniques have been proposed for obtaining word embeddings. In 2013, \textcite{mikolov2013} introduced \emph{word2vec}, which, in the case of the CBOW (Continuous Bag of Words) architecture, learns dense semantic embeddings by training a model to predict a target word from its surrounding context~\cite{mikolov2013}. \emph{Dense} embeddings refer to low-dimentional vectors, in constrast with very long \emph{sparse} vectors, such as the ones one-hot vectors, whose size corresponds to the length of the entire vocabulary (often between 10,000 and 50,000 words)~\cite{jm3}.
+Different techniques have been proposed for obtaining word embeddings. In 2013, \textcite{mikolov2013} introduced \emph{word2vec}, which, in the case of the CBOW (Continuous Bag of Words) architecture, learns dense semantic embeddings by training a model to predict a target word from its surrounding context~\cite{mikolov2013}. \emph{Dense} embeddings refer to low-dimensional vectors, in contrast with very long \emph{sparse} vectors, such as the ones one-hot vectors, whose size corresponds to the length of the entire vocabulary (often between 10,000 and 50,000 words)~\cite{jm3}.
 %
 A standard illustration of the utility of word embeddings is provided by the following analogy:
 \begin{equation}
@@ -92,7 +92,7 @@ Subtracting the embedding of ``man'' from ``king'', then adding ``woman'' produc
 However, assigning a single embedding to each word in the vocabulary is insufficient for polysemous words, such as ``mouse'' or ``bank'', which have multiple distinct senses. For instance, ``mouse'' can refer either to the small rodent or to the device used to control a computer, depending on the context~\cite{jm3}.
 \todo{this is why people introduced contextual embeddings and these embedding are indeed often obtained with transformers. then go on with transformers encoders that use the context weighted by attention to enrich the embedding of the tokens layer by layer}
 
-On the other hand, transformers are able to compute \emph{contextual embeddings}, i.e., dense vectors representing the meaning of a token in the context~\cite{jm3}.\todo{piture from jm3 fig 9.6}
+On the other hand, transformers are able to compute \emph{contextual embeddings}, i.e., dense vectors representing the meaning of a token in the context~\cite{jm3}.\todo{picture from jm3 fig 9.6}
 %
 \begin{figure}[h!]
     \centering
@@ -132,32 +132,32 @@ The input tokens in English are provided to the encoder (bottom left) and the de
 
 \todo{speak of encoder-only and decoder-only. who is better for what}
 
-Both encoder and decoder receive as input an embedding for each token and produce another embedding as output. Formally, let $X \in \mathbb{R}^{N \times d}$ be the input matrix of shape $N \times d$. After processing $X$ the first encoder produces $X^i \in \mathbb{R}^{N \times d}$, a matrix of the same shape of $X$. This process is reapeated for every encoder block, progressively enriching the tokens' embeddings with contextual information weighted by the attention mechanism. 
+Both encoder and decoder receive as input an embedding for each token and produce another embedding as output. Formally, let $X \in \mathbb{R}^{N \times d}$ be the input matrix of shape $N \times d$. After processing $X$ the first encoder produces $X^i \in \mathbb{R}^{N \times d}$, a matrix of the same shape of $X$. This process is repeated for every encoder block, progressively enriching the tokens' embeddings with contextual information weighted by the attention mechanism. 
 
 As visible in \Cref{fig:transformer_all}(a), both the encoder and decoder modules include a \emph{self-attention} layer and the decoder also has a \emph{cross-attention} layer.\todo{valuta se muovere dopo e aggiungi l'idea che i layer man mano arricchiscono le rappresentazioni con il contesto. parla di cross attention e magari cita bengio}
 Self-attention can be considered as a mechanism for constructing contextual representations of a token's meaning by focusing on and combining information from nearby tokens~\cite{jm3}. Indeed, tokens in a sequence attend to the same sequence.
-The cross-attention, instead, is perfomed between different sequences. For example in machine translation, the decoder, while generating in the target language, selects which parts of the source sentence (in the source language) to pay attention to~\cite{bahdanau2015neural}. In the transformer~\cite{vaswani_transformers_2017}, each decoder layer attends to the final representations from the encoder stack.
+The cross-attention, instead, is performed between different sequences. For example in machine translation, the decoder, while generating in the target language, selects which parts of the source sentence (in the source language) to pay attention to~\cite{bahdanau2015neural}. In the transformer~\cite{vaswani_transformers_2017}, each decoder layer attends to the final representations from the encoder stack.
 
 For further details of the attention mechanism and its implementation, refer to \textcite{jm3}.\todo{scegli dove metterlo e fallo anche con gli altri libri (balog)}
 
 The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised settings on translational datasets~\cite{vaswani_transformers_2017}.\todo{vaswani but maybe something else}
 
-Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only}, whose architecture is schetched in \Cref{fig:transformer_all}(b), is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations.\todo{due parole su document retrieval. controlla architettura dei moderni modelli di embedding}
+Besides the encoder-decoder architecture for machine translation, two relevant modifications are the \emph{encoder-only} and the \emph{decoder-only} transformers. The \emph{encoder-only}, whose architecture is sketched in \Cref{fig:transformer_all}(b), is especially used for embedding or sequence classification tasks, such as document retrieval with dense vector and named entity recognition~\cite{jm3,devlin-etal-2019-bert}, and it is trained with \ac{mlm} for learning to create useful token representations.\todo{due parole su document retrieval. controlla architettura dei moderni modelli di embedding}
 
 \todo{decoder only}
 \emph{Decoder-only} models can be used used for language modeling\todo{ensure lm refers to clm}, as visible in \Cref{fig:transformer_all}(c), but they use the same vocabulary for input and output tokens, differently from encoder-decoder models that are used for machine translation or even speech recognition---where the input represents speech~\cite{jm3}.
 
-Today, the most popular architecture for \acp{llm} is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demostrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}.
+Today, the most popular architecture for \acp{llm} is the decoder-only~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency,qorib-etal-2024-decoder}, although recent work demonstrates interest in the potential of the encoder-decoder architecture~\cite{zhang2025encoderdecodergemmaimprovingqualityefficiency}.
 
 A core component of the success of transformers and, is \emph{transfer learning}, i.e., ``the transfer of knowledge from a related task that has already been learned''~\cite{torrey2010transfer}, which is often achieved via pre-training on huge corpora with self-supervised objectives, such as \ac{mlm} or \ac{clm}, that do not require human labeling, to subsequently fine-tune the models parameters to downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5}.
 \textcite{devlin-etal-2019-bert}, \textcite{radford2018improving}, indeed, demonstrate that rich pre-training on generic language tasks, such as \acl{mlm} and \ac{clm}, is useful also for downstream tasks, e.g., \ac{ner} and \ac{qa}. Furthermore, \textcite{Raffel2020t5} and \textcite{radford2019unsupervised_learners}, respectively, have achieved state-of-the-art performance on several language understanding tasks by mapping them in a text-to-text format, and have demonstrated the ability of \acp{lm} in a zero-shot setting. In this context, \emph{zero-shot} refers to using a model for a task for which it has not fine-tuned for, by providing a natural language description of the task~\cite{browngpt3}.
 
 Later, by scaling the number of model parameters, \acfp{llm}, such as GPT-3~\cite{browngpt3} counting 175 billions of parameters, researchers have been able to achieve surprising results in zero-shot and few-shot---like zero-shot but also providing few natural language examples of the task---settings, in some cases even competitive with state-of-the-art fine-tuning approaches~\cite{browngpt3}.
-These improvements enabled user to \emph{prompt} or instruct language models to do specific task, eventually providing one-shot or few-shot examples to better take advantage of their \emph{\acf{icl}} capability~\cite{jm3}. A \emph{prompt}, indeed, is a textual istruction given the user gives to a model for accomplishing a specific task. \emph{\Ac{icl}} refers to learning a task or improving the performance on that task without updating model parameters, e.g., with few-shot prompting~\cite{jm3}.
+These improvements enabled user to \emph{prompt} or instruct language models to do specific task, eventually providing one-shot or few-shot examples to better take advantage of their \emph{\acf{icl}} capability~\cite{jm3}. A \emph{prompt}, indeed, is a textual instruction given the user gives to a model for accomplishing a specific task. \emph{\Ac{icl}} refers to learning a task or improving the performance on that task without updating model parameters, e.g., with few-shot prompting~\cite{jm3}.
 
-However, increasing models' size in terms of number of parameters have not been enough to improve their behaviour at following users' instruction~\cite{instruct_gpt_2022}. Models, for instance, may generate unhelpful, toxic, or hallucinated~\cite{maynez-etal-2020-faithfulness-hallucination,ji_etal-2023-survey-hallucination}---i.e., incoherent, nonsensical, or unfaithful to the provided input---content. For this reason, techniques to \emph{align} models to user's intent have been applied to \acp{llm}, including some based on supervised fine-tuning with curated examples~\cite{zhou2023lima} and on reinforcement learning, such as \emph{\acf{rlhf}}~\cite{instruct_gpt_2022}.
+However, increasing models' size in terms of number of parameters have not been enough to improve their behavior at following users' instruction~\cite{instruct_gpt_2022}. Models, for instance, may generate unhelpful, toxic, or hallucinated~\cite{maynez-etal-2020-faithfulness-hallucination,ji_etal-2023-survey-hallucination}---i.e., incoherent, nonsensical, or unfaithful to the provided input---content. For this reason, techniques to \emph{align} models to user's intent have been applied to \acp{llm}, including some based on supervised fine-tuning with curated examples~\cite{zhou2023lima} and on reinforcement learning, such as \emph{\acf{rlhf}}~\cite{instruct_gpt_2022}.
 Also methods for improving reasoning in \acp{llm} have been studied. \Acf{cot}~\cite{wei2022chainofthought} prompting consists in decomposing a complicated reasoning task in multiple intermediate steps, which are solved to reach the final solution. More recently, so-called \emph{\acfp{lrm}}~\cite{tie2025surveyposttraininglargelanguage} have been trained to generate long \aclp{cot}~\cite{openai2024openaio1card,deepseekai2025deepseekr1incentivizingreasoningcapability}.
-\todo{improve resononing. se gcr}
+\todo{improve reasoning. se gcr}
 \todo{maybe add some definitions}
 
 
@@ -178,7 +178,7 @@ For a broader and more detailed perspective on the history of \acp{llm} refer to
 \todo{icl, rl on human feedback, reasoning models}
 
 
-\todo{transformers: encoder decoder attention self-attention. in-context learning. pretraining and finetuning transfer learning. rl tuning on human feedback. reasoning models}
+\todo{transformers: encoder decoder attention self-attention. in-context learning. pretraining and fine-tuning transfer learning. rl tuning on human feedback. reasoning models}
 
 \todo{large language models}
 
@@ -187,23 +187,23 @@ For a broader and more detailed perspective on the history of \acp{llm} refer to
 \todo{formalization, transformers, llms, bert}
 
 
-\todo{Spacy architectures?. no just introduce trasformers abstractly. then spacy and others in IE}
+\todo{Spacy architectures?. no just introduce transformers abstractly. then spacy and others in IE}
 
 \subsection{Large Language Models and Knowledge Bases}
 \label{sec:llms_vs_kbs}
 \todo{blend together with llms}
 \todo{comparison llms and kbs. look for the paper. lms as kbs. one may think that kbs are useless now...}
 \todo{also speak of the big amount of knowledge of llms and of the research to update that knowledge. move at the beginning. deepseek r1 size. }
-Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_report_2023,gpt_lm_few_shot_learners_2020} and Llama~\cite{grattafiori2024llama3herdmodels}, have demonstrated remarkable capabilities in understanding natural language, enabling the application of \ac{nlp} tasks without the need for task-specific finetuning~\cite{gpt_lm_few_shot_learners_2020,instruct_gpt_2022,grattafiori2024llama3herdmodels}.
+Modern large language models (\acsp{llm}), such as GPT~\cite{gpt4_technical_report_2023,gpt_lm_few_shot_learners_2020} and Llama~\cite{grattafiori2024llama3herdmodels}, have demonstrated remarkable capabilities in understanding natural language, enabling the application of \ac{nlp} tasks without the need for task-specific fine-tuning~\cite{gpt_lm_few_shot_learners_2020,instruct_gpt_2022,grattafiori2024llama3herdmodels}.
 There are attempts to use them for complex tasks, including scientific discovery~\cite{ai4science2023impactlargelanguagemodels,nathani2025mlgymnewframeworkbenchmark} and intelligence analysis~\cite{fabula_intelligence_llm_2024}\todo{maybe be good to add some legal attempts to replace judges or lawyers}.
-Futhermore, \acl{llm} retain considerable factual knowledge from their pretraining corpora~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, and state-of-the-art models are trained on trillions of tokens; DeepSeek-V3 counts 671 billion parameters and is trained on 14.8 trillion tokens~\cite{deepseekai2025deepseekv3technicalreport}.
+Furthermore, \acl{llm} retain considerable factual knowledge from their pretraining corpora~\cite{chang_how_do_llm_acquire_factual_knowledge_2024,physics_of_lm_3.1_2024,petroni-etal-2019-language-models-kbs,roberts-etal-2020-how-much-kg-in-llm}, and state-of-the-art models are trained on trillions of tokens; DeepSeek-V3 counts 671 billion parameters and is trained on 14.8 trillion tokens~\cite{deepseekai2025deepseekv3technicalreport}.
 
-One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have focused the knowledge of \aclp{llm} and how they compare to \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language}, with the survey \textcite{kg_llm_roadmap_2024} defining a roadmap for their sinergy.
+One may wonder why \acp{kb} are still relevant in the era of \acp{llm}. Different studies have focused the knowledge of \aclp{llm} and how they compare to \aclp{kb}~\cite{petroni-etal-2019-language-models-kbs,heinzerling-inui-2021-language}, with the survey \textcite{kg_llm_roadmap_2024} defining a roadmap for their synergy.
 
 % llm cons editing
 While \acp{llm} possess broad knowledge, they also suffer from the incompleteness problem, as their number of parameters is limited and information is constantly evolving. Furthermore, their parametric knowledge (i.e., the knowledge stored in the model parameters) is difficult to update. There are techniques to update models' knowledge without re-train~\cite{yao-etal-2023-editing,kg_editing_survey_2024}, but with the risk of side effects, such as knowledge inconsistencies~\cite{li2024unveiling,cohen-etal-2024-rippleeffects}, with \textcite{cohen-etal-2024-rippleeffects} obtaining more consistent results with an in-context editing baseline, that adds the edited information in prompt.
 % llm pro easy to learn from unstructured without humans
-However, whilst \ac{kb} updates require structured facts to be inserted, often by humans~\cite{}\todo{verify humans are required}, \acp{llm} can extract knownledge from unstructured data during the training process, benefiting from data diversity (e.g., paraphrasing)~\cite{physics_of_lm_3.1_2024}.
+However, whilst \ac{kb} updates require structured facts to be inserted, often by humans~\cite{}\todo{verify humans are required}, \acp{llm} can extract knowledge from unstructured data during the training process, benefiting from data diversity (e.g., paraphrasing)~\cite{physics_of_lm_3.1_2024}.
 % llm cons hallucinations
 Nevertheless, \acp{llm} can generate unfaithful information, known as \emph{hallucination}~\cite{ji_etal-2023-survey-hallucination}.
 % kg pro answering global questions like counts, intersections
@@ -223,9 +223,9 @@ Advantages of Kbs:
 
 
 or \todo{kg roadmap. works that try to inject kb knowledge into llms,... or work that allow llms to query kbs? kb-rag? need also to detail rag}
-\todo{final thought: kbs and llms are complementary and it is worth to work for their sinergy}
-\todo{show that some paper add structure to document collections: see graphrah and co}
-\todo{allucinations. llm really know what they know? find paper}
+\todo{final thought: kbs and llms are complementary and it is worth to work for their synergy}
+\todo{show that some paper add structure to document collections: see graphrag and co}
+\todo{hallucinations. llm really know what they know? find paper}
 
 % in terms of knowledge
 \Aclp{llm} posses broad knowledge as they scale is already over millions of parameters and are trained on massive corpora~\cite{}. But similarly to \acp{kb} they are not omniscient, since information is constantly evolving\todo{see above}.
@@ -242,9 +242,9 @@ However, processing large volumes of text with \acp{llm} remains challenging\cit
 Recent advances have extended the context window of \acp{llm} to millions of tokens~\cite{geminiteam2024gemini15unlockingmultimodal,kuratov2024searchneedles11mhaystack}, while other approaches aim to reduce the quadratic computational cost of full attention to linear-time complexity with respect to the number of input tokens~\cite{bigbird_2020,beltagy2020longformerlongdocumenttransformer,ding2023longnetscalingtransformers1000000000}.
 But including very large texts in the context window of an \ac{llm} implies challenges such as the ``lost in the middle'' problem~\cite{liu-etal-2024-lost}---where relevant information located far from the beginning or end of a long context may be overlooked by the model---and, even if the complexity is linear, the computational cost may remain significant.
 % rag and external memory
-\todo{rag external memory. see also gemini 1.5 paper}
-For this reason, recent work have proposed the usage of entities and knowledge graph combined with \acp{llm} to improve their performance on answering complex questions~\cite{edge2025localglobalgraphrag,hybridrag_kg_vector_rag_2024,Xu_2024_rag_kg}.\todo{read better the papers and find others. also look at matteo talk for ailc cattolica}
-For instance, \textcite{edge2025localglobalgraphrag} automatically creates a \acl{kg} from a collection of documents by extracting entities and relationships, it detects communities organizin them in hierarchical levels and builds a summary for each community, allowing an \ac{llm} to answer global questions, such as ``What are the key topics represented in the dataset?''.
+\todo{rag external memory. see also Gemini 1.5 paper}
+For this reason, recent work have proposed the usage of entities and knowledge graph combined with \acp{llm} to improve their performance on answering complex questions~\cite{edge2025localglobalgraphrag,hybridrag_kg_vector_rag_2024,Xu_2024_rag_kg}.\todo{read better the papers and find others. also look at Matteo talk for ailc cattolica}
+For instance, \textcite{edge2025localglobalgraphrag} automatically creates a \acl{kg} from a collection of documents by extracting entities and relationships, it detects communities organizing them in hierarchical levels and builds a summary for each community, allowing an \ac{llm} to answer global questions, such as ``What are the key topics represented in the dataset?''.
 \todo{other usage of entities are... see matteo talk. should be good something for the retrieval}
 Furthermore, semantic search capabilities, such as faceted search, can be useful tools not just for humans but also for agentic \acp{llm}~\cite{thoppilan2022lamdalanguagemodelsdialog,parisi2022talmtoolaugmentedlanguage,schick2023toolformerlanguagemodelsteach,yao2023react,gao-etal-2025-efficient}\todo{prendi da refactx qualcosa}, which can leverage them to access relevant information more effectively.
 
@@ -259,5 +259,5 @@ So \acl{sta} is still useful.\todo{remove}
 % \section{Artificial Intelligence}
 % What is it, how the term is used for and maybe a definition for this thesis
 
-Before desribing the literature of \ac{ie}\todo{not here but in the chapters} and related tasks, we first introduce the specific domains that motivate this work.
+Before describing the literature of \ac{ie}\todo{not here but in the chapters} and related tasks, we first introduce the specific domains that motivate this work.
 \todo{improve. now that we know about incompleteness: information extraction? no better speak about the domains and them IE with examples on specific domains}

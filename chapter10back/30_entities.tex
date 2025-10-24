@@ -3,18 +3,18 @@
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018balog}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
-In practise, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
+In practice, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
 This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018balog}. Modern natural language toolkits, such as \spacy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \textcite{entityorientedsearch2018balog} definition:
 \begin{definition}[Entity]
 An \emph{entity} is a uniquely identifiable object, thing, or concept. 
 It is described through a set of \emph{entity properties}, always including 
 at least one unique identifier and one name (which may in some cases coincide). 
-Additinal entity properties include types, attributes, and 
+Additional entity properties include types, attributes, and 
 relationships to other entities or concepts.
 \end{definition}
 
 For example, consider the entity \textsc{Barack Obama}. 
-A possible unique identifier is ``Barack Obama (44th US president)'', which can serve also as a name, alongwith ``Barack Obama.'' 
+A possible unique identifier is ``Barack Obama (44th US president)'', which can serve also as a name, along with ``Barack Obama.'' 
 The entity belongs to the types \texttt{Person} and \texttt{Politician}. 
 Its attributes include the full birth name ``Barack Hussein Obama II'' and the date of birth ``Aug 4, 1961''. 
 Relationships connect this entity to other entities such as its birthplace, \textsc{Honolulu}, and its spouse, \textsc{Michelle Obama}.
@@ -29,12 +29,12 @@ Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, w
 
 While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
-The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independenlty from the \ac{rdf} syntax, according to the following definition.
+The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independently from the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
     A fact is an atomic statement, a single and indivisible assertion of a specific piece of information about the world, typically describing a property of an entity or a relationship between entities.
 \end{definition}
 Example of facts are ``Barack Obama was born on Aug 04, 1961.'' or ``Barack Obama was born in Honolulu.''
-Instead, in \ac{rdf} resources are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually IRIs (Internationalized Resource Identifier~\cite{durst2005iri}---sequences of unicode characters that uniquely identify resources), while the object is usually either a IRI or a literal (used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag)~\cite{klyne2004rdf}.
+Instead, in \ac{rdf} resources are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually IRIs (Internationalized Resource Identifier~\cite{durst2005iri}---sequences of Unicode characters that uniquely identify resources), while the object is usually either a IRI or a literal (used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag)~\cite{klyne2004rdf}.
 %
 The previous facts appear as follows in \ac{rdf}:
 %
@@ -79,7 +79,7 @@ dbr:Barack_Obama
 
 Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
 %
-\todo{intrduce facts and triples and then move to the kb definition}
+\todo{introduce facts and triples and then move to the kb definition}
 % kb definition knowledge base definition
 \todo{add operation that make a kb. querying, updating, reasoning,...?}
 \begin{definition}[\Acl{kb}]
@@ -107,7 +107,7 @@ Wikidata is a free collaborative project~\cite{vrandevcic2014wikidata} containin
 
 The DBpedia \ac{kb} derives from the extraction of structured, multilingual knowledge from Wikipedia and it is accessible using \ac{sw} and linked data technologies~\cite{lehmann2015dbpedia}. In 2015 it contained 1.46 billion facts~\cite{lehmann2015dbpedia}.
 
-YAGO, since its version 4~\cite{yago4_2020}, aims to address the weaknesses of Wikidata establishing certain guarantees for its data quality, although achieving these guarantees required some manual intervention~\cite{yago4.5_2024}. In its latest reslease (4.5), it combines Wikidata instance data with the ontology Schema.org, additionally improved by the Wikidata taxonomy~\cite{yago4.5_2024}.
+YAGO, since its version 4~\cite{yago4_2020}, aims to address the weaknesses of Wikidata establishing certain guarantees for its data quality, although achieving these guarantees required some manual intervention~\cite{yago4.5_2024}. In its latest release (4.5), it combines Wikidata instance data with the ontology Schema.org, additionally improved by the Wikidata taxonomy~\cite{yago4.5_2024}.
 
 Freebase was an open and collaborative knowledge base publicly launched in 2007. It was used as the open core of the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}, until it was closed and migrated to Wikidata~\cite{from_freebase_to_wikidata}.
 More than 3 billion facts and almost 50 million entities were stored in Freebase as of 2015~\cite{from_freebase_to_wikidata}.
@@ -116,7 +116,7 @@ More than 3 billion facts and almost 50 million entities were stored in Freebase
 
 \subsection{Structured or Unstructured? The Web versus Knowledge Bases}
 \label{sec:incompleteness}
-\todo{can be expanded and called properties of Kbs}
+\todo{can be expanded and called properties of KBs}
 %
 Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018balog}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
 This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (see \todo{})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
@@ -132,7 +132,7 @@ While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wi
 
 
 % \subsection{Information Extraction and Knowledge Base Population}
-\todo{not sure where to put this. it is like combining kbs and the web}
+\todo{not sure where to put this. it is like combining KBs and the web}
 \todo{maybe introduce a bit nlp with the objective and computational linguistics with the objective of capturing the meaning of text}
 
 As later described in \Cref{sec:information_extraction}, researchers in \acl{nlp} have developed methods to automatically extract entities, relationships, and attributes from unstructured text~\cite{entityorientedsearch2018balog}. These methods can be used to populate and extend existing \acp{kb}, a task known as \emph{\acl{kbp}}~\cite{entityorientedsearch2018balog}.
