@@ -174,29 +174,43 @@ journal = {Journal of Statistical Mechanics: Theory and Experiment},
   year          = {2024},
   issn          = {0267-3649},
   doi           = {https://doi.org/10.1016/j.clsr.2023.105904},
-  kurl          = {https://www.sciencedirect.com/science/article/pii/S0267364923001140},
+  url          = {https://www.sciencedirect.com/science/article/pii/S0267364923001140},
   author        = {Valerio Bellandi and Christian Bernasconi and Fausto Lodi and Matteo Palmonari and Riccardo Pozzi and Marco Ripamonti and Stefano Siccardi},
-  keywords      = {Legal knowledge extraction, Semantic search, Named Entity Recognition, Zero-shot learning}
+  keywords      = {Legal knowledge extraction, Semantic search, Named Entity Recognition, Zero-shot learning},
+  note          = {All authors contributed equally}
 }
 @inproceedings{aixia_2023,
   author        = "Pozzi, Riccardo and Rubini, Riccardo and Bernasconi, Christian and Palmonari, Matteo",
-  keditor       = "Basili, Roberto and Lembo, Domenico and Limongelli, Carla and Orlandini, Andrea",
+  editor       = "Basili, Roberto and Lembo, Domenico and Limongelli, Carla and Orlandini, Andrea",
   title         = "Named Entity Recognition and Linking for Entity Extraction from Italian Civil Judgements",
   booktitle     = "AIxIA 2023 -- Advances in Artificial Intelligence",
   year          = "2023",
   publisher     = "Springer Nature Switzerland",
   address       = "Cham",
   pages         = "187--201",
-  isbn          = "978-3-031-47546-7"
+  isbn          = "978-3-031-47546-7",
+  doi={10.1007/978-3-031-47546-7_13},
+  url={https://link.springer.com/content/pdf/10.1007/978-3-031-47546-7.pdf}
 }
+
 @inproceedings{ijckg2022,
-  author        = {Pozzi, Riccardo and Moiraghi, Federico and Lodi, Fausto and Palmonari, Matteo},
-  title         = {Evaluation of Incremental Entity Extraction with Background Knowledge and Entity Linking},
-  year          = {2023},
-  isbn          = {9781450399876},
-  publisher     = {Association for Computing Machinery},
-  series        = {IJCKG '22}
+author = {Pozzi, Riccardo and Moiraghi, Federico and Lodi, Fausto and Palmonari, Matteo},
+title = {Evaluation of Incremental Entity Extraction with Background Knowledge and Entity Linking},
+year = {2023},
+isbn = {9781450399876},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3579051.3579063},
+doi = {10.1145/3579051.3579063},
+abstract = {Named entity extraction is a crucial task to support the population of Knowledge Bases (KBs) from documents written in natural language. However, in many application domains, these documents must be collected and processed incrementally to update the KB as more data are ingested. In some cases, quality concerns may even require human validation mechanisms along the process. While very recent work in the NLP community has discussed the importance of evaluating and benchmarking continuous entity extraction, it has proposed methods and datasets that avoid Named Entity Linking (NEL) as a component of the extraction process. In this paper, we advocate for batch-based incremental entity extraction methods that can exploit NEL with a background KB, detect mentions of entities that are not present in the KB yet (NIL mentions), and update the KB with the novel entities. Based on this assumption, we present a methodology to evaluate NEL-based incremental entity extraction, which can be applied to a “static” dataset for evaluating NEL into a dataset for evaluating incremental entity extraction. We apply this methodology to an existing benchmark for evaluating NEL algorithms, and evaluate an incremental extraction pipeline that orchestrates different strong state-of-the-art and baseline algorithms for the tasks involved in the extraction process, namely, NEL, NIL prediction, and NIL clustering. In presenting our experiments, we demonstrate the increased difficulty of the information extraction task in incremental settings and discuss the strengths of the available solutions as well as open challenges.},
+booktitle = {Proceedings of the 11th International Joint Conference on Knowledge Graphs},
+pages = {30–38},
+numpages = {9},
+keywords = {Named Entity Linking, Knowledge Base Population, Incremental Entity Extraction, Entity Extraction},
+location = {Hangzhou, China},
+series = {IJCKG '22}
 }
+
 
 @inproceedings{mammotab,
   author={Mattia Marzocchi and Marco Cremaschi and Riccardo Pozzi and Roberto Avogadro and Matteo Palmonari},
@@ -328,21 +342,44 @@ journal = {Journal of Statistical Mechanics: Theory and Experiment},
   year          = "2025",
   publisher     = "Springer Nature Singapore",
   pages         = "427--442",
-  isbn          = "978-981-96-0567-5"
-}
-@inproceedings{Agazzi2025DAVE,
-  author        = {Ruben Agazzi and Renzo Alva Principe and Riccardo Pozzi and Marco Ripamonti and Matteo Palmonari},
-  title         = {DAVE: A Framework for Assisted Analysis of Document Collections in Knowledge-Intensive Domains},
-  year          = {2025},
-  note          = {(Accepted)}
+  isbn          = "978-981-96-0567-5",
+  doi={10.1007/978-981-96-0567-5_30},
+  url={https://link.springer.com/content/pdf/10.1007/978-981-96-0567-5.pdf},
+  editor="Barhamgi, Mahmoud
+  and Wang, Hua
+  and Wang, Xin",
+  eprint        = {2509.26487},
+  eprinttype    = {arxiv},
+  eprintclass   = {cs.AI}
 }
 
-@article{Pozzi2025ReFactX,
-  author        = {Riccardo Pozzi and Matteo Palmonari and Andrea Coletta and Luigi Bellomarini and Jens Lehmann and Sahar Vahdati},
-  title         = {ReFactX: Scalable Reasoning with Reliable Facts via Constrained Generation},
-  year          = {2025},
-  note          = {(Submitted)}
+@inproceedings{Agazzi2025DAVE,
+  title     = {DAVE: A Framework for Assisted Analysis of Document Collections in Knowledge-Intensive Domains},
+  author    = {Agazzi, Ruben and Alva Principe, Renzo and Pozzi, Riccardo and Ripamonti, Marco and Palmonari, Matteo},
+  booktitle = {Proceedings of the Thirty-Fourth International Joint Conference on
+               Artificial Intelligence, {IJCAI-25}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},
+  editor    = {James Kwok},
+  pages     = {10984--10988},
+  year      = {2025},
+  month     = {8},
+  note      = {Demo Track},
+  doi       = {10.24963/ijcai.2025/1246},
+  url       = {https://doi.org/10.24963/ijcai.2025/1246},
 }
+
+@inproceedings{Pozzi2025ReFactX,
+  author    = {Riccardo Pozzi and Matteo Palmonari and Andrea Coletta
+               and Luigi Bellomarini and Jens Lehmann and Sahar Vahdati},
+  title     = {ReFactX: Scalable Reasoning with Reliable Facts via Constrained Generation},
+  year      = {2025},
+  note      = {To appear in the Proceedings of the 24th International Semantic Web Conference (ISWC 2025)},
+  doi       = {https://doi.org/10.48550/arXiv.2508.16983},
+  eprint    = {2508.16983},
+  eprinttype= {arxiv},
+  eprintclass={cs.CL}
+}
+
 
 %%
 

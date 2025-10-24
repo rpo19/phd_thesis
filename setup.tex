@@ -1,4 +1,4 @@
-\PassOptionsToPackage{table}{xcolor}
+\PassOptionsToPackage{table,dvipsnames}{xcolor}
 \usepackage[T1]{fontenc}    % better font encoding (includes \k)
 \usepackage[utf8]{inputenc} % ensure UTF-8 input
 \usepackage{lmodern}        % modern Latin fonts
@@ -11,7 +11,12 @@
 \usepackage{amsmath}
 \usepackage{enumitem}
 \usepackage{physics}
-\usepackage{hyperref}
+\usepackage[
+  colorlinks=true,
+  linkcolor={NavyBlue},       % internal links
+  urlcolor={NavyBlue},    % URLs
+  citecolor={NavyBlue}        % citations
+]{hyperref}
 \usepackage{cleveref}
 \usepackage{url}
 \usepackage{dirtytalk}
@@ -34,7 +39,7 @@
 \usepackage{todonotes}
 \usepackage[integrals]{wasysym}
 \usepackage{fancyhdr}
-\usepackage[table]{xcolor}
+\usepackage[table,dvipsnames]{xcolor}
 \usepackage{tcolorbox} % optional, for nicer boxes (not required)
 \usepackage{relsize}
 \usepackage{amsthm}
@@ -541,3 +546,8 @@
 \newcommand{\no}{--\xspace}                % not supported / to check
 \newcommand{\almost}{$\triangle$\xspace}
 \newcommand{\refact}{ReFactX\xspace}
+
+
+
+
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
