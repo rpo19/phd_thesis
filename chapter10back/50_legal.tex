@@ -1,16 +1,22 @@
 \section{The Italian Legal System}
 \label{sec:domains}
-In this section, we describe the Italian legal system, the different types of trials with the documents involved, and the relationship between Italian law, \acl{ai} and predictability (ai act, gdpr).
-italian criminal proceedings, vs civil
-\todo{introdurre ai prima}
-\todo{different law codes, civil law, supreme court (vs common law)}
+In this section, we describe the Italian legal system, the different types of trials with the documents involved, and the relationship between Italian law and \acl{ai}.
 
-The Italian Republic uses the \emph{civil law} system, in contrast with countries such as the United Kingdom of Great Britain and Northern Ireland and the United State of America, using the \emph{common law} system. Civil law is based on codes, while common law is based on case-law~\cite{Carlson2009}. Typically, civil law systems rely on four foundational codes: civil code, the civil procedure code, criminal code, and criminal procedure code. \todo{here add a brief descriptions of what are these codes} These codes are intended as coherent and consistent principles for supporting the broader legal system. In contrast, common law systems typically develop codes in response to specific issues, often drafting them only after principles have already emerged through case law~\cite{Carlson2009}.
+The Italian Republic uses the \emph{civil law} system, in contrast with countries such as the United Kingdom of Great Britain and Northern Ireland and the United State of America, which use the \emph{common law} system. Civil law is based on codes, while common law is based on case-law~\cite{Carlson2009}. 
+Typically, civil law systems rely on four foundational codes~\cite{Carlson2009,apple1995primer}:
+\begin{itemize}
+    \item \emph{Civil code}: governs private relations among individuals and organizations;
+    \item \emph{Civil procedure code}: sets the rules for how civil disputes are adjudicated;
+    \item \emph{Criminal code}: defines crimes and the corresponding penalties;
+    \item \emph{Criminal procedure code}: regulates the investigation, prosecution, and adjudication of criminal offenses.
+\end{itemize}
+
+These codes are intended as coherent and consistent principles for supporting the broader legal system. In contrast, common law systems typically develop codes in response to specific issues, often drafting them only after principles have already emerged through case law~\cite{Carlson2009}.
 Furthermore, in common law, precedent cases are of central importance, as judges are required to follow earlier decisions, and a single ruling from a higher court may determine the outcome of a case. This is different in civil law, where a single precedent case is generally not treated as binding, with the possible exception of decisions in the constitutional sphere~\cite{Carlson2009}. 
 
-The organizational structure of civil law court systems is broadly similar to that of common law systems, featuring a court of first instance, a court of appeals, and a supreme court. Additionally, specialized courts exist with jurisdiction limited to particular areas of law. Unlike in common law jurisdictions, juries are generally not used in civil law systems. The cases are decided by judges, eventually including lay judges~\cite{Carlson2009}, such as in the Italian court of assize~\cite[Article~3]{legge10apr1951}---which is competent to judge serious criminal offenses, e.g., the ones carrying maximum penalties of at least 24 years of imprisonment~\cite[Art.~5]{CPP}.  
+The organizational structure of civil law court systems is broadly similar to that of common law systems, featuring a court of first instance, a court of appeals, and a supreme court. Additionally, specialized courts exist with jurisdiction limited to particular areas of law. Unlike in common law jurisdictions, juries are generally not used in civil law systems. The cases are decided by judges, eventually including lay judges~\cite{Carlson2009}, such as in the Italian court of assize~\cite[Article~3]{legge10apr1951}---which is competent to judge serious criminal offenses, such as the ones carrying maximum penalties of at least 24 years of imprisonment~\cite[Art.~5]{CPP}.  
 
-In the Italian system, both in civil and in criminal procedures, the three grades of jurisdiction operate as follows. The courts of first instance decide the facts and merits of a case in their entirety~\cite[Art.s 99--310]{CPC}; \cite[Art.s 429--544]{CPP}. The courts of appeal then provide a second, comprehensive review to ensure both factual and legal correctness~\cite[Art.s 339--359]{CPC}; \cite[Art.s 593--605]{CPP}, thereby giving effect to the constitutional guarantee of challenging judicial decisions~\cite[Art.~111]{Costituzione}. Finally, the Court of Cassation represents the third and highest grade, serving as the supreme authority tasked not with re-examining facts but with ensuring the uniform interpretation and application of the law, as regulated in the codes of procedure~\cite[Art.~360--382]{CPC}; \cite[Art.~606--613]{CPP}.
+In the Italian system, both in civil and in criminal procedures, the three grades of jurisdiction operate as follows. The courts of first instance decide the facts and merits of a case in their entirety~\cite[Arts. 99--310]{CPC}; \cite[Arts. 429--544]{CPP}. The courts of appeal then provide a second, comprehensive review to ensure both factual and legal correctness~\cite[Arts. 339--359]{CPC}; \cite[Arts. 593--605]{CPP}, thereby giving effect to the constitutional guarantee of challenging judicial decisions~\cite[Art.~111]{Costituzione}. Finally, the Court of Cassation represents the third and highest grade, serving as the supreme authority tasked not with re-examining facts but with ensuring the uniform interpretation and application of the law, as regulated in the civil~\cite[Art.~360--382]{CPC} and criminal~\cite[Art.~606--613]{CPP} codes of procedure.
 Decisions of the Court of Cassation are not laws and are not formally binding, yet they strongly influence lower courts and promote a consistent interpretation of the law, reflecting the court's so-called \emph{nomophilactic function}~\cite{lazovic2022}. In Italy, the supreme court has a dual role: to render a final judgment on individual cases, thereby ensuring justice, and to establish interpretative guidelines that shape national jurisprudence~\cite[Art.~65]{RD1941_12_art65}.
 
 
@@ -20,36 +26,35 @@ In the Italian legal system, a legal proceeding may arise in either the civil or
 
 % \subsubsection{Civil Proceedings}
 
-Civil proceedings are initiated by a private party. The \emph{plaintiff} begins the process by filing an writ of summons with the competent court. This document must indicate: the identities of the parties, the tribunal being addressed, the factual and legal basis of the claim, the evidence intended to be produced, and the date of the hearing \cite[Art.~163]{CPC}. 
+Civil proceedings are initiated by a private party. The \emph{plaintiff} begins the process by filing a writ of summons with the competent court. This document must indicate: the identities of the parties, the tribunal being addressed, the factual and legal basis of the claim, the evidence intended to be produced, and the date of the hearing \cite[Art.~163]{CPC}. 
 
 The \emph{defendant} responds with a statement of defense, outlining their defenses and any counterclaims \cite[Art.~167]{CPC}. From this moment, the judicial authority schedules hearings, manages the collection of evidence, and ultimately renders a decision---a \emph{judgment}---which must include motivations as required by the Constitution~\cite[Art.~111]{Costituzione}.
 
 % \subsubsection{Criminal Proceedings}
 
+\medskip
+\noindent
 Criminal proceedings begin with the occurrence of a potential criminal offense. When the report of a crime is received, the public prosecutor opens the preliminary investigation~\cite[Art.~326]{CPP}.
 
 During this phase, investigative acts are performed by the public prosecutor and the judicial police, and documented in official records~\cite[Art.~373]{CPP}. The suspect is formally notified through a guarantee notice, a document informing them of the charges and their rights~\cite[Art.~369]{CPP}. If sufficient evidence exists, the prosecutor requests an indictment and the judge for the preliminary hearing decides whether the case proceeds to trial \cite[Art.~416]{CPP}.
 
-\todo{ai and legal, plus predictability}
-\todo{per i documenti: sentenze e fascicoli. vedi chat e tesi di alessandro mariani. 132 cpc}
-\todo{corti europee e internazionali e impatti sul legal ita: gdpr ai act anche}
+
 
 % \subsubsection{Documents}
+\medskip
+\noindent
 The documentation of civil and criminal proceedings is governed by the provisions of the respective codes of procedure~\cite[Art.~168--169]{CPC}; \cite[Art.~431, 114]{CPP}, which govern the formation, content, and accessibility of case files.
 Civil files typically include the summons, payment receipts, pleadings, briefs, hearing minutes, judicial orders, evidentiary acts, and judgments~\cite[Art.~168]{CPC}, while criminal trial files contain acts related to prosecutability and civil claims, non-repeatable acts by police or parties, evidentiary acts, official documents, and, when applicable, seized items~\cite[Art.~431]{CPP}.
-Furthermore, the content of the judgment are regulated, requiring identification of the parties, a statement of facts, the legal reasoning, and the operative part of the decision~\cite[Art.~546]{CPP}; \cite[Art.~132]{CPC}. For this reason, judgments can be treated as semi-structured documents, in the sense that they usually contain identifiable sections, even though the expression and organization of legal language may vary---e.g., depending of the style of the judge~\cite{juliahb2024,galli2025analisi,pont2023legalsummarisationllmsprodigit}.
+Furthermore, the content of the judgment are regulated, requiring identification of the parties, a statement of facts, the legal reasoning, and the operative part of the decision~\cite[Art.~546]{CPP}; \cite[Art.~132]{CPC}. For this reason, judgments can be treated as semi-structured documents, in the sense that they usually contain identifiable sections, even though the expression and organization of legal language may vary---for example, depending on the style of the judge~\cite{juliahb2024,galli2025analisi,pont2023legalsummarisationllmsprodigit}.
 
-\todo{international influence, eu gdpr ai act}
-\todo{definition of AI}
-\todo{why applying ai to legal, maybe focus what we did}
+
 
 % \subsection{Analyzing Legal Documents}
 % \todo{also AI for legal}
 
 % improving access to legal information, facilitating search and retrieval of relevant case law, generating summaries and keywords, extracting arguments, and even offering statistical forecasts of outcomes. These functions promise to enhance efficiency in overloaded court systems, reduce inconsistencies in jurisprudence, and support judges and lawyers in handling the growing volume and complexity of legal data. Importantly, AI is conceived not as a substitute for judicial decision-making, but as an auxiliary instrument that can strengthen transparency, consistency, and access to justice~\cite{juliahb2024}.
 % ADELE project and outcome prediction
-\todo{distinguish between "retrieval/information tools" and decision systems}
-\todo{also speak about decision systems in healthcare}.
+% \todo{distinguish between "retrieval/information tools" and decision systems}
 
 % chat
 % **Why AI can be useful in justice**
@@ -62,9 +67,9 @@ Furthermore, the content of the judgment are regulated, requiring identification
 % The JuLIA Handbook underscores that AI in justice is a high-risk domain, requiring strong safeguards. Risks include algorithmic opacity, biased datasets, and potential erosion of judicial independence if predictive tools were given too much weight. For this reason, both European and Italian frameworks emphasize principles of transparency, non-discrimination, due process, and human oversight. The Italian Council of State has further clarified that algorithmic systems must comply with constitutional requirements of impartiality and accountability. Overall, Italy's approach reflects a careful balance: acknowledging AI's potential to make justice more efficient and accessible, while embedding safeguards to protect judicial autonomy and fundamental rights.
 %%%
 
-\todo{add citations and articles}
-\todo{later expand this with more paper on automated decisions, legal simulations (see e-mails),... but maybe extraction papers and entity-based later}
-\todo{ieri approvata legge ai in italia!!!}
+% \todo{add citations and articles}
+% \todo{later expand this with more paper on automated decisions, legal simulations (see e-mails),... but maybe extraction papers and entity-based later}
+% \todo{ieri approvata legge ai in italia!!!}
 % https://www.wired.it/article/ddl-ai-senato-approvazione-regole-controllo-autorita/
 % https://www.repubblica.it/tecnologia/2025/09/18/news/legge_italiana_intelligenza_artificiale_deep_fake-424854661/
 \subsection{Artificial Intelligence in the Legal Domain}
@@ -73,33 +78,32 @@ Furthermore, the content of the judgment are regulated, requiring identification
 
 \ac{ai} offers considerable opportunities for the legal sector, fundamentally reshaping traditional workflows through the automation of routine tasks and the enhancement of complex decision-making processes \cite{juliahb2024}. The application of \ac{ai} is not intended to supplant human legal expertise but rather to act as a sophisticated form of decision-support systems (DSSs), augmenting the capabilities of legal professionals. Such systems can perform an array of tasks, from conducting advanced precedent searches to predicting potential case outcomes, thereby improving efficiency while maintaining the integrity of human judicial oversight \cite{juliahb2024}.
 
-A notable example of a practical \ac{ai} tool is the Analytics for Deciding Legal Cases (ADELE) project~\cite{galli2024analytics}, which focused on a variety of legal domains, including value-added tax (VAT), and trademarks and patents (T\&P) cases. The project's objectives centered on supporting legal research and decision-making through a suite of functionalities. These included the automatic extraction of citations and the subsequent creation of citation networks, which aids in identifying influential cases and clusters of similar jurisprudence. Furthermore, ADELE utilized machine learning models for the extraction of summaries and keywords from legal texts, thereby streamlining information retrieval and organizational processes.\todo{more focus on the utility of speeding up justice} A particularly ambitious aspect of the project was the experimentation with argument extraction and the predictive analysis of case outcomes, which sought to establish correlations between the arguments presented by litigants and the final judgments \cite{juliahb2024}.
+An example of a practical \ac{ai} tool is the ADELE project~\cite{galli2024analytics}, which addressed different legal domains, including VAT and trademarks and patents. The project aimed to support legal research and decision-making through several functions. These included the automatic extraction of citations and the construction of citation networks to identify influential cases and clusters of similar decisions. ADELE also applied deep learning models to extract summaries and keywords from legal texts, facilitating information retrieval and organization. In addition, the project experimented with argument extraction and with predicting case outcomes by examining possible correlations between the arguments advanced by the parties and the decisions of the courts~\cite{juliahb2024}.
 
-For this thesis, the most important use case is automatically analyzing and organizing---e.g., by criteria such as relevance to a specific case---vast quantities of documents, avoiding time-consuming and expensive manual operations. Indeed, \ac{ai} systems have been applied in common law jurisdiction to identify relevant documents among millions~\cite{juliahb2024}. However, also in civil law jurisdiction, some cases may require the analysis of a high number of related decisions to ensure the uniform interpretation of the law~\cite{egea2024does}. Furthermore, criminal investigations frequently involve the examination of vast amounts of heterogeneous documents, such as Web pages, chat records, investigative reports, or expert analyses~\cite{szekely2015building,real_batini2021semantic,pozzi_wise_2025}. The use of \ac{ai} systems in these terms, can enable users to fulfill their information needs in different modalities, such as faceted search---with filters on the entities mentioned in the documents---question answering or semantic text annotation---annotations can improve the reading experience highlighting relevant information (e.g., the fact in the judgment) for the reader\todo{add citations}. These use cases motivate part of the work carried out during my \phd---i.e., the one presented in \textcite{pozzi_wise_2025,BELLANDI2024,aixia_2023} and described in \Cref{chap:legalia,chap:legalie}.
-The use of \ac{ai}-based systems in this context enables users to satisfy their information needs through different modalities, such as faceted search~\cite{kejriwal2017searchengine}---which allows filtering based on entities mentioned in the documents---\acl{qa}~\cite{hoppe_2021_legalqa_german,sovrano2020legal}, or \acl{sta}. The latter can enhance the reading experience by highlighting relevant information (e.g., the sections or the parties in a judgment) for the reader.\todo{add citations} These use cases motivate part of the work conducted during my \phd, namely the research presented in \textcite{pozzi_wise_2025,BELLANDI2024,aixia_2023} and described in \Cref{chap:legalia,chap:legalie}.
+For this thesis, the most important use case is automatically analyzing and organizing---e.g., by criteria such as relevance to a specific case---vast quantities of documents, avoiding time-consuming and expensive manual operations. Indeed, \ac{ai} systems have been applied in common law jurisdiction to identify relevant documents among millions~\cite{juliahb2024}. However, also in civil law jurisdiction, some cases may require the analysis of a high number of related decisions to ensure the uniform interpretation of the law~\cite{egea2024does}. Furthermore, criminal investigations frequently involve the examination of vast amounts of heterogeneous documents, such as Web pages, chat records, investigative reports, or expert analyses~\cite{szekely2015building,real_batini2021semantic,pozzi_wise_2025}.
+
+The use of \ac{ai}-based systems in this context enables users to satisfy information needs through multiple modalities, such as faceted search~\cite{kejriwal2017searchengine}, which allows filtering based on entities mentioned in documents, \acl{qa}~\cite{hoppe_2021_legalqa_german,sovrano2020legal}, and \acl{sta}. The latter can support reading by highlighting salient elements in a judgment~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023} (e.g., sections or parties). These use cases motivate part of the work conducted during my \phd, in particular the research presented in \textcite{pozzi_wise_2025,BELLANDI2024,aixia_2023} and described in \Cref{chap:extraction}.
 
 
-In the context of information retrieval and organization, the importance of data annotation cannot be overstated. Projects in Italy, such as the PNRR-PON ``Giustizia Agile'' (Italian for ``agile justice''), have focused on creating gold standards for Italian legal documents to support further \ac{ai} research. This included the crucial task of \acf{ner}---described in \Cref{sec:information_extraction}---which is foundational for enabling \ac{ai} systems to accurately identify and classify key entities within legal texts, such as names of persons, organizations, or legal provisions, thereby improving the precision of retrieval mechanisms \cite{juliahb2024}.
+
+In the context of information retrieval and organization, the importance of data annotation cannot be overstated. Projects in Italy, such as the PNRR-PON ``Giustizia Agile'' (Italian for ``agile justice''), have focused on creating labeled datasets for Italian legal documents to support further \ac{ai} research. This included the crucial task of \acf{ner} (described in \Cref{sec:information_extraction}), which is foundational for enabling \ac{ai} systems to accurately identify and classify key entities within legal texts, such as persons, organizations, or legal provisions, which can be used to improving the retrieval mechanisms \cite{juliahb2024}, \eg with faceted search~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}.
 
 \subsection{\ac{ai} Regulations}
 
-The integration of artificial intelligence (\ac{ai}) into the legal and judicial system presents significant challenges, particularly concerning fundamental rights and ethical principles. The European Union has addressed these concerns through the Artificial Intelligence Act (\ac{ai} Act)~\cite{ai_act}, which classifies \ac{ai} systems used in the administration of justice as high-risk~\cite[ANNEX III]{ai_act}. While the \ac{ai} Act does not prohibit their use, it requires that the final decision-making authority remains with a human~ \cite[Art.~14]{ai_act}, ensuring that \ac{ai} functions as a support mechanism rather than a final arbiter~\cite{juliahb2024}. This aligns with the European Ethical Charter~\cite{ethicalcharter2018} on the use of \ac{ai} in judicial systems, which emphasizes principles such as transparency, non-discrimination, and due process.
+The integration of artificial intelligence (\ac{ai}) into the legal and judicial system presents significant challenges, particularly concerning fundamental rights and ethical principles. The European Union has addressed these concerns through the Artificial Intelligence Act (\ac{ai} Act)~\cite{ai_act}, which classifies \ac{ai} systems used in the administration of justice as high-risk~\cite[ANNEX III]{ai_act}. While the \ac{ai} Act does not prohibit their use, it requires \emph{human oversight}---\ie that the final decision-making authority remains with a human~\cite[Art.~14]{ai_act}---ensuring that \ac{ai} functions as a support mechanism rather than a final arbiter~\cite{juliahb2024}. This aligns with the European Ethical Charter~\cite{ethicalcharter2018} on the use of \ac{ai} in judicial systems, which emphasizes principles such as transparency, non-discrimination, and due process.
 
 These principles have been further consolidated in Italy with the approval of the Law on Artificial Intelligence (L. 1146/2024)~\cite{leggeia2025}. This national law integrates and strengthens the European regulatory framework, establishing Italy as one of the first EU countries to have specific legislation on the matter~\cite{reuters_italy_ai_law_2025}. The Italian law reaffirms the anthropocentric approach, ensuring that \ac{ai} is used in the judicial sector exclusively for instrumental and support activities. Furthermore, it introduces important criminal provisions, such as penalties for the illicit dissemination of content generated or manipulated with \ac{ai}, thereby underscoring the law's role in mitigating emerging risks.
 
 These challenges and regulations have already been reflected in case law across both Italy and the EU. The Tribunal of Bologna, for example, has considered cases involving algorithmic decision-making, basing its analysis on the principles of non-discrimination and equality. Similarly, the Court of Justice of the European Union (CJEU) in the SCHUFA Holding case~\cite{schufaholding2023} examined whether an \ac{ai}-driven credit scoring system constitutes a form of automated decision-making under the GDPR (General Data Protection Regulation)~\cite{gdpr2016}, a precedent with significant implications for the use of \ac{ai} in judicial contexts \cite{juliahb2024}. These cases demonstrate the ongoing legal and ethical discourse surrounding \ac{ai} and the urgent need for robust regulatory frameworks to govern its application in the justice system.
 
-Finally, another important challenge is \emph{privacy}, especially when data can be used to fine-tune \acp{llm}. The use of judicial or legal documents for model training raises significant concerns under the GDPR~\cite{gdpr2016}, particularly regarding the processing of personal and sensitive data. Court judgments or investigative data, often contain personal data~\cite[Art.~4]{gdpr2016} that may directly or indirectly identify individuals, such as names or addresses. In accordance with \textcite[Art.~5]{gdpr2016}, personal data must be processed lawfully, fairly, and for specified and legitimate purposes, applying principles such as data minimization and purpose limitation. Processing may be lawful under \textcite[Art.~6(1)(e)]{gdpr2016} when it is necessary for tasks carried out in the public interest or under official authority, as in the case of judicial or academic institutions, provided that adequate safeguards—such as pseudonymization, restricted access, and proportionality assessments—are implemented.
+Finally, another important challenge is \emph{privacy}, especially when data can be used to fine-tune \acp{llm}. The use of judicial or legal documents for model training raises significant concerns under the GDPR~\cite{gdpr2016}, particularly regarding the processing of personal and sensitive data. Court judgments or investigative data, often contain personal data~\cite[Art.~4]{gdpr2016} that may directly or indirectly identify individuals, such as names or addresses. In accordance with the GDPR~\cite[Art.~5]{gdpr2016}, personal data must be processed lawfully, fairly, and for specified and legitimate purposes, applying principles such as data minimization and purpose limitation. For example, processing may be lawful under GDPR~\cite[Art.~6(1)]{gdpr2016} when the data subject has given consent or when it is required for the performance of tasks carried out in the public interest.
 
 
-\todo{aggiungi altri progetti legali tipo datalake e magari cose su extrazione. o dopo?}
+To conclude the section, \Cref{fig:civil-judgment-legal-articles,fig:chat-investigation-example} present two illustrative examples: an Italian civil judgment and an investigative chat log extracted from a seized suspect's smartphone.
 
-\todo{rw from aixia,wise,claw}
-\todo{aggiungere thirty years of ai in legal? third decade serana villata?}
 
-\subsection{Judgments}
-Legal documents---particularly court judgments and orders---hold information that can serve many applications (such as legal case retrieval and process analysis), fulfill different purposes (ranging from comparing similar cases to promote consistent rulings, to identifying trends within specific legal domains, e.g., assessing average maintenance payments in divorces relative to the spouses' financial conditions), and support a wide range of stakeholders (including judges, court administrators, lawmakers, legal practitioners, researchers, and the public)~\cite{BELLANDI2024}\todo{check}.
-An example of fictional Italian civil judgment, translated in English, is available in \Cref{fig:civil-judgment-legal-articles}.
+
+
 
 \begin{figure}[htbp]
 \centering
@@ -140,15 +144,7 @@ Laura~Conti
 
 
 
-\todo{something general for legal}
 
-\cite{BELLANDI2024,pozzi_wise_2025,aixia_2023,Agazzi2025DAVE,real_batini2021semantic}
-\todo{italian legal system. civile penale, investigations. usa tesi dottorato legal}
-\todo{AI act. news for legal AI italy, batini,...}
-\subsection{Criminal Investigations}
-Data in criminal investigations comes from a heterogeneity of sources such as documents, e.g., reports by consultants, (semi-)structured files, e.g., phone call records, bank transfers, and digitalized papers, e.g., seized in the investigation~\cite{pozzi_wise_2025}.\todo{check}
-
-\todo{focus on IMA}
 
 \begin{figure}[htbp]
 \centering
@@ -180,7 +176,7 @@ Data in criminal investigations comes from a heterogeneity of sources such as do
 \end{figure}
 
 
-\todo{guarda 23 di claw survey ai in legal. also ner on turkish [3]}
+% \todo{guarda 23 di claw survey ai in legal. also ner on turkish [3]}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % documents for the picture
