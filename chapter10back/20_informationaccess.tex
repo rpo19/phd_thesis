@@ -1,18 +1,8 @@
 \section{Information Access}
-On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fullfill our \emph{information needs} by proving the relevant \emph{information objects}~\cite{entityorientedsearch2018balog}. The former aim to find web pages that contain our information need, often represented as a \emph{query}, the latter allow us to browse web pages to finally find the required information. Web browsers and search engines are two primary tools for facilitating \emph{information access}.
+\label{sec:back:informationaccess}
+On a daily basis, we use our personal computer for accessing information. Search engines (Google, Bing, Yahoo!, DuckDuckGo, etc.) and web browsers (Mozilla Firefox, Google Chrome, Microsoft Edge, etc.) help us to fulfill our \emph{information needs} by proving the relevant \emph{information objects}~\cite{entityorientedsearch2018balog}. Search engines aim to find web pages that contain our information need, often represented as a \emph{query}, Web browser allow us to browse web pages to finally find the required information. Both are primary tools for facilitating \emph{information access}.
 In this thesis, we adopt the following definition of information access---based on \textcite{encyclopedia_information_access}---which is limited to the digital activities a user undertakes to satisfy an information need. Broader considerations related to social, economic, or political factors that may restrict individuals’ freedom to access information are beyond the scope of this work.
-\begin{definition}[Information Access]
-    Information access is the ability to effectively identify, retrieve, and utilize information.
-\end{definition}
-\todo{list the possible ways for accessing information and how documents need to be processed for the different ways}
-\todo{continue with something about the types of information objects, trying to reach entities.}
-\todo{read https://www.encyclopedia.com/computing/news-wires-white-papers-and-books/information-access, add definition, and cite}
-% information access: you know what you want
-\todo{maybe discovery is better. no access is better because users know what they want. I did not work on discovery}
-% https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1097-4571(1999)50:9%3C737::AID-ASI2%3E3.0.CO;2-C
-% information discovery: exploring or discovering new information
-\todo{use information access narrowing it down to avoid confusion with socio-economic factors}
-
+%
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{images/Screenshot Rome - Google Search.png}
@@ -26,18 +16,29 @@ In this thesis, we adopt the following definition of information access---based 
     \caption{Example of factual question answered via knowledge graph (screenshot from Google Search).}
     \label{fig:barack-search}
 \end{figure}
+%
+\begin{definition}[Information Access]
+    Information access is the ability to effectively identify, retrieve, and utilize information.
+\end{definition}
 
-While traditionally the information objects were documents, search engines have, over the past decades, gradually transitioned toward providing richer answers. As visible in \Cref{fig:rome-search,fig:barack-search}, results now often display entities and facts directly, enriched with pictures, maps, or other structured information depending on the answer type. A key enabler of these developments has been the emergence of large-scale knowledge bases and knowledge repositories, which organize information around entities~\cite{entityorientedsearch2018balog}, such as the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}.
-%
-%
-More recently, \acfp{llm} have further extended these capabilities by enabling natural language questions to be answered directly with fluent natural language responses, as depicted in \Cref{fig:actor-search}.
+Recently, \acfp{llm} have further extended the capabilities of search engines by answering natural language questions directly with fluent natural language responses, as illustrated in \Cref{fig:actor-search}. Moreover, these models can themselves be viewed as \emph{information-seeking actors}: to fulfill an information need (eventually on behalf of a human user), they may actively invoke search engines or other tools to acquire information objects~\cite{openai_chatgpt_search_2025,xi2025rise,plaat2025agenticlargelanguagemodels} and then convey the result to the user.
 
 Applications for information access include, but are not limited to:
 \begin{itemize}
-    \item search engines that retrieve documents or items based on a query;
-    \item web browsers that allow users to explore documents and follow hyperlinks;
-    \item recommendation systems that suggest relevant or similar documents;
-    \item question-answering systems that provide direct answers to users' questions based on information from structured or unstructured data.
+    \item Search engines that retrieve documents or items based on a query;
+    \item Web browsers that allow users to explore documents and follow hyperlinks;
+    \item Recommendation systems that suggest relevant or similar documents;
+    \item \Acl{qa} systems that provide direct answers to users' questions based on information from structured or unstructured data.
 \end{itemize} 
+%
 
-\todo{introduce question answering and ref to section}
+
+While traditionally the information objects were documents, search engines have, over the past decades, gradually transitioned toward providing richer answers. As visible in \Cref{fig:rome-search,fig:barack-search}, results now often display entities and facts directly, enriched with pictures, maps, or other structured information depending on the answer type. A key enabler of these developments has been the emergence of large-scale knowledge bases and knowledge repositories, which organize information around entities~\cite{entityorientedsearch2018balog}---such as the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}.
+
+Notably, the most searched queries on Google in the last month from the time of writing are the following, in order of popularity~\cite{google_trends_2025}:
+\begin{verbatim}
+google, weather, youtube, amazon, nfl, news, reddit, halloween, facebook, walmart.
+\end{verbatim}
+Several of these queries do not articulate an information need through a complex description, but simply name an entity (\eg ``google'', ``youtube'', ``amazon''). This highlights the central role of entities in modern \ac{ia} systems.
+
+
