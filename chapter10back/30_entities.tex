@@ -4,7 +4,7 @@
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018balog}.
 Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
 In practice, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
-This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018balog}. Modern natural language toolkits, such as \spacy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, which is based on \textcite{entityorientedsearch2018balog} definition:
+This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018balog}. Modern natural language toolkits, such as \spacy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, adapted from the formalization by \textcite{entityorientedsearch2018balog}:
 \begin{definition}[Entity]
 An \emph{entity} is a uniquely identifiable object, thing, or concept. 
 It is described through a set of \emph{entity properties}, always including 
@@ -27,14 +27,14 @@ A \acf{kr} is a structured or semi-structured collection of entities~\cite{entit
 
 Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack\_Obama}}) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, \acfp{iri}~\cite{durst2005iri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
-The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use \emph{fact} independently from the \ac{rdf} syntax, according to the following definition.
+The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use the term \emph{fact} also independently of the \ac{rdf} syntax, according to the following definition.
 \begin{definition}[Fact]
-    A fact is an atomic statement, a single and indivisible assertion of a specific piece of information about the world, typically describing a property of an entity or a relationship between entities.
+    A fact is an atomic statement, asserting a specific piece of information, typically describing a property of an entity or a relationship between entities.
 \end{definition}
 Example of facts are ``Barack Obama was born on Aug 04, 1961.'' or ``Barack Obama was born in Honolulu.''
-Instead, in \ac{rdf} resources are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually IRIs (Internationalized Resource Identifier~\cite{durst2005iri}---sequences of Unicode characters that uniquely identify resources), while the object is usually either a IRI or a literal (used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag)~\cite{klyne2004rdf}.
+Instead, in \ac{rdf} facts are represented as structured triples composed of subject, predicate, and object. The subject and predicate are usually \acfp{iri}~\cite{durst2005iri}, sequences of Unicode characters that uniquely identify resources (differently from \acp{uri} they better support non-Latin languages~\cite{durst2005iri}). While the object is usually either a IRI or a literal---used for values such as strings, numbers, and dates, annotated with a datatype and eventually with a language tag~\cite{klyne2004rdf}.
 %
 The previous facts appear as follows in \ac{rdf}:
 %
@@ -77,16 +77,14 @@ dbr:Barack_Obama
 
 \Cref{lis:obama} shows some \emph{entity properties} for the entity \textsc{Barack Obama} from DBpedia~\cite{dbpedia,lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}. It uses \ac{rdf} following the Turtle~\cite{prudhommeaux2014turtle} syntax and includes types (``dbo:Person'', ``dbo:Politician''), attributes (``dbo:birthName'', ``dbo:birthDate'', ``rdfs:comment''), and relationships with other entities (``dbo:birthPlace'', ``dbo:spouse''). Prefixes are defined to avoid repetitive long IRIs.
 
-Structured entity knowledge, such as represented in \ac{rdf}, is usually stored in a \emph{knowledge base}.
+Structured entity knowledge---for instance, represented in \ac{rdf}---is usually stored in a \emph{knowledge base}.
 %
-\todo{introduce facts and triples and then move to the kb definition}
 % kb definition knowledge base definition
-\todo{add operation that make a kb. querying, updating, reasoning,...?}
 \begin{definition}[\Acl{kb}]
     A \acf{kb}, or a \acf{kg}, is a structured form of \acl{kr} that organizes and stores facts about entities. 
     These facts are typically represented using data models such as \ac{rdf}~\cite{entityorientedsearch2018balog}.
     %
-    When the primary interest lies in the connections between entities, a \acl{kb} is often referred to as a \emph{\acl{kg}}.
+    When the focus is on the graph structure or on the relational nature of the stored facts, a \acl{kb} is often referred to as a \emph{\acl{kg}}~\cite{entityorientedsearch2018balog}.
 \end{definition}
 \Cref{fig:barack_kg} shows an example \acl{kg} about \textsc{Barack Obama} and some connected entities.
 
@@ -100,39 +98,35 @@ Structured entity knowledge, such as represented in \ac{rdf}, is usually stored 
 
 
 
-\todo{problem of incompleteness. to introduce the incremental kbp. structured means higher quality. unstructured more information lower quality. how is wikidata curated? and dbpedia? to justify the additional human effort. cerca motivazione da paper di hybrid qa come humaniq.}
-
-Examples of \acp{kb} include Wikidata~\cite{wikidata,vrandevcic2014wikidata}, DBpedia~\cite{lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}, YAGO~\cite{yago4.5_2024,yago4_2020,mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}, and Freebase~\cite{freebase_2008}.
-Wikidata is a free collaborative project~\cite{vrandevcic2014wikidata} containing 119 million entities and 1.65 billion facts as of September 2025~\cite{wikidata_statistics,wikipedia_wikidata}.
-
-The DBpedia \ac{kb} derives from the extraction of structured, multilingual knowledge from Wikipedia and it is accessible using \ac{sw} and linked data technologies~\cite{lehmann2015dbpedia}. In 2015 it contained 1.46 billion facts~\cite{lehmann2015dbpedia}.
-
-YAGO, since its version 4~\cite{yago4_2020}, aims to address the weaknesses of Wikidata establishing certain guarantees for its data quality, although achieving these guarantees required some manual intervention~\cite{yago4.5_2024}. In its latest release (4.5), it combines Wikidata instance data with the ontology Schema.org, additionally improved by the Wikidata taxonomy~\cite{yago4.5_2024}.
-
-Freebase was an open and collaborative knowledge base publicly launched in 2007. It was used as the open core of the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}, until it was closed and migrated to Wikidata~\cite{from_freebase_to_wikidata}.
-More than 3 billion facts and almost 50 million entities were stored in Freebase as of 2015~\cite{from_freebase_to_wikidata}.
+Examples of \acp{kb} include Wikidata~\cite{wikidata,vrandevcic2014wikidata}, DBpedia~\cite{lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}, YAGO~\cite{yago4.5_2024,yago4_2020,mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}, and Freebase~\cite{freebase_2008}. Wikidata is a free collaborative project~\cite{vrandevcic2014wikidata} that, as of September~2025, contains approximately 119~million entities and 1.65~billion facts~\cite{wikidata_statistics,wikipedia_wikidata}. DBpedia is obtained by extracting structured, multilingual knowledge from Wikipedia and is accessible through \ac{sw} and linked data technologies~\cite{lehmann2015dbpedia}; in 2015 it comprised around 1.46~billion facts~\cite{lehmann2015dbpedia}. Starting with version~4~\cite{yago4_2020}, YAGO aims to mitigate weaknesses of Wikidata by enforcing data quality guarantees, though these require some manual curation~\cite{yago4.5_2024}; its latest release (4.5) combines Wikidata instance data with the Schema.org ontology, refined with the Wikidata taxonomy~\cite{yago4.5_2024}. Freebase was an open collaborative \ac{kb} launched in 2007 and served as the open core of the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020} before being discontinued and migrated to Wikidata~\cite{from_freebase_to_wikidata}; at shutdown in 2015 it contained over 3~billion facts and nearly 50~million entities~\cite{from_freebase_to_wikidata}.
 
 
+% Examples of \acp{kb} include Wikidata~\cite{wikidata,vrandevcic2014wikidata}, DBpedia~\cite{lehmann2015dbpedia,dbpedua_bizer_2009,dbpedia_auer_nucleus_2007}, YAGO~\cite{yago4.5_2024,yago4_2020,mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}, and Freebase~\cite{freebase_2008}.
+% Wikidata is a free collaborative project~\cite{vrandevcic2014wikidata} containing 119 million entities and 1.65 billion facts as of September 2025~\cite{wikidata_statistics,wikipedia_wikidata}.
 
-\subsection{Structured or Unstructured? The Web versus Knowledge Bases}
+% The DBpedia \ac{kb} derives from the extraction of structured, multilingual knowledge from Wikipedia and it is accessible using \ac{sw} and linked data technologies~\cite{lehmann2015dbpedia}. In 2015 it contained 1.46 billion facts~\cite{lehmann2015dbpedia}.
+
+% YAGO, since its version 4~\cite{yago4_2020}, aims to address the weaknesses of Wikidata establishing certain guarantees for its data quality, although achieving these guarantees required some manual intervention~\cite{yago4.5_2024}. In its latest release (4.5), it combines Wikidata instance data with the ontology Schema.org, additionally improved by the Wikidata taxonomy~\cite{yago4.5_2024}.
+
+% Freebase was an open and collaborative knowledge base publicly launched in 2007. It was used as the open core of the Google Knowledge Graph~\cite{singhal_knowledge_graph,google-kg2020}, until it was closed and migrated to Wikidata~\cite{from_freebase_to_wikidata}.
+% More than 3 billion facts and almost 50 million entities were stored in Freebase as of 2015~\cite{from_freebase_to_wikidata}.
+
+
+
+% \subsection{Structured or Unstructured? The Web versus Knowledge Bases}
+\subsection{Structure versus Completeness in Knowledge Repositories}
 \label{sec:incompleteness}
-\todo{can be expanded and called properties of KBs}
 %
 Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018balog}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
-This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (see \todo{})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025}.
+This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (see \Cref{sec:sota:qa})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \acs{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025,dehghan-etal-2024-ewek}.
 %
-\todo{maybe useful from balog ``Keeping up
-with these changes requires a continuous effort from editors and content managers''}
-Semi-structured \aclp{kr}, positioned between structured \acp{kb} and the \acs{web}, suffer---at least partially---from both incompleteness and unreliable information form. Compared to the \ac{web}, they are more structured but less broad and comprehensive. Conversely, relative to \acp{kb}, they cover a wider range of information but present it in a less structured and less reliable form.\todo{missing citation? but it is based on previous statements, so probably not needed. maybe I can cite balog but does not say this clearly.}
-
-\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency even more frequently, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up to date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018balog}.
-
-While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wikidata,vrandevcic2014wikidata}) and also unstructured \ac{kr} (Wikipedia~\cite{wikipedia}) support \emph{CRUD} operations (Create, Read, Update, Delete)~\cite{elmasri2014fundamentals} to allow their maintenance over time~\cite{shafee2023ten_rules_editing_wikidata}. These operations are also defined in the SPARQL/Update~\cite{seaborne2008sparqlupdate} language.
+Semi-structured \aclp{kr}, positioned between structured \acp{kb} and unstructured \ac{web} text, inherit both advantages and limitations from each end of this spectrum. Compared to raw \ac{web} sources, they provide a more explicit structure, while covering a broader range of information than typical \acp{kb} (though not as broad as the web). At the same time, they do not enforce the full rigidity of structured representations, which allows them to retain some of the flexibility and recall of textual sources, albeit with less support for fully compositional querying than strictly structured \acp{kb}~\cite{lehmann2024beyond}.
 
 
 
-% \subsection{Information Extraction and Knowledge Base Population}
-\todo{not sure where to put this. it is like combining KBs and the web}
-\todo{maybe introduce a bit nlp with the objective and computational linguistics with the objective of capturing the meaning of text}
+\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up-to-date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018balog}.
 
-As later described in \Cref{sec:information_extraction}, researchers in \acl{nlp} have developed methods to automatically extract entities, relationships, and attributes from unstructured text~\cite{entityorientedsearch2018balog}. These methods can be used to populate and extend existing \acp{kb}, a task known as \emph{\acl{kbp}}~\cite{entityorientedsearch2018balog}.
+While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wikidata,vrandevcic2014wikidata}) and unstructured \acp{kr} (such as Wikipedia~\cite{wikipedia}) support \emph{CRUD} operations (Create, Read, Update, Delete)~\cite{elmasri2014fundamentals} to enable their maintenance over time~\cite{shafee2023ten_rules_editing_wikidata}. These operations are also defined in the SPARQL/Update language~\cite{seaborne2008sparqlupdate}.
+
+
+As later described in \Cref{sec:information_extraction}, researchers in \acl{nlp} have developed methods to automatically extract entities, relations, and attributes from unstructured text~\cite{entityorientedsearch2018balog}. These methods can be used to populate and extend existing \acp{kb}, a task known as \emph{\acl{kbp}}~\cite{entityorientedsearch2018balog}, thereby reducing the amount of manual curation required for maintaining \acp{kb} and \acp{kr}.
