@@ -23,9 +23,9 @@
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
 
 
-Since we employ \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pre-training data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
+Since we employ \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pretraining data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
 
-\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pre-training data used for each and the masked language modeling (\acf{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
+\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pretraining data used for each and the masked language modeling (\acf{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
 
 \input{table/backbones}
 
@@ -75,7 +75,7 @@ It is important to remind that the \ac{nel} evaluation and the following ones (N
 Table \ref{tab:result_5seed} shows the results for the comparison of the 5 backbone transformers for \ac{ner}.
 Based on the sample mean, the encoder that gives the best results is ITA+LGL+ICCJ900k, while the worst one is LGL+ICCJ900k.
 
-In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the \textit{F$_1$-measure}. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pre-training on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
+In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the \textit{F$_1$-measure}. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pretraining on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
 
 Surprisingly, the findings suggest that employing a domain-specific legal BERT does not result in a substantial enhancement in \ac{ner} performance compared to a generic Italian BERT. This observation extends to the adaptation to the corpus of judgments (ICCJ900k) as well. Furthermore, we emphasize that the use of a pre-trained generic Italian BERT significantly reduces the effort required for adaptation in terms of time, costs, and environmental imprint.
 
