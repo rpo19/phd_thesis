@@ -2,7 +2,7 @@
 \todo{add evaluation metrics. also for nel,...}
 \label{sec:rw:ner}
 \begin{definition}
-    [Named Entity Recognition (NER)]
+    [Entity Recognition (\acs{ner})]
     \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}.
 \end{definition}
 
@@ -10,21 +10,22 @@
 \centering
 \begin{minipage}[t]{0.48\linewidth}
 \small
-\PERSON{Mario Rossi}, residing in \LOCATION{Turin} \texttt{[...]} -- plaintiff\\
+\PERSON{Giovanni Bianchi}, residing in \LOCATION{Bologna} \texttt{[...]} -- plaintiff\\
 and\\
-\PERSON{Carlo Neri}, residing in \LOCATION{Milan} \texttt{[...]} -- defendant\\
+\PERSON{Davide Ricci}, residing in \LOCATION{Modena} \texttt{[...]} -- defendant\\
 FACTS\\
-The plaintiff summoned the defendant to court, alleging that on \DATE{January 10, 2023}, he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{June 30, 2023}, pursuant to \LAW{Article 1813 c.c.} \texttt{[...]}
+The plaintiff summoned the defendant to court, alleging that on \DATE{April 3, 2022}, he lent him the sum of \MONEY{EUR 10,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \DATE{December 31, 2022}, pursuant to \LAW{Article 1813 c.c.} \texttt{[...]}
 \subcaption{\ac{ner} on a judgment}
 \label{fig:extract-ner-judgment}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\linewidth}
 \small
-\DATE{[2025-07-28 -- 14:15]} \PERSON{Luca Bianchi}: Where though? The place near \LOCATION{Piazza Vittorio Veneto} in \LOCATION{Turin} or the one by the river?
-\DATE{[2025-07-29 -- 08:45]} \PERSON{Mario Rossi}: \textit{[Voice message -- 2 min 14 sec]}
+\DATE{[2025/04/22 -- 11:45]} \PERSON{Giovanni Bianchi}: Meet me \DATE{Friday, 19:00}, at \LOCATION{Bar Centrale}. Bring the papers.\\
+\DATE{[2025/04/22 -- 11:46]} \PERSON{Davide Ricci}: Fine.\\
+\DATE{[2025/04/22 -- 18:51]} \PERSON{Giovanni Bianchi}: \textit{[Voice message -- 2 min 58 sec]}
 \quad \textit{Transcription:}\\
-\quad \texttt{[...]} better if we meet earlier, like around \DATE{6:30 PM}, before \PERSON{Gianni} gets there. At \LOCATION{Via Roma 210} near \LOCATION{Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\quad \texttt{[...]} You spent my money on that weekend in \LOCATION{Milan}, dinner at \LOCATION{Grand Hotel et de Milan} and even those tickets for the race at the \LOCATION{Monza Circuit} \texttt{[...]}\\
 \subcaption{\ac{ner} on chat logs}
 \label{fig:extract-ner-chat}
 \end{minipage}

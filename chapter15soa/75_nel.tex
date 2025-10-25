@@ -9,23 +9,36 @@
 \centering
 \begin{minipage}[t]{0.48\linewidth}
 \small
-\NELPerson{Mario Rossi}{}{\NIL}
-, residing in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} \texttt{[...]} -- plaintiff\\
+\NELPerson{Giovanni Bianchi}{}{\NIL}
+, residing in \NELLocation{Bologna}{https://en.wikipedia.org/wiki/Bologna}{\WikiIcon Turin} \texttt{[...]} -- plaintiff\\
 and\\
-\NELPerson{Carlo Neri}{}{\NIL}
-, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
-FACTS\\
-The plaintiff summoned the defendant to court, alleging that on \NELDate{January 10, 2023} he lent him the sum of \MONEY{EUR 15,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{June 30, 2023}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
+\NELPerson{Davide Ricci}{}{\NIL}
+, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Modena}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
+\textbf{FACTS}\\
+The plaintiff summoned the defendant to court, alleging that on \NELDate{April 3, 2022} he lent him the sum of \MONEY{EUR 10,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{December 31, 2022}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
 \subcaption{\ac{nel} on a judgment}
 \label{fig:extract-nel-judgment}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\linewidth}
 \small
-\NELDate{[2025-07-28 -- 14:15]} \NELPerson{Luca Bianchi}{}{\NIL} Where though? The place near \NELLocation{Piazza Vittorio Veneto}{https://en.wikipedia.org/wiki/Piazza_Vittorio_Veneto}{\WikiIcon Piazza Vittorio Veneto} in \NELLocation{Turin}{https://en.wikipedia.org/wiki/Turin}{\WikiIcon Turin} or the one by the river?\\
-\NELDate{[2025-07-29 -- 08:45]} \NELPerson{Mario Rossi}{}{\NIL} \textit{[Voice message -- 2 min 14 sec]}
+\NELDate{[2025/04/22 -- 11:45]}%
+\NELPerson{Giovanni Bianchi}{}{\NIL}:%
+Meet me \NELDate{Friday, 19:00}, at %
+\NELLocation{Bar Centrale}{}{\NIL}. Bring the papers.\\
+
+\NELDate{[2025/04/22 -- 11:46]}%
+\NELPerson{Davide Ricci}{}{\NIL}: Fine.\\
+
+\NELDate{[2025/04/22 -- 18:51]}%
+\NELPerson{Giovanni Bianchi}{}{\NIL}: \textit{[Voice message -- 2 min 58 sec]}\\
 \quad \textit{Transcription:}\\
-\quad \texttt{[...]} better if we meet earlier, like around \NELDate{6:30 PM}, before \NELPerson{Gianni}{}{\NIL} gets there. At \NELLocation{Via Roma 210}{https://it.wikipedia.org/wiki/Via_Roma_(Torino)}{\WikiIcon Via Roma 210} near \NELLocation{Porta Susa station}{https://en.wikipedia.org/wiki/Torino_Porta_Susa_railway_station}{\WikiIcon Porta Susa station}. Also, bring the envelope I gave you last month.  \texttt{[...]}\\
+\quad \texttt{[...]} You spent my money on that weekend in %
+\NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan}, %
+dinner at %
+\NELLocation{Grand Hotel et de Milan}{https://en.wikipedia.org/wiki/Grand_Hotel_et_de_Milan}{\WikiIcon Grand Hotel et de Milan} %
+and even those tickets for the race at the %
+\NELLocation{Monza Circuit}{https://en.wikipedia.org/wiki/Monza_Circuit}{\WikiIcon Monza Circuit}. \texttt{[...]}\\
 \subcaption{\ac{nel} on chat logs}
 \label{fig:extract-nel-chat-logs}
 \end{minipage}
@@ -52,7 +65,7 @@ Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instan
 f: M \to KR \cup \{\texttt{NIL}\},
 \end{equation}
 where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr}.  
-For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Mario Rossi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
+For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Giovanni Bianchi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
 
 Traditionally, \ac{nel} have been addressed by decomposing the task into two main steps~\cite{entity_linking_with_kb_2015}:
 \begin{enumerate}
