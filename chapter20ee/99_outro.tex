@@ -1,34 +1,57 @@
 \section{Conclusion}
-\todo{merge the other conclusions}
+% \todo{merge the other conclusions}
 
 
 
-\subsection{Conclusion IJCKG}
-\todo{remove and put conclusion at the end of chapter}
-In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
-%&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
+% \subsection{Conclusion IJCKG}
+% \todo{remove and put conclusion at the end of chapter}
+% In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
+% %&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
 
-% The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
-Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, \ie entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
-Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
-%A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
-%, obtaining worse and worse performance.
-% We presented our work as a strong baseline for the task of Incremental \ac{nel} (I\ac{nel}), providing a modification of a ``static'' dataset~\cite{Onoe_Durrett_2020} with a canonical order for data ingestion.
-Indeed, the performance of the \ac{nel} component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental \ac{nel} is NIL prediction.      
-%used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
+% % The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
+% Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, \ie entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
+% Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
+% %A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
+% %, obtaining worse and worse performance.
+% % We presented our work as a strong baseline for the task of Incremental \ac{nel} (I\ac{nel}), providing a modification of a ``static'' dataset~\cite{Onoe_Durrett_2020} with a canonical order for data ingestion.
+% Indeed, the performance of the \ac{nel} component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental \ac{nel} is NIL prediction.      
+% %used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
 
-\subsection{Conclusion claw}
-\todo{remove and merge at the end}
-In the second part of the paper, we described  experiments to demonstrate the feasibility of the solution and the main challenges to scaling the system at a national level. In particular, the results obtained in annotating data with different low-resource methods and with solutions designed to combine these approaches in a meaningful way were reported. An essential aspect of the proposed solution is a \ac{hitl} approach to control the output of the annotation algorithms in agreement with the organizational processes in place in Italian courts. Based on these results, the feasibility of the proposed approach was advocated and the challenges that must be addressed to ensure the scalability and robustness of the proposed solution were discussed.
+% \subsection{Conclusion claw}
+% \todo{remove and merge at the end}
+% In the second part of the paper, we described  experiments to demonstrate the feasibility of the solution and the main challenges to scaling the system at a national level. In particular, the results obtained in annotating data with different low-resource methods and with solutions designed to combine these approaches in a meaningful way were reported. An essential aspect of the proposed solution is a \ac{hitl} approach to control the output of the annotation algorithms in agreement with the organizational processes in place in Italian courts. Based on these results, the feasibility of the proposed approach was advocated and the challenges that must be addressed to ensure the scalability and robustness of the proposed solution were discussed.
 
-% We note that, although our experiments are focused on a national case study, the system can be used to manage legal documents from other countries and in other languages with little changes. Namely, only the Service Systems should be replaced, as they use language-specific models and rules, and the Entity Registry metamodel should be checked, as some codes or conventions used to identify persons, laws and so on may depend on the country.
-% Finally, after a complete revision of the entity types, the system could deal with documents related to other subjects.
+% % We note that, although our experiments are focused on a national case study, the system can be used to manage legal documents from other countries and in other languages with little changes. Namely, only the Service Systems should be replaced, as they use language-specific models and rules, and the Entity Registry metamodel should be checked, as some codes or conventions used to identify persons, laws and so on may depend on the country.
+% % Finally, after a complete revision of the entity types, the system could deal with documents related to other subjects.
 
-We observe that while our experiments are focused on a national case study, the system can be adapted to handle legal documents from different countries and languages with minor adjustments. Specifically, only the Service Systems need replacement, as they employ language-specific models and rules, and the Entity Registry metamodel should be reviewed to accommodate country-specific codes and conventions for identifying persons, laws, etc. Furthermore, after a thorough entity type revision, the system could handle documents related to other subjects.
+% We observe that while our experiments are focused on a national case study, the system can be adapted to handle legal documents from different countries and languages with minor adjustments. Specifically, only the Service Systems need replacement, as they employ language-specific models and rules, and the Entity Registry metamodel should be reviewed to accommodate country-specific codes and conventions for identifying persons, laws, etc. Furthermore, after a thorough entity type revision, the system could handle documents related to other subjects.
 
 
-\subsection{Conclusion aixia}
-In this paper, we have presented the application of a NEEL pipeline to Italian civil court judgments and an evaluation of its performance.  
-The experimental evaluation conducted on 30 annotated judgments suggests that the performance of our NEEL pipeline is encouraging, especially the performance of the NER component, and emphasizes some remaining challenges. Quite surprisingly, the gap in performance between models that use domain-specific transformers, adapted with masked language modeling, and those that use transformers trained on generic Italian text is quite limited and not statistically significant. The challenges concern especially the NEL and NIL prediction components, which so far we have not customized for or fine-tuned on domain-specific data. Fine-tuning these algorithms using limited data is a challenge that we plan to address in the future. Moreover, we plan to investigate strategies to support human-in-the-loop NEEL, by improving the extraction quality and minimizing the user effort during the annotation and validation phases.
-Finally, a prospective scenario for future development involves jointly performing NEL and NIL prediction within a unified module, as recent research indicates that consolidating multiple pipeline tasks in a single module can significantly reduce error propagation~\cite{kolitsas-etal-2018-end}.
-Despite the remaining challenges, we believe that the evidence discussed in the paper suggests that, with further improvements, end-to-end NEEL pipelines could be effectively applied to court judgments to disclose a variety of downstream applications.
+% \subsection{Conclusion aixia}
+% In this paper, we have presented the application of a NEEL pipeline to Italian civil court judgments and an evaluation of its performance.  
+% The experimental evaluation conducted on 30 annotated judgments suggests that the performance of our NEEL pipeline is encouraging, especially the performance of the NER component, and emphasizes some remaining challenges. Quite surprisingly, the gap in performance between models that use domain-specific transformers, adapted with masked language modeling, and those that use transformers trained on generic Italian text is quite limited and not statistically significant. The challenges concern especially the NEL and NIL prediction components, which so far we have not customized for or fine-tuned on domain-specific data. Fine-tuning these algorithms using limited data is a challenge that we plan to address in the future. Moreover, we plan to investigate strategies to support human-in-the-loop NEEL, by improving the extraction quality and minimizing the user effort during the annotation and validation phases.
+% Finally, a prospective scenario for future development involves jointly performing NEL and NIL prediction within a unified module, as recent research indicates that consolidating multiple pipeline tasks in a single module can significantly reduce error propagation~\cite{kolitsas-etal-2018-end}.
+% Despite the remaining challenges, we believe that the evidence discussed in the paper suggests that, with further improvements, end-to-end NEEL pipelines could be effectively applied to court judgments to disclose a variety of downstream applications.
+
+
+This chapter addressed \ref{ob:extraction_assessment} by empirically assessing the applicability of general-domain \ac{ee} methods to legal and investigative contexts. In the first part (\Cref{sec:ijckg}), we introduced the incremental \ac{nel} problem, developed a methodology to adapt static \ac{nel} datasets to the incremental setting, and released both a benchmark and a baseline pipeline. The evaluation showed that incremental settings exacerbate error propagation, especially for NIL prediction and for linking mentions to entities introduced in previous batches.
+
+In the second part, we evaluated \ac{ner} and \ac{inel} pipelines on Italian civil judgments, quantifying the performance gap between general-domain models and domain-adapted ones. While domain adaptation yields measurable improvements, the gains are limited by the scarcity of labeled data and the need to operate under regulatory constraints that restrict the use of external services.
+
+Finally, we extended the analysis to investigative \ac{ima} data, creating an annotated benchmark and evaluating an adapted \ac{ee} pipeline. Results indicate that entity extraction in \ac{ima} is challenging and could benefit from in-domain fine-tuning, whereas metadata can be reliably extracted to enable faceted search and other \ac{ia} functionalities.
+
+The contributions of this chapter can be summarized as follows:
+\begin{enumerate}
+    \item introduction of the incremental \ac{nel} task, with a methodology to adapt static \ac{nel} datasets and the release of a benchmark and baseline pipeline;
+    \item evaluation of \ac{ner} and incremental \ac{nel} on Italian civil judgments, including a study of domain adaptation strategies;
+    \item creation of two annotated benchmarks for Italian civil judgments and investigative \ac{ima} data, and assessment of an \ac{ee} pipeline on both settings.
+\end{enumerate}
+
+Overall, the evidence collected in this chapter shows that
+\begin{itemize}
+    \item incremental \ac{nel} remains a hard setting due to compounding errors,
+    \item general-domain \ac{ee} models are not directly transferable to the legal and investigative domain without adaptation, and
+    \item the main bottleneck is the availability of labeled data rather than model capacity.
+\end{itemize}
+
+These findings motivate, in the subsequent chapters, the design of architectures that remain useful despite imperfect extraction, thanks to traceability and error correction capability.
