@@ -4,7 +4,9 @@
 \todo{maybe join with clustering}
 \todo{incremental kbp picture from paper}
 
-As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb}\todo{ensure also kr are incomplete in sec:incompleteness} suffer from incompleteness, and one of the use of \ac{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog},
+As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb} suffer from incompleteness, and one of the use of \ac{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog}. A component of \ac{kbp} is the identification of novel entities, missing from the \ac{kr}, and their insertion into it, so that they become available for linking in subsequent documents (\acl{nel}); we refer to this task as \emph{\acf{inel}}.
+
+Since populating a \ac{kb} can include also the identification of relations between \ac{kb} entities, in this work we use \emph{\acf{inel}} for referring the task of identifying 
 
 The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where \emph{NIL} may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 

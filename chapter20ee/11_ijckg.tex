@@ -1,20 +1,20 @@
 % \section{Contributin I: Evaluation of Incremental Entity Extraction with Background Knowledge and Entity Linking}
-\section{Adapting an Entity Linking Benchmark to Incremental Entity Linking}
+\section[Adapting an \acs{nel} Benchmark to \acs{inel}]{Adapting an Entity Linking Benchmark to Incremental Entity Linking}
 \label{sec:ijckg}
 
 
 
-The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}, co-located with the 21st International Semantic Web Conference (ISWC 2022).
+The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}.
 %
 % The proposed approach addresses the \nilchallenge by extending \ac{el} with a background \ac{kbr} with NIL prediction, novel entity clustering, and the incremental population of the \ac{kr} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
 % It focuses on batch-based \acl{inel}, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We applied this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} obtaining its incremental version, \emph{Incremental WNUM}, available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}.
 %
-At the time of publication (2022), as described in \Cref{sec:incrementalel}, the advancements in the NIL prediction task were left behind the one in \ac{nel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
-For this reason, addressing the \nilchallenge, we worked towards producing a dataset and an evaluation procedures for aiding the research in this field.
+When the work has been published, in 2022, the advancements in the NIL prediction task were left behind the one in \ac{nel}, as described in \Cref{sec:incrementalel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
+For this reason we addressed the \nilchallenge, working towards producing a dataset and an evaluation procedure for aiding the research in this field.
 
-Following this line, during my \phd I co-authored \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. \mammotab is not part of this thesis but still addresses a related topic, \acf{sti}---the field that studies interpretation tasks for tabular data, that are linking cells containing entity mentions to the correct entry in a \ac{kr} (similarly to \ac{nel} for text), identifying the types of table columns, and the relations between different columns of the table~\cite{cremaschi2024surveysemanticinterpretationtabular}. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, including NIL-labeled instances. This work has been published in the Proceedings of the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)~\cite{mammotab}, co-located with the 21st International Semantic Web Conference (ISWC 2022).
+Following this line, during my \phd I co-authored \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. \mammotab is not part of this thesis but still addresses a related topic, \acf{sti}---the field that studies interpretation tasks for tabular data, that include linking cells containing entity mentions to the correct entry in a \ac{kr} (similarly to \ac{nel} for text), identifying the types of table columns, and the relations between different columns of the table~\cite{cremaschi2024surveysemanticinterpretationtabular}. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, including NIL-labeled instances. This work has been published in the Proceedings of the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)~\cite{mammotab}.
 
-Adapting and evaluating existing techniques for \acl{inel} is part of the \ref{ob:extraction_assessment}, which aims at assessing the feasibility of using existing approaches in the legal domain, since the \nilchallenge is relevant for this domain.
+Adapting and evaluating existing techniques for \acl{inel} is part of the \ref{ob:extraction_assessment}, which aims at assessing the feasibility of using existing approaches in the legal domain, for which the \nilchallenge is important.
 The contributions to \acl{inel} are described in the next sections and can be summarized as follows.
 \begin{enumerate}
     \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
@@ -26,7 +26,7 @@ The contributions to \acl{inel} are described in the next sections and can be su
 
 \todo{dire che non facciamo ner e perche?}
 
-The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt a \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges (\Cref{sec:ijckg:experiments}).\todo{divide exp and discussion?}
+The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges (\Cref{sec:ijckg:experiments}).\todo{divide exp and discussion?}
 
 \subsection{A Baseline Pipeline for Incremental Entity Linking}
 \label{sec:ijckg:pipeline}
@@ -224,23 +224,148 @@ The evaluation procedure for the \ac{inel} task should measure both the overall 
 %
 Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
 
-\subsubsection{Evaluation Measures} \label{sec:evaluation2}
+\subsubsection{Evaluation Measures} \label{sec:inel_metrics}
 
-Evaluating an incremental pipeline is more complex than evaluating a single model, since errors propagate both through the pipeline and across time (\ie batches).
-%
-First, we define measures for the overall \ac{inel} pipeline:  
+Evaluating an incremental pipeline is more complex than evaluating a single model, 
+since errors propagate both through the pipeline and across time (i.e., batches).
+First, we define measures for the overall \ac{inel} pipeline:
 
 \begin{enumerate}[leftmargin=*, label=(\alph*), ref=(\alph*)]
-    \item \textbf{Link to \ac{bgkr}:} accuracy for mentions that should be linked to the \ac{bgkr};
-    \item \textbf{NIL:} accuracy for mentions that should be classified as NIL;
-    \item \textbf{Link to \ac{newkr}:} accuracy for mentions that should be linked to the \ac{newkr};
-    \item \textbf{Overall Accuracy:} accuracy across all mentions.
+
+\item \textbf{Link to \ac{bgkr}:} accuracy for mentions that should be linked to the \ac{bgkr}:
+\begin{equation}
+\text{Acc}_{\text{BGKR}} =
+\frac{TP_{\text{BGKR}}}{N_{\text{BGKR}}}
+\end{equation}
+where $TP_{\text{BGKR}}$ is the number of mentions correctly linked to the \ac{bgkr}, 
+and $N_{\text{BGKR}}$ is the total number of mentions whose gold target is in the \ac{bgkr}.
+
+\item \textbf{NIL:} accuracy for mentions that should be classified as NIL:
+\begin{equation}
+\text{Acc}_{\text{NIL}} =
+\frac{TP_{\text{NIL}}}{N_{\text{NIL}}}
+\end{equation}
+where $TP_{\text{NIL}}$ is the number of mentions correctly predicted as NIL, 
+and $N_{\text{NIL}}$ is the number of mentions whose gold label is NIL.
+
+\item \textbf{Link to \ac{newkr}:} accuracy for mentions linked to the \ac{newkr}:
+\begin{equation}
+\text{Acc}_{\text{NEWKR}} =
+\frac{TP_{\text{NEWKR}}}{N_{\text{NEWKR}}}
+\end{equation}
+where $TP_{\text{NEWKR}}$ is the number of mentions correctly linked to entities previously added to the \ac{newkr},
+and $N_{\text{NEWKR}}$ is the corresponding gold count.
+
+\item \textbf{Overall Accuracy:} accuracy across all mentions:
+\begin{equation}
+\text{Acc}_{\text{overall}} =
+\frac{TP_{\text{BGKR}} + TP_{\text{NIL}} + TP_{\text{NEWKR}}}
+     {N_{\text{BGKR}} + N_{\text{NIL}} + N_{\text{NEWKR}}}.
+\end{equation}
+
 \end{enumerate}
 
-Secondly, to understand how each component of the pipeline performs on its specific task, we also evaluate the modules separately. In particular, for the \ac{nel} module, we measure Recall@1\todo{dire che in el accuracy e recall@1 coinciding?}. For the NIL predictor, we compute precision, recall, and F$_1$-score for the NIL class. Finally, for NIL clustering, following the co-reference evaluation methodology~\cite{streaming_crossdoc_coreference}, we calculate precision, recall, and F$_1$ for MUC, B$^3$, and CEAF$_e$, also reporting the average F$_1$ score.\todo{spiegare queste metriche? dove? in sota?}
+Secondly, to understand how each component of the pipeline performs on its specific task, 
+we also evaluate the modules separately.
+
+\paragraph{Entity Linking (NEL)}
+For the \ac{nel} module we report Recall@1, as in \textcite{blink}, which 
+counts a prediction as correct when the top-ranked entity matches the reference one. Formally:
+\begin{equation}
+\text{Recall@1} = 
+\frac{\#\{\text{mentions with correct top prediction}\}}
+     {\#\{\text{all linked mentions}\}}.
+\end{equation}
+
+\paragraph{NIL Prediction}
+For NIL prediction, modeled as a binary classification, we compute precision, recall and $F_1$ on the NIL class:
+\begin{equation}
+\text{Precision}_{\text{NIL}} = 
+\frac{TP_{\text{NIL}}}{TP_{\text{NIL}} + FP_{\text{NIL}}}, \qquad
+\text{Recall}_{\text{NIL}} =
+\frac{TP_{\text{NIL}}}{TP_{\text{NIL}} + FN_{\text{NIL}}}.
+\end{equation}
+\begin{equation}
+F_{1,\text{NIL}} =
+\frac{2 \cdot \text{Precision}_{\text{NIL}} \cdot \text{Recall}_{\text{NIL}}}
+{\text{Precision}_{\text{NIL}} + \text{Recall}_{\text{NIL}}}.
+\end{equation}
+
+% \paragraph{NIL Clustering}
+% For NIL clustering we follow the standard coreference resolution evaluation methodology~\cite{streaming_crossdoc_coreference} and compute 
+% MUC, B$^3$, and CEAF$_e$ precision, recall and $F_1$, as well as the macro-averaged of the $F_1$ scores. These metrics capture complementary 
+% aspects of cluster quality: (i) MUC measures how many reference links between mentions are recovered; 
+% (ii) B$^3$ evaluates correctness at mention level via cluster overlap; 
+% (iii) CEAF$_e$ finds the best one-to-one alignment between predicted clusters and reference clusters 
+% and scores their overlap.
+
+% We finally report the average $F_1$ across the three metrics:
+% \begin{equation}
+% F_{1,\text{avg}} =
+% \frac{F_{1,\text{MUC}} + F_{1,\text{B}^3} + F_{1,\text{CEAF}_e}}{3}.
+% \end{equation}
+\paragraph{NIL Clustering}
+For NIL clustering we follow the standard co-reference evaluation formulation
+of MUC~\cite{vilain1995}, B$^3$~\cite{bagga-baldwin-1998}, 
+and CEAF$_e$~\cite{luo2005coreference}, as in \textcite{streaming_crossdoc_coreference}.  
+Let $K=\{k_i\}$ be the set of annotated clusters and $R=\{r_j\}$ the set of predicted clusters. 
+
+\medskip
+\noindent\textbf{MUC}~\cite{vilain1995} measures link recovery:
+\begin{equation}
+\text{Recall}_{\text{MUC}} =
+\frac{\sum_{k_i \in K} \left( |k_i| - |p(k_i)| \right)}
+     {\sum_{k_i \in K} \left( |k_i| - 1 \right)}, \qquad
+\text{Precision}_{\text{MUC}} =
+\frac{\sum_{r_j \in R} \left( |r_j| - |p(r_j)| \right)}
+     {\sum_{r_j \in R} \left( |r_j| - 1 \right)} ,
+\end{equation}
+where $p(k_i)$ is the set of partitions obtained by intersecting $k_i$ with $R$ (and symmetrically for $p(r_j)$).
+
+\medskip
+\noindent\textbf{B$^3$}~\cite{bagga-baldwin-1998} evaluates mention-wise overlap:
+\begin{equation}
+\text{Recall}_{\text{B}^3} =
+\frac{
+\sum_{k_i \in K} \sum_{r_j \in R} \frac{|k_i \cap r_j|^2}{|k_i|}
+}{
+\sum_{k_i \in K} |k_i|
+}, \qquad
+\text{Precision}_{\text{B}^3} =
+\frac{
+\sum_{k_i \in K} \sum_{r_j \in R} \frac{|k_i \cap r_j|^2}{|r_j|}
+}{
+\sum_{r_j \in R} |r_j|
+}.
+\end{equation}
+
+\noindent\textbf{CEAF$_e$}~\cite{luo2005coreference} aligns clusters one-to-one by maximizing a similarity $\phi$.  
+We use the entity-based similarity $\phi_e(k_i,r_j)= \frac{2\,|k_i\cap r_j|}{|k_i|+|r_j|}$. Let $g^*$ be the optimal
+one-to-one mapping of clusters (maximizing $\sum \phi$), and let $K^*$ be the subset of annotated clusters
+that participate in this optimal mapping:
+\begin{equation}
+\Phi = \sum_{k_i \in K^*} \phi_e(k_i, g^*(k_i)).
+\end{equation}
+Then:
+\begin{equation}
+\text{Recall}_{\text{CEAF}_e} =
+\frac{\Phi}{\sum_{k_i \in K} \phi_e(k_i,k_i)}, \qquad
+\text{Precision}_{\text{CEAF}_e} =
+\frac{\Phi}{\sum_{r_j \in R} \phi_e(r_j,r_j)}.
+\end{equation}
 
 
-Note that the handling of a mention $m$ referring to an entity $e$ previously added to the \ac{newkr} is considered correct only if it consist linking $m$ to $e$, while labeling $m$ as NIL is considered an error. This ensures that the system does not achieve artificially high scores by treating every mention as a new entity.\todo{rimuovere?}
+\medskip
+Finally, the $F_1$ scores are calculated with the harmonic mean, as for NIL prediction, and we calculate the macro average of the $F_1s$:
+\begin{equation}
+F_{1,\text{avg}} =
+\frac{F_{1,\text{MUC}} + F_{1,\text{B}^3} + F_{1,\text{CEAF}_e}}{3}.
+\end{equation}
+
+
+
+
+Note that the handling of a mention $m$ referring to an entity $e$ previously added to the \ac{newkr} is considered correct only if it consists of linking $m$ to $e$, while labeling $m$ as NIL is considered an error. This ensures that the system does not achieve artificially high scores by treating every mention as a new entity.
 
 NIL prediction outcomes can also mitigate \ac{nel} errors. If the linking is incorrect, the NIL predictor should ideally classify the mention as NIL because the suggested entity is wrong---even if the correct entity exists in the \ac{bgkr}\todo{force the nil assumption}. Conversely, if the NIL predictor fails to classify a new entity as NIL, it is considered an error.
 
@@ -249,7 +374,7 @@ Finally, if a false positive in NIL prediction creates a new entity while the co
 \subsection{Experiments}
 \label{sec:ijckg:experiments}
 
-To enable comparison with other models, we tested our baselines using two experiments. The first experiment evaluates the models on the entire unbatched test set in a \emph{single pass} ($\varnothing$), performing only one step of clustering. The second experiment conducts an incremental evaluation over the 10 batches of the test set, which is the main focus of this work and simulates the arrival of new documents to the pipeline. Note that the evaluation procedures differ between the two experiments because NIL clustering adds novel entities to the \ac{newkr} that can be linked in subsequent batches.
+To enable comparison with other models, we tested our baselines using two experiments. The first experiment evaluates the models on the entire unbatched test set in a \emph{single pass} ($\varnothing$), performing only one step of clustering. The second experiment conducts an incremental evaluation over the 10 batches of the test set, which is the main focus of this section and simulates the arrival of new documents to the pipeline. Note that the evaluation procedures differ between the two experiments because NIL clustering adds novel entities to the \ac{newkr} that can be linked in subsequent batches.
 
 The first experiment serves two purposes: it provides results comparable to those reported in the literature, and it allows us to estimate the performance drop introduced by the incremental procedure. We evaluated the three baselines, which differ in their clustering approach, using both experimental setups. In \Cref{tab:superresults}, we report only the NIL clustering performance for all baselines, while the remaining metrics are obtained using the top-performing clustering approach (3-step).
 
@@ -286,7 +411,7 @@ In order to investigate which component of the pipeline has a stronger contribut
 % Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
 
 The results of the experiments are reported in \Cref{tab:superresults}.
-The performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive with more complex models, such as GENRE~\cite{decao2021autoregressive}, which achieves R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$---on mention--entity pairs unseen at training time---values that are very close to ours (excluding error propagation).
+The performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive with more complex models, such as GENRE~\cite{decao2021autoregressive}, which achieves R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$, on mention--entity pairs unseen at training time, values that are very close to ours (excluding error propagation).
 
 As expected, the observed performance drop is mainly due to error propagation in the incremental procedure rather than to limitations of the \ac{nel} model itself. 
 Indeed, in the ``correct'' experiment, where errors are prevented from propagating, the performance remains stable across batches.
@@ -389,7 +514,7 @@ These errors can be mitigated through a \acl{hitl} validation process, where a u
 
 
 
-\subsection{Discussion: Challenges in Incremental Entity Extraction} \label{sec:futures}
+\subsection{Discussion and Challenges in Incremental Entity Linking} \label{sec:futures}
 % hitl
 
 
@@ -426,21 +551,7 @@ Another open problem concerns when to update the \ac{kr}. In the current setup, 
 Balancing the need for informative representations with the challenge of handling rare entities remains an interesting avenue for further research.
 
 
-\subsection{Conclusion}
-\todo{remove and put conclusion at the end of chapter}
-In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
-%&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
-
-% The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
-Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, \ie entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
-Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
-%A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
-%, obtaining worse and worse performance.
-% We presented our work as a strong baseline for the task of Incremental \ac{nel} (I\ac{nel}), providing a modification of a ``static'' dataset~\cite{Onoe_Durrett_2020} with a canonical order for data ingestion.
-Indeed, the performance of the \ac{nel} component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental \ac{nel} is NIL prediction.      
-%used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
-
-\todo{future works removed}
+% \todo{future works removed}
 % Future works include the application of our methodology to generate incremental versions of more datasets. In addition, we plan to elaborate on methods to address the main challenges found in I-\ac{nel}, especially in relation to the management of novel entities (NIL prediction and NIL mention representation).  
 % %, and deeper studies to improve novel entities representation.
 % % and additional studies on when to add a new entity to the KB.

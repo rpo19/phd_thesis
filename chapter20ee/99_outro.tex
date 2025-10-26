@@ -1,2 +1,18 @@
 \section{Conclusion}
 \todo{merge the other conclusions}
+
+
+
+\subsection{Conclusion IJCKG}
+\todo{remove and put conclusion at the end of chapter}
+In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providing both a dataset and a simple pipeline, both as baseline and as a workbench to identify critical components.
+%&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
+
+% The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
+Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, \ie entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
+Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
+%A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
+%, obtaining worse and worse performance.
+% We presented our work as a strong baseline for the task of Incremental \ac{nel} (I\ac{nel}), providing a modification of a ``static'' dataset~\cite{Onoe_Durrett_2020} with a canonical order for data ingestion.
+Indeed, the performance of the \ac{nel} component~\cite{blink} is reasonably good at the beginning but worsen over time. Another component that must be improved to deliver robust incremental \ac{nel} is NIL prediction.      
+%used in our baseline pipeline has good initial performance but , behaves worse due to error propagation, showing the difficulty of the tasks of novel entities recognition and representation.
