@@ -1,9 +1,9 @@
-\subsection{Named Entity Linking}
+\subsection{Entity Linking}
 \label{sec:rw:nel}
-\todo{say something about multilingual since I worked in italian}
+% \todo{say something about multilingual since I worked in italian}
 \begin{definition}
-    [Named Entity Linking (NEL)]
-    \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or \ac{kb}~\cite{entityorientedsearch2018balog,jr3}.
+    [Entity Linking (\acs{nel})]
+    \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or a \ac{kb}~\cite{entityorientedsearch2018balog,jm3}.
 \end{definition}
 
 \begin{figure}[htbp]
@@ -47,61 +47,59 @@ and even those tickets for the race at the %
 \label{fig:extracts-nel-new}
 \end{figure}
 
-An example of \ac{nel} applied the fictional legal judgement and chat is available in \Cref{fig:extracts-nel-new}. 
+An example of \ac{nel} applied the illustrative legal judgment and chat is available in \Cref{fig:extracts-nel-new}. 
 
 
 
-While \ac{ner} identifies spans of text that correspond to named entities (\eg ``Barack Obama''), \ac{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \ac{kr} (\eg the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity. For example, in the first case, the mention ``Lisbon'' may refer to Lisbon, Capital of Portugal\footnote{\url{https://www.wikidata.org/entity/Q597}} or to the movie Lisbon (1956 film)\footnote{\url{https://www.wikidata.org/entity/Q3203631}}. Furthermore, ambiguity can arise also for entities with the same type, such as Lisbon, Connecticut\footnote{\url{https://en.wikipedia.org/wiki/Lisbon,_Connecticut}}, or the other cities named ``Lisbon''\footnote{\url{https://en.wikipedia.org/wiki/Lisbon_(disambiguation)}}.
-In the second case, the mentions ``Barack Obama'' and ``President Obama'' should both be linked to the entity Barack Obama, Former US President\footnote{\url{https://www.wikidata.org/entity/Q76}}.
+While \ac{ner} identifies spans of text that correspond to named entities (\eg ``Barack Obama''), \ac{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \ac{kr} (\eg the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This \acl{kg} process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity.
 
-Similarly to \ac{ner}, it is part of \ac{ie}, contributing to \acl{sta}, \acl{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \ac{kr} allows to create clickable hyperlinks that let users browse directly to entity pages (\eg Wikipedia or Wikidata).
+For example, in the first case, the mention ``Lisbon'' may refer to Lisbon, Capital of Portugal\footnote{\url{https://www.wikidata.org/entity/Q597}} or to the movie Lisbon (1956 film)\footnote{\url{https://www.wikidata.org/entity/Q3203631}}. Furthermore, ambiguity can arise also for entities with the same type, such as Lisbon, Connecticut\footnote{\url{https://en.wikipedia.org/wiki/Lisbon,_Connecticut}}, or the other cities named ``Lisbon''\footnote{\url{https://en.wikipedia.org/wiki/Lisbon_(disambiguation)}}.
+
+While, in the second case, the mentions ``Barack Obama'' and ``President Obama'' should both be linked to the entity Barack Obama, Former US President\footnote{\url{https://www.wikidata.org/entity/Q76}}.
+
+Similarly to \ac{ner}, \acl{nel} is part of \ac{ie}, contributing to \acl{sta}, \acl{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \ac{kr} allows to create clickable hyperlinks that let users browse directly to entity pages (\eg Wikipedia or Wikidata).
 Furthermore, in entity-based search applications, \ac{nel} enables more powerful facets and filters based on the entries in the \ac{kb} instead of on the mention surface forms.
 
-\ac{nel} is also applied in \acl{qa} and \acl{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \ac{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
-\todo{also ner is probably useful for ir}
+\ac{nel} is also applied in \acl{qa} and \acf{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \acl{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
 
-\todo{check if compliant with kb definition}
-Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kr} $KR = \{e_1, e_2, \ldots\}$ containing entities, a \ac{nel} system produces a mapping:
+Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kr} $\mathrm{KR} = \{e_1, e_2, \ldots\}$ containing entities, a \ac{nel} system produces a mapping:
 \begin{equation}
-f: M \to KR \cup \{\texttt{NIL}\},
+f: M \to \mathrm{KR} \cup \{\texttt{NIL}\},
 \end{equation}
 where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr}.  
 For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Giovanni Bianchi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
 
-Traditionally, \ac{nel} have been addressed by decomposing the task into two main steps~\cite{entity_linking_with_kb_2015}:
+Traditionally, \ac{nel} have been addressed by decomposing the task in two main steps~\cite{entity_linking_with_kb_2015}:
 \begin{enumerate}
-    \item \emph{candidate generation}: retrieving a limited (\eg 100~\cite{blink}) set of possible entities from the \ac{kb} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
-    \item \emph{candidate ranking}: ranking, or re-ranking if a preliminary ranking is available~\cite{blink}, the candidate entities to select the best match. This step can be performed with powerful but resource-intensive methods that are prohibitive to apply to the entire \ac{kb}~\cite{blink}.
+    \item \emph{Candidate generation}: retrieving a limited (\eg 100~\cite{blink}) set of possible entities from the \ac{kb} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
+    \item \emph{Candidate ranking}: ranking, or re-ranking if a preliminary ranking is available~\cite{blink}, the candidate entities to select the best match. This step can be performed with powerful but resource-intensive methods that are prohibitive to apply to the entire \ac{kb}~\cite{blink}.
 \end{enumerate}
 
 Pre-deep learning approaches for \ac{nel} relied on dictionaries, acronym expansion, or Web search engines for the candidate retrieval phase~\cite{entity_linking_with_kb_2015}.
-For instance, dictionaries can be created from Wikipedia, leveraging redirect and disambiguation pages, that---respectively---can be used for entities aliases, to obtain a list of the entities sharing the same name~\cite{entity_linking_with_kb_2015}.
+For instance, dictionaries can be created from Wikipedia, leveraging redirect and disambiguation pages, that---respectively---can be used for entities aliases and to obtain a list of the entities sharing the same name~\cite{entity_linking_with_kb_2015}.
 The expansion of acronyms served to augment the mention surface form for matching with dictionaries or search engines~\cite{entity_linking_with_kb_2015}. For example, the mention ``PSG'' can be expanded to ``Paris Saint-Germain'' to facilitate linking to the corresponding entity in a \ac{kb}. Web search engines, such as Google (filtering for Wikipedia pages only) or the Wikipedia search engine, have been used to retrieve candidate entities by querying them with the mention in the context and using the top-ranked resulting pages as candidate entities~\cite{entity_linking_with_kb_2015}.
 
 For the ranking step, instead, both supervised and unsupervised methods have been used, either considering the mentions to link as independent or jointly disambiguating mentions in a document to exploit coherence among them~\cite{entity_linking_with_kb_2015}. These methods used a variety of features, including string similarity between the mention and entity names, entity popularity (\eg \texttt{Lisbon (1956 film)} is less popular than \texttt{Lisbon, Capital of Portugal}), the consistency of the entity types with the \ac{ner} labels, the textual context, or measures of coherence among entities linked in the same document~\cite{entity_linking_with_kb_2015}.
 
 Some approaches treated \ac{nel} as a binary classification problem, where each candidate entity is classified as correct or incorrect for a given mention~\cite{entity_linking_with_kb_2015}. Other methods ranked candidates using learning-to-rank algorithm or by calculating mention-entity similarities using training-free vector representations~\cite{entity_linking_with_kb_2015}. To jointly link multiple entities exploiting coherence, probabilistic graphical models and graph-based methods have been employed~\cite{entity_linking_with_kb_2015}.
-\todo{better to add also citing lists of approaches from the survey}
+% \todo{better to add also citing lists of approaches from the survey}
 
-\ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training. The extension of \ac{nel} to generalize to entities unseen at training-time---for instance, by learning to represent new entities given a brief textual description~\cite{logeswaran-etal-2019-zero,blink}---is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero}.
+\ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training.
 
-Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end2end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
+Extending \ac{nel} to handle entities unseen at training time is crucial for the \nilchallenge and incremental \ac{el}, where NIL entities are later added to the \ac{kr}. This setting is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero} and can be addressed, for example, by learning to represent new entities from brief textual descriptions~\cite{logeswaran-etal-2019-zero,blink}.
 
-With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, such as TransE~\cite{transe_2013}.\todo{describe briefly here or before}
+Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
+
+With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, which represent entities and relations in a vector space preserving the \ac{kg} structure~\cite{kge_survey_2017}.
 Other models, instead, propose the use of entity typing information for \ac{nel}~\cite{gupta-etal-2017-entity,khalife-vazirgiannis-2019-scalable,Raiman_Raiman_2018,Onoe_Durrett_2020,Heist2023nastylinker}, with some using the dense embeddings also at retrieval time with efficient \acf{ann} search methods~\cite{gillick-etal-2019-learning,blink}.
 
-\todo{biencoder crossencoder paradigm. formalization probabilistic. dot-product and learning /loss function}
-\todo{describe blink and how it works (mlm), also genre clm}
-\todo{genre, genie, extend, constrained, llms}
-\todo{continue and add recent trends and llms}
-\todo{add recent advancements: refined, genie?, genre, rexel, amazon paper..., bela}
 
 A notable architecture is composed of a bi-encoder and a cross-encoder~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
 
 The \emph{bi-encoder} independently encodes the mention (in context) and each candidate entity (\eg using title and a brief textual description) into dense embeddings~\cite{blink,Humeau2020Poly-encoders}. A similarity measure between mention and entity can be computed using dot-product or cosine similarity over the vectors.
-This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via \ac{ann} search algorithms, such as HNSW~\cite{hnsw_2020}, whose retrieval times scales logarithmically with respect to the \ac{kr} size.
+This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via \acf{ann} search algorithms, such as HNSW~\cite{hnsw_2020}, whose retrieval times scales logarithmically with respect to the \ac{kr} size.
 
-The \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
+On the other hand, the \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
 
 \begin{figure}[t]
     \centering
@@ -114,7 +112,6 @@ The \emph{cross-encoder} jointly encodes the mention and a candidate entity, for
 
 \Cref{fig:bi-cross-encoders} exemplifies the functioning of the bi-encoder and cross-encoder architectures.
 
-\todo{training formulas}
 Formally, the bi-encoder is composed of two networks, one for encoding mentions $T_m$, and one for encoding entities $T_e$. When using a transformer like BERT~\cite{devlin-etal-2019-bert}, as in \textcite{blink}, the output consists of a vector for each input token and requires a $red(.)$ function to reduce it to a single embedding for the entire input~\cite{blink,Humeau2020Poly-encoders}. Example functions are averaging the output embeddings or considering the embedding from the \texttt{CLS} token~\cite{Humeau2020Poly-encoders}, \ie a special token whose representation from the last layer is used as an aggregate representation of the entire input sentence~\cite{devlin-etal-2019-bert}.
 Thus, the mention and entity embeddings are obtained as follows.
 \begin{equation}
@@ -138,7 +135,7 @@ A first matching score from the bi-encoder can be calculated as the similarity b
 s^{bi}_{m,e} = y_m \cdot y_e
 \end{equation}
 
-The bi-encoder networks are trained to maximize the score of the correct mention-entity pair with respect to the remaining entities in the batch~\cite{blink}. The batches can be randomly sampled or created with \emph{hard negatives}, \eg the ten highest scored entities to $m$ that are not the correct entity to which $m$ refers~\cite{blink}. The loss function for a mention-entity pair $(m_i, e_i)$ appears as follows~\cite{blink}:
+The bi-encoder networks are trained to maximize the score of the correct mention-entity pair with respect to the remaining entities in the batch~\cite{blink}. The batches can be randomly sampled or created with \emph{hard negatives}, \eg the ten highest scored entities for linking $m$ that are not the correct entity to which $m$ refers~\cite{blink}. The loss function for a mention-entity pair $(m_i, e_i)$ appears as follows~\cite{blink}:
 \begin{equation}
 \mathcal{L}(m_i, e_i) = -s(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s(m_i, e_j) \big)
 \end{equation}
@@ -150,7 +147,7 @@ In this case, the input is constructed by concatenating the mention context with
 \begin{equation}
     x = \texttt{[CLS]} \; x_m \; \texttt{[SEP]} \; x_e \; \texttt{[SEP]}.
 \end{equation}
-The transformer $T_{ce}$ processes the entire sequence and produces contextualized representations for all tokens, that is transformed in a single representation from the $red(.)$ function.
+The transformer $T_{ce}$ processes the entire sequence and produces contextualized representations for all tokens, that are transformed in a single representation from the $red(.)$ function.
 \begin{equation}
     y_{ce} = red(T_{ce}(x)).
 \end{equation}
@@ -184,12 +181,9 @@ The mention to link is surrounded by the two custom tokens $M_s$ and $M_e$, the 
 Compared to the cross-encoder this formulation passes multiple candidate entities in a single forward pass, reducing the computational costs and allowing both mention-entity and entity-entity interactions.
 However, while the authors use the LongFormer~\cite{beltagy2020longformerlongdocumenttransformer}---a transformer with a modified self-attention mechanism that scales linearly with the input sequence length---this approach is suitable for candidate entity ranking and still prohibitive for candidate entity generation with million-entities \ac{kr}. 
 
-The text-generation modeling~\cite{decao2021autoregressive}, instead, addressed \emph{end-to-end} \ac{nel}, namely the extension of entity linking that jointly detects entity mentions from text (mention detection) and links them to a \ac{kr}~\cite{kolitsas-etal-2018-end}. Given an input text, at each generation the \ac{clm} is allowed to either
-\begin{itemize}
-    \item generate the next token from the input text,
-    \item start an entity mention.
-\end{itemize}
-When inside an entity mention and after generating the mentions tokens, the models performs \ac{nel} by generating an entity title. To ensure the generated titles exists the authors use \emph{constrained generation}---a technique that reduce the search space of a generative model, allowing only certain sequences---bounded to a prefix tree containing Wikipedia entity titles~\cite{decao2021autoregressive}. In this way, previous links, which remaining part of the context windows of the \ac{clm}, can be exploited as contextual information for future links. Furthermore, this approach does not require to store and load in memory a large number of embeddings, saving tens of memory---for instance, \textcite{blink} requires more than 30GB of memory~\cite{decao2021autoregressive}.\todo{constrained generation is expanded later}
+The text-generation modeling~\cite{decao2021autoregressive}, instead, addressed \emph{end-to-end} \ac{nel}, namely the extension of entity linking that jointly detects entity mentions from text (mention detection) and links them to a \ac{kr}~\cite{kolitsas-etal-2018-end}. Given an input text, at each generation the \ac{clm} is allowed to either generate the next token from the input text, or start an entity mention.
+
+When inside an entity mention and after generating the mentions tokens, the models performs \ac{nel} by generating an entity title. To ensure the generated titles exists, the authors use \emph{constrained generation}---a technique that reduce the search space of a generative model, allowing only certain sequences---bounded to a prefix tree containing Wikipedia entity titles~\cite{decao2021autoregressive}. In this way, previous links, which remain part of the context windows of the \ac{clm}, can be exploited as contextual information for future links. Furthermore, this approach does not require storing and loading in memory numerous embeddings, saving tens of gigabytes of memory---for instance, \textcite{blink} requires more than 30 GB of memory~\cite{decao2021autoregressive}.
 
 More recent approaches focus on efficiency for end-to-end \ac{el}, designing models that can recognize and link entities from an input text in a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. For achieving efficient inference, they avoid the re-ranking step with the cross-encoder. Mention detection is performed using the BIO scheme~\cite{ramshaw-marcus-1995-text-bio-scheme} and mention embeddings are obtained by averaging the embeddings of the mention tokens~\cite{ayoola-etal-2022-refined} or by using a feed-forward layer~\cite{plekhanov2023multilingualendendentity}. At this point \ac{nel} is performed---as in the bi-encoder---by calculating (eventually with \ac{ann}) a similarity score between mention and entity embeddings and taking the most similar entities for each mention. 
 Notably, \textcite{ayoola-etal-2022-refined} is also able to perform \emph{NIL prediction}, by including it in its training phase.
@@ -205,13 +199,13 @@ Overall, these approaches improve accuracy~\cite{liu-etal-2024-onenet,ding-etal-
 
 
 
-\todo{chatel has a good overview of llms for ie}
-\todo{llm for ie has a good overview of constrained generation approaches}
+% \todo{chatel has a good overview of llms for ie}
+% \todo{llm for ie has a good overview of constrained generation approaches}
 
-\todo{recent trends, bela, rexel , refined, relik??}
-\todo{rexel at the end as multitask model}
-\todo{nil pred}
-\todo{something on clustering tooo}
+% \todo{recent trends, bela, rexel , refined, relik??}
+% \todo{rexel at the end as multitask model}
+% \todo{nil pred}
+% \todo{something on clustering tooo}
 
 
 
