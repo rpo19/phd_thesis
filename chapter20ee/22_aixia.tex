@@ -1,6 +1,6 @@
 % \section{Contribution III: Named Entity Recognition and Linking for Entity Extraction from Italian Civil Judgements}
-% \section{Adapting Entity Recognition to Italian Civil Judgments}
-\subsection{In-Domain Entity Recognition Adaptation for Italian Civil Judgments}
+% \subsection{In-Domain Entity Recognition Adaptation for Italian Civil Judgments}
+\section[Adapting Entity Recognition to Italian Civil Judgments][Adapting Ent. Rec. to Italian Civil Judgments]{Adapting Entity Recognition to Italian Civil Judgments}
 \label{sec:adaptation}
 
 % \subsection{Italian Civil Court Judgment Corpus and \ac{ner} classes} \label{sez:dataset}
@@ -22,14 +22,15 @@
 
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
 
+After assessing the performance of a general-domain \ac{ee} pipeline on Italian civil judgments (ICCJ146-EE), we study different adaptation strategies to this domain.
 
-Since we employ \spacy~\cite{honnibal2020spacy} models based on transformers and transition-based parsers, we evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pretraining data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
+We consider transformer-based \spacy~\cite{honnibal2020spacy} \ac{ner} models which combines the representations from transformers with transition-based parsers (see \Cref{sec:rw:ner}). We evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pretraining data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
 
-\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pretraining data used for each and the masked language modeling (\acf{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
+\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pretraining data used for each and the masked language modeling (\acs{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
 
 \input{table/backbones}
 
-As a baseline, we use the general-domain \textit{ITA} model, which is available pre-trained on HuggingFace as ``dbmdz/bert-base-italian-xxl-cased''\footnote{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}~\cite{stefan_schweter_2020_4263142}. Additionally, the \textit{ITA+LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT}}~\cite{licari_italian-legal-bert_2022}and \textit{LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT-SC}} models—developed in a subsequent work by the same authors—are also available pre-trained on HuggingFace. For the \textit{ICCJ900k} variants, we perform adaptation using \ac{mlm}.
+As a baseline, we use the general-domain \textit{ITA} model, which is available pre-trained on HuggingFace as ``dbmdz/bert-base-italian-xxl-cased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}}~\cite{stefan_schweter_2020_4263142}. Additionally, the \textit{ITA+LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT}}~\cite{licari_italian-legal-bert_2022}and \textit{LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT-SC}} models---developed in a subsequent work by the same authors---are also available pre-trained on HuggingFace. For the \textit{ICCJ900k} variants, we perform adaptation using \ac{mlm}.
 
 All five configurations are then fine-tuned for \ac{ner} with the \spacy library, employing early stopping on the development set. Optimization is performed using AdamW~\cite{loshchilov2018decoupled} with an initial learning rate of $5 \times 10^{-5}$.
 
@@ -40,7 +41,6 @@ For \ac{ner} fine-tuning, we use the annotated ICCJ146-EE corpus, split into thr
 To reduce bias from random initialization, we train five models per configuration with different random seeds for the \ac{ner} layers (see \Cref{sec:rw:ner}). This results in a total of 25 \ac{ner} fine-tuning experiments.
 
 % \subsubsection{Experimental Evaluation} \label{sez:experiments}
-\todo{adapt with before}
 
 \paragraph{Evaluation Settings and Measures}
 For the evaluation we consider the same experimental settings as in \Cref{sec:judgment_ee_eval}---namely, \textit{Atomic}, \textit{\ac{nel} with NIL prediction} on ground truth \ac{ner}, and \textit{end-to-end}. Additionally, we investigate the performance with different backbone transformers and the impact of different \ac{mlm} adaptation strategies on the \ac{ner} performance.
@@ -59,7 +59,7 @@ We calculate \textit{precision}, \textit{recall}, and \textit{F$_1$-measure}, mi
 We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} of the five initializations for each transformer.
 We identify the top-performing model based on its \textit{F$_1$-measure} and utilize it as the foundation of the \ac{ner} component for subsequent evaluations.
 
-The subsequent evaluations repeat the experiments done in \Cref{sec:judgment_ee_eval} but using the best in-domain fine-tuned \ac{ner} approach. 
+The subsequent evaluations repeat the experiments done in \Cref{sec:judgment_ee_eval} but using the best in-domain fine-tuned \ac{ner} model. 
 It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}. In order, we calculate:
 \begin{itemize}
     \item accuracy and recall@100 for \ac{nel},
@@ -69,7 +69,7 @@ It is important to remind that the \ac{nel} evaluation and the following ones (N
 \end{itemize}
 
 
-\subsection{Adaptation Results and Discussion}
+\subsection{Results and Discussion}
 
 \paragraph{Comparison of backbone transformers}
 Table \ref{tab:result_5seed} shows the results for the comparison of the 5 backbone transformers for \ac{ner}.
@@ -81,7 +81,7 @@ Surprisingly, the findings suggest that employing a domain-specific legal BERT d
 
 \input{table/result_5seed}
 
-\paragraph{\ac{ner}}
+\paragraph{\acl{ner}}
 
 The evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \ac{ner} recognition. The classes \texttt{Money} and \texttt{Person} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \texttt{Miscellaneous} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the MISC class. Additionally, \texttt{Miscellaneous} exhibits the largest disparity between strong matching performance and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \texttt{Organization}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
 
@@ -89,7 +89,7 @@ We also consider the successful results achieved by the \ac{ner} component indic
 
 \input{table/ner4type}
 
-\paragraph{\ac{nel} and NIL Prediction}
+\paragraph{\acl{nel} and NIL Prediction}
 
 Table~\ref{tab:consolidation} reveals that the \ac{nel} and NIL prediction components do not exhibit the same level of effectiveness as the \ac{ner} component. The independent evaluation of the \ac{nel} component ($\ac{nel}_\perp$) demonstrates a lower \textit{accuracy} ($73.52\%$) but achieves a \textit{recall@100} of $90.81\%$, suggesting that the integration of a re-ranking system could potentially enhance our results. Additionally, the comparison with the outcomes obtained with the news-based VoxEL benchmark~\cite{rosales2018voxel} further underscores the challenges presented by the domain. We also remind you that the \ac{nel} component has not been fine-tuned on domain data, and that the utilized knowledge base has not been restricted to domain-related entities. These two factors represent possibilities for enhancing this component.
 
@@ -112,8 +112,3 @@ Furthermore, the difference between strong and partial matching is limited for \
 
 \input{table/overall4type}
 
-\subsection{Conclusion}
-In this paper, we have presented the application of a NEEL pipeline to Italian civil court judgments and an evaluation of its performance.  
-The experimental evaluation conducted on 30 annotated judgments suggests that the performance of our NEEL pipeline is encouraging, especially the performance of the NER component, and emphasizes some remaining challenges. Quite surprisingly, the gap in performance between models that use domain-specific transformers, adapted with masked language modeling, and those that use transformers trained on generic Italian text is quite limited and not statistically significant. The challenges concern especially the NEL and NIL prediction components, which so far we have not customized for or fine-tuned on domain-specific data. Fine-tuning these algorithms using limited data is a challenge that we plan to address in the future. Moreover, we plan to investigate strategies to support human-in-the-loop NEEL, by improving the extraction quality and minimizing the user effort during the annotation and validation phases.
-Finally, a prospective scenario for future development involves jointly performing NEL and NIL prediction within a unified module, as recent research indicates that consolidating multiple pipeline tasks in a single module can significantly reduce error propagation~\cite{kolitsas-etal-2018-end}.
-Despite the remaining challenges, we believe that the evidence discussed in the paper suggests that, with further improvements, end-to-end NEEL pipelines could be effectively applied to court judgments to disclose a variety of downstream applications.

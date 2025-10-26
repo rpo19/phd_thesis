@@ -1,5 +1,5 @@
 % \section{Contribution II: An entity-centric approach to manage court judgments based on Natural Language Processing - Entity Linking for Italian Legal Judgments}
-\section[Ents. Extr. from Italian Judgments]{Entity Extraction from Italian Civil Judgments}
+\section[Entity Extraction from Italian Civil Judgments][EE from Italian Judgments]{Entity Extraction from Italian Civil Judgments}
 % \sectionmark{EE from Italian Judgments}
 \label{sec:eejudgements}
 \todo{maybe integrate commented code here to legal sota or preface}
@@ -242,7 +242,7 @@ We resolve these conflicts as follows:
 % We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for \ac{nel}. % TODO migliorare
 % Provato a scriverla meglio
 % As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
-The knowledge consolidation process comprises three tasks: \ac{inel}, NIL prediction, and NIL clustering.  
+The knowledge consolidation process comprises three tasks: \ac{nel}, NIL prediction, and NIL clustering.  
 The pipeline is adapted from the English version introduced in \textcite{ijckg2022} and detailed in \Cref{sec:ijckg:pipeline}. It consists of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for NIL prediction, and a three-step algorithm for NIL clustering.  
 Although we do not evaluate an incremental scenario with legal documents, we adopt a bi-encoder-based architecture because it supports the representation of new entities---a crucial property for the legal domain.
 
@@ -441,7 +441,7 @@ The hyperparameters for the combination rules were set by prioritizing Trie\ac{n
 % \paragraph{Overall}
 
 
-\subsection{Evaluation Results and Discussion}\label{sec:results}
+\subsection{Results}\label{sec:results}
 \todo{paraphrase}
 
 % \subsubsection{\ac{ner}}
@@ -653,7 +653,7 @@ Finally, \Cref{tab:nereval:withlink} presents the end-to-end evaluation results 
     \label{tab:nereval:withlink}
 \end{table}
 
-\subsubsection{Discussion}
+\subsection{Discussion of the General-Domain Evaluation}
 In the \textit{end-to-end} evaluation, the system achieved an F$_1$ score of 64.0\% (under the \textit{approximate linking} criterion), meaning that more than one mention out of two is correctly processed across \ac{ner}, \ac{nel}, and NIL prediction. Considering the domain’s high specificity, the noisy input, and the absence of in-domain training or fine-tuning, these results represent a promising baseline for entity identification and linking.
 
 The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores\todo{discuss why muc is 100. singleton clusters?}. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial. A possible direction is to tune clustering hyperparameters (\eg thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
@@ -661,16 +661,8 @@ The main weakness lies in the final NIL clustering stage, which obtained low B$^
 
 The NIL prediction component also shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (\eg plaintiffs, defendants, judges, and attorneys) are in fact NIL.
 
-Performance degradation was also observed in \ac{ner} models trained on publicly available datasets, with the only exception of the \texttt{Person} category. As \ac{ner} is the first component in the pipeline, its errors propagate to subsequent stages, amplifying their impact. This underscores the importance of domain-specific fine-tuning for \ac{ner} models—a topic further explored in our previous work~\cite{aixia_2023} and discussed in the next section (\Cref{sec:aixia}).
+Performance degradation was also observed in \ac{ner} models trained on publicly available datasets, with the only exception of the \texttt{Person} category. As \ac{ner} is the first component in the pipeline, its errors propagate to subsequent stages, amplifying their impact. This underscores the importance of domain-specific fine-tuning for \ac{ner} models---a topic further explored in our previous work~\cite{aixia_2023} and discussed in the next section (\Cref{sec:aixia}).
 
 Overall, these findings confirm the feasibility of extracting and semantically consolidating entity mentions from Italian court judgments. The proposed architecture also supports \acl{hitl} revision of automatically generated annotations. The \ac{hitl} process used to construct the labeled dataset allowed us to estimate an average of 30 minutes to fully revise a single judgment, corresponding to approximately 320 judgments per month for one full-time annotator. This estimate provides an upper bound on the cost of human-assisted entity extraction.
 
 
-\subsection{Conclusion}
-\todo{remove and merge at the end}
-In the second part of the paper, we described  experiments to demonstrate the feasibility of the solution and the main challenges to scaling the system at a national level. In particular, the results obtained in annotating data with different low-resource methods and with solutions designed to combine these approaches in a meaningful way were reported. An essential aspect of the proposed solution is a \ac{hitl} approach to control the output of the annotation algorithms in agreement with the organizational processes in place in Italian courts. Based on these results, the feasibility of the proposed approach was advocated and the challenges that must be addressed to ensure the scalability and robustness of the proposed solution were discussed.
-
-% We note that, although our experiments are focused on a national case study, the system can be used to manage legal documents from other countries and in other languages with little changes. Namely, only the Service Systems should be replaced, as they use language-specific models and rules, and the Entity Registry metamodel should be checked, as some codes or conventions used to identify persons, laws and so on may depend on the country.
-% Finally, after a complete revision of the entity types, the system could deal with documents related to other subjects.
-
-We observe that while our experiments are focused on a national case study, the system can be adapted to handle legal documents from different countries and languages with minor adjustments. Specifically, only the Service Systems need replacement, as they employ language-specific models and rules, and the Entity Registry metamodel should be reviewed to accommodate country-specific codes and conventions for identifying persons, laws, etc. Furthermore, after a thorough entity type revision, the system could handle documents related to other subjects.
