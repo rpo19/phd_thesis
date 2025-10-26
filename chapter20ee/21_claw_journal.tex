@@ -99,7 +99,7 @@ Formally, they compare the observed agreement $P_o$ to the expected agreement $P
     (P_o - P_e)/(1 - P_e).
 \end{equation}
 
-However, these measures may not be suitable for complex labeling tasks such as \ac{ner}, providing low interpretability values~\cite{braylan2022measuring}. A problem of these measures for \ac{ner} is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however this would yield overly optimistic IAA value. For example, \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} would be considered as a perfect match and the high number of negatives---i.e., the tokens outside of entity mentions---causes the calculation of the metrics on a very imbalanced data~\cite{deleger2012building}.
+However, these measures may not be suitable for complex labeling tasks such as \ac{ner}, providing low interpretability values~\cite{braylan2022measuring}. A problem of these measures for \ac{ner} is that we deal with text spans, so it is difficult to define a general criterion to identify positive and negative examples to calculate a consistent IAA value~\cite{deleger2012building}. A simple solution to face this problem is to compute the metrics at token-level, however this would yield overly optimistic IAA value. For example, \textit{``\underline{Barack Obama}[PER] was born in Honolulu''} and \textit{``\underline{Barack}[PER] \underline{Obama}[PER] was born in Honolulu''} would be considered as a perfect match and the high number of negatives---\ie the tokens outside of entity mentions---causes the calculation of the metrics on a very imbalanced data~\cite{deleger2012building}.
 
 Also, the aforementioned IAA coefficients differ primarily in how the expected-by-chance term $P_e$ is estimated~\cite{vanOest2019}, with Fleiss'~$\kappa$ and Scott's~$\pi$ being equivalent when considering two annotators, since the former is a generalization of the latter~\cite{HayesKrippendorff2007}. Thus, when there are only two annotators and the category proportions are highly unequal---as is common in \ac{ner}, where most tokens belong to the ``outside-of-entity-mention'' class---both annotators exhibit almost identical marginal label distributions. Consequently, these coefficients tend to converge toward similar values in such settings.
 
@@ -108,7 +108,7 @@ For these reasons, we adopted the \ac{ner} F$_1$ score as the main metric is a m
 The F$_1$ score---calculated with the matching criteria described in \Cref{sec:metrics}---is pair-wisely computed between annotators: for each combination, the labels from an annotator are used as the ground truth to evaluate the labels from another annotator; an average is computed in case of more than two annotators. 
 
 \Cref{tab:iaa} shows all metrics averaged over documents. For completeness, we also report the token-level F$_1$ score for the \textit{strong-typed} match criteria and Scott's~$\pi$, Cohen's~$\kappa$, Fleiss'~$\kappa$, and Krippendorff's~$\alpha$.
-We can see that \textit{strong-typed (instance-level)}, i.e., the strictest metric, reaches 80.8\%, which can be considered satisfactory since it measures perfect matches between annotators. Moreover, by looking at the additional F$_1$ score-based metrics we can see that the values increase as we relax the matching criterion (partial is the least stringent). This proves that even in cases where the labels from the two annotators do not perfectly match, there is still a significant degree of overlap.
+We can see that \textit{strong-typed (instance-level)}, \ie the strictest metric, reaches 80.8\%, which can be considered satisfactory since it measures perfect matches between annotators. Moreover, by looking at the additional F$_1$ score-based metrics we can see that the values increase as we relax the matching criterion (partial is the least stringent). This proves that even in cases where the labels from the two annotators do not perfectly match, there is still a significant degree of overlap.
 These differences between F$_1$ scores---calculated with harder and softer matching criteria---as well as the difference between \textit{instance-level} and \textit{token-level} \textit{strong-typed} measures, also point out that a perfect span selection was the most difficult part for the annotators.
 
 \begin{table}[]
@@ -135,14 +135,14 @@ $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa 
 
 \paragraph{Knowledge Consolidation}
 \todo{speak about knowledge consolidation in inel rw}
-The annotation for the knowledge consolidation process---i.e., \ac{nel}, NIL prediction and clustering---has been performed semi-automatically from the \ac{ner} labels of the 30 documents used to compute the IAA. The guidelines, based on the assumptions in~\cite{jha2017all}, are simpler in this case and be summed up with the following two steps.
+The annotation for the knowledge consolidation process---\ie \ac{nel}, NIL prediction and clustering---has been performed semi-automatically from the \ac{ner} labels of the 30 documents used to compute the IAA. The guidelines, based on the assumptions in~\cite{jha2017all}, are simpler in this case and be summed up with the following two steps.
 
 \begin{enumerate}
     \item If the mention refers to a known entity in the \ac{kr} (Italian Wikipedia and manually added entities) label it with the entity URI and mark the mention as $\neg$NIL.
     \item Otherwise, mark the mention as NIL, create a new entity, and label the mention with the new entity URI. This latter step is necessary to trace which NIL mentions refer to the same unknown entity (NIL clustering). 
 \end{enumerate}
 
-% In addition, other entity-level guidelines (e.g., \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (e.g., a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of \ac{kr} entity) have been defined during the annotation process when particular cases were found. 
+% In addition, other entity-level guidelines (\eg \textit{``Italia''} must be linked to \textit{``\url{https://it.wikipedia.org/wiki/Italia}''} and not to \textit{``\url{https://it.wikipedia.org/wiki/Italia_(regione_geografica)}''}) and type-level guidelines (\eg a NIL entity of type \textit{person} must be labeled \textit{``Name Surname''}, thus linking mentions like \textit{``Mario Rossi''} and \textit{``Rossi Mario''} to the same out of \ac{kr} entity) have been defined during the annotation process when particular cases were found. 
 
 To enhance the efficiency of the annotation procedure an application was developed, incorporating both Wikipedia search API and a fuzzy search mechanism. On average documents required $\approx$15 minutes to be annotated for \ac{nel}, NIL prediction, and NIL clustering. Out of the 3,006 annotated mentions, 467 refer to Wikipedia entities, and 1,753 to NIL entities. The remaining 786 mentions, of class \texttt{Date} and \texttt{Money}, were not assigned to any entity.
 
@@ -217,7 +217,7 @@ Its \ac{ner} module combines CRF-based sequence taggers~\cite{Lafferty2001} with
 
 Trie\ac{ner} relies on a gazetteer efficiently indexed with a prefix tree (trie)~\cite{s-yata-marisa-trie}, following prior work on tree-based \ac{ner}~\cite{Nguyen_tree_ner_2014}.  
 Our gazetteer is built from document metadata: entity labels are tokenized, enriched with all name permutations (for personal names), and inserted into the trie.  
-The algorithm supports partial matches---e.g., detecting ``Smith'' when the full label ``Jane Smith'' exists in the gazetteer.  
+The algorithm supports partial matches---\eg detecting ``Smith'' when the full label ``Jane Smith'' exists in the gazetteer.  
 Unlike standard \ac{ner}, Trie\ac{ner} also provides the link between the matched text and the originating entity (or entities, if shared).  
 This approach leverages metadata fields such as plaintiffs, defendants, and judges to increase the likelihood that these entities are also recognized in the text.
 
@@ -286,7 +286,7 @@ The clustering thresholds are determined through grid search on the same Wikiped
 %Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016neelit}, that is composed of tweets in the Italian language; see \Cref{tab:blink_ita_eval}.
 
 
-% The NIL clustering sub-service is a three-step algorithm~\cite{simone_24}: initially, the mentions are clustered using their surface form (i.e., edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise), then inside each cluster we apply a hierarchical clustering algorithm by using a predefined threshold to split clusters, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
+% The NIL clustering sub-service is a three-step algorithm~\cite{simone_24}: initially, the mentions are clustered using their surface form (\ie edit-distance $\leq 3$ for words longer than 3 characters, perfect match otherwise), then inside each cluster we apply a hierarchical clustering algorithm by using a predefined threshold to split clusters, considering the mentions' dense vectors provided by the bi-encoder that correspond to a semantic representation of the mention.
 % In this way, each cluster from the first step is divided into sub-clusters.
 % Finally, semantically similar sub-clusters are merged together, according to the distance between their medoid vectors.
 
@@ -430,7 +430,7 @@ They respectively represent the ratio of the $\neg$NIL mentions, of the NIL ment
 % \end{figure}
 
 % Each task has been atomically evaluated to avoid error propagation and with the assumption that a \ac{hitl} validated the output from the previous step.
-% Additionally, we provide an evaluation of the entire consolidation pipeline by calculating the accuracy of the system behavior starting from a human-validated \ac{ner} for all the input mentions. We also provide distinct results for the mentions that should be linked both to \ac{kr} and out-of-\ac{kr} (i.e., NIL) entities. \Cref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
+% Additionally, we provide an evaluation of the entire consolidation pipeline by calculating the accuracy of the system behavior starting from a human-validated \ac{ner} for all the input mentions. We also provide distinct results for the mentions that should be linked both to \ac{kr} and out-of-\ac{kr} (\ie NIL) entities. \Cref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
 % Additionally, for the evaluation of the entire consolidation pipeline, independently by the \ac{ner}, we calculate the accuracy of the system behavior for all the input mentions, and separately for the mentions that should be linked to the \ac{kr} and for the ones that should be classified as NIL. \Cref{fig:expected_outcome} shows the expected system behavior of the system given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
 
 Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL prediction, we define two extended criteria: \textit{approximate linking} and \textit{approximate-typed linking}. These criteria consider an annotation correct only if its \ac{ner} boundaries (and \ac{er} type, for typed linking) are correct, it is linked to the correct entity and classified as $\neg$NIL or correctly classified as NIL. For both criteria, we report precision, recall, and F$_1$ score.
@@ -548,7 +548,7 @@ In \Cref{tab:nereval:bytype}, we provide a per-type comparison of the \textit{at
         % WikiNER~\cite{NOTHMAN2013151} & \spacy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
-    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (i.e., $\approx$10) have been predicted.}
+    \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the knowledge base used by Trie\ac{ner}, thus only a few entities of this type (\ie $\approx$10) have been predicted.}
     % TODO Trie\ac{ner}
     \label{tab:nereval:bytype}
 \end{table}
@@ -589,7 +589,7 @@ The results of \spacy and Tint on standard benchmarks confirm the challenging an
 
 % \subsubsection{\ac{nel} (entity linking + NIL Prediction)}
 % \subsubsection{Knowledge consolidation (Entity Linking + NIL prediction + NIL clustering)}
-% (although which corresponds to the percentage of mentions whose correct entity for linking is among the top 100, suggesting that a re-ranking phase (e.g., a cross-encoder \cite{blink}) could be beneficial.
+% (although which corresponds to the percentage of mentions whose correct entity for linking is among the top 100, suggesting that a re-ranking phase (\eg a cross-encoder \cite{blink}) could be beneficial.
 
 The results of the atomic evaluation for the various knowledge consolidation tasks are reported in \Cref{tab:nereval:atomic}. The \ac{nel} module performs satisfactorily, achieving an accuracy of 73.5\% and a recall@100 of 90.8\%, consistent with results obtained on benchmark datasets.
 
@@ -664,10 +664,10 @@ Finally, \Cref{tab:nereval:withlink} presents the end-to-end evaluation results 
 \subsubsection{Discussion}
 In the \textit{end-to-end} evaluation, the system achieved an F$_1$ score of 64.0\% (under the \textit{approximate linking} criterion), meaning that more than one mention out of two is correctly processed across \ac{ner}, \ac{nel}, and NIL prediction. Considering the domain’s high specificity, the noisy input, and the absence of in-domain training or fine-tuning, these results represent a promising baseline for entity identification and linking.
 
-The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores\todo{discuss why muc is 100. singleton clusters?}. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial. A possible direction is to tune clustering hyperparameters (e.g., thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
+The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores\todo{discuss why muc is 100. singleton clusters?}. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial. A possible direction is to tune clustering hyperparameters (\eg thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
 \todo{ricorda perche succedeva. singleton?}
 
-The NIL prediction component also shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (e.g., plaintiffs, defendants, judges, and attorneys) are in fact NIL.
+The NIL prediction component also shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (\eg plaintiffs, defendants, judges, and attorneys) are in fact NIL.
 
 Performance degradation was also observed in \ac{ner} models trained on publicly available datasets, with the only exception of the \texttt{Person} category. As \ac{ner} is the first component in the pipeline, its errors propagate to subsequent stages, amplifying their impact. This underscores the importance of domain-specific fine-tuning for \ac{ner} models—a topic further explored in our previous work~\cite{aixia_2023} and discussed in the next section (\Cref{sec:aixia}).
 

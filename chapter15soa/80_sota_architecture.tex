@@ -39,7 +39,7 @@ Early work by \textcite{amato2008} introduced a document management system for n
 % \paragraph{proper legal data management systems}
 \todo{organizza per mostrare challenge, obiettivi e casi d'uso}
 
-Eunomos~\cite{boella2016eunomos} is a legal data management system that integrates legislative XML---used to represent statutes in a structured and versioned form---with legal ontologies encoding legal concepts and relations (e.g., \emph{replaced-by} for amendments). The platform automatically acquires legislation (e.g., from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
+Eunomos~\cite{boella2016eunomos} is a legal data management system that integrates legislative XML---used to represent statutes in a structured and versioned form---with legal ontologies encoding legal concepts and relations (\eg \emph{replaced-by} for amendments). The platform automatically acquires legislation (\eg from Normattiva), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
 
 \textcite{boella2019semi} extend Eunomos with improved \ac{nlp} services to reduce the manual effort of knowledge population via semi-automatic classification of norms, concept and relation extraction, amendment extraction, and \acl{el} using pattern-matching rules. A web-based \acl{hitl} interface is provided for validating the \ac{el} outputs, and a similar \ac{ui} is envisioned for supporting semi-automatic refinement of amendment extraction.
 
@@ -62,7 +62,7 @@ On the other hand, approaches supporting criminal investigations have targeted i
 \textcite{P_rez_2021} proposed a modular platform for analyzing vast and heterogeneous data---including multimedia content---from multiple sources. Their system is built upon an ontology composed by the entities \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Equipment}, and \texttt{Event}, and adopts a scalable microservices-based architecture~\cite{microservices_2016} that integrates components such as speech-to-text and keyword extraction modules to populate a \ac{kb}. While the architecture is both modular and generalizable, their experiments rely primarily on keyword-based extraction techniques, which provide limited semantic understanding and require manual intervention.
 
 
-\textcite{bellandi2025streamlining} present an evolution of the work in~\textcite{BELLANDI2024}, which constitutes one of the contributions of this \phd. The resulting platform enforces streamlined management and analysis of legal documents (e.g., court decisions, orders) to serve different legal actors through service pipelines. Its architecture is modular and aligns with the principles underlying \ref{ob:architecture}: a text-processing layer handles ingestion, storage (ElasticSearch for texts/metadata, SQL for annotations), and basic NLP pre-processing, while a dedicated NLP layer performs \ac{ner}, \ac{nel}, and concept extraction. A graph database is used as an entity registry, exposed through dedicated APIs. Pipelines are orchestrated through a Kafka-based mechanism and expose all services through standard APIs. The platform supports entity-based analytics (e.g., entity distributions, paths between entities across documents) and concept-based document exploration, enabling navigation, search, and statistics over the corpus using extracted entities and concepts. Front-end modules provide \acp{ui} for exploration and analytics, extending the interfaces in~\textcite{BELLANDI2024}. Overall, the work focuses on operationalizing document--annotation--entity principles through an extensible pipeline architecture, rather than proposing a standalone theoretical model.
+\textcite{bellandi2025streamlining} present an evolution of the work in~\textcite{BELLANDI2024}, which constitutes one of the contributions of this \phd. The resulting platform enforces streamlined management and analysis of legal documents (\eg court decisions, orders) to serve different legal actors through service pipelines. Its architecture is modular and aligns with the principles underlying \ref{ob:architecture}: a text-processing layer handles ingestion, storage (ElasticSearch for texts/metadata, SQL for annotations), and basic NLP pre-processing, while a dedicated NLP layer performs \ac{ner}, \ac{nel}, and concept extraction. A graph database is used as an entity registry, exposed through dedicated APIs. Pipelines are orchestrated through a Kafka-based mechanism and expose all services through standard APIs. The platform supports entity-based analytics (\eg entity distributions, paths between entities across documents) and concept-based document exploration, enabling navigation, search, and statistics over the corpus using extracted entities and concepts. Front-end modules provide \acp{ui} for exploration and analytics, extending the interfaces in~\textcite{BELLANDI2024}. Overall, the work focuses on operationalizing document--annotation--entity principles through an extensible pipeline architecture, rather than proposing a standalone theoretical model.
 
 More recent systems incorporate \ac{nlp} and \acp{llm}. \emph{LegalAsst}~\cite{HAN2024121052legalasst} integrates entity recognition, anonymization, and a dedicated visualization \ac{ui} that displays graph-based representations of trial facts and decision-tree summaries of judicial reasoning to assist judges. The system is designed to be extensible, traceable, and controllable via interactive human correction, while retaining explainability through the explicit visualization of the inferred decision path.
 
@@ -84,11 +84,11 @@ More recent systems incorporate \ac{nlp} and \acp{llm}. \emph{LegalAsst}~\cite{H
 
 % The IDJ platform provides a text processing mod-
 % ule, implementing basic services for document processing
-% typically used at ingestion time (e.g., text/metadata storage,
+% typically used at ingestion time (\eg text/metadata storage,
 % tokenization, full-text search), and a NLP module, imple-
 % menting advanced natural language processing services,
 % used for knowledge extraction from ingested documents
-% (e.g., named entity extraction, named entity linking, concept
+% (\eg named entity extraction, named entity linking, concept
 % extraction). End-user analytics and exploration processes
 % over legal documents are realized by service pipelines that
 % accomplish the process goal through the interoperation of
@@ -161,7 +161,7 @@ More recent systems incorporate \ac{nlp} and \acp{llm}. \emph{LegalAsst}~\cite{H
 % document has text and metadata (key value)
 % document has sections and chunks
 
-% entities has type and features. information that allows to distinguish/identify an entity is called key and depende on the type (e.g., fiscal code for person)
+% entities has type and features. information that allows to distinguish/identify an entity is called key and depende on the type (\eg fiscal code for person)
 
 % graph-based concept exploration
 
@@ -190,7 +190,7 @@ More recent systems incorporate \ac{nlp} and \acp{llm}. \emph{LegalAsst}~\cite{H
 % The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
 
 
-% \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, i.e., the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
+% \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, \ie the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
 % \todo{adele}
 % \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
@@ -207,7 +207,7 @@ More recent systems incorporate \ac{nlp} and \acp{llm}. \emph{LegalAsst}~\cite{H
 % \paragraph{other more specific legal systems}
 
 
-% % \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, i.e., the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
+% % \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, \ie the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
 % \todo{adele}
 % \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}

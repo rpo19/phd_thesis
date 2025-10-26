@@ -2,8 +2,8 @@
 \label{back:entities}
 
 ``An entity is an object or concept in the real world that can be distinctly identified''~\cite{entityorientedsearch2018balog}.
-Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, i.e., entities that can be identified by a proper noun.
-In practice, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (e.g., ``June 20, 2025''), monetary values (e.g., ``100\,\$''), quantities (e.g., ``5 kilograms''), or other abstract objects (e.g., gravity, emotion)~\cite{muc6_overview_1995}.
+Typical examples of entities include ``John Smith'', ``Google Inc.'', ``Rome'', which correspond to a person, an organization, and a location, respectively. These are all \emph{named entities}, \ie entities that can be identified by a proper noun.
+In practice, however, \acl{nlp} tools also recognize more general \emph{concepts}, such as dates (\eg ``June 20, 2025''), monetary values (\eg ``100\,\$''), quantities (\eg ``5 kilograms''), or other abstract objects (\eg gravity, emotion)~\cite{muc6_overview_1995}.
 This occurs because, at the implementation level, the same methods can detect both named entities and concepts~\cite{entityorientedsearch2018balog}. Modern natural language toolkits, such as \spacy~\cite{honnibal2020spacy}, flair~\cite{akbik2019flair}, or Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, provide models capable of extracting both types of entities~\cite{spacy-ner-labels,flair-ner-ontonotes,stanfordnlp-ner}. For this reason, throughout this thesis, we use the term \emph{entity} to refer to both named entities and concepts, as formalized in the following definition, adapted from the formalization by \textcite{entityorientedsearch2018balog}:
 \begin{definition}[Entity]
 An \emph{entity} is a uniquely identifiable object, thing, or concept. 
@@ -25,7 +25,7 @@ Entities can be stored and maintained in a \emph{\acl{kr}} or a \emph{\acl{kb}}~
 A \acf{kr} is a structured or semi-structured collection of entities~\cite{entityorientedsearch2018balog}.
 \end{definition}
 
-Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (e.g., Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack\_Obama}}) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
+Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (\eg Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack\_Obama}}) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
 
 While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \Acl{sw} community has been working to extend the \acs{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, \acfp{iri}~\cite{durst2005iri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
@@ -124,7 +124,7 @@ Semi-structured \aclp{kr}, positioned between structured \acp{kb} and unstructur
 
 
 
-\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, e.g., the US president needs to be updated periodically, people can change residency, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up-to-date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018balog}.
+\Ac{kb} incompleteness also derives from the constant changes intrinsic to the information, \eg the US president needs to be updated periodically, people can change residency, and novel information is constantly produced, for instance, a new movie just announced. Keeping a \ac{kb} up-to-date demands ongoing effort from editors and content managers~\cite{entityorientedsearch2018balog}.
 
 While not enforced by definition, real-world \acp{kb} (such as Wikidata~\cite{wikidata,vrandevcic2014wikidata}) and unstructured \acp{kr} (such as Wikipedia~\cite{wikipedia}) support \emph{CRUD} operations (Create, Read, Update, Delete)~\cite{elmasri2014fundamentals} to enable their maintenance over time~\cite{shafee2023ten_rules_editing_wikidata}. These operations are also defined in the SPARQL/Update language~\cite{seaborne2008sparqlupdate}.
 

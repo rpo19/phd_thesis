@@ -1,4 +1,4 @@
-\subsection{Incremental Entity Linking}
+\subsection{NIL Prediction and Clustering}
 \label{sec:incrementalel}
 \todo{add ijckg picture fox explaining incremental??}
 \todo{maybe join with clustering}
@@ -9,7 +9,7 @@ As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb}\todo{ensure a
 The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where \emph{NIL} may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 
 \begin{definition}[NIL Prediction]
-    Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ refers to an entity that does not exist in the \ac{kr}, i.e., a \emph{NIL entity}~\cite{entity_linking_with_kb_2015}. 
+    Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ refers to an entity that does not exist in the \ac{kr}, \ie a \emph{NIL entity}~\cite{entity_linking_with_kb_2015}. 
 \end{definition}
 Through this work we will also speak of \emph{NIL mentions}, referring to mentions of NIL entities. 
 
@@ -24,7 +24,7 @@ For addressing the incompleteness problem of \acp{kr}, once identified, NIL ment
     \emph{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
 \end{definition}
 \todo{relation with coreference resolution }
-This task is closely related to \emph{coreference resolution}, the task that identifies whether two mentions corefer---i.e., they refer to the same entity~\cite{jm3}. However, coreference resolution typically addresses anaphoric expressions as well~\cite{jm3}, for instance by grouping pronouns together with their corresponding explicit mentions.
+This task is closely related to \emph{coreference resolution}, the task that identifies whether two mentions corefer---\ie they refer to the same entity~\cite{jm3}. However, coreference resolution typically addresses anaphoric expressions as well~\cite{jm3}, for instance by grouping pronouns together with their corresponding explicit mentions.
 
 NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
@@ -36,7 +36,7 @@ compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL predi
 Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
 Later, the Text Analysis Conference (TAC)\footnote{\url{https://tac.nist.gov/}} fostered the research in NIL prediction by introducing NIL prediction in its \acf{kbp} track starting from 2009 \cite{mcnamee2009overview}. Starting from 2011, participants were also required to cluster together those NIL mentions that referred to the same entity \cite{ji2011tac}. Organized by NIST\footnote{\url{https://www.nist.gov/}}, TAC aimed to advance research in \ac{nlp} and related areas by offering large-scale test collections and standardized evaluation procedures. Since 2008, it has been held annually, inspiring a variety of studies on NIL prediction.
 
-Also, from the 2015 edition, NIL prediction and NIL clustering have been included in the Named Entity rEcognition and Linking (NEEL) challenge~\cite{rizzo2017lessons}, a challenge focusing on microposts, i.e., posts from social media platforms such as x.com\footnote{\url{https://x.com/}}.
+Also, from the 2015 edition, NIL prediction and NIL clustering have been included in the Named Entity rEcognition and Linking (NEEL) challenge~\cite{rizzo2017lessons}, a challenge focusing on microposts, \ie posts from social media platforms such as x.com\footnote{\url{https://x.com/}}.
 
 
 %% nil pred
@@ -66,7 +66,7 @@ Finally, some systems rely on alternative methods. For example, \textcite{Paiken
 
 \todo{same for clustering. moller is useful here too. review 7-15 from moller and from ijckg}
 \todo{better check and rephrase. include something from moller}
-In the context of NIL clustering, several basic models \cite{simone_15,simone_33,simone_73,simone_68,simone_27,simone_67,simone_38,simone_65,simone_63,simone_31} tackle the task by comparing surface forms directly, often relying on fuzzy similarity measures such as Jaccard or edit distance, or on handcrafted rules (e.g., for handling acronyms). Other methods \cite{simone_77,simone_65,simone_33} employ unsupervised or supervised learning with task-specific features to form clusters. Alternative strategies \cite{simone_2} leverage embedding-based approaches, such as FastText \cite{fasttext} or custom Word2Vec models \cite{simone_6} developed for languages lacking pretrained resources. A different line of work \cite{simone_24} proposes a three-step procedure: mentions are first grouped by surface form, then split using a bag-of-words representation of documents, and finally re-merged according to the centroid distance between sub-clusters.
+In the context of NIL clustering, several basic models \cite{simone_15,simone_33,simone_73,simone_68,simone_27,simone_67,simone_38,simone_65,simone_63,simone_31} tackle the task by comparing surface forms directly, often relying on fuzzy similarity measures such as Jaccard or edit distance, or on handcrafted rules (\eg for handling acronyms). Other methods \cite{simone_77,simone_65,simone_33} employ unsupervised or supervised learning with task-specific features to form clusters. Alternative strategies \cite{simone_2} leverage embedding-based approaches, such as FastText \cite{fasttext} or custom Word2Vec models \cite{simone_6} developed for languages lacking pretrained resources. A different line of work \cite{simone_24} proposes a three-step procedure: mentions are first grouped by surface form, then split using a bag-of-words representation of documents, and finally re-merged according to the centroid distance between sub-clusters.
 
 
 % Advancements in NIL prediction continued also in parallel to the TAC conference~\cite{gottipati-jiang-2011-linking,hoffart_discovering_emergin_entities_2014,hoffart_awakens_2016,wu2016exploring}, even if \textcite{gottipati-jiang-2011-linking} experimentation was run on the TAC-KBP 2010 dataset~\cite{ji2010overview}. 
@@ -86,11 +86,11 @@ Other two datasets have been proposed for incremental \ac{nel} in 2022~\cite{tem
 Still in 2022, \textcite{ayoola-etal-2022-refined} proposed ReFinED, ``an efficient zero-shot-capable approach to end-to-end \ac{nel}'', based on the bi-encoder architecture, and additionally able to perform NIL prediction. However, NIL prediction was not studied in the evaluation.
 \textcite{aydin-etal-2022-find} studied \ac{el} with NIL prediction in the funding domain, to better aid funding organization in tracking the outcome of their expenses.\todo{avoid repetitions with nel}
 
-\textcite{zhu-etal-2023-learn} proposed both a dataset and an improvement of the dual encoder \ac{nel} architecture, which performs NIL prediction applying a threshold on the mention-entity similarity. The dataset is created starting from the aliases of ambiguous seed entities and taking Wikipedia extracts mentioning the aliases balancing between when the mention is a hyperlink and when not. This because the author want to distinguish between NIL entities and ``non-entity phrases'', i.e., common phrases usually not considered entities, such as ``the householder''~\cite{zhu-etal-2023-learn}. About 10,000 entries were collected and manually annotated.
+\textcite{zhu-etal-2023-learn} proposed both a dataset and an improvement of the dual encoder \ac{nel} architecture, which performs NIL prediction applying a threshold on the mention-entity similarity. The dataset is created starting from the aliases of ambiguous seed entities and taking Wikipedia extracts mentioning the aliases balancing between when the mention is a hyperlink and when not. This because the author want to distinguish between NIL entities and ``non-entity phrases'', \ie common phrases usually not considered entities, such as ``the householder''~\cite{zhu-etal-2023-learn}. About 10,000 entries were collected and manually annotated.
 
 Also \textcite{Heist2023nastylinker} proposed a NIL-prediction aware \ac{nel} method, based on the dual encoder architecture~\cite{blink}, that uses a clustering phase, followed by a conflict resolution phase, to identify NIL entities as clusters without entities from the \ac{kr}. They evaluate on the NILK~\cite{nilk_dataset_2022} dataset.
 
-\textcite{agarwal-etal-2022-entity} method involves building a graph whose nodes correspond to mention and entities. The edges are weighted according to the mention-mention or mention-entity similarity, calculated using bi-encoder embeddings. Next, edges are pruned with heuristics that maintain the validity of constraints, e.g., a cluster contains at most one entity.
+\textcite{agarwal-etal-2022-entity} method involves building a graph whose nodes correspond to mention and entities. The edges are weighted according to the mention-mention or mention-entity similarity, calculated using bi-encoder embeddings. Next, edges are pruned with heuristics that maintain the validity of constraints, \eg a cluster contains at most one entity.
 
 \textcite{dong_reveal_the_unknown_2023} propose another extension of the dual encoder architecture of \textcite{blink} for NIL prediction. The authors add a NIL entity to the \ac{kr} described by ``It is a NIL option'' and use it with both bi-encoder and cross-encoder---including it in top-k entity retrieved, if not present, before the cross-encoder step. They add an additional linear layer to the cross-encoder with a sigmoid function to compute a NIL probability score and jointly train the cross-encoder for \ac{nel} and NIL prediction. Finally, they experiment different strategies for building NIL-aware datasets, namely manual labeling, pruning---which implies removing a portion of entities, labeling their mentions to NIL---or \ac{kr} versioning---based on snapshots of the same \ac{kr}, taken at different times.
 

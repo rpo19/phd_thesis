@@ -83,7 +83,7 @@ We evaluated three clustering strategies. The first, \textit{$\text{GNN}_\text{B
 
 The second method, \textit{$\text{GNN}_\text{F}$}, also relies on GNN but uses a feature-based vectorizer following \textcite{shrimpton-etal-2015-sampling}. Mentions are encoded as character skip-bigram indicator vectors for surface text and TF-IDF~\cite{jm3} vectors for context. For both $\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$.
 
-The third method, referred to as \emph{three-step clustering (3-step)}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance (Damerau-Levenshtein edit distance~\cite{damerau1964}) $\le 3$ are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (e.g., \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on semantic similarity derived from bi-encoder embeddings, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
+The third method, referred to as \emph{three-step clustering (3-step)}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance (Damerau-Levenshtein edit distance~\cite{damerau1964}) $\le 3$ are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (\eg \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on semantic similarity derived from bi-encoder embeddings, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
 
 All clustering thresholds were tuned via grid search so that the number of predicted clusters on the development set roughly matched the number of unique entities---as in \textcite{streaming_crossdoc_coreference}.
 
@@ -226,7 +226,7 @@ Finally, to assess the impact of error propagation across batches, the \ac{inel}
 
 \subsubsection{Evaluation Measures} \label{sec:evaluation2}
 
-Evaluating an incremental pipeline is more complex than evaluating a single model, since errors propagate both through the pipeline and across time (i.e., batches).
+Evaluating an incremental pipeline is more complex than evaluating a single model, since errors propagate both through the pipeline and across time (\ie batches).
 %
 First, we define measures for the overall \ac{inel} pipeline:  
 
@@ -293,7 +293,7 @@ Indeed, in the ``correct'' experiment, where errors are prevented from propagati
 
 The NIL prediction component, despite its high precision, suffers from low recall, leading to a large number of false negatives---or \emph{false links}, that is, mentions incorrectly predicted as not NIL ($\neg$NIL) and linked to the \ac{kr} while actually referring to new entities.
 Errors from the NIL predictor introduce two critical issues in the pipeline.
-First, each false positive---or \emph{false NIL}, i.e., a $\neg$NIL mention incorrectly classified as NIL---creates a spurious entity.
+First, each false positive---or \emph{false NIL}, \ie a $\neg$NIL mention incorrectly classified as NIL---creates a spurious entity.
 This results in redundant representations of the same entity in the \ac{newkr} and increases error propagation across batches, since mentions linked to these spurious entities in later steps are counted as errors.
 For this reason, to mitigate error propagation over time, achieving higher precision is preferable to higher recall, as \emph{false links} count as local errors but do not cause propagation by polluting the \ac{newkr} with redundant entities.
 
@@ -422,7 +422,7 @@ As discussed earlier, a main source of errors lies in false positives (false NIL
 In our experiments, novel entities are represented by a single vector---the medoid of their NIL mention cluster. However, evidence from \Cref{tab:new_entities_recall} indicates that this representation is sub-optimal, although more efficient. Exploring alternative strategies, such as using multiple vectors per cluster constitutes a promising direction for future work to achieve a better trade-off between effectiveness and efficiency.
 
 Another open problem concerns when to update the \ac{kr}. In the current setup, the index is updated after processing the first batch in which a new mention appears, but collecting additional observations might yield more reliable representations, possibly guided by a confidence score.
-% We leave this aspect for future work, as it is tightly connected to the long-tail entity problem (i.e., entities mentioned only once). In fact, our dataset was enriched with many such entities.
+% We leave this aspect for future work, as it is tightly connected to the long-tail entity problem (\ie entities mentioned only once). In fact, our dataset was enriched with many such entities.
 Balancing the need for informative representations with the challenge of handling rare entities remains an interesting avenue for further research.
 
 
@@ -432,7 +432,7 @@ In this work, we introduce the task of incremental \ac{nel} (\ac{inel}), providi
 %&The purpose of the task is to reduce the human effort in updating existing \ac{kb}s, automatically obtaining a representation of novel entities.
 
 % The purpose of the pipeline is not only linking mention to entities but also represent novel entities in the same vector space.
-Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, i.e., entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
+Our experiments show that a main challenge for \ac{inel} is to deal with the incremental propagation of error, which is due, especially, to the difficulty of linking entity mentions found in one batch to novel entities, \ie entities not in the \ac{bgkr} and added to the \ac{newkr} in previous batches. 
 Finding representations of novel entities that provide a reasonable trade-off between efficiency and effectiveness is not trivial.
 %A sub-optimal representation that may be fast in retrieval, may also introduce errors that propagate incrementally.
 %, obtaining worse and worse performance.

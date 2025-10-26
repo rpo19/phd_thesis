@@ -6,7 +6,7 @@ Large Language Models (LLMs) have demonstrated a variety of capabilities, rangin
 
 
 Retrieval-Augmented Generation (RAG)~\cite{lewis2020retrievalaugmented,xu2023retrieval} and tool-use~\cite{yao2023reactsynergizingreasoningacting,thoppilan2022lamdalanguagemodelsdialog,lehmann2024beyond} represent two prominent families of solutions. They enable LLMs to consult external knowledge bases (KBs) or execute external tools to enrich their responses with grounded information. We will refer to these methods as Knowledge-Enhanced QA (KE-QA). They often rely on additional components such as retrievers, entity linking systems, or auxiliary models, which are orchestrated in information processing pipelines.
-However, such pipeline-based or service-based solutions have a number of drawbacks. They require the optimization of a larger number of parameters and make it difficult to effectively back-propagate supervision signals to early components of the pipeline~\cite{zhou2025openragoptimizingragendtoend}. These approaches are susceptible to error-propagation~\cite{le-fokkens-2017-tackling}, and knowledge updates may be complex to propagate to all the different components (e.g., to QA and entity linking knowledge bases).
+However, such pipeline-based or service-based solutions have a number of drawbacks. They require the optimization of a larger number of parameters and make it difficult to effectively back-propagate supervision signals to early components of the pipeline~\cite{zhou2025openragoptimizingragendtoend}. These approaches are susceptible to error-propagation~\cite{le-fokkens-2017-tackling}, and knowledge updates may be complex to propagate to all the different components (\eg to QA and entity linking knowledge bases).
 
 An interesting technique that may overcome such limitations is constrained generation~\cite{cao2021autoregressive,scholak-etal-2021-picard}, which restricts the model's output space during decoding to sequences that satisfy predefined structural, syntactic, or semantic constraints. A few recent approaches have applied constrained generation to KE-QA, achieving promising results~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}.
 However, as the application of this technique to KE-QA is quite novel, there is an important research challenge to address to advance these techniques: the scalability to large knowledge bases. Can these approaches be applied to large KBs such as Wikidata\footnote{\url{https://www.wikidata.org}}?
@@ -136,7 +136,7 @@ This mechanism is additionally improved by beam search~\cite{hu-etal-2015-improv
 
 We use the Wikidata truthy dump (Wikidata's highest-confidence statements, excluding qualifiers\footnote{\url{https://www.wikidata.org/wiki/Wikidata:Database_download/en\#RDF\_dumps}}) of the triples\footnote{We use the dump from 11 December 2024.}.
 To filter out uninformative facts we retain only triples whose subject and relation have Wikidata identifiers. For the object, we allow entities with Wikidata identifiers, English literals, numbers, dates, and literals with no language.
-Then, for each entity, we obtain a meaningful textual label (as Wikidata IDs lack meaning for LLMs) corresponding to the Wikipedia title if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise we use the template \verb|rdf-schema#label (schema.org/description)|, e.g., ``Jane Hajduk (American actress)'', since the label alone is not unique.
+Then, for each entity, we obtain a meaningful textual label (as Wikidata IDs lack meaning for LLMs) corresponding to the Wikipedia title if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise we use the template \verb|rdf-schema#label (schema.org/description)|, \eg ``Jane Hajduk (American actress)'', since the label alone is not unique.
 With this process we obtain more than 800 million facts like the ones underlined in Figure~\ref{fig:example}.
 
 
@@ -151,13 +151,13 @@ Now we tokenize the facts and we index them in a prefix tree for efficient acces
     \label{fig:trie_example}
 \end{figure}
 
-Duplicate fact generation is prevented as follows. Consider the prefix $X = \text{``<Euro> <country> <S''}$ in Figure~\ref{fig:trie_example}, where the number or reachable leaves is $numleaves(X)=2$. After generating $\text{``<Euro> <country> <Slovakia> .''}$, this number is decreased to $1$ and from $X$ the model is only allowed to select $\text{``lovenia> .''}$. At this point, all leaves reachable from $X$ have been generated, thus generating ``S'' from $X'=\text{``<Euro> <country> <''}$ is forbidden by constrained generation. From $X'$ the LLM can generate one of the remaining $numleaves(X') - 2 = 24$ facts (e.g., $\text{``<Euro> <country> <Italy> .''}$). 
+Duplicate fact generation is prevented as follows. Consider the prefix $X = \text{``<Euro> <country> <S''}$ in Figure~\ref{fig:trie_example}, where the number or reachable leaves is $numleaves(X)=2$. After generating $\text{``<Euro> <country> <Slovakia> .''}$, this number is decreased to $1$ and from $X$ the model is only allowed to select $\text{``lovenia> .''}$. At this point, all leaves reachable from $X$ have been generated, thus generating ``S'' from $X'=\text{``<Euro> <country> <''}$ is forbidden by constrained generation. From $X'$ the LLM can generate one of the remaining $numleaves(X') - 2 = 24$ facts (\eg $\text{``<Euro> <country> <Italy> .''}$). 
 
-While relatively small trees can be kept in memory, e.g., using Python dictionaries, when dealing with bigger trees, such as the 800-million-fact tree derived from Wikidata, this is often impossible. Therefore, we rely on solid relational database software. We use PostgreSQL\footnote{\url{https://www.postgresql.org/}} (version 17.2) and design the fact-tree table to ensure that all the information required for token generation is efficiently available.
+While relatively small trees can be kept in memory, \eg using Python dictionaries, when dealing with bigger trees, such as the 800-million-fact tree derived from Wikidata, this is often impossible. Therefore, we rely on solid relational database software. We use PostgreSQL\footnote{\url{https://www.postgresql.org/}} (version 17.2) and design the fact-tree table to ensure that all the information required for token generation is efficiently available.
 Given a prefix $X$, this includes the allowed next tokens $T = t^0..t^n$, the number of leaves reachable from $X$, and the number of reachable leaves if choosing $t$, for each $t \in T$ (to avoid selecting 0-leaves tokens and generating a fact twice). In Table~\ref{tab:postgres-table}, they are depicted respectively as \textit{Next Tokens} and \textit{\#Lv. (number of leaves)}, and \textit{Child.\#Lv.}.
 
 However, this tree-representation schema can quickly grow in disk space usage, as a single path of length $L$ requires storing $L-1$ rows. To reduce the disk space requirements, we apply two additional measures. First, after a certain prefix length $L_c$ we stop adding rows and instead directly save the Python subtree in Pickle format\footnote{\url{https://docs.python.org/3/library/pickle.html}}, as shown in the last row of Table~\ref{tab:postgres-table}.
-In this way, during inference, subtrees that are manageable in size are directly loaded in memory (e.g., with $L_c = 7$, $99\%$ of the subtrees use less than 116 KB).
+In this way, during inference, subtrees that are manageable in size are directly loaded in memory (\eg with $L_c = 7$, $99\%$ of the subtrees use less than 116 KB).
 Secondly, we represent single-leaf sequences in a single row, as visible at the fourth row in Table~\ref{tab:postgres-table}, saving the rest of the sequence in \textit{Child.\#Lv.} (the token 29 comes after 694, and 662 is the last in the sequence).
 %
 List items are saved as PostgreSQL arrays, while Pickle data is saved in \textit{BYTEA}. For fast access, the \textit{Prefix} is indexed with a B-Tree\footnote{\url{https://www.postgresql.org/docs/current/btree.html}} index that provides logarithmic search time~\cite{cormen2022introduction}.
@@ -253,7 +253,7 @@ If the question requires to find proof that an event happen and you didn't find 
 
 \vspace{4pt}
 
-In case you are taking too long for answering (e.g., you already generated ten facts that are not useful for the question), you stop and you answer based on the proofs you acquired to that point.
+In case you are taking too long for answering (\eg you already generated ten facts that are not useful for the question), you stop and you answer based on the proofs you acquired to that point.
 
 \vspace{4pt}
 
@@ -629,7 +629,7 @@ While for Mintaka multi-hop questions, we notice that in some cases they require
 
 On Mintaka and WebQSP, the datasets widely covered by the internal knowledge of the tested LLMs, when comparing ReFactX behavior with \textit{LLM-only} on the same questions, ReFactX still demonstrates interesting reasoning patterns. In some cases, it uses facts to prove an answer coming from LLM parametric knowledge.
 %
-In others, e.g., for \textit{``Where did Rick Santorum attend high school?''}, in which \textit{LLM-only} fails, ReFactX is able to acquire correct facts which lead to correcting model parametric knowledge.
+In others, \eg for \textit{``Where did Rick Santorum attend high school?''}, in which \textit{LLM-only} fails, ReFactX is able to acquire correct facts which lead to correcting model parametric knowledge.
 % 
 
 
