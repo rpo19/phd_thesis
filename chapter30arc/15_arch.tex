@@ -9,7 +9,7 @@ In \textcite{BELLANDI2024} we built the first prototype that integrated storage,
 
 In \textcite{pozzi_wise_2025} we applied a similar design to investigative \ac{ima} data. That evaluation made clear that it was necessary to generalize the notion of document (chat vs.\ message) and that the existing implementation lacked support for multiple document collections---which would have been needed to represent both chats and messages within the same instance. In that work we instead used a \acl{kg} (implemented with neo4j~\cite{neo4j}, a graph database) to represent messages. The graph-based visualization provided in neo4j~\cite{neo4j} \ac{ui} received positive feedback from investigators. Although, in that case, only a small set of relations was instantiated, using a \ac{kg} enables storing entity facts as triples and increases the modeling capacity, as shown for instance by the \textit{participant-in} relation between \texttt{Person} and \texttt{Chat}. Such facts can also support more advanced \ac{ia} methods such as \refact, discussed in \Cref{chap:refact}. Nevertheless, a \ac{kg} was not prescribed in the final architecture, since it is not strictly required under the minimum-necessity principle, and \ac{kr} is a more general abstraction than a \ac{kg}.
 
-Finally, \textcite{Agazzi2025DAVE} focused on improving \ac{ia} \aclp{ui}, which will be discussed in \Cref{sec:arch:ui}, adding support for all retrieval modes. That work did not address other requirements such as multiple document collections\todo{verify with ruben}, annotation versioning, or full error correction---\eg entity or document deletion was not available from the \acp{ui}.
+Finally, \textcite{Agazzi2025DAVE} focused on improving \ac{ia} \aclp{ui} adding support for all retrieval modes. That work did not address other requirements such as multiple document collections, annotation versioning, or full error correction---\eg entity or document deletion was not available from the \acp{ui}.
 
 In summary, the prototypes developed during the \phd anticipated many components of the \acl{dia} and also revealed the missing parts that motivated its explicit formalization.
 
@@ -18,6 +18,7 @@ In summary, the prototypes developed during the \phd anticipated many components
 \centering
 \caption{Support of \ac{dia} requirements across prior works
 (\yes full,\ \almost almost, \psup partial,\ \no none).}
+\label{tab:arch-proto-support}
 \begin{tabularx}{\textwidth}{p{1cm} X X X X}
 \toprule
 \textbf{Req.} & \textbf{Aspect} & \textbf{Ref. \cite{BELLANDI2024}} & \textbf{Ref. \cite{pozzi_wise_2025}} & \textbf{Ref. \cite{Agazzi2025DAVE}} \\

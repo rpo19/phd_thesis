@@ -10,24 +10,10 @@ Over the past years I have contributed to several research projects aimed at inc
 %
 During this collaboration I contributed to the development of proofs of concept and architectural prototypes for integrating and managing documents in these contexts, which gave me continuous exposure to real use cases and the opportunity to collect feedback from legal professionals.
 
-% the following:
-% \begin{itemize}
-%   \item \fullcite{BELLANDI2024}
-%   \item \fullcite{pozzi_wise_2025}
-%   \item \fullcite{Agazzi2025DAVE}
-% \end{itemize}
 
-% From these projects, three works have been published (all co-authored by me), in chronological order:
-% \begin{itemize}
-% \item \textcite{BELLANDI2024}, which presents an entity-centric infrastructure for managing legal documents, including architectural components, an \ac{nlp} pipeline for \ac{ee} from civil court judgments to annotate documents, and \acl{ia} \acp{ui}, such as entity-based document exploration, and a search interface. Additionally, it supported \acl{hitl} supervision with a \ac{ui} for error correction of the automatic \acl{ee} process.
 
-% \item \textcite{pozzi_wise_2025}, which applies a similar entity-centric design to investigative \ac{ima} data by modeling message corpora with a \acl{kg}, enriching them with audio transcriptions and entity annotations, and exposing the resulting knowledge through graph querying visualization, as well as entity-based faceted search and the document exploration interface.
+In the remaining of this chapter we remind the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}), compare it with the prototypes previously developed as part of this \phd{} (\Cref{sec:arch_proto}), and finally describe the advanced \acp{ui} that can be paired with an implementation of the proposed \ac{dia} (\Cref{sec:iaui-from-prototypes}). The chapter concludes with a summary of the main points (\Cref{sec:arch:conclusion}).
 
-% \item \textcite{Agazzi2025DAVE}, which consolidates \acf{dave}, an open-source\footnote{Available from GitHub at \url{https://github.com/unimib-datAI/DAVE}} entity-centric framework supporting faceted search, entity-based document exploration, RAG-based\todo{introduci rag nel sota} conversational question answering, and knowledge refinement over annotated documents. %, integrating RAG-based conversational interfaces with faceted search and human-in-the-loop correction.
-% \end{itemize}
-
-In the remaining of this chapter we remind the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}). 
-\todo{finish outline}
 
 
 The publications related to this chapter are \textcite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}.
@@ -52,7 +38,6 @@ We also borrow the \textbf{availability} requirement from previous work~\cite{BE
 Loose coupling also indirectly improves scalability since independent services can run in parallel.
 
 
-\todo{annotation may be not connected to entities. anns are more general. here document-annotation-entity triad}
 
 \paragraph{Document--Annotation--Entity Triad}
 Before introducing the functional requirements that support the architectural principles and the domain-specific use cases, we first define the three conceptual pillars that underpin our representation of heterogeneous textual data: \emph{documents}, \emph{annotations}, and \emph{entities}.
