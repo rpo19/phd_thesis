@@ -29,3 +29,5 @@ latexmk/
 *.bcf
 *.bib.original
 venv
+
+.ipynb_checkpoints

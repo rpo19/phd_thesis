@@ -65,6 +65,17 @@
 \crefname{lstlisting}{listing}{listings}
 \Crefname{lstlisting}{Listing}{Listings}
 
+\lstdefinelanguage{json}{
+  basicstyle=\ttfamily,
+  showstringspaces=false,
+  breaklines=true,
+  literate=
+   *{true}{{{\color{blue}true}}}{4}
+    {false}{{{\color{blue}false}}}{5}
+    {null}{{{\color{blue}null}}}{4}
+}
+
+
 \lstset{
   basicstyle=\ttfamily,
   breaklines=true,

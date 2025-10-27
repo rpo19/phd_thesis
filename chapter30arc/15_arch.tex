@@ -1,11 +1,7 @@
-\section{Prototypes from Previous Work}
+\section{Previous Prototypes}
 \label{sec:arch_proto}
 
-\todo{add listing with gatejson}
-
-\todo{concept of knowledge consolidation can be forced. kr is there to host new entities}
-
-The architectural model introduced in this chapter was not designed from scratch. It comes from several research prototypes developed during the \phd and described in~\cite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}. Only \textcite{BELLANDI2024} explicitly treated architecture as a research goal, but all these works implemented parts of the principles and functional requirements that are now formalized in this chapter.
+The architectural model introduced in this chapter derives from the experience acquired in previous projects. In this section we compare it with previous prototypes developed as part of my \phd, namely \textcite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}. Among these, only \textcite{BELLANDI2024} explicitly treated architecture as a research goal, but all these works implemented parts of the principles and functional requirements that are now formalized in this chapter.
 
 Table~\ref{tab:arch-proto-support} compares the requirements defined here with what was actually supported by earlier prototypes. The comparison shows that the systems did not converge to a stable architecture, but they provided the practical experience and feedback that led to the general model presented in this chapter.
 
@@ -17,12 +13,10 @@ Finally, \textcite{Agazzi2025DAVE} focused on improving \ac{ia} \aclp{ui}, which
 
 In summary, the prototypes developed during the \phd anticipated many components of the \acl{dia} and also revealed the missing parts that motivated its explicit formalization.
 
-\todo{chiedi a ruben per dave multi collection}
 
-\todo{maybe merge some rows of the table under the big objectives. or maybe better to move functionals down and use colors}
 \begin{table}[htbp]
 \centering
-\caption{Support of DIA requirements across prior works
+\caption{Support of \ac{dia} requirements across prior works
 (\yes full,\ \almost almost, \psup partial,\ \no none).}
 \begin{tabularx}{\textwidth}{p{1cm} X X X X}
 \toprule
@@ -82,7 +76,7 @@ Scalab. & net \ac{api} & \yes & \yes & \yes \\
 % our colleagues contiunued....
 % orchestration: more relaxed than claw: no need of deciding request manageer,...
 
-\todo{useful commented sections here}
+% \todo{useful commented sections here}
 
 % In this chapter, instead, the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core.
 % Our objective is to define the \emph{minimum necessary} directives for guiding the implementation of a \acl{dia}---for knowledge-intensive domains and, in particular, for the legal domain---so that it provides the fundamental functionality required to satisfy the aforementioned \emph{architectural principles}.  
