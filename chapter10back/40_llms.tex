@@ -27,11 +27,20 @@ This definition of \ac{lm} is in-line with \emph{casual language modeling (CLM)}
 
 \subsubsection{Causal Language Modeling}
 
-Given a sequence of tokens $X = [x_0, x_1, \ldots, x_{|X|}]$, a causal \ac{lm} estimates the probability of the token $x_i$ as
+Given a sequence of tokens $X = [x_0, x_1, \ldots, x_{|X|}]$ and a vocabulary $V = \{v_0, v_1, \ldots, v_{|V|}\}$ a causal \ac{lm} estimates
 \begin{equation}
-    P(x_i \mid x_1, x_2, \ldots, x_{i-1}) = P(x_i \mid x_{<i}),
+    \label{eq:clm}
+    P(x_i=v \mid x_0, x_1, \ldots, x_{i-1}) \qquad \forall v \in V,
 \end{equation}
-while the probability of the whole sequence is commonly estimated by the factorization~\cite{jain-etal-2023-cl-for-causal-lm,jm3}
+that is, a probability distribution over the entire vocabulary $V$ for the next token.
+
+In the remaining of this work, for convenience, we will use the following simplified formulation
+\begin{equation}
+    P(x_i \mid x_0, x_1, \ldots, x_{i-1}) = P(x_i \mid x_{<i}),
+\end{equation}
+implying that the \ac{clm} calculates a probability over the entire vocabulary.
+
+The probability of the whole sequence is commonly estimated by the factorization~\cite{jm3}
 \begin{equation}
     P(X) = \prod_{i=1}^{|X|} P(x_i \mid x_{<i}).
 \end{equation}
@@ -46,9 +55,9 @@ Deep-learning based causal \ac{lm} are trained via maximum likelihood estimation
 
 Another paradigm is \emph{masked language modeling}, where some tokens in the input sequence are randomly \emph{masked}, \ie replaced with a special token, and the model is trained to predict the original tokens based on the bidirectional (left and right) surrounding context~\cite{devlin-etal-2019-bert}.
 
-Formally, given a sequence of tokens $X = [x_1, x_2, \ldots, x_{|X|}]$, a random subset of positions 
+Formally, given a sequence of tokens $X = [x_1, x_2, \ldots, x_{|X|}]$ and a vocabulary $V = \{v_0, v_1, \ldots, v_{|V|}\}$, a random subset of positions 
 $M \subseteq \{1, \ldots, |X|\}$ is selected for masking, yielding a corrupted input sequence $\tilde{x}$. 
-For each masked position $i \in M$, a masked \ac{lm} estimates the probability of the original token $x_i$ conditioned on its left and right context:
+For each masked position $i \in M$, a masked \ac{lm} estimates the probability distribution over the entire $V$ of the original token $x_i$ conditioned on its left and right context:
 \begin{equation}
     P(x_i \mid \tilde{x}_{\setminus i}) = P(x_i \mid x_{<i}, x_{>i}),
 \end{equation}
