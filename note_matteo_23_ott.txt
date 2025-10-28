@@ -1,3 +1,17 @@
 dave introdurre meglio
 combinare ricerca faceted, qa, alimentato dalla struttura dati del paper. copio dal paper.
 prima overview e poi approfondisco. anche immagine con schema layer integrazione
+
+
+28 ott
+
+cosa è data4 ai? cosa è ai4data?
+""" https://lingarogroup.com/blog/ai-for-data-data-for-ai-the-big-shift-in-data-analytics-for-2025
+“AI for Data” refers to utilizing AI technologies to enhance data-related processes. Focusing on this approach enables enterprises to reallocate efforts and resources toward AI adoption and integration for a more agile and scalable business.
+
+Data for AI: Demand for High-Quality Data
+
+AI algorithms are often "off-the-shelf" with standardized solutions that can be easily adopted by enterprises. But according to Dey, the true differentiator in achieving insightful AI outcomes is the quality of data used.
+
+Data for AI” highlights the need for high-quality and well-structured data. Focusing on this approach enables businesses to prioritize data quality to realize the ROI on AI pursuits.
+"""
