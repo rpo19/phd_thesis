@@ -35,24 +35,15 @@
 % Despite the remaining challenges, we believe that the evidence discussed in the paper suggests that, with further improvements, end-to-end NEEL pipelines could be effectively applied to court judgments to disclose a variety of downstream applications.
 
 
-This chapter addressed \ref{ob:extraction_assessment} by empirically assessing the applicability of general-domain \ac{ee} methods to legal and investigative contexts. In the first part (\Cref{sec:ijckg}), we introduced the incremental \ac{nel} problem, developed a methodology to adapt static \ac{nel} datasets to the incremental setting, and released both a benchmark and a baseline pipeline. The evaluation showed that incremental settings exacerbate error propagation, especially for NIL prediction and for linking mentions to entities introduced in previous batches.
+This chapter addressed \ref{ob:extraction_assessment} by empirically assessing the applicability of general-domain \ac{ee} methods to legal and investigative contexts. In the first part (\Cref{sec:ijckg}), we introduced the incremental \ac{nel} problem, developed a methodology to adapt static \ac{nel} datasets to the incremental setting, and released both a benchmark and a baseline pipeline. The evaluation showed that incremental settings suffer from error propagation, and that NIL prediction is major source of errors.
 
-In the second part, we evaluated \ac{ner} and \ac{inel} pipelines on Italian civil judgments, quantifying the performance gap between general-domain models and domain-adapted ones. While domain adaptation yields measurable improvements, the gains are limited by the scarcity of labeled data and the need to operate under regulatory constraints that restrict the use of external services.
 
-Finally, we extended the analysis to investigative \ac{ima} data, creating an annotated benchmark and evaluating an adapted \ac{ee} pipeline. Results indicate that entity extraction in \ac{ima} is challenging and could benefit from in-domain fine-tuning, whereas metadata can be reliably extracted to enable faceted search and other \ac{ia} functionalities.
+In the second part, we evaluated \ac{ner} and \ac{inel} pipelines on Italian civil judgments and studied strategies for adapting \ac{ner} to the domain. Without in-domain fine-tuning, models trained on public corpora degraded on all categories except \texttt{Person}, and errors at this stage propagated to subsequent components. This confirms the need for domain-specific adaptation and motivates the \acl{hitl} strategy adopted to improve the quality of machine annotations.
 
-The contributions of this chapter can be summarized as follows:
-\begin{enumerate}
-    \item introduction of the incremental \ac{nel} task, with a methodology to adapt static \ac{nel} datasets and the release of a benchmark and baseline pipeline;
-    \item evaluation of \ac{ner} and incremental \ac{nel} on Italian civil judgments, including a study of domain adaptation strategies;
-    \item creation of two annotated benchmarks for Italian civil judgments and investigative \ac{ima} data, and assessment of an \ac{ee} pipeline on both settings.
-\end{enumerate}
+Considering fine-tuning, the combination of in-domain \acl{mlm} and task-specific \ac{ner} fine-tuning achieved the best results, but simply fine-tuning a general-domain model already proved to be a good compromise between performance and computational cost. These results indicate that the size of our labeled dataset is sufficient to fine-tune effective \ac{ner} models. A natural direction for future work is to quantify the amount of labeled text needed to reach satisfactory performance for this domain.
 
-Overall, the evidence collected in this chapter shows that
-\begin{itemize}
-    \item incremental \ac{nel} remains a hard setting due to compounding errors,
-    \item general-domain \ac{ee} models are not directly transferable to the legal and investigative domain without adaptation, and
-    \item the main bottleneck is the availability of labeled data rather than model capacity.
-\end{itemize}
+Accurate NIL prediction remains a key challenge in \acl{ee} in the legal domain, where relevant actors are not present in public \acp{kr}, and misclassifying them as existing entities contaminating downstream consolidation. In-domain fine-tuning may mitigate this effect and represents another avenue for future work.
 
-These findings motivate, in the subsequent chapters, the design of architectures that remain useful despite imperfect extraction, thanks to traceability and error correction capability.
+We subsequently extended the analysis to investigative \ac{ima} data, creating an annotated benchmark and evaluating an adapted \ac{ee} pipeline. Results indicate that entity extraction in \ac{ima} is challenging and could benefit from in-domain fine-tuning, whereas metadata can be reliably extracted to enable faceted search and other \ac{ia} functionalities.
+
+These findings motivate, in the subsequent chapters, the design of architectures that remain useful despite imperfect extraction, thanks to traceability and error-correction capability.

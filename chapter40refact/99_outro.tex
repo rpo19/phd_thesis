@@ -1,0 +1,11 @@
+\section{Conclusion}
+\label{sec:rx:conclusion}
+
+This chapter addressed Objective~\ref{ob:refactx} by presenting \refactx, a knowledge-base-constrained decoding mechanism that enables any autoregressive \ac{llm} to exploit large external \acp{kb} without external retrievers or architectural changes. In our experiments, we indexed more than 800 million Wikidata facts in a 95~GB on-disk prefix tree. By restricting decoding to valid continuations in this structure, \refactx injects factual evidence during generation with only about 1.3\% latency overhead. Empirically, it improves \ac{qa} over \acp{llm} relying solely on their parametric knowledge, and the comparison with reference approaches shows that \refactx can achieves competitive performance.
+
+We further assessed \refactx generalizability in a domain-specific, knowledge-intensive setting (corporate finance) by adapting the instruction prompt and indexing reversed triples to enable tail-to-head reasoning. Although the overall scores on this dataset remain modest, simpler questions are handled substantially better, indicating headroom for improvement through stronger domain adaptation (\eg fine-tuning or other in-domain optimizations).
+
+Future work includes strengthening the reasoning capabilities of \refactx-enabled models through fine-tuning, and extending the support for count questions, long enumerations, or other set-based queries. In these cases, \refactx could act as a first stage to acquire factual information for the reasoning, complemented by additional tools (\eg a SPARQL engine) when more complex operations are required. In addition, recent training-free optimizations~\cite{cai2025trainingfreegrouprelativepolicy} offer a promising direction to adapt \refactx efficiently to new domains.
+
+Finally, \refactx operates on left-to-right verbalized facts. In this work, these facts are derived from an \ac{rdf} \ac{kb} (Wikidata), but the mechanism is compatible in principle with facts extracted from unstructured documents via relation extraction~\cite{jm3}. Evaluating this setting constitutes an interesting future direction to assess the generalization capabilities of \refactx.
+

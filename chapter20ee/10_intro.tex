@@ -1,16 +1,6 @@
 %\pagestyle{mystyle}
 \chapter[Adapting Entity Extraction Techniques to the Legal Domain][Adapting EE to Legal Domain]{Adapting Entity Extraction Techniques to the Legal Domain}
 \label{chap:extraction}
-% All the papers on knowledge extraction
-% \section{IJCKG and NIL Prediction}
-% \section{Knowledge Extraction in Specific Domains: Specific Issues}
-% \subsection{Legal Judgments}
-% \subsection{Instant Messaging Data in Criminal Investigations}
-% \section{Organizing Knowledge in Specific Domains}
-% Especially infrastructure to organize and hold data.
-% \subsection{Judgments}
-% \subsection{IM Criminal Investigations}
-% \section{Adapting to Specific Domains}
 
 
 This chapter presents the contributions for \ref{ob:extraction_assessment}---through an assessment of existing \ac{ee} techniques applied to the legal domain.
@@ -18,39 +8,16 @@ First, in \Cref{sec:ijckg}, we address the \emph{novel entity challenge}---an im
 
 Secondly we study to which extent general-domain \ac{nlp} approaches for \acl{ee} work on the Italian legal domain.
 Initially focusing on Italian judgments from civil courts in \Cref{sec:eejudgements} and in \Cref{sec:adaptation}, where we evaluate different adaptation strategies for \acl{ner}. Then, in \Cref{sec:eechats} we focus on chat logs from an Italian investigation. Indeed, as anticipated in \Cref{sec:intro}, annotating legal documents with \ac{ee} systems may be useful for simplifying the analysis of vast amount of heterogeneous documents (challenges \ref{ch:scalability} and \ref{ch:heterogeneity})---for example, by implementing faceted search applications~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
-\Cref{sec:ee:conclusion} concludes the chapter summarizing the main contributions presented.
+Finally, \Cref{sec:ee:conclusion} concludes this chapter.
+
+The main contributions of this chapter can be summarized as follows:
+\begin{enumerate}
+    \item introduction of the incremental \ac{nel} task, with a methodology to adapt static \ac{nel} datasets and the release of a benchmark and baseline pipeline;
+    \item evaluation of \ac{ner} and incremental \ac{nel} on Italian civil judgments, including a study of domain adaptation strategies;
+    \item creation of two annotated benchmarks for Italian civil judgments and investigative \ac{ima} data, and assessment of an \ac{ee} pipeline on both settings.
+\end{enumerate}
+
+
 
 The publications related to this chapter are \textcite{ijckg2022,BELLANDI2024,aixia_2023,pozzi_wise_2025}.
 
-
-
-% During my \phd I worked with two types of documents from the Italian legal domain: civil judgements and investigative chat logs. In both cases, the main problem addressed is the difficulty that the users---such as judges or prosecutors---face in analyzing the high number of records. Indeed, my co-authored contributions seek to empower final users with tools that allow them to efficiently explore and retrieve relevant documents or chat messages.
-
-
-% This chapter presents the contributions about \emph{incremental \acl{nel}} (see \Cref{sec:incrementalel}), co-authored during my \phd  These have been published and presented in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)---\textcite{ijckg2022}---and at the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)---\textcite{mammotab}. Both the events were co-located with the 21st International Semantic Web Conference (ISWC 2022).
-
-% In 2022, as described in \Cref{sec:incrementalel}, the advancements in the NIL prediction task were left behind the one in \ac{nel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
-% For this reason, we worked towards producing datasets and evaluation procedures for aiding the research in this field, focusing on unstructured text~\cite{ijckg2022} (\Cref{sec:ijckg}), but also on structured tabular data~\cite{mammotab} (\Cref{sec:mammotab})---for which a brief backround review is given in \Cref{sec:sti}.
-
-
-
-
-% Similarly the contributions for \ac{sti} are
-% \begin{itemize}
-%     \item mammotab with NIL annotations.
-%     \item evaluation\todo{}
-% \end{itemize}
-
-
-%\pagestyle{mystyle}
-% \section{Information Extraction in the Legal Domain}
-% \chaptermark{KE in Legal}
-% \label{chap:legalie} 
-% \section{User interfaces}
-% \subsection{Document Explorer}
-% \subsection{Knowledge Editing to Correct Machine Errors}
-% Human-in-the-Loop
-% \subsection{Faceted Search}
-% \subsection{Question Answering with Retrieval Augmented Generation}
-
-% \section{Question Answering with ReFactX}

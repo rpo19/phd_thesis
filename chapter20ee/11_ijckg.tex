@@ -422,9 +422,8 @@ First, each false positive---or \emph{false NIL}, \ie a $\neg$NIL mention incorr
 This results in redundant representations of the same entity in the \ac{newkr} and increases error propagation across batches, since mentions linked to these spurious entities in later steps are counted as errors.
 For this reason, to mitigate error propagation over time, achieving higher precision is preferable to higher recall, as \emph{false links} count as local errors but do not cause propagation by polluting the \ac{newkr} with redundant entities.
 
-\Cref{fig:clusters} shows the number of predicted clusters as a function of their size, together with the expected distribution. 
-The general agreement between the two indicates that the pipeline does not overproduce clusters, and that the high precision yields cluster sizes broadly consistent with the expected values.
 
+With respect to NIL clustering, \Cref{fig:clusters} shows the number of predicted clusters as a function of their size, together with the expected distribution. The general agreement between the two indicates that the pipeline does not overproduce clusters, and that the high precision yields cluster sizes broadly consistent with the expected values. However, the observed MUC score of 100.0 may be explained by the large proportion of singleton clusters~\cite{recasens_hovy_2011}.
 
 
 % Regarding NIL clustering, analyzing and understanding this component is crucial, since it produces side effects that propagate through subsequent steps, leading to different outcomes when evaluated incrementally versus in a single pass.
@@ -448,9 +447,11 @@ Among the evaluated approaches, the top-performing one is the \textit{3-step} me
 
 
 \begin{landscape}
+    \newgeometry{left=-2cm,right=2cm,top=2cm,bottom=1cm}
 %%%%%%%%%%%%%%% NEWWW
 % incremental_3step
-\begin{table*}
+\begin{table}
+    \thispagestyle{empty}
     \centering
 \begin{tabular}{llrrrrrrrrrrrr}
 \toprule
@@ -507,7 +508,7 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 \end{tabular}
     \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
-\end{table*}
+\end{table}
 \end{landscape}
 
 These errors can be mitigated through a \acl{hitl} validation process, where a user, using dedicated \acp{ui}, can merge clusters referring to the same entity or split those that incorrectly group different mentions.\todo{This functionality has been implemented in our system.}
@@ -541,7 +542,7 @@ These errors can be mitigated through a \acl{hitl} validation process, where a u
 
 The results show that error propagation across batches is a major challenge in incremental entity extraction. A performance drop is especially evident in the \ac{nel} results. As reported in \Cref{tab:superresults}, the first batch achieves scores comparable to those of the single-pass ($\varnothing$) and ``correct'' experiments, but performance progressively degrades in subsequent batches.
 
-As discussed earlier, a main source of errors lies in false positives (false NILs) introduced during NIL management. This confirms that accurate NIL prediction is a crucial challenge in the \ac{inel} task: lower precision amplifies the propagation of errors throughout the pipeline, ultimately degrading performance.
+As anticipated, a main source of errors lies in false positives (false NILs) introduced during NIL management. This confirms that accurate NIL prediction is a crucial challenge in the \ac{inel} task: lower precision amplifies the propagation of errors throughout the pipeline, ultimately degrading performance.
 
 
 In our experiments, novel entities are represented by a single vector---the medoid of their NIL mention cluster. However, evidence from \Cref{tab:new_entities_recall} indicates that this representation is sub-optimal, although more efficient. Exploring alternative strategies, such as using multiple vectors per cluster constitutes a promising direction for future work to achieve a better trade-off between effectiveness and efficiency.
