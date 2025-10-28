@@ -511,7 +511,8 @@ These two dataset are used by the existing \ac{kgqa} approaches based on constra
 With these datasets we use the 800-million-fact tree derived from Wikidata indexed in PostgreSQL (\Cref{sec:wikidata-repr}), and, for computational efficiency, a limited sample of 200 questions is considered for each public dataset, stratifying by question type.
 
 \medskip\noindent
-The proprietary \textit{Bank} dataset comes from Banca d'Italia, a large European central bank. It covers the financial domain and allows us to study how \refactx adapts to domain-specific data.
+The proprietary \textit{Bank} dataset comes from Banca d'Italia, the Italian central bank. It covers the financial domain---which is a knowledge-intensive domain--- and allows us to study how \refactx adapts to domain-specific knowledge.
+
 %
 It includes 278 template questions derived from an anonymized corporate knowledge graph containing approximately 10,000 triples and nine relations, such as ownership and control.
 In this setting, we can evaluate \acp{llm} while minimizing data contamination issues, as the models are unlikely to have been exposed to this data during training. 
@@ -540,8 +541,8 @@ Accuracy (A) corresponds to the ratio of questions answered correctly. Precision
 
 Precision and accuracy are calculated in two settings: 
 \begin{enumerate}
-    \item Exact Match: comparing the predicted answer with the ground truth with case-insensitive string equality;
-    \item \ac{llm}-as-a-Judge~\cite{zheng2023llmjudge}: we ask Llama3.3-70B in 16-bit precision whether the predicted answer is correct and complete with respect to the ground truth.
+    \item exact match: comparing the predicted answer with the ground truth with case-insensitive string equality;
+    \item \ac{llm}-as-a-judge~\cite{zheng2023llmjudge}: we ask Llama3.3-70B in 16-bit precision whether the predicted answer is correct and complete with respect to the ground truth.
 \end{enumerate}
 
 
@@ -553,6 +554,7 @@ First, the same \acp{llm} used with \refactx are evaluated without constrained g
 %
 
 Then, we compare against \ac{qa} methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li-etal-2025-decoding-graphs} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
+
 Additionally, Hybrid-QA (HQA)~\cite{lehmann2024beyond}---a tool-based \ac{qa} apprach---is included in the comparison. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
 
 %
@@ -575,6 +577,7 @@ GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}, instead, considers
 
 %
 % 
+\medskip\noindent
 DoG and HQA use accuracy in the evaluation, while GCR calculates \textit{Hit} and \textit{F1}. Considering \textit{enumeration} answer (containing a list of items), \textit{Hit} counts a prediction as correct whenever any item of the ground truth matches the prediction, whereas \textit{F1} is the average of the \textit{F1} of the single predictions. These measures are equivalent to accuracy for generic answers (not for enumerations).
 
 
@@ -600,44 +603,65 @@ In the experiments, beam search~\cite{hu-etal-2015-improved} is used with $\text
     \label{fig:generation_time}
 \end{figure}
 
-We compare \refactx's \ac{kb}-guided constrained generation time with unconstrained \textit{\ac{llm}-only} generation time.
+We compare \refactx's \ac{kb}-guided constrained generation time with normal \textit{\ac{llm}-only} generation time.
 %
 %
 \Cref{fig:generation_time} plots the token generation times calculated in the two settings. The time overhead added by constrained generation is very limited: the total time for generating 4,000 tokens increases by only 1.3\%, from 300.14 seconds to 303.89.
 
-\todo{dividi in w la tabella}
 \begin{table}[htbp]
-\caption{Comparison between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A), calculated using Exact Match (left) and \ac{llm}-as-a-Judge (right). }
-\label{tab:em_judge_results_memorization}
-    \resizebox{\textwidth}{!}{%
-\begin{tabular}{lll|ll|ll|ll|ll|ll|ll|ll}
+\caption{Comparison with \textbf{exact match} between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\label{tab:em_results_memorization}
+\centering
+\begin{tabular}{lll|ll|ll|ll}
 \toprule
- & \multicolumn{8}{c|}{\textbf{Exact Match}} & \multicolumn{8}{c}{\textbf{\ac{llm}-as-a-Judge}} \\
- & \multicolumn{2}{c|}{Bank} & \multicolumn{2}{c|}{Mintaka} & \multicolumn{2}{c|}{2WikiMH} & \multicolumn{2}{c|}{WebQSP} & \multicolumn{2}{c|}{Bank} & \multicolumn{2}{c|}{Mintaka} & \multicolumn{2}{c|}{2WikiMH} & \multicolumn{2}{c|}{WebQSP} \\
- & P & A & P & A & P & A & P & A & P & A & P & A & P & A & P & A \\
+ & \multicolumn{8}{c}{\textbf{Exact Match}} \\
+ & \multicolumn{2}{c|}{Bank} & \multicolumn{2}{c|}{Mintaka} & \multicolumn{2}{c|}{2WikiMH} & \multicolumn{2}{c}{WebQSP} \\
+ & P & A & P & A & P & A & P & A  \\
 \midrule
-\multicolumn{16}{c}{\textbf{\refactx}} \\
-$\text{Llama}^{3.3}_{70B}$ & \textbf{40.8} & 36.0 & \textbf{66.4} & 40.5 & \textbf{74.4} & 64.0 & \textbf{22.8} & 17.0 & 50.0 & \textbf{42.8} & \textbf{91.8} & 56.0 & 93.6 & 81.0 & 85.2 & 63.5 \\
-$\text{Qwen}^{2.5}_{72B}$ & 39.9 & \textbf{37.1} & 43.8 & 28.0 & 71.9 & \textbf{69.0} & 18.5 & 14.0 & 46.1 & \textbf{42.8} & 82.8 & 55.5 & \textbf{96.4} & \textbf{92.5} & 84.8 & 65.5 \\
-$\text{Phi}^{4}_{14B}$ & 35.8 & 29.9 & 33.0 & 19.0 & 62.2 & 46.0 & 15.4 & 10.5 & \textbf{51.3} & 41.7 & 88.7 & 51.0 & 92.6 & 69.5 & \textbf{89.7} & 61.0 \\
-$\text{Qwen}^{2.5}_{7B}$ & 24.7 & 20.9 & 48.5 & 24.5 & 58.5 & 46.5 & 17.0 & 12.0 & 44.8 & 35.3 & 78.2 & 39.5 & 91.2 & 73.0 & 78.7 & 55.5 \\
+\multicolumn{8}{c}{\textbf{\refactx}} \\
+$text{Llama}^{3.3}_{70B}$ & \textbf{40.8} & 36.0 & \textbf{66.4} & 40.5 & \textbf{74.4} & 64.0 & \textbf{22.8} & 17.0  \\
+$text{Qwen}^{2.5}_{72B}$ & 39.9 & \textbf{37.1} & 43.8 & 28.0 & 71.9 & \textbf{69.0} & 18.5 & 14.0  \\
+$text{Phi}^{4}_{14B}$ & 35.8 & 29.9 & 33.0 & 19.0 & 62.2 & 46.0 & 15.4 & 10.5  \\
+$text{Qwen}^{2.5}_{7B}$ & 24.7 & 20.9 & 48.5 & 24.5 & 58.5 & 46.5 & 17.0 & 12.0  \\
 \midrule
-\multicolumn{16}{c}{\textbf{\ac{llm}-only}} \\
-$\text{Llama}^{3.3}_{70B}$ & 23.1 & 18.3 & 60.7 & \textbf{59.5} & 46.7 & 43.0 & 19.9 & \textbf{19.5} & 23.1 & 18.3 & 83.7 & \textbf{82.0 }& 61.4 & 56.5 & 82.1 & \textbf{80.5} \\
-$\text{Qwen}^{2.5}_{72B}$ & 30.0 & 29.9 & 52.3 & 51.5 & 35.7 & 35.5 & 13.6 & 13.5 & 30.0 & 29.9 & 81.2 & 80.0 & 45.2 & 45.0 & 73.7 & 73.0 \\
-$\text{Phi}^{4}_{14B}$ & 21.8 & 20.1 & 43.6 & 42.5 & 25.5 & 24.0 & 14.4 & 14.0 & 25.7 & 23.7 & 76.9 & 75.0 & 41.5 & 39.0 & 75.3 & 73.0 \\
-$\text{Qwen}^{2.5}_{7B}$ & 21.7 & 18.0 & 45.3 & 41.0 & 21.6 & 18.0 & 10.9 & 10.5 & 28.1 & 21.9 & 65.7 & 60.0 & 35.9 & 30.0 & 66.7 & 64.0 \\
-
-
-
+\multicolumn{8}{c}{\textbf{\acs{llm}-only}} \\
+$\text{Llama}^{3.3}_{70B}$ & 23.1 & 18.3 & 60.7 & \textbf{59.5} & 46.7 & 43.0 & 19.9 & \textbf{19.5}  \\
+$\text{Qwen}^{2.5}_{72B}$ & 30.0 & 29.9 & 52.3 & 51.5 & 35.7 & 35.5 & 13.6 & 13.5  \\
+$\text{Phi}^{4}_{14B}$ & 21.8 & 20.1 & 43.6 & 42.5 & 25.5 & 24.0 & 14.4 & 14.0  \\
+$\text{Qwen}^{2.5}_{7B}$ & 21.7 & 18.0 & 45.3 & 41.0 & 21.6 & 18.0 & 10.9 & 10.5  \\
 \bottomrule
-\end{tabular}}
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Comparison with \textbf{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\label{tab:judge_results_memorization}
+\centering
+\begin{tabular}{lll|ll|ll|ll}
+\toprule
+ & \multicolumn{8}{c}{\textbf{\ac{llm}-as-a-Judge}} \\
+ & \multicolumn{2}{c|}{Bank} & \multicolumn{2}{c|}{Mintaka} & \multicolumn{2}{c|}{2WikiMH} & \multicolumn{2}{c}{WebQSP}  \\
+ & P & A & P & A & P & A & P & A \\
+\midrule
+\multicolumn{8}{c}{\textbf{\refactx}} \\
+$\text{Llama}^{3.3}_{70B}$  &  50.0 & \textbf{42.8} & \textbf{91.8} & 56.0 & 93.6 & 81.0 & 85.2 & 63.5 \\
+$\text{Qwen}^{2.5}_{72B}$  &  46.1 & \textbf{42.8} & 82.8 & 55.5 & \textbf{96.4} & \textbf{92.5} & 84.8 & 65.5 \\
+$\text{Phi}^{4}_{14B}$  &  \textbf{51.3} & 41.7 & 88.7 & 51.0 & 92.6 & 69.5 & \textbf{89.7} & 61.0 \\
+$\text{Qwen}^{2.5}_{7B}$  &  44.8 & 35.3 & 78.2 & 39.5 & 91.2 & 73.0 & 78.7 & 55.5 \\
+\midrule
+\multicolumn{8}{c}{\textbf{\acs{llm}-only}} \\
+$\text{Llama}^{3.3}_{70B}$  &  23.1 & 18.3 & 83.7 & \textbf{82.0 }& 61.4 & 56.5 & 82.1 & \textbf{80.5} \\
+$\text{Qwen}^{2.5}_{72B}$  &  30.0 & 29.9 & 81.2 & 80.0 & 45.2 & 45.0 & 73.7 & 73.0 \\
+$\text{Phi}^{4}_{14B}$  &  25.7 & 23.7 & 76.9 & 75.0 & 41.5 & 39.0 & 75.3 & 73.0 \\
+$\text{Qwen}^{2.5}_{7B}$  &  28.1 & 21.9 & 65.7 & 60.0 & 35.9 & 30.0 & 66.7 & 64.0 \\
+\bottomrule
+\end{tabular}
 \end{table}
 
 
 
 \begin{table}[h!]
-    \caption{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-Judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
+    \caption{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
     \label{tab:res-comparison-rw}
     \centering
 \begin{tabular}{l|cc|cc|cc}
@@ -664,10 +688,10 @@ HQA\cite{lehmann2024beyond} GPT$^4$$^\ddagger$ & -- & \textbf{95.9} & -- & -- & 
 
 \subsection{Performance Analysis}
 \label{sec:performance}
-\Cref{tab:em_judge_results_memorization} shows \refactx results on benchmark datasets, compared to \textit{\ac{llm}-only}. The gap between Exact Match and \ac{llm}-as-a-Judge results likely derives from string comparison: correct answers with different date formats or item orders are counted as errors under Exact Match.% 
+\Cref{tab:em_results_memorization,tab:judge_results_memorization} show \refactx results on benchmark datasets compared to \textit{\ac{llm}-only}, calculated with exact match and \acp{llm}-as-a-Judge, respectively. The gap between exact match and \ac{llm}-as-a-judge results derives from string comparison: correct answers with different date formats or item orders (for enumeration question) are counted as errors under exact match.% 
 
 % 
-Compared to \textit{\ac{llm}-only} models, \refactx consistently achieves higher precision in the \ac{llm}-as-a-Judge evaluation.
+Compared to \textit{\ac{llm}-only} models, \refactx consistently achieves higher precision in the \ac{llm}-as-a-judge evaluation.
 %
 In terms of accuracy, \refactx performs worse than \textit{\ac{llm}-only} on the Mintaka and WebQSP datasets. This reveals these datasets are largely covered by the models' parametric knowledge---reaching 82.0\% and 80.5\% accuracy respectively.
 %
@@ -678,11 +702,11 @@ whose questions seem harder for the \ac{llm} parametric knowledge,
 \refactx improves both accuracy and precision by more than 20\% with respect to \textit{\ac{llm}-only} models.
 % 
 
-The Bank dataset proved especially challenging, with \refactx achieving precision up to 51.3\% and accuracy up to 42.8\%. However, a type-wise analysis reveals good results on generic Yes/No questions achieving precision (P) of 85.2\% and accuracy (A) of 78.9 (using \ac{llm}-as-a-Judge) with Qwen2.5-72B while with Llama3.3-70B we achieve $P=77.8\%$ and $A=70.6\%$. Our approach is, instead, particularly suffering with count questions: both models achieve less than 10\% accuracy on these questions. Similarly, enumeration questions pose difficulties, with correct answers achieved in only 30\% of cases on the Bank dataset.
+The Bank dataset proved especially challenging, with \refactx achieving precision up to 51.3\% and accuracy up to 42.8\%. However, a type-wise analysis reveals good results on generic Yes/No questions achieving precision (P) of 85.2\% and accuracy (A) of 78.9 (using \ac{llm}-as-a-judge) with Qwen2.5-72B while with Llama3.3-70B we achieve $P=77.8\%$ and $A=70.6\%$. Our approach is, instead, particularly suffering with count questions: both models achieve less than 10\% accuracy on these questions. Similarly, enumeration questions pose difficulties, with correct answers achieved in only 30\% of cases on the Bank dataset.
 
 
 On the Mintaka dataset, \refactx struggles especially with superlative and count questions, with Llama3.3-70B achieving 14.3\% and 55.0\% accuracy, respectively. Qwen2.5-72B shows a contrasting pattern, achieving higher accuracy on superlatives (47.6\%) but lower on counts (35.0\%).
-On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and 57.9\% accuracy, respectively, while Llama3.3-70B reaches 66.7\% and 73.7\%, still below the performance levels in 2WikiMH, composed mostly by comparative and multi-hop questions. 
+On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and 57.9\% accuracy, respectively, while Llama3.3-70B reaches 66.7\% and 73.7\%, which are still below the performance levels in 2WikiMH, composed mostly by comparative and multi-hop questions. 
 
 On WebQSP, enumeration answers prove particularly difficult in terms of precision for \refactx with both Llama3.3-70B and Qwen2.5-72B, while when using Phi-4 it maintains consistent precision across all answer types.
 
