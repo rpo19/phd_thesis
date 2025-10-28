@@ -81,7 +81,7 @@ Surprisingly, the findings suggest that employing a domain-specific legal BERT d
 
 \input{table/result_5seed}
 
-\paragraph{\acl{ner}}
+\paragraph{Entity Recognition}
 
 The evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \ac{ner} recognition. The classes \texttt{Money} and \texttt{Person} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \texttt{Miscellaneous} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the MISC class. Additionally, \texttt{Miscellaneous} exhibits the largest disparity between strong matching performance and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \texttt{Organization}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
 
@@ -89,7 +89,7 @@ We also consider the successful results achieved by the \ac{ner} component indic
 
 \input{table/ner4type}
 
-\paragraph{\acl{nel} and NIL Prediction}
+\paragraph{Entity Linking and NIL Prediction}
 
 Table~\ref{tab:consolidation} reveals that the \ac{nel} and NIL prediction components do not exhibit the same level of effectiveness as the \ac{ner} component. The independent evaluation of the \ac{nel} component ($\ac{nel}_\perp$) demonstrates a lower \textit{accuracy} ($73.52\%$) but achieves a \textit{recall@100} of $90.81\%$, suggesting that the integration of a re-ranking system could potentially enhance our results. Additionally, the comparison with the outcomes obtained with the news-based VoxEL benchmark~\cite{rosales2018voxel} further underscores the challenges presented by the domain. We also remind that the \ac{nel} component has not been fine-tuned on domain data, and that the utilized knowledge base has not been restricted to domain-related entities. These two factors represent possibilities for enhancing this component.
 
@@ -104,7 +104,7 @@ For these reasons, we consider the NIL prediction to be the most significant cha
 \input{table/consolidation}
 
 
-\paragraph{\ac{ee} end-to-end}
+\paragraph{End-to-end Entity Extraction}
 
 Lastly, Table \ref{tab:overall4type} presents the comprehensive results for the end-to-end \ac{ee} task. \texttt{Person} and \texttt{Location} exhibit similar satisfactory performance levels. On the other hand, \texttt{Organization} entities appear to be more challenging.
 

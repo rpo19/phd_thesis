@@ -1,7 +1,37 @@
-\chapter{Conclusions and Outlook}
-\label{chap:conclusion}
-In this thesis I have...
+\chapter*{Thesis Conclusion}
+\addcontentsline{toc}{chapter}{Thesis Conclusion}
 
-\section{Conclusions}
 
-\section{Future Work}
+\paragraph{Objectives revisited.}
+This dissertation investigated how to satisfy information needs in knowledge-intensive legal and investigative contexts, focusing on three objectives: (i) assessing the applicability and limitations of general-domain \ac{ee} methods in these domains; (ii) designing an entity-centric architecture that remains useful despite imperfect extraction; and (iii) enabling large-scale knowledge exploitation in \acp{llm} without relying on external retrievers or bespoke pipelines. These objectives are motivated by the need to access, consolidate, and exploit information produced in heterogeneous, high-risk settings while retaining traceability and human oversight.
+
+\paragraph{Synthesis of contributions.}
+Chapter~X showed that while general-domain \ac{ee} models can be applied to legal and investigative texts, incremental settings exacerbate error propagation and NIL prediction is a major source of errors. Domain adaptation improves performance but is structurally constrained by scarce supervision and regulatory limitations, and \ac{hitl} correction emerges as a practical requirement rather than an optional add-on.
+
+Chapter~Y consolidated an entity-centric \ac{dia} that integrates heterogeneous artefacts (judgments, investigative chats, attachments) while remaining operational under imperfect extraction. The design is grounded in real use cases and prior prototypes, and it articulates the abstractions needed to support faceted retrieval, navigation, analytics, and question answering in a unified way, without assuming perfect \ac{ee}.
+
+Chapter~Z introduced \refactx, a knowledge-constrained decoding mechanism that enables autoregressive \acp{llm} to exploit large external \acp{kb} without retrievers or architectural changes. The method scales to hundreds of millions of facts with negligible latency and improves \ac{qa} over \acp{llm} relying solely on their parametric knowledge, including in domain-specific settings.
+
+Taken together, these results show that entity-centric methods remain viable and useful in legal and investigative domains despite imperfect extraction, and that large-scale structured knowledge can be injected into generative models in a way that is both constrained and transparent.
+
+\paragraph{How the pieces fit.}
+The empirical assessment in Chapter~X established the failure modes and constraints that any downstream system must tolerate, thereby motivating an architecture designed for robustness rather than ideal extraction. The architecture in Chapter~Y provides that abstraction layer and clarifies the functional requirements for downstream use. Finally, Chapter~Z shows that when external knowledge must be exploited in downstream reasoning or answering, this can be done without abandoning the architectural discipline or introducing opaque retrieval pipelines. The three components thus form a coherent pipeline of justification: \textit{limits of extraction} $\rightarrow$ \textit{robust architecture} $\rightarrow$ \textit{controlled exploitation of knowledge}.
+
+\paragraph{Limitations and scope.}
+% --- write here ---
+% Examples you could mention:
+% - Dependence on supervised data for adaptation
+% - Scalability of HITL workflows
+% - ReFactX injects facts but does not solve reasoning
+% - Domain tested: Italian civil judgments + investigative chats
+% - No end-to-end user study on all components together
+
+\paragraph{Implications and outlook.}
+% --- write here ---
+% Suggestions for what to articulate:
+% - Architectural implication for AI in regulated domains
+% - Generality beyond law: any knowledge-intensive, high-risk domain
+% - Future evolution: tighter coupling of extraction and interaction loops
+% - Integration of ReFactX with symbolic backends (SPARQL etc.)
+% - Programmatic statement: entity-centric + constrained access as a paradigm
+
