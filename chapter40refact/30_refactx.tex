@@ -11,7 +11,7 @@ In the latter case, instead, models acquire external knowledge more internally, 
 
 \ac{qa} is relevant for knowledge-intensive domains and, thus, for this thesis work, and appears in the use cases we considered in \Cref{sec:intro}. However, regulations on private data could forbid the use of powerful \ac{api}-based \acp{llm}, forcing users to rely on executing models locally with hardware-related constraints. For this reason, the objective \ref{ob:refactx} aims at developing an efficient and scalable \ac{qa} system that additionally allows users to trace and verify the received answer to the original documents or pieces of knowledge.
 
-Addressing \ref{ob:refactx}, indeed, this chapter describes Reliable Fact eXtractor (\refact), a \ac{qa} approach able to integrate external knowledge without depending on additional models or external retrievers, but relying solely on constrained generation, supported by a pre-built prefix-tree index, designed to facilitate and speed-up the acquisition of external facts.
+Addressing \ref{ob:refactx}, this chapter describes Reliable Fact eXtractor (\refact), a \ac{qa} approach able to integrate external knowledge without depending on additional models or external retrievers, but relying solely on constrained generation, supported by a pre-built prefix-tree index, designed to facilitate and speed-up the acquisition of external facts.
 
 A few recent approaches have applied \emph{constrained generation} to \ac{qa}, achieving promising results~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, however, they did not focus on the scalability to large knowledge bases.
 This technique restricts the model's output space during decoding to sequences that satisfy predefined structural, syntactic, or semantic constraints. In our case, we use it for ensuring the \ac{llm} generates a fact that really exist in the \ac{kg}, with the aim of preventing hallucinations.
@@ -729,24 +729,12 @@ This limitation likely explains why our approach is obtaining worse performance 
 The obtained results are particularly promising considering that we did not fine-tune the models to improve their ability to leverage \refactx during reasoning. We plan to address this limitation in future work.
 
 
-
-\section{Conclusion}
-\label{sec:rx:conclusion}
-\todo{add ref to objective}
-This chapter addressed Objective~\ref{ob:refactx} by presenting \refactx, a generic knowledge-base-constrained decoding system that can be integrated with any autoregressive \ac{llm} and large knowledge bases (\ac{kb}) of textual facts. 
-In our experiments, using a 800-million-fact \ac{kb} derived from Wikidata, \refactx injects evidence during generation via constrained decoding.
-This mechanism permits only continuations that lead to valid \ac{kb} facts and is highly efficient. Leveraging a disk-backed prefix tree, it stores 800 million facts in 95 GB, adding only 1.3\% latency at generation time. On certain benchmarks, it improves question answering accuracy with gains exceeding 20 percentage points at over 90\% precision---compared to relying solely on the \ac{llm}'s internal knowledge. \refactx is thus a lightweight, easy-to-integrate solution for question answering with an external \ac{kb}.
-
-We plan to explore fine-tuning to enhance the reasoning capabilities of \acp{llm} with \refactx and to
-extend it to cover counts, long enumerations, and other set operations.
-To achieve higher accuracy in these cases, the model may first explore using \refactx and then leverage additional tools---such as a SPARQL engine. We leave this extension for future work.
-
 \section{Conclusion}
 \label{sec:rx:conclusion}
 
 This chapter addressed Objective~\ref{ob:refactx} by presenting \refactx, a knowledge-base-constrained decoding mechanism that enables any autoregressive \ac{llm} to exploit large external \acp{kb} without external retrievers or architectural changes. In our experiments, we indexed more than 800 million Wikidata facts in a 95~GB on-disk prefix tree. By restricting decoding to valid continuations in this structure, \refactx injects factual evidence during generation with only about 1.3\% latency overhead. Empirically, it improves \ac{qa} over \acp{llm} relying solely on their parametric knowledge, and the comparison with reference approaches shows that \refactx can achieves competitive performance.
 
-We further assessed the generalizability of \refactx in a domain-specific, knowledge-intensive setting (corporate finance) by adapting the instruction prompt and indexing reversed triples to enable tail-to-head reasoning. Although the overall scores on this dataset remain modest, simpler questions (e.g.\ yes/no or single-fact queries) are handled substantially better, indicating headroom for improvement through stronger domain adaptation (e.g.\ fine-tuning or other in-domain optimizations).
+We further assessed \refactx generalizability in a domain-specific, knowledge-intensive setting (corporate finance) by adapting the instruction prompt and indexing reversed triples to enable tail-to-head reasoning. Although the overall scores on this dataset remain modest, simpler questions are handled substantially better, indicating headroom for improvement through stronger domain adaptation (\eg fine-tuning or other in-domain optimizations).
 
 Future work includes strengthening the reasoning capabilities of \refactx-enabled models through fine-tuning, and extending the support for count questions, long enumerations, or other set-based queries. In these cases, \refactx could act as a first stage to acquire factual information for the reasoning, complemented by additional tools (\eg a SPARQL engine) when more complex operations are required. In addition, recent training-free optimizations~\cite{cai2025trainingfreegrouprelativepolicy} offer a promising direction to adapt \refactx efficiently to new domains.
 
