@@ -1,5 +1,8 @@
 \chapter[Efficient Question Answering over External Knowledge][Efficient \acs{qa} over External Knowledge]{Efficient Question Answering over External Knowledge}
 
+
+\todo{although not on legal. valutato su fainance e ottenuti buoni risultati su alcuni tipi di domande, yes no}
+
 As described in \Cref{sec:intro,sec:rw:llms}, \acp{llm} have demonstrated a variety of capabilities, ranging from natural language understanding and generation to reasoning, especially when enhanced with techniques like \acf{cot} prompting~\cite{wei2022chainofthought}. However, they are prone to hallucinations~\cite{maynez-etal-2020-faithfulness-hallucination} and their internal knowledge remains limited to their training data (see \Cref{sec:llms_vs_kbs}). This complicates their application to knowledge-intensive tasks such as \acf{qa}, especially when these tasks necessitate accessing information beyond the parametric knowledge of \acp{llm}---for example, recent data and confidential corporate information.
 
 
@@ -13,7 +16,7 @@ In the latter case, instead, models acquire external knowledge more internally, 
 A few recent approaches have applied \emph{constrained generation} to \ac{qa}, achieving promising results~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, however, they did not focus on the scalability to large knowledge bases.
 This technique restricts the model's output space during decoding to sequences that satisfy predefined structural, syntactic, or semantic constraints. In our case, we use it for ensuring the \ac{llm} generates a fact that really exist in the \ac{kg}, with the aim of preventing hallucinations.
 
-In this chapter, we present Reliable Fact eXtractor (\refact), a constrained generation-based approach to \ac{qa} for addressing \ref{ob:refactx}, which require developing a scalable \ac{qa} system that can provide traceable and verifiable answers, grounded on external knowledge.
+In this chapter, we present Reliable Fact eXtractor (\refact), a constrained generation-based approach to \ac{qa} for addressing \ref{ob:refactx}, which require developing a scalable \ac{qa} system that can provide traceable and verifiable answers, grounded on external knowledge. Furthermore, we also experiment \refactx on the financial domain, another knowledge-intensive domain.
 
 %
 \refactx allows \acp{llm} to integrate external knowledge without depending on additional models or external retrievers, but relying solely on constrained generation, supported by a pre-built prefix-tree index, designed to facilitate and speed-up fact retrieval.
@@ -21,11 +24,8 @@ In this chapter, we present Reliable Fact eXtractor (\refact), a constrained gen
 At inference time, the \ac{llm} is instructed via \acf{icl}~\cite{dong2024survey} to invoke the \emph{Fact} command when external facts are required. Once the command is recognized, constrained generation is activated: the model produces tokens only along valid paths in the prefix tree, guaranteeing that the output matches a fact from the knowledge base, which is derived from Wikidata~\cite{wikidata}. Once an entire \ac{kb} fact is generated, the decoding mechanism reverts back to normal.
 It is important to note that every generated token is selected based on \ac{llm}'s probability estimates. Constrained generation only narrows the vocabulary to the tokens that form an existing fact in the \ac{kb}, but always leaves the final choice to the \ac{llm}.
 
-\textbf{Motivating Example.} The approach is illustrated in \Cref{fig:example}, by depicting an example with the question \textit{``When was the director of Slumdog Millionaire born?''}. The model is instructed to first reason on how to reach the correct answer, and then it starts to acquire facts.
-% TODO fact command?
-Once the \emph{Fact} command is called, constrained generation is enabled (underlined in blue) and the model is guided to generate an existing fact. This way the model is able to first find that \textit{``Danny Boyle''} is the director of \textit{``Slumdog Millionaire''}, then to find his birthdate, and finally to answer the question correctly.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/refact_example.pdf}
     \caption{\refactx answering an open-domain question.
@@ -34,6 +34,12 @@ The \ac{llm} sketches a plan, makes two \emph{Fact} calls, and---with constraine
     \label{fig:example}
     % \vspace{2em}
     \end{figure}
+
+
+\paragraph{Motivating Example.} The approach is illustrated in \Cref{fig:example}, by depicting an example with the question \textit{``When was the director of Slumdog Millionaire born?''}. The model is instructed to first reason on how to reach the correct answer, and then it starts to acquire facts.
+% TODO fact command?
+Once the \emph{Fact} command is called, constrained generation is enabled (underlined in blue) and the model is guided to generate an existing fact. This way the model is able to first find that \textit{``Danny Boyle''} is the director of \textit{``Slumdog Millionaire''}, then to find his birthdate, and finally to answer the question correctly.
+
 
 
 % \newpage
@@ -51,7 +57,7 @@ The main contributions of this chapter can be summarized as follows:
 
 
 \refactx allows \acp{llm} to efficiently access large \acp{kb} at inference time with constrained generation, generating valid facts, and weave them into chain-of-thought reasoning.
-In this work we construct our \ac{kb} from Wikidata.
+In this work Wikidata is considered as the reference \ac{kb}.
 
 
 
@@ -78,10 +84,39 @@ in greedy decoding the most probable token is chosen as follows:
     \label{eq:token_selection}
 \end{equation}
 
-Intuitively, to constrain this process for generating only existing facts, we need to restrict $V$ to only allow tokens that can form a fact from the \ac{kb}. We define $V^A_{x_{<i}}$, which contains all the tokens that can lead to an existing fact if added to the sequence $x_{<i}$. Considering the example in \Cref{fig:constrained_generation}, at step $x_i$, when $x_{<i}=\text{``<Danny Boyle> <''}$, $V^A_{x_{<i}} = \{\text{``date''}, \text{``given''}\}$.
+Intuitively, to constrain this process for generating only existing facts, we need to restrict $V$ to only allow tokens that can form a fact from the \ac{kb}. We define $V^A_{X} \subseteq V$, which contains all the tokens that can lead to an existing fact if added to the sequence $X$. Considering the example in \Cref{fig:constrained_generation}, at step $x_i$, when $x_{<i}=\text{``<Danny Boyle> <''}$, $V^A_{x_{<i}} = \{\text{``date''}, \text{``given''}\}$.
 
 
-\begin{figure}[h]
+
+
+Next, we define the \textit{next tokens} function $\mathrm{NT}_{\mathrm{kb}}$ that, given a sequence $x_{<i}$, obtains $V^A_{x_{<i}}$ for the considered \ac{kb}.
+%
+Consequently, the token selection formula from \Cref{eq:token_selection} is updated to:
+\begin{equation}
+    x_i = \text{argmax}_{v \in V^A_{x_{<i}}}P_\theta(x_i = v \mid x_{<i}), \qquad \text{where }
+    V^A_{x_{<i}} = \mathrm{NT}_{\mathrm{kb}}(x_{<i}) = \{v_0,v_1,\ldots\}.
+\end{equation}
+
+However, the same result can be achieved by altering the probability distribution, setting the probability of all forbidden tokens to zero---without modifying the vocabulary:
+\begin{equation}
+    P^{c}_\theta(x_i \mid x_{<i}) = \begin{cases}
+        P_\theta(x_i = v \mid x_{<i}) & \forall v \in V^A_{x_{<i}}, \\
+        0 & \text{otherwise}.
+    \end{cases}
+\end{equation}
+By using $P^{c}_\theta$, instead of $P_\theta$, we achieve constrained generation, relying on the assumption that the sampling strategy (\Cref{eq:token_selection}) would never choose any $t_{k+1} \mid P^c(t_{k+1}) = 0$.
+%
+In practice, since at implementation level the models use log-probabilities, we directly the log-probabilities of forbidden tokens to $-\infty$\footnote{Hugging Face Transformers LogitsProcessor is used to alter the log-probabilities.}:
+\begin{equation}
+    \log P^{c}_\theta(x_i \mid x_{<i}) = \begin{cases}
+        \log P_\theta(x_i = v \mid x_{<i}) & \forall v \in V^A_{x_{<i}}, \\
+        -\infty & \text{otherwise}.
+    \end{cases}
+\end{equation}
+
+% TODO connect
+
+\begin{figure}[H]
     \centering
     \fbox{%
     \parbox{\textwidth}{%
@@ -101,41 +136,23 @@ At each step, the constrained decoding mechanism chooses the highest-probability
     % \vspace{2em}
 \end{figure}
 
-Next, we define the \textit{next tokens} function $\mathrm{NT}_{\mathrm{kb}}$ that, given a sequence $x_{<i}$, obtains $V^A_{x_{<i}}$ for the considered \ac{kb}.
-%
-Consequently, the token selection formula from \Cref{eq:token_selection} is updated to:
-\begin{equation}
-    x_i = \text{argmax}_{v \in V^A_{x_{<i}}}P_\theta(x_i = v \mid x_{<i}), \qquad \text{where }
-    V^A_{x_{<i}} = \mathrm{NT}_{\mathrm{kb}}(x_{<i}).
-\end{equation}
-
-However, the same result can be achieved by altering the probability distribution, setting the probability of all forbidden tokens to zero---without modifying the vocabulary:
-\begin{equation}
-    P^{c}_\theta(x_i \mid x_{<i}) = \begin{cases}
-        P_\theta(x_i = v \mid x_{<i}) & \forall v \in V^A_{x_{<i}}, \\
-        0 & \text{otherwise}.
-    \end{cases}
-\end{equation}
-By using $P^{c}_\theta$, instead of $P_\theta$, we achieve constrained generation, relying on the assumption that the sampling strategy (\Cref{eq:token_selection}) would never choose any $t_{k+1} \mid P^c(t_{k+1}) = 0$.
-%
-In practice, since at implementation level the models use log-probabilities, we directly set  the log-probabilities of forbidden tokens to $-\infty$\footnote{We use Hugging Face Transformers LogitsProcessor to alter the log-probabilities.}:
-\begin{equation}
-    \log P^{c}_\theta(x_i \mid x_{<i}) = \begin{cases}
-        \log P_\theta(x_i = v \mid x_{<i}) & \forall v \in V^A_{x_{<i}}, \\
-        -\infty & \text{otherwise}.
-    \end{cases}
-\end{equation}
-
-% TODO connect
 
 \Cref{fig:constrained_generation} illustrates the application of constrained generation. It shows a fact produced by the same \ac{llm} in response to the question \textit{``When was Danny Boyle born?''}---first using normal (unconstrained) generation, highlighted in red, and then using constrained generation, underlined in blue.
-While, the fact generated in normal mode is not correct, with constrained generation we are able to guide the \ac{llm} to the correct fact. The lower part of the figure details the mechanism of constrained generation. For each decoding step, allowed tokens are displayed in green boxes, whereas forbidden tokens are displayed in red boxes with dashed borders and a strike-through.
+While, the fact generated in normal mode is not correct, constrained generation is able to guide the \ac{llm} to the correct fact. The lower part of the figure details the mechanism of constrained generation. For each decoding step, allowed tokens are displayed in green boxes, whereas forbidden tokens are displayed in red boxes with dashed borders and a strike-through.
 Tokens are arranged in ascending order according to $P_\theta(x_k = v)$, from bottom to top.
 
 Starting from the sequence 
-$x_{<i} = \text{``<Danny Boyle> <''}$, normal generation would generate $x_i = \text{argmax}_{v \in V}P_\theta(x_i = v \mid x_{<i}) = \text{``born''}$, leading to an incorrect fact, while with constrained generation $x_i = \text{argmax}_{v \in V}P^c_\theta(x_i = v \mid x_{<i}) = \text{``date''}$.
+$x_{<i} = \text{``<Danny Boyle> <''}$, normal generation would generate
+\begin{equation}
+    x_i = \text{argmax}_{v \in V}P_\theta(x_i = v \mid x_{<i}) = \text{``born''},
+\end{equation}
+leading to an incorrect fact, while with constrained generation
+\begin{equation}
+    x_i = \text{argmax}_{v \in V}P^c_\theta(x_i = v \mid x_{<i}) = \text{``date''}.
+\end{equation}
+%
 This happens because in the \ac{kb} there is no fact starting with \textit{``<Danny Boyle> <born''}.
-% 
+
 Subsequently, when generating $x_{i+6}$, the constrained generation mechanism guides the model to select ``9'' that leads to the correct birth year of Danny Boyle \textit{``<Danny Boyle> <born> <1956''}, avoiding the model to generate \textit{``<Danny Boyle> <born> <16''} or \textit{``<Danny Boyle> <born> <196''}, both leading to incorrect information.
 This mechanism is additionally improved by beam search~\cite{hu-etal-2015-improved} which allows the model to explore multiple paths in the prefix tree in parallel.
 % 
@@ -143,48 +160,46 @@ This mechanism is additionally improved by beam search~\cite{hu-etal-2015-improv
 \section[Scaling to 800 Million Facts from Wikidata][Scaling to 800M Facts]{Scaling to 800 Million Facts from Wikidata}
 \label{sec:wikidata-repr}
 
-For obtaining the 800 million facts, we use the Wikidata truthy dump (Wikidata's highest-confidence statements, excluding qualifiers\footnote{\url{https://www.wikidata.org/wiki/Wikidata:Database_download/en\#RDF\_dumps}}) of the triples\footnote{The dump from 11 December 2024 was used.}.
+The 800 million facts are obtained from the Wikidata truthy dump (Wikidata's highest-confidence statements, excluding qualifiers\footnote{\url{https://www.wikidata.org/wiki/Wikidata:Database_download/en\#RDF\_dumps}}) of the triples\footnote{The dump from 11 December 2024 was used.}.
+
 To filter out uninformative facts only triples whose subject and relation have Wikidata identifiers are retained. For the object, we allow entities with Wikidata identifiers, English literals, numbers, dates, and literals with no language.
-Then, for each entity, we obtain a meaningful textual label (as Wikidata IDs lack meaning for \acp{llm}) corresponding to the Wikipedia title, if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise, we use the template \verb|rdf-schema#label (schema.org/description)|, \eg ``Jane Hajduk (American actress)'', since the Wikidata label alone is not unique.
+
+Then, for each entity, we obtain a meaningful textual label---because Wikidata IDs lack meaning for \acp{llm}---corresponding to the Wikipedia title, if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise, since the Wikidata label alone is not unique, the entity description is additionally considered, using the following template.
+\begin{verbatim}
+    {entity label} ({entity description})
+\end{verbatim}
+For example, the entity \textsc{Jane Hajduk}\footnote{\url{https://www.wikidata.org/wiki/Q3734827}}---which is not present in English Wikipedia---is labeled as ``Jane Hajduk (American actress)''. In this case, the label comes from \texttt{rdfs:label}~\cite{rdfs-spec} and the description from \texttt{schema:description}~\cite{schemaorg-spec}.
+
+
+
 With this process more than 800 million facts like the ones underlined in \Cref{fig:example} were obtained.
 
 
 % Once the facts are tokenized and indexed in a prefix tree for efficient access.
-Additionally, while creating the tree, we calculate the number of reachable leaves from each node to avoid that \acp{llm} generate the same fact repeatedly, a behavior we witnessed during preliminary experiments.
+Additionally, while creating the tree, we calculate the number of reachable leaves from each node to avoid that \acp{llm} generate the same fact repeatedly, a behavior witnessed during preliminary experiments.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/trie_example.drawio.pdf}
-    \caption{Generating facts from the fact tree. Token ids are surrounded by rounded rectangles. The arrows $S \xrightarrow{n} v_k$ represent the selection of the next token $v_k$ from the current sequence $S=x_{<i}$ and $n$ is the number of leaves reachable from $S$.}
+    \caption{Generating facts from the fact tree. Token IDs are surrounded by rounded rectangles. The arrows $X \xrightarrow{n} v_k$ represent the selection of the next token $v_k$ from the current sequence $X=x_{<i}$ and $n$ is the number of leaves reachable from $X$.}
     % \vspace{2em}
     \label{fig:trie_example}
 \end{figure}
 
 Duplicate fact generation is prevented as follows. Consider the prefix $X = \text{``<Euro> <country> <S''}$ in \Cref{fig:trie_example}, where the number or reachable leaves is $numleaves(X)=2$. After generating $\text{``<Euro> <country> <Slovakia> .''}$, this number is decreased to $1$ and from $X$ the model is only allowed to select $\text{``lovenia> .''}$. At this point, all leaves reachable from $X$ have been generated, thus generating ``S'' from $X'=\text{``<Euro> <country> <''}$ is forbidden by constrained generation. From $X'$ the \ac{llm} can generate one of the remaining $numleaves(X') - 2 = 24$ facts (\eg $\text{``<Euro> <country> <Italy> .''}$). 
 
-While relatively small trees can be kept in memory, \eg using Python dictionaries, when dealing with bigger trees, such as the 800-million-fact tree derived from Wikidata, this is often impossible. Therefore, we rely on solid relational database software. We use PostgreSQL\footnote{\url{https://www.postgresql.org/}} (version 17.2) and design the fact-tree table to ensure that all the information required for token generation is efficiently available.
-Given a prefix $X$, this includes the allowed next tokens $T = t^0..t^n$, the number of leaves reachable from $X$, and the number of reachable leaves if choosing $t$, for each $t \in T$ (to avoid selecting 0-leaves tokens and generating a fact twice). In \Cref{tab:postgres-table}, they are depicted respectively as \textit{Next Tokens} and \textit{\#Lv. (number of leaves)}, and \textit{Child.\#Lv.}.
+While relatively small trees can be kept in memory, \eg using Python dictionaries, when dealing with bigger trees, such as the 800-million-fact tree derived from Wikidata, this is often impossible. Therefore, we rely on relational database software. PostgreSQL 17.2~\cite{postgresql_online} has been chosen and the fact-tree table was designed to ensure that all the information required for token generation is efficiently available.
+Given a prefix $X$, this includes the allowed next tokens $V^A_{X} = \{v_0,v_1,\ldots\}$, the number of leaves reachable from $X$, and the number of reachable leaves if choosing any $v \in V^A_{X}$ (to avoid selecting 0-leaves tokens and generating a fact twice). In \Cref{tab:postgres-table}, they are depicted respectively as \textit{Next Tokens} and \textit{\#Lv. (number of leaves)}, and \textit{Child.\#Lv.}.
 
-However, this tree-representation schema can quickly grow in disk space usage, as a single path of length $L$ requires storing $L-1$ rows. To reduce the disk space requirements, we apply two additional measures. First, after a certain prefix length $L_c$ we stop adding rows and instead directly save the Python subtree in Pickle format\footnote{\url{https://docs.python.org/3/library/pickle.html}}, as shown in the last row of \Cref{tab:postgres-table}.
-In this way, during inference, subtrees that are manageable in size are directly loaded in memory (\eg with $L_c = 7$, $99\%$ of the subtrees use less than 116 \ac{kb}).
-Secondly, we represent single-leaf sequences in a single row, as visible at the fourth row in \Cref{tab:postgres-table}, saving the rest of the sequence in \textit{Child.\#Lv.} (the token 29 comes after 694, and 662 is the last in the sequence).
+However, this tree-representation schema can quickly grow in disk space usage, as a single path of length $L$ requires storing $L-1$ rows. To reduce the disk space requirements, two additional measures are applied. First, after a certain prefix length $L_c$ we stop adding rows and instead directly save the Python subtree in Pickle format\footnote{\url{https://docs.python.org/3/library/pickle.html}}, as shown in the last row of \Cref{tab:postgres-table}.
+In this way, during inference, subtrees that are manageable in size are directly loaded in memory. In our case, with $L_c = 7$, 99\% of the subtrees use less than 116 kilobytes of memory.
+Secondly, single-leaf sequences are represented in a single row, as visible at the fourth row in \Cref{tab:postgres-table}, saving the rest of the sequence in \textit{Child.\#Lv.} (the token 29 comes after 694, and 662 is the last in the sequence).
 %
-List items are saved as PostgreSQL arrays, while Pickle data is saved in \textit{BYTEA}. For fast access, the \textit{Prefix} is indexed with a B-Tree\footnote{\url{https://www.postgresql.org/docs/current/btree.html}} index that provides logarithmic search time~\cite{cormen2022introduction}.
-
-The ingestion process consists of creating the tree in-memory and then persisting it in the database. Nevertheless, hardware memory limits do not allow keeping the entire tree in-memory. So we perform this process in batches, constructing a limited-size tree, ingesting it, and then proceeding with the next one. 
-This method, however, results in duplicated prefix rows, as identical prefixes from different batches are stored as different rows and must be merged during inference. The maximum number of duplicates corresponds to the number of batches used.
-With this mechanisms we are able to index the 800 million facts using 95 GB.
-Note that the index, storing token ids, depends on the \ac{llm} vocabulary, thus \acp{llm} using distinct vocabularies require separate indexes.
-
-At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numleaves$ access the prefix tree to obtain, respectively, the set of allowed next tokens and the number of reachable leaves for a given prefix. This information is acquired either through a SQL query to the database or from the in-memory subtree when the prefix length exceeds $L_c$.
+List items are saved as PostgreSQL arrays, while Pickle data is saved in \texttt{BYTEA}. For fast access, the \textit{Prefix} is indexed with a B-Tree\footnote{\url{https://www.postgresql.org/docs/current/btree.html}} index that provides logarithmic search time~\cite{cormen2022introduction}.
 
 
-
-
-
-
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{PostgreSQL table content. \textit{\#Lv.} stands for ``number of leaves''.}
     % \small % shrink text a bit to fit
@@ -205,12 +220,42 @@ At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numl
     \end{table}
 
 
+The ingestion process consists of creating the tree in-memory and then persisting it in the database. Nevertheless, hardware memory limits do not allow keeping the entire tree in-memory. Thus, this process is performed in batches, constructing a limited-size tree, ingesting it, and then proceeding with the next one. 
+
+This method, however, results in duplicated prefix rows, as identical prefixes from different batches are stored as different rows and must be merged during inference. The maximum number of duplicates corresponds to the number of batches used.
+With these mechanisms, we are able to index the 800 million facts using about 95~GB of on-disk storage.
+
+
+Note that the index, storing token IDs, depends on the \ac{llm} vocabulary, thus \acp{llm} using distinct vocabularies require separate indexes.
+
+At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numleaves$ access the prefix tree to obtain, respectively, the set of allowed next tokens and the number of reachable leaves for a given prefix. This information is acquired either through a SQL query to the database or from the in-memory subtree, which is loaded after prefix length exceeds $L_c$.
+
+
+
+
+
+
+
 
 
 \section[Embedding \refactx into Question-Answering Workflows][\refactx for QA]{Embedding \refactx into Question-Answering Workflows}
 \label{sec:refactx-qa}
 
-\begin{figure}[ht!]
+\refactx relies on In-Context Learning (ICL)~\cite{dong2024survey} for instructing the model to access external knowledge.
+Our prompt, shown in \Cref{fig:prompt}, instructs the \ac{llm} to, first, determine the reasoning path needed for answering, then to use the \emph{Fact} command for getting relevant facts from the \ac{kb}, and finally to answer based on the proofs acquired with the \emph{Fact} command. Additionally, we instruct the model to:
+\begin{enumerate}
+    \item determine which kind of answer is required,
+    \item to respond ``I don't know'' when no useful facts have been found,
+    \item to understand when it is not able to find useful facts and stop,
+    \item to strictly adhere to the prompt,
+    \item and to be aware of the description predicate (often useful with the Wikidata \ac{kb}).
+\end{enumerate}
+
+At the end of this prompt, we add two examples to better guide the model behavior. While two examples are not sufficient to represent all the possible types of questions, increasing the number of few-shot example may reduce the efficiency of our approach. Therefore, a two-shot prompt is used throughout this paper.
+
+During inference, we detect when the \ac{llm} generates the sequence of tokens corresponding to the \emph{Fact} command and we activate constrained generation; at this point, the model is forced to generate an existing fact. After an entire fact is generated, we switch the model back to normal generation, allowing it to continue reasoning, to call again the \emph{Fact} command, or to answer. An example of \refactx in action is illustrated in \Cref{fig:example}.
+
+\begin{figure}[H]
     \centering
 %     \fbox{%
 %     \parbox{\textwidth}{%
@@ -276,27 +321,37 @@ You must always follow these instructions precisely and ensure your responses ad
  
  \end{figure}
 
-\refactx relies on In-Context Learning (ICL)~\cite{dong2024survey} for instructing the model to access external knowledge.
-Our prompt, shown in \Cref{fig:prompt}, instructs the \ac{llm} to, first, determine the reasoning path needed for answering, then to use the \emph{Fact} command for getting relevant facts from the \ac{kb}, and finally to answer based on the proofs acquired with the \emph{Fact} command. Additionally, we instruct the model to determine which kind of answer is required, to respond ``I don't know'' when no useful facts have been found, to understand when it is not able to find useful facts and stop, to strictly adhere to the prompt, and to be aware of the description predicate (often useful with the Wikidata \ac{kb}).
-At the end of this prompt, we add two examples to better guide the model behavior. While two examples are not sufficient to represent all the possible types of questions, increasing the number of few-shot example may reduce the efficiency of our approach. Therefore, a two-shot prompt is used throughout this paper.
 
-During inference, we detect when the \ac{llm} generates the sequence of tokens corresponding to the \emph{Fact} command and we activate constrained generation; at this point, the model is forced to generate an existing fact. After an entire fact is generated, we switch the model back to normal generation, allowing it to continue reasoning, to call again the \emph{Fact} command, or to answer. An example of \refactx in action is illustrated in \Cref{fig:example}.
 
 \section{Experimental Setup}
 \label{sec:rx:experiments}
 
+In this section we describe the experimental setup for the evaluation of \refactx performance on \ac{kgqa}, describing in order the pretrained \acp{llm}, the datasets, the evaluation metrics, and the reference approaches chosen.
+
+
+Additionally, we evaluate \refactx by comparing its generation time in constrained mode---with \ac{kb}-guided decoding---against the unconstrained \textit{\ac{llm}-only} baseline.
+We measure token generation time (in seconds) over 4{,}000 generated tokens using Qwen2.5-3B~\cite{qwen2025qwen25technicalreport} with PostgreSQL running on the same machine on one NVIDIA Tesla~T4\footnote{\url{https://www.nvidia.com/en-us/data-center/tesla-t4/}}, and enabling key--value caching~\cite{NEURIPS2023_cdaac2a0}.
+
+
 
 \subsection{Underlying Models}
 \label{sec:exp_qa}
-% 
-We evaluate \refactx on the QA task with the following models:
-\textit{meta-llama/Llama-3.3-70B-Instruct}~\cite{qwen2025qwen25technicalreport}, \textit{microsoft/phi-4}~\cite{abdin2024phi4technicalreport}, \\ \textit{Qwen/Qwen2.5-72B-Instruct}, and \textit{Qwen/Qwen2.5-7B-Instruct}~\cite{qwen2025qwen25technicalreport}
-%
-with the 800-million-fact tree derived from Wikidata indexed in PostgreSQL (see \Cref{sec:wikidata-repr}).
+The models selected for the evaluation are the following:
+\begin{itemize}
+    \item \textit{meta-llama/Llama-3.3-70B-Instruct}~\cite{qwen2025qwen25technicalreport},
+    \item \textit{microsoft/phi-4}~\cite{abdin2024phi4technicalreport},
+    \item \textit{Qwen/Qwen2.5-72B-Instruct},
+    \item \textit{Qwen/Qwen2.5-7B-Instruct}~\cite{qwen2025qwen25technicalreport}
+\end{itemize}
 
-%
 
-\begin{figure}[ht]
+% We evaluate \refactx on the QA task with the following models:
+% %
+% with the 800-million-fact tree derived from Wikidata indexed in PostgreSQL (\Cref{sec:wikidata-repr}).
+
+% %
+
+\begin{figure}[htbp]
 \centering
 
 % First minipage for Question Types
@@ -434,29 +489,38 @@ Stacked bars show how each benchmark (Bank, Mintaka, 2WikiMH, WebQSP) varies in 
 \end{figure}
 
 \subsection{Datasets}
-We evaluate our approach on three public benchmark datasets---Mintaka~\cite{sen-etal-2022-mintaka}, 2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, WebQSP~\cite{yih-etal-2016-value}---and on an anonymized proprietary financial dataset, referred to as \textit{Bank}.
+\refactx is evaluated on three public and one proprietary benchmark datasets:
+\begin{itemize}
+    \item Mintaka~\cite{sen-etal-2022-mintaka},
+    \item 2WikiMultiHopQA~\cite{ho-etal-2020-constructing},
+    \item WebQSP~\cite{yih-etal-2016-value},
+    \item the \textit{\say{Bank}} dataset: an anonymized proprietary financial dataset from Banca d'Italia\footnote{\url{https://www.bancaditalia.it/}}.
+\end{itemize}
+
 Mintaka~\cite{sen-etal-2022-mintaka} is a multilingual dataset containing nine question types annotated by crowdworkers with Wikidata IDs; in this work, we only consider eight question types, and only English questions. This dataset allows us to analyze \refactx's performance across diverse question types.
 % We consider Yes/No (considered as question type in Mintaka) as an answer type along with \textit{Generic} and \textit{Enumeration}.
-We treat \textit{Yes/No}---which is considered a question type in Mintaka---as an answer type, alongside \textit{Generic} and \textit{Enumeration}.
+\textit{Yes/No}---which is considered a question type in Mintaka---is treated as an answer type, alongside \textit{Generic} and \textit{Enumeration}.
 \Cref{fig:dataset_distribution} shows the distribution of questions and answer types across all datasets. 
 
 
-2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, to which we refer as 2WikiMH, is composed of multi-hop, comparative, and generic questions derived from Wikipedia and Wikidata. For this dataset, we evaluate on the \textit{dev} set, as the ground truth for the test set is not publicly available.
-WebQSP~\cite{yih-etal-2016-value} contains generic questions annotated with Freebase~\cite{freebase_2008}. %
-These two dataset are used by the existing KE-QA approaches based on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into \refactx's performance relative to prior work.
-%
-For computational efficiency, we consider a limited sample of 200 questions for each public dataset, stratifying by question type.
+2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, to which we refer as 2WikiMH, is composed of multi-hop, comparative, and generic questions derived from Wikipedia and Wikidata. For this dataset, the evaluation considers the \textit{dev} set, as the ground truth for the test set is not publicly available.
 
-The proprietary \textit{Bank} dataset comes from Banca d'Italia\footnote{\url{https://www.bancaditalia.it/}}, a large European central bank. It covers the financial domain and allows us to study how \refactx adapts to domain-specific data.
+WebQSP~\cite{yih-etal-2016-value} contains generic questions annotated with Freebase~\cite{freebase_2008}. %
+These two dataset are used by the existing \ac{kgqa} approaches based on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into \refactx's performance relative to prior work.
+%
+With these datasets we use the 800-million-fact tree derived from Wikidata indexed in PostgreSQL (\Cref{sec:wikidata-repr}), and, for computational efficiency, a limited sample of 200 questions is considered for each public dataset, stratifying by question type.
+
+\medskip\noindent
+The proprietary \textit{Bank} dataset comes from Banca d'Italia, a large European central bank. It covers the financial domain and allows us to study how \refactx adapts to domain-specific data.
 %
 It includes 278 template questions derived from an anonymized corporate knowledge graph containing approximately 10,000 triples and nine relations, such as ownership and control.
 In this setting, we can evaluate \acp{llm} while minimizing data contamination issues, as the models are unlikely to have been exposed to this data during training. 
 % 
-We verbalize the triples, also adding inverted facts, so that \refactx can use tail-to-head reasoning. Finally we build an in-memory prefix-tree index. Since in this dataset each relation is considered independent from the other ones, we add specific instructions in the prompt to consider each relation independently.
+Triples are verbalized, additionally adding inverted facts so that \refactx can use tail-to-head reasoning. Finally, an in-memory prefix tree index is built. Since in this dataset each relation is considered independent of the other ones, we add specific instructions in the prompt to consider each relation independently.
 %
 
 %
-The choice of public benchmark datasets reflects two main considerations. First, we prioritized datasets that natively use only or also include Wikidata---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}. Additionally, we include the proprietary \textit{Bank} dataset to evaluate on data free from any data contamination.
+The choice of public benchmark datasets reflects two main considerations. First, datasets that natively use only or also include Wikidata are prioritized---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}. Additionally, the proprietary \textit{Bank} dataset is included to evaluate on data free from any data contamination.
 
 
 \subsection{Metrics}
@@ -464,34 +528,32 @@ The choice of public benchmark datasets reflects two main considerations. First,
 %
 We evaluate on \textit{Accuracy} (A) and \textit{Precision} (P), to study, respectively, the overall correctness of our approach and its reliability when it provides an answer.
 
-\begin{subequations}
-\begin{minipage}{0.47\textwidth}
 \begin{equation}
-    A = \frac{|\text{Correct Answers}|}{|\text{Questions}|},
+    A = \frac{|\text{Correct answers}|}{|\text{Questions}|},
 \end{equation}
-\end{minipage}%
-\begin{minipage}{0.48\textwidth}
+
 \begin{equation}
-    P = \frac{|\text{Correct Answers}|}{|\text{Given Answers}|}.
+    P = \frac{|\text{Correct answers}|}{|\text{Given answers}|}.
 \end{equation}
-\end{minipage}
-\end{subequations}
 
 Accuracy (A) corresponds to the ratio of questions answered correctly. Precision (P), instead, is normalized on the number of given answers, excluding ``I don't know'' and answers not given when the allowed maximum number of new tokens have been reached.
 
-Precision and accuracy are calculated in two settings: (i) Exact Match: comparing the predicted answer with the ground truth with case-insensitive string equality; (ii) \ac{llm}-as-a-Judge~\cite{zheng2023llmjudge}: we ask Llama3.3-70B in 16-bit precision whether the predicted answer is correct and complete with respect to the ground truth.
-
+Precision and accuracy are calculated in two settings: 
+\begin{enumerate}
+    \item Exact Match: comparing the predicted answer with the ground truth with case-insensitive string equality;
+    \item \ac{llm}-as-a-Judge~\cite{zheng2023llmjudge}: we ask Llama3.3-70B in 16-bit precision whether the predicted answer is correct and complete with respect to the ground truth.
+\end{enumerate}
 
 
 
 
 
 \subsection{Reference Approaches}
-We first evaluate the same \acp{llm} used with \refactx without constrained generation. In this setting, referred as \textit{\ac{llm}-only}, we use the same settings and prompts, so that models generates not-grounded facts based solely on their parametric-knowledge, giving us clues on how important is to access external knowledge and, furthermore, on how much each dataset can be answered using only the \ac{llm}'s internal knowledge.
+First, the same \acp{llm} used with \refactx are evaluated without constrained generation. In this setting, referred as \textit{\ac{llm}-only}, we use the same settings and prompts, so that models generates not-grounded facts based solely on their parametric-knowledge, giving us clues on how important is to access external knowledge and, furthermore, on how much each dataset can be answered using only the \ac{llm}'s internal knowledge.
 %
 
-Then, we compare against KE-QA methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li-etal-2025-decoding-graphs} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
-Additionally, we include Hybrid-QA (HQA)~\cite{lehmann2024beyond}---an input-based KE-QA approach. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
+Then, we compare against \ac{qa} methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li-etal-2025-decoding-graphs} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
+Additionally, Hybrid-QA (HQA)~\cite{lehmann2024beyond}---a tool-based \ac{qa} apprach---is included in the comparison. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
 
 %
 % HQA
@@ -518,7 +580,7 @@ DoG and HQA use accuracy in the evaluation, while GCR calculates \textit{Hit} an
 
 
 %
-In our experiments, we use beam search~\cite{hu-etal-2015-improved} with $\text{number of beams} = 3$ (GCR uses 10 beams, DoG 3), disable sampling, and set the maximum number of new tokens to generate to 1,000.
+In the experiments, beam search~\cite{hu-etal-2015-improved} is used with $\text{number of beams} = 3$ (GCR uses 10 beams, DoG 3), disable sampling, and set the maximum number of new tokens to generate to 1,000.
 
 
 
@@ -531,17 +593,20 @@ In our experiments, we use beam search~\cite{hu-etal-2015-improved} with $\text{
 
 \subsection{Generation-Time Overhead}
 \label{sec:exp_overhead}
+\begin{figure}[htbp]
+    \includegraphics[width=\linewidth]{images/token_generation_time_vs_context_length.pdf}
+    \caption{Per-token generation time (seconds) of constrained decoding with \refactx versus unconstrained generation over 4{,}000 tokens. We apply a moving average with a 10-tokens window to reduce noise.}
+    % \vspace{2em}
+    \label{fig:generation_time}
+\end{figure}
+
 We compare \refactx's \ac{kb}-guided constrained generation time with unconstrained \textit{\ac{llm}-only} generation time.
 %
 %
 \Cref{fig:generation_time} plots the token generation times calculated in the two settings. The time overhead added by constrained generation is very limited: the total time for generating 4,000 tokens increases by only 1.3\%, from 300.14 seconds to 303.89.
-\begin{figure}[h]
-    \includegraphics[width=\linewidth]{images/token_generation_time_vs_context_length.pdf}
-    \caption{Measured token generation time (in seconds). Results on 4,000 tokens, using Qwen2.5-3B with PostgreSQL running on the same machine, with key-value caching enabled, using one NVIDIA Tesla T4. We apply a moving average with a 10-tokens window to reduce noise.}
-    % \vspace{2em}
-    \label{fig:generation_time}
-\end{figure}
-\begin{table}[ht]
+
+\todo{dividi in w la tabella}
+\begin{table}[htbp]
 \caption{Comparison between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A), calculated using Exact Match (left) and \ac{llm}-as-a-Judge (right). }
 \label{tab:em_judge_results_memorization}
     \resizebox{\textwidth}{!}{%

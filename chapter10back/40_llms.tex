@@ -138,8 +138,8 @@ As visible in \Cref{fig:transformer_all}(a), both the encoder and decoder module
 Self-attention can be considered as a mechanism for constructing contextual representations of a token's meaning by focusing on and combining information from nearby tokens~\cite{jm3}. Indeed, tokens in a sequence attend to the same sequence.
 The cross-attention, instead, is performed between different sequences. For example in machine translation, the decoder, while generating in the target language, selects which parts of the source sentence (in the source language) to pay attention to~\cite{bahdanau2015neural}. In the transformer~\cite{vaswani_transformers_2017}, each decoder layer attends to the final representations from the encoder stack.
 
-Note that, while transformers include parallelization advantages at training time, the computational complexity of the original self-attention mechanism scales quadratically with the input sequence length, hindering the processing of very long sequences~\cite{beltagy2020longformerlongdocumenttransformer}.
 For further details of the attention mechanism and its implementation, refer to \textcite{jm3}.
+
 
 The \emph{encoder-decoder} transformer for machine translation features a language modeling head, as visible in \Cref{fig:transformer_all}(a) that estimates the probability $P(x_i \mid y,x_{<i})$ where $x$ are the tokens in the target language, while $y$ in the source language. Using both encoder and decoder layers allow the model to use two different vocabularies, one for each language~\cite{jm3}. This model is usually trained in a supervised setting on translational datasets~\cite{vaswani_transformers_2017}.
 
@@ -169,7 +169,11 @@ Beyond alignment, researchers have also explored methods to strengthen the reaso
 For broader and more detailed historical overviews of \acp{llm} see \textcite{Zhou2024_from_bert_to_chat} and \textcite{tie2025surveyposttraininglargelanguage}.
 
 
-\todo{efficiency of models}
+\subsection{The Computational Complexity of Transformers}
+While transformers include parallelization advantages at training time, at inference-time, the computational complexity of the original self-attention mechanism scales quadratically with the input sequence length $N$, and thus transformer-based inference is quadratic as well~\cite{beltagy2020longformerlongdocumenttransformer}. However, while in \acp{mlm} self-attentional is computed once, autoregressive \acp{clm} generate text iteratively and must execute self-attention $N$ times to produce $N$ tokens. However, the cost of generating a single token in a \ac{clm} can be reduced to linear time by using key--value caching, which stores and reuses the attention keys and values from previous steps instead of recomputing them~\cite{NEURIPS2023_cdaac2a0}.
+
+Beyond caching, a large body of work replaces or approximates full attention to handle long contexts~\cite{ijcai2024p904}---\eg by performing local attention in a sliding window~\cite{beltagy2020longformerlongdocumenttransformer} instead of attending to all tokens.
+
 
 \subsection{Large Language Models and Knowledge Bases}
 \label{sec:llms_vs_kbs}
