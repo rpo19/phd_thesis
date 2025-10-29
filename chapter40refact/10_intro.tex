@@ -1,5 +1,5 @@
 \chapter[Efficient Question Answering over External Knowledge][Efficient \acs{qa} over External Knowledge]{Efficient Question Answering over External Knowledge}
-
+\label{chap:refactx}
 
 
 As described in \Cref{sec:intro,sec:rw:llms}, \acp{llm} have demonstrated a variety of capabilities, ranging from natural language understanding and generation to reasoning, especially when enhanced with techniques like \acf{cot} prompting~\cite{wei2022chainofthought}. However, they are prone to hallucinations~\cite{maynez-etal-2020-faithfulness-hallucination} and their internal knowledge remains limited to their training data (see \Cref{sec:llms_vs_kbs}). This complicates their application to knowledge-intensive tasks such as \acf{qa}, especially when these tasks necessitate accessing information beyond the parametric knowledge of \acp{llm}---for example, recent data or domain-specific data that is not publicly available.

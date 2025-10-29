@@ -2,36 +2,60 @@
 \addcontentsline{toc}{chapter}{Thesis Conclusion}
 
 
-\paragraph{Objectives revisited.}
-This dissertation investigated how to satisfy information needs in knowledge-intensive legal and investigative contexts, focusing on three objectives: (i) assessing the applicability and limitations of general-domain \ac{ee} methods in these domains; (ii) designing an entity-centric architecture that remains useful despite imperfect extraction; and (iii) enabling large-scale knowledge exploitation in \acp{llm} without relying on external retrievers or bespoke pipelines. These objectives are motivated by the need to access, consolidate, and exploit information produced in heterogeneous, high-risk settings while retaining traceability and human oversight.
+% \paragraph{Objectives revisited.}
+This dissertation investigated how to satisfy information needs in knowledge-intensive legal and investigative contexts, considering use cases such as precedent retrieval, document navigation, investigative retrieval, question answering, and statistical analysis. The work pursued three objectives: (\ref{ob:extraction_assessment}) assessing the applicability and limitations of general-domain \acl{ee} methods in these domains; (\ref{ob:architecture}) designing an entity-centric \acl{dia} that enables traceability and remains useful despite imperfect extraction; and (\ref{ob:refactx}) enabling efficient and scalable \acl{qa} which can be executed on local hardware and whose answers can be verified by reviewing source information. These objectives are motivated by the need to access the information consolidated from heterogeneous, high-risk settings while retaining traceability and human oversight.
 
-\paragraph{Synthesis of contributions.}
-Chapter~X showed that while general-domain \ac{ee} models can be applied to legal and investigative texts, incremental settings exacerbate error propagation and NIL prediction is a major source of errors. Domain adaptation improves performance but is structurally constrained by scarce supervision and regulatory limitations, and \ac{hitl} correction emerges as a practical requirement rather than an optional add-on.
+% \paragraph{Synthesis of contributions.}
+\medskip\noindent
+\Cref{chap:extraction} showed that incremental \acl{ee}---in which unknown entities, such as the persons mentioned in chat messages, are recognized and added to a \acl{kr} as novel entities---suffers from error propagation and the NIL prediction (\ie the detection of novel entity mentions) is a major source of errors. Moreover, while general-domain \acl{ee} models can be applied to legal documents and investigative chat data, in-domain fine-tuning or \acl{hitl} correction may be required for achieving satisfactory extraction quality. 
 
-Chapter~Y consolidated an entity-centric \ac{dia} that integrates heterogeneous artefacts (judgments, investigative chats, attachments) while remaining operational under imperfect extraction. The design is grounded in real use cases and prior prototypes, and it articulates the abstractions needed to support faceted retrieval, navigation, analytics, and question answering in a unified way, without assuming perfect \ac{ee}.
+\Cref{chap:architecture} introduced an entity-centric architecture for integrating heterogeneous data (judgments, investigative chats, attachments) that remains operational under imperfect extraction by enabling users to trace automatic outputs to source information and to correct them in a \acl{hitl} setting. The design is grounded in real tasks and prior prototypes, and it provides the abstractions required to support retrieval, navigation, \acl{qa}, and statistical analysis over such data. In addition, the chapter presented advanced user interfaces that can be coupled with an implementation of the architecture and operationalize the use cases addressed in this thesis.
 
-Chapter~Z introduced \refactx, a knowledge-constrained decoding mechanism that enables autoregressive \acp{llm} to exploit large external \acp{kb} without retrievers or architectural changes. The method scales to hundreds of millions of facts with negligible latency and improves \ac{qa} over \acp{llm} relying solely on their parametric knowledge, including in domain-specific settings.
+\Cref{chap:refactx} showed that efficient and scalable \acl{qa} with grounded answers can be achieved by using an \ac{llm} with constrained generation supported by a disk-backed prefix tree, without relying on retrievers, complex pipelines, or architectural changes to the \ac{llm}, which may be impractical under budget or deployment constraints. The chapter introduced \refactx, a constrained-generation approach that produces valid facts from large \acp{kb}, enabling users to verify that the answer is consistent with the acquired grounded facts. The method scales to hundreds of millions of facts with negligible latency and yields substantial gains over \acp{llm} relying solely on parametric knowledge.
 
-Taken together, these results show that entity-centric methods remain viable and useful in legal and investigative domains despite imperfect extraction, and that large-scale structured knowledge can be injected into generative models in a way that is both constrained and transparent.
 
-\paragraph{How the pieces fit.}
-The empirical assessment in Chapter~X established the failure modes and constraints that any downstream system must tolerate, thereby motivating an architecture designed for robustness rather than ideal extraction. The architecture in Chapter~Y provides that abstraction layer and clarifies the functional requirements for downstream use. Finally, Chapter~Z shows that when external knowledge must be exploited in downstream reasoning or answering, this can be done without abandoning the architectural discipline or introducing opaque retrieval pipelines. The three components thus form a coherent pipeline of justification: \textit{limits of extraction} $\rightarrow$ \textit{robust architecture} $\rightarrow$ \textit{controlled exploitation of knowledge}.
+Taken together, these results address the considered \acl{ia} use cases for satisfying the information needs of users in knowledge-intensive domains, with special focus on sensitive contexts, such as law and investigations, for which additional warranties are proposed---including traceability, verifiability, and error correction capability. In fact, the \acl{dia} presented in \Cref{chap:architecture} supports the integration of extraction services, such as the ones evaluated in \Cref{chap:extraction}, and---by using a \acl{kb} supporting entity facts---of \refactx for answering questions on extracted facts, such as the ones related to the suspect's communication network described in \Cref{sec:eechats}. 
 
-\paragraph{Limitations and scope.}
-% --- write here ---
-% Examples you could mention:
-% - Dependence on supervised data for adaptation
-% - Scalability of HITL workflows
-% - ReFactX injects facts but does not solve reasoning
-% - Domain tested: Italian civil judgments + investigative chats
-% - No end-to-end user study on all components together
+% \paragraph{Outlook.} % future work?
+\medskip
+\noindent
 
-\paragraph{Implications and outlook.}
-% --- write here ---
-% Suggestions for what to articulate:
-% - Architectural implication for AI in regulated domains
-% - Generality beyond law: any knowledge-intensive, high-risk domain
-% - Future evolution: tighter coupling of extraction and interaction loops
-% - Integration of ReFactX with symbolic backends (SPARQL etc.)
-% - Programmatic statement: entity-centric + constrained access as a paradigm
+Several directions remain open. First, extraction could be improved by advancing NIL prediction and clustering, by adapting \acl{kc} models with in-domain data, and by evaluating newer approaches and \acp{llm}, with particular interest in adaptation techniques, such as \acl{icl}~\cite{jm3}, which require minimal manual operations. Second, the architectural design could be implemented and evaluated, as well as advanced \acp{ui} for currently uncovered use cases such as statistical analysis (\ref{uc:stats}). Third, richer \acl{hitl} feedback loops could be explored, where user corrections are not only recorded but also incorporated to update models or constraints, thereby reducing recurrent errors. Finally, methods for extracting facts from unstructured text, while preserving traceability, could be explored to better integrate \refactx into the \acl{dia} in scenarios where data are predominantly unstructured.
+
+% \paragraph{Ethical considerations.}
+% The design choices made in this thesis emphasise traceability, verifiability, and the possibility of error correction, thereby preserving human oversight rather than delegating legal or investigative reasoning to automated systems. In addition, the focus on efficiency and local deployability avoids reliance on external services, which is essential in safety-critical contexts where data cannot leave secured environments. These properties align the proposed methods with ethical and regulatory expectations for AI use in high-risk domains.
+
+
+\section*{Ethical and regulatory considerations}
+\addcontentsline{toc}{section}{Ethical and regulatory considerations}
+The design choices of this thesis align with the constraints imposed on the use of \ac{ai} in sensitive domains. In legal and investigative contexts, data typically contain personal or confidential information and cannot be transferred to third-party \ac{api}-based services without risking non-compliance with the \emph{GDPR (Regulation (EU) 2016/679)}~\cite{gdpr2016}, which requires lawful and controlled processing~\cite[Art.~5]{gdpr2016} and restricts international data transfers~\cite[Art.~44--49]{gdpr2016}. The \emph{AI Act (Regulation (EU) 2024/1689)}~\cite{ai_act} further classifies \ac{ai} used in law enforcement and justice as high-risk~\cite[Annex~III]{ai_act}, requiring risk management, data governance, logging, and traceability~\cite[Art.~9--12]{ai_act}.
+Using \acp{llm} via external \acp{api} introduces compliance complexities; for instance, a data
+processing agreement must be in place between controller and processor~\cite[Art.~28(3)]{gdpr2016}.
+By contrast, the approaches developed in this thesis---notably the local execution of \acl{qa}
+and the traceability, verifiability, and error correction ensured by the \acl{dia}---keep processing within the
+secure perimeter of the deploying institution and preserving human oversight~\cite[Art.~14]{ai_act}.
+
+
+% Taken together, these results show that entity-centric methods remain viable and useful in legal and investigative domains despite imperfect extraction, and that large-scale structured knowledge can be injected into generative models in a way that is both constrained and transparent.
+
+% \paragraph{How the pieces fit.}
+% The empirical assessment in Chapter~X established the failure modes and constraints that any downstream system must tolerate, thereby motivating an architecture designed for robustness rather than ideal extraction. The architecture in Chapter~Y provides that abstraction layer and clarifies the functional requirements for downstream use. Finally, Chapter~Z shows that when external knowledge must be exploited in downstream reasoning or answering, this can be done without abandoning the architectural discipline or introducing opaque retrieval pipelines. The three components thus form a coherent pipeline of justification: \textit{limits of extraction} $\rightarrow$ \textit{robust architecture} $\rightarrow$ \textit{controlled exploitation of knowledge}.
+
+% \paragraph{Limitations and scope.}
+% % --- write here ---
+% % Examples you could mention:
+% % - Dependence on supervised data for adaptation
+% % - Scalability of HITL workflows
+% % - ReFactX injects facts but does not solve reasoning
+% % - Domain tested: Italian civil judgments + investigative chats
+% % - No end-to-end user study on all components together
+
+% \paragraph{Implications and outlook.}
+% % --- write here ---
+% % Suggestions for what to articulate:
+% % - Architectural implication for AI in regulated domains
+% % - Generality beyond law: any knowledge-intensive, high-risk domain
+% % - Future evolution: tighter coupling of extraction and interaction loops
+% % - Integration of ReFactX with symbolic backends (SPARQL etc.)
+% % - Programmatic statement: entity-centric + constrained access as a paradigm
 
