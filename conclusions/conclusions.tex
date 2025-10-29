@@ -19,12 +19,7 @@ Taken together, these results address the considered \acl{ia} use cases for sati
 % \paragraph{Outlook.} % future work?
 \medskip
 \noindent
-
 Several directions remain open. First, extraction could be improved by advancing NIL prediction and clustering, by adapting \acl{kc} models with in-domain data, and by evaluating newer approaches and \acp{llm}, with particular interest in adaptation techniques, such as \acl{icl}~\cite{jm3}, which require minimal manual operations. Second, the architectural design could be implemented and evaluated, as well as advanced \acp{ui} for currently uncovered use cases such as statistical analysis (\ref{uc:stats}). Third, richer \acl{hitl} feedback loops could be explored, where user corrections are not only recorded but also incorporated to update models or constraints, thereby reducing recurrent errors. Finally, methods for extracting facts from unstructured text, while preserving traceability, could be explored to better integrate \refactx into the \acl{dia} in scenarios where data are predominantly unstructured.
-
-% \paragraph{Ethical considerations.}
-% The design choices made in this thesis emphasise traceability, verifiability, and the possibility of error correction, thereby preserving human oversight rather than delegating legal or investigative reasoning to automated systems. In addition, the focus on efficiency and local deployability avoids reliance on external services, which is essential in safety-critical contexts where data cannot leave secured environments. These properties align the proposed methods with ethical and regulatory expectations for AI use in high-risk domains.
-
 
 \section*{Ethical and regulatory considerations}
 \addcontentsline{toc}{section}{Ethical and regulatory considerations}
@@ -35,27 +30,4 @@ By contrast, the approaches developed in this thesis---notably the local executi
 and the traceability, verifiability, and error correction ensured by the \acl{dia}---keep processing within the
 secure perimeter of the deploying institution and preserving human oversight~\cite[Art.~14]{ai_act}.
 
-
-% Taken together, these results show that entity-centric methods remain viable and useful in legal and investigative domains despite imperfect extraction, and that large-scale structured knowledge can be injected into generative models in a way that is both constrained and transparent.
-
-% \paragraph{How the pieces fit.}
-% The empirical assessment in Chapter~X established the failure modes and constraints that any downstream system must tolerate, thereby motivating an architecture designed for robustness rather than ideal extraction. The architecture in Chapter~Y provides that abstraction layer and clarifies the functional requirements for downstream use. Finally, Chapter~Z shows that when external knowledge must be exploited in downstream reasoning or answering, this can be done without abandoning the architectural discipline or introducing opaque retrieval pipelines. The three components thus form a coherent pipeline of justification: \textit{limits of extraction} $\rightarrow$ \textit{robust architecture} $\rightarrow$ \textit{controlled exploitation of knowledge}.
-
-% \paragraph{Limitations and scope.}
-% % --- write here ---
-% % Examples you could mention:
-% % - Dependence on supervised data for adaptation
-% % - Scalability of HITL workflows
-% % - ReFactX injects facts but does not solve reasoning
-% % - Domain tested: Italian civil judgments + investigative chats
-% % - No end-to-end user study on all components together
-
-% \paragraph{Implications and outlook.}
-% % --- write here ---
-% % Suggestions for what to articulate:
-% % - Architectural implication for AI in regulated domains
-% % - Generality beyond law: any knowledge-intensive, high-risk domain
-% % - Future evolution: tighter coupling of extraction and interaction loops
-% % - Integration of ReFactX with symbolic backends (SPARQL etc.)
-% % - Programmatic statement: entity-centric + constrained access as a paradigm
 
