@@ -97,14 +97,14 @@ Neural \ac{nel} approaches typically leverage semantic vector representations of
 With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, where entities and relations are embedded in a vector space preserving the \ac{kg} structure~\cite{kge_survey_2017}.
 Other models, instead, propose the use of entity typing information for \ac{nel}~\cite{gupta-etal-2017-entity,khalife-vazirgiannis-2019-scalable,Raiman_Raiman_2018,Onoe_Durrett_2020,Heist2023nastylinker}, with some using the dense embeddings also at retrieval time with efficient \acf{ann} search methods~\cite{gillick-etal-2019-learning,blink}.
 
-\subsubsection{Bi-Encoder and Cross-Encoder Architectures}
+\subsubsection{The Bi-Encoder Architecture}
 
-A notable architecture is composed of a bi-encoder and a cross-encoder~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
+A notable architecture is the bi-encoder that from its introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, has been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023,ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}.
 
 The \emph{bi-encoder} independently encodes the mention (in context) and each candidate entity (\eg using title and a brief textual description) into dense embeddings~\cite{blink,Humeau2020Poly-encoders}. A similarity measure between mention and entity can be computed using dot-product or cosine similarity over the vectors.
 This allows to encode---in advance---all entities in the \ac{kr}, and---at inference time---to efficiently retrieve the most similar entities given a mention embedding~\cite{blink} via \acf{ann} search algorithms, such as HNSW~\cite{hnsw_2020}, whose retrieval times scales logarithmically with respect to the \ac{kr} size.
 
-On the other hand, the \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
+% On the other hand, the \emph{cross-encoder} jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
 
 \begin{figure}[t]
     \centering
@@ -115,7 +115,7 @@ On the other hand, the \emph{cross-encoder} jointly encodes the mention and a ca
     \label{fig:bi-cross-encoders}
 \end{figure}
 
-\Cref{fig:bi-cross-encoders} exemplifies the functioning of the bi-encoder and cross-encoder architectures.
+The functioning of the bi-encoder is exemplified in \Cref{fig:bi-cross-encoders}, on the left.
 
 Formally, the bi-encoder is composed of two networks, one for encoding mentions $T_m$, and one for encoding entities $T_e$.
 This architecture is commonly referred to also as \emph{dual encoder} or \emph{two-tower} model~\cite{gillick-etal-2019-learning}.
@@ -147,61 +147,76 @@ The bi-encoder networks are trained to maximize the score of the correct mention
 \mathcal{L}(m_i, e_i) = -s(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s(m_i, e_j) \big)
 \end{equation}
 
-% cross
 
-The cross-encoder, instead, can be formalized as a single transformer network $T_{ce}$ that jointly encodes the mention $m$ and the entity $e$ in the same input sequence~\cite{blink,Humeau2020Poly-encoders,logeswaran-etal-2019-zero}. 
-In this case, the input is constructed by concatenating the mention context with the entity candidate, separated by the \texttt{SEP} token, as follows:
-\begin{equation}
-    x = \texttt{[CLS]} \; x_m \; \texttt{[SEP]} \; x_e \; \texttt{[SEP]}.
-\end{equation}
-The transformer $T_{ce}$ processes the entire sequence and produces contextualized representations for all tokens, that are transformed in a single representation from the $red(.)$ function.
-\begin{equation}
-    y_{ce} = red(T_{ce}(x)).
-\end{equation}
+% \paragraph{re-ranking with Cross-Encoders.}
+To improve the precision of retrieved candidates, \textcite{blink} combined the bi-encoder with a \emph{cross-encoder} that jointly encodes the mention and each candidate entity in a single transformer input sequence. By concatenating the mention context, entity title, and description, the model can attend over both components simultaneously and compute a refined similarity score~\cite{blink,logeswaran-etal-2019-zero,Humeau2020Poly-encoders}.
+This setup typically yields higher accuracy than the bi-encoder alone but is computationally expensive, since it must process every mention--entity pair independently. Consequently, it is used only as a \textbf{re-ranking stage} applied to the top-$k$ candidates (e.g., $k=100$) produced by the bi-encoder~\cite{blink,Heist2023nastylinker}.
 
-% Unlike the bi-encoder, the cross-encoder does not embed mentions and entities independently. 
-% Instead, all input tokens are attended to jointly, which allows the model to capture fine-grained interactions between the mention and the candidate entity description. 
-% This generally leads to higher accuracy, but at the cost of increased computational complexity, since each mention-entity pair must be encoded together during inference~\cite{blink,Humeau2020Poly-encoders}. 
+% % cross
+% \textcite{blink} paired the bi-encoder for retrieval and obtaining initial rankings with a \emph{cross-encoder} for more accurate re-ranking. The cross-encoder jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
 
-The similarity score is directly computed as a function of the cross-encoder representation, for instance using a linear projection~\cite{blink}:
-\begin{equation}
-    s^{ce}_{m,e} = W \cdot y_{ce} + b,
-\end{equation}
-where $W$ and $b$ are trainable parameters. 
-The cross-encoder is typically trained with the same objective as the bi-encoder, namely maximizing the score of the correct mention-entity pair over negatives within the batch.
+% The cross-encoder, instead, can be formalized as a single transformer network $T_{ce}$ that jointly encodes the mention $m$ and the entity $e$ in the same input sequence~\cite{blink,Humeau2020Poly-encoders,logeswaran-etal-2019-zero}. 
+% In this case, the input is constructed by concatenating the mention context with the entity candidate, separated by the \texttt{SEP} token, as follows:
 % \begin{equation}
-% \mathcal{L}^{ce}(m_i, e_i) = -s^{ce}(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s^{ce}(m_i, e_j) \big).
+%     x = \texttt{[CLS]} \; x_m \; \texttt{[SEP]} \; x_e \; \texttt{[SEP]}.
+% \end{equation}
+% The transformer $T_{ce}$ processes the entire sequence and produces contextualized representations for all tokens, that are transformed in a single representation from the $red(.)$ function.
+% \begin{equation}
+%     y_{ce} = red(T_{ce}(x)).
 % \end{equation}
 
+% % Unlike the bi-encoder, the cross-encoder does not embed mentions and entities independently. 
+% % Instead, all input tokens are attended to jointly, which allows the model to capture fine-grained interactions between the mention and the candidate entity description. 
+% % This generally leads to higher accuracy, but at the cost of increased computational complexity, since each mention-entity pair must be encoded together during inference~\cite{blink,Humeau2020Poly-encoders}. 
+
+% The similarity score is directly computed as a function of the cross-encoder representation, for instance using a linear projection~\cite{blink}:
+% \begin{equation}
+%     s^{ce}_{m,e} = W \cdot y_{ce} + b,
+% \end{equation}
+% where $W$ and $b$ are trainable parameters. 
+% The cross-encoder is typically trained with the same objective as the bi-encoder, namely maximizing the score of the correct mention-entity pair over negatives within the batch.
+% % \begin{equation}
+% % \mathcal{L}^{ce}(m_i, e_i) = -s^{ce}(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s^{ce}(m_i, e_j) \big).
+% % \end{equation}
 
 
-\subsubsection{}
-Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{barba-etal-2022-extend,procopio-etal-2023-entity,zhang2022entqa} or text-generations tasks~\cite{decao2021autoregressive}.
-\textcite{procopio-etal-2023-entity} models the entity ranking phase of \ac{nel} as an extractive \acl{qa} task, \ie when a question and a passage is given and the answer is \say{extracted} from the passage as is. This task can be performed by identifying a start token and an end token that mark the beginning and end of the answer~\cite{barba-etal-2022-extend}.
-For \textcite{procopio-etal-2023-entity}, the input sequence given to the transformer for linking ``Metropolis'' appear as follows.
-\begin{lstlisting}
-After a long fight Superman saved [M*@$_s$@*] Metropolis [M*@$_e$@*] [SEP]
-Metropolis (1927 film) [E*@$_s$@*] Metropolis-Hasting algorithm [E*@$_s$@*] Metropolis (comics)
-\end{lstlisting}
-The mention to link is surrounded by the two custom tokens $M_s$ and $M_e$, the entity titles are listed after a \texttt{SEP} and divided by another custom token $E_s$ (\textcite{procopio-etal-2023-entity} additionally added a brief textual description for each entity). The model is trained as an extractive \ac{qa} system to select a starting token and an end token for the answer, which in this case represent an entity to link~\cite{barba-etal-2022-extend}.
+\subsubsection{Alternative Formulations of Entity Linking}
 
-Compared to the cross-encoder this formulation passes multiple candidate entities in a single forward pass, reducing the computational costs and allowing both mention-entity and entity-entity interactions.
-However, while the authors use the LongFormer~\cite{beltagy2020longformerlongdocumenttransformer}---a transformer with a modified self-attention mechanism that scales linearly with the input sequence length---this approach is suitable for candidate entity ranking and still prohibitive for candidate entity generation with million-entities \ac{kr}. 
+Beyond bi- and cross-encoder architectures, several works reformulate \ac{nel} as other \ac{nlp} tasks, such as \acl{qa} or text generation.
+\textcite{procopio-etal-2023-entity} and \textcite{barba-etal-2022-extend}, for instance, model entity ranking as an \emph{extractive \ac{qa}} task, where the model identifies the correct entity span among a set of candidate entities concatenated with the mention context. This formulation enables processing multiple candidates in a single forward pass and allows interactions among them, though it remains computationally demanding for very large \acp{kb}.
 
-The text-generation modeling~\cite{decao2021autoregressive}, instead, addressed \emph{end-to-end} \ac{nel}, namely the extension of entity linking that jointly detects entity mentions from text (mention detection) and links them to a \ac{kr}~\cite{kolitsas-etal-2018-end}. Given an input text, at each generation the \ac{clm} is allowed to either generate the next token from the input text, or start an entity mention.
+Alternatively, \textcite{decao2021autoregressive} proposed a \emph{text-generation} formulation that performs end-to-end \ac{nel}, jointly detecting mentions and generating their linked entity names. To guarantee that the generated entities correspond to real \ac{kb} entries, constrained decoding is applied over a prefix tree built from Wikipedia titles. This approach eliminates the need to store large embedding indexes (tens of gigabytes in BLINK~\cite{blink}) and allows the model to consider previous links as contextual information.
+Extending this work, the authors also addressed \emph{multilingual \acl{el}} fine-tuning a multilingual generative model~\cite{de-cao-etal-2022-multilingual}.
 
-When inside an entity mention and after generating the mentions tokens, the models performs \ac{nel} by generating an entity title. To ensure the generated titles exists, the authors use \emph{constrained generation}---a technique that reduce the search space of a generative model, allowing only certain sequences---bounded to a prefix tree containing Wikipedia entity titles~\cite{decao2021autoregressive}. In this way, previous links, which remain part of the context windows of the \ac{clm}, can be exploited as contextual information for future links. Furthermore, this approach does not require storing and loading in memory numerous embeddings, saving tens of gigabytes of memory---for instance, \textcite{blink} requires more than 30 GB of memory~\cite{decao2021autoregressive}.
+% These alternative formulations show that \ac{nel} can be expressed as a structured prediction or generation task, paving the way for later work combining constrained generation and large language models.
 
-More recent approaches focus on efficiency for end-to-end \ac{el}, designing models that can recognize and link entities from an input text in a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. For achieving efficient inference, they avoid the re-ranking step with the cross-encoder. Mention detection is performed using the BIO scheme~\cite{ramshaw-marcus-1995-text-bio-scheme} and mention embeddings are obtained by averaging the embeddings of the mention tokens~\cite{ayoola-etal-2022-refined} or by using a feed-forward layer~\cite{plekhanov2023multilingualendendentity}. At this point \ac{nel} is performed---as in the bi-encoder---by calculating (eventually with \ac{ann}) a similarity score between mention and entity embeddings and taking the most similar entities for each mention. 
-Notably, \textcite{ayoola-etal-2022-refined} is also able to perform \emph{NIL prediction}, by including it in its training phase.
 
-None of the \ac{nel} approaches discussed so far rely on billion-parameter \acp{llm}. Some methods use \acp{llm} to construct entity profiles~\cite{RYNKIEWICZ2025112185}, enriching mention representations with generated descriptions before applying a traditional nearest-neighbor search.
+\subsubsection{End-to-End and Multilingual Entity Linking}
 
-\textcite{xiao-etal-2023-instructed} adopt constrained generation to assign entity names to mentions, similar to \cite{decao2021autoregressive}, but with larger models such as LLaMA 7B~\cite{touvron2023llamaopenefficientfoundation} fine-tuned for the task. \textcite{zhou-etal-2024-gendecider} also fine-tune \acp{llm}, including LLaMA 2~\cite{touvron2023llama2openfoundation}, but apply them in the re-ranking stage, where the model selects the correct entity---or ``None of the Candidates''---given a mention, its context, and candidate entities.
+Recent approaches focus on efficient, end-to-end \ac{el} systems that can recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
+Unlike traditional pipelines, these models avoid separate re-ranking stages and instead learn to detect mentions and predict their linked entities jointly. 
+Mention detection typically follows the BIO scheme~\cite{ramshaw-marcus-1995-text-bio-scheme}, and mention representations are derived either by averaging token embeddings~\cite{ayoola-etal-2022-refined} or using lightweight feed-forward layers~\cite{plekhanov2023multilingualendendentity}. 
+Linking then proceeds as in bi-encoders, by comparing mention and entity embeddings through similarity search, often with \ac{ann}.  
+ReFinED~\cite{ayoola-etal-2022-refined} also supports \emph{NIL prediction} by including NIL examples during training, while the model proposed by \textcite{plekhanov2023multilingualendendentity} extends this paradigm to a \emph{multilingual} setting.
 
-Other works rely more heavily on prompting. \textcite{liu-etal-2024-onenet} instruct the model via \ac{icl} to select the correct entity directly from a list of candidates. \textcite{ding-etal-2024-chatel} propose a three-step pipeline: candidate generation with priors and BLINK~\cite{blink}, augmentation through an \ac{llm} answering ``What does [mention] represent?'', and a final selection step among the candidates (or ``None of the entity match''). Finally, \textcite{geng-etal-2023-grammar} use task-specific grammars to constrain generation, guiding \acp{llm} in \ac{nlp} tasks such as NEL ranking without fine-tuning.
+\subsubsection{LLM-Based and Instruction-Following Approaches}
 
-Overall, these approaches improve accuracy~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed} and, in some cases, adaptability across domains without fine-tuning~\cite{ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed}. However, they do not target efficiency---with the exception of \textcite{xiao-etal-2023-instructed}, who reduce calls to the generative model---and cannot perform document-level \ac{nel} in a single forward pass.
+None of the previously discussed models rely on billion-parameter \acp{llm}. 
+Recent work explores using them either as knowledge sources or as reasoning components for \ac{nel}.  
+Some methods employ \acp{llm} to construct richer entity profiles~\cite{RYNKIEWICZ2025112185}, generating textual descriptions to improve similarity-based retrieval.  
+Others integrate \acp{llm} directly into the linking pipeline.  
+\textcite{xiao-etal-2023-instructed} fine-tune LLaMA-7B~\cite{touvron2023llamaopenefficientfoundation} for constrained generation of entity names, while \textcite{zhou-etal-2024-gendecider} apply LLaMA-2~\cite{touvron2023llama2openfoundation} in the re-ranking stage, selecting the correct entity---or ``None of the Candidates''---for each mention.  
+
+Prompt-based approaches~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,geng-etal-2023-grammar} further reduce fine-tuning requirements. 
+\textcite{liu-etal-2024-onenet} use in-context learning to select entities directly from candidate lists, while \textcite{ding-etal-2024-chatel} combines traditional candidate generation (via priors and BLINK~\cite{blink}) with \ac{llm}-based augmentation and final entity selection. 
+\textcite{geng-etal-2023-grammar} use task-specific grammars to constrain generation, guiding \acp{llm} in \ac{nlp} tasks such as \ac{el} re-ranking without fine-tuning. 
+
+Overall, these methods achieve higher accuracy and better domain adaptability~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed}.
+
+
+However, efficiency remains a concern: among the discussed approaches, only \textcite{xiao-etal-2023-instructed} explicitly address it by reducing the number of model calls. Nonetheless, \acp{llm} are substantially larger than those of \textcite{ayoola-etal-2022-refined} and \textcite{plekhanov2023multilingualendendentity}, and cannot perform document-level \ac{nel} in a single forward pass, making their application costly for large-scale or batch annotation tasks.
+
+
 
 
 
