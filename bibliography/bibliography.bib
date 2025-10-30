@@ -2128,7 +2128,8 @@ numpages = {390}
   number        = {3},
   pages         = {615--642},
   year          = {2023},
-  publisher     = {Cambridge University Press}
+  publisher     = {Cambridge University Press},
+  doi={10.1017/S1351324922000304}
 }
 @article{fget_review_2023,
   author        = {Wang, Ruili and Hou, Feng and Cahan, Steven F. and Chen, Li and Jia, Xiaoyun and Ji, Wanting},
@@ -6590,4 +6591,68 @@ keywords = {Distribution, interaction, publish/subscribe}
     doi = "10.1162/tacl_a_00460",
     pages = "274--290",
     abstract = "We present mGENRE, a sequence-to- sequence system for the Multilingual Entity Linking (MEL) problem{---}the task of resolving language-specific mentions to a multilingual Knowledge Base (KB). For a mention in a given language, mGENRE predicts the name of the target entity left-to-right, token-by-token in an autoregressive fashion. The autoregressive formulation allows us to effectively cross-encode mention string and entity names to capture more interactions than the standard dot product between mention and entity vectors. It also enables fast search within a large KB even for mentions that do not appear in mention tables and with no need for large-scale vector indices. While prior MEL works use a single representation for each entity, we match against entity names of as many languages as possible, which allows exploiting language connections between source input and target name. Moreover, in a zero-shot setting on languages with no training data at all, mGENRE treats the target language as a latent variable that is marginalized at prediction time. This leads to over 50{\%} improvements in average accuracy. We show the efficacy of our approach through extensive evaluation including experiments on three popular MEL benchmarks where we establish new state-of-the-art results. Source code available at \url{https://github.com/facebookresearch/GENRE}."
+}
+
+@inproceedings{limkonchotiwat-etal-2023-mrefined,
+    title = "m{R}e{F}in{ED}: An Efficient End-to-End Multilingual Entity Linking System",
+    author = "Limkonchotiwat, Peerat  and
+      Cheng, Weiwei  and
+      Christodoulopoulos, Christos  and
+      Saffari, Amir  and
+      Lehmann, Jens",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2023",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-emnlp.1007/",
+    doi = "10.18653/v1/2023.findings-emnlp.1007",
+    pages = "15080--15089",
+    abstract = "End-to-end multilingual entity linking (MEL) is concerned with identifying multilingual entity mentions and their corresponding entity IDs in a knowledge base. Existing works assumed that entity mentions were given and skipped the entity mention detection step due to a lack of high-quality multilingual training corpora. To overcome this limitation, we propose mReFinED, the first end-to-end multilingual entity linking. Additionally, we propose a bootstrapping mention detection framework that enhances the quality of training corpora. Our experimental results demonstrated that mReFinED outperformed the best existing work in the end-to-end MEL task while being 44 times faster."
+}
+
+@misc{plekhanov2023multilingualendendentity,
+      title={Multilingual End to End Entity Linking}, 
+      author={Mikhail Plekhanov and Nora Kassner and Kashyap Popat and Louis Martin and Simone Merello and Borislav Kozlovskii and Frédéric A. Dreyer and Nicola Cancedda},
+      year={2023},
+      eprint={2306.08896},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2306.08896}, 
+}
+
+@misc{virtanen2019multilingualenoughbertfinnish,
+      title={Multilingual is not enough: BERT for Finnish}, 
+      author={Antti Virtanen and Jenna Kanerva and Rami Ilo and Jouni Luoma and Juhani Luotolahti and Tapio Salakoski and Filip Ginter and Sampo Pyysalo},
+      year={2019},
+      eprint={1912.07076},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/1912.07076}, 
+}
+
+@inproceedings{wu-dredze-2020-languages,
+    title = "Are All Languages Created Equal in Multilingual {BERT}?",
+    author = "Wu, Shijie  and
+      Dredze, Mark",
+    editor = "Gella, Spandana  and
+      Welbl, Johannes  and
+      Rei, Marek  and
+      Petroni, Fabio  and
+      Lewis, Patrick  and
+      Strubell, Emma  and
+      Seo, Minjoon  and
+      Hajishirzi, Hannaneh",
+    booktitle = "Proceedings of the 5th Workshop on Representation Learning for NLP",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.repl4nlp-1.16/",
+    doi = "10.18653/v1/2020.repl4nlp-1.16",
+    pages = "120--130",
+    abstract = "Multilingual BERT (mBERT) trained on 104 languages has shown surprisingly good cross-lingual performance on several NLP tasks, even without explicit cross-lingual signals. However, these evaluations have focused on cross-lingual transfer with high-resource languages, covering only a third of the languages covered by mBERT. We explore how mBERT performs on a much wider set of languages, focusing on the quality of representation for low-resource languages, measured by within-language performance. We consider three tasks: Named Entity Recognition (99 languages), Part-of-speech Tagging and Dependency Parsing (54 languages each). mBERT does better than or comparable to baselines on high resource languages but does much worse for low resource languages. Furthermore, monolingual BERT models for these languages do even worse. Paired with similar languages, the performance gap between monolingual BERT and mBERT can be narrowed. We find that better models for low resource languages require more efficient pretraining techniques or more data."
 }

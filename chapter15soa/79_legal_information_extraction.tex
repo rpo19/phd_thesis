@@ -1,25 +1,65 @@
+% \subsection{Information Extraction in the Legal Domain}
+% \label{sec:sota:ee:legal}
+
+% \todo{from claw}
+% \todo{add also from wise for investigations}
+
+% \todo{following is from aixia}
+% % \subsection{\ac{nel} for Legal Documents}
+
+% \todo{aggiungi bellandi boella}
+% Most prior work on \acl{ee} in the legal domain has primarily addressed the \acl{ner} component. Early \ac{ner} systems relied on handcrafted rules and statistical models~\cite{ccetindaug2023name_legal_turkish}, including CRFs~\cite{Lafferty2001}. Later work adopted BiLSTM$+$CRF architectures for Brazilian and German legal corpora~\cite{ccetindaug2023name_legal_turkish}. With the advent of transformers~\cite{vaswani_transformers_2017} and BERT~\cite{devlin-etal-2019-bert}, domain-adapted models such as LEGAL-BERT were released~\cite{chalkidis-etal-2020-legal}, although subsequent comparisons~\cite{Keshavarz2022} reported that LEGAL-BERT achieves performance similar to simpler neural models (LSTMs, CNNs) on \ac{ner}.
+
+
+% Only a few works have addressed \ac{nel} on legal texts. One early study applied \ac{ner} and \ac{nel} to European Court of Human Rights decisions~\cite{cardellino_etal_2017_lowcost}, using a legal ontology aligned with YAGO~\cite{mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}. Another focused exclusively on \ac{nel} over EUR-Lex articles~\cite{Elnaggar2018} using transfer learning. Hybrid pipelines have also been explored: \textcite{Tamper2020} combine BERT-based and rule-based \ac{ner} with an off-the-shelf \ac{nel} service using popularity-based disambiguation for Finnish court decisions.
+
+% \textcite{bellandi2025streamlining} does rule-based entity linking.
+
+% Some work on \ac{nel} with NIL prediction has been evaluated on historically legal material, such as the 1641 Irish rebellion depositions~\cite{klie-etal-2020-zero}. However, we are not aware of prior work that jointly studies \ac{ner}, \ac{nel}, and NIL prediction on recent legal corpora.
+
+
 \subsection{Information Extraction in the Legal Domain}
 \label{sec:sota:ee:legal}
 
-\todo{from claw}
-\todo{add also from wise for investigations}
-
-\todo{following is from aixia}
-% \subsection{\ac{nel} for Legal Documents}
-
 Most prior work on \acl{ee} in the legal domain has primarily addressed the \acl{ner} component. Early \ac{ner} systems relied on handcrafted rules and statistical models~\cite{ccetindaug2023name_legal_turkish}, including CRFs~\cite{Lafferty2001}. Later work adopted BiLSTM$+$CRF architectures for Brazilian and German legal corpora~\cite{ccetindaug2023name_legal_turkish}. With the advent of transformers~\cite{vaswani_transformers_2017} and BERT~\cite{devlin-etal-2019-bert}, domain-adapted models such as LEGAL-BERT were released~\cite{chalkidis-etal-2020-legal}. Subsequent comparisons~\cite{Keshavarz2022} reported that LEGAL-BERT achieves performance similar to simpler neural models (LSTMs, CNNs) on \ac{ner}.
 
-Only a few works have addressed \ac{nel} on legal texts. One early study applied \ac{ner} and \ac{nel} to European Court of Human Rights decisions~\cite{cardellino_etal_2017_lowcost}, using a legal ontology aligned with YAGO~\cite{mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}. Another focused exclusively on \ac{nel} over EUR-Lex articles~\cite{Elnaggar2018} using transfer learning. Hybrid pipelines have also been explored: \textcite{Tamper2020} combine BERT-based and rule-based \ac{ner} with an off-the-shelf \ac{nel} service using popularity-based disambiguation for Finnish court decisions.
+Only a few works have addressed \ac{nel} on legal texts. One early study applied \ac{ner} and \ac{nel} to European Court of Human Rights decisions~\cite{cardellino_etal_2017_lowcost}, using a legal ontology aligned with YAGO~\cite{mahdisoltani2013yago3,yago2_2013,yago2s_demo_2013,yago_core_2007}. Another focused exclusively on \ac{nel} over EUR-Lex articles~\cite{Elnaggar2018} using transfer learning. Hybrid pipelines have also been explored: \textcite{Tamper2020} combine BERT-based and rule-based \ac{ner} with an off-the-shelf \ac{nel} service using popularity-based disambiguation for Finnish court decisions. Similarly, \textcite{bellandi2025streamlining} proposed a rule-based \ac{nel} component integrated into a broader architecture to manage Italian judgments.
 
-Some work on \ac{nel} with NIL prediction has been evaluated on historically legal material, such as the 1641 Irish rebellion depositions~\cite{klie-etal-2020-zero}. However, we are not aware of prior work that jointly studies \ac{ner}, \ac{nel}, and NIL prediction on recent legal corpora.
+Some work on \ac{nel} with NIL prediction has been evaluated on historically legal material, such as the 1641 Irish rebellion depositions~\cite{klie-etal-2020-zero}. However, we are not aware of prior work that jointly studies recent \ac{ner} and \ac{nel} approaches, as well as NIL prediction and clustering on recent legal corpora. These gaps motivate the need for systematic evaluation and adaptation of general-domain methods to legal and investigative texts, as pursued in \Cref{chap:extraction}.
+
+
+
+
 
 %Our work instead studies \ac{ner}, \ac{nel}, and NIL prediction jointly, using a recent \ac{nel} model~\cite{blink} trained on large Italian Wikipedia without fine-tuning on judgments, and we focus on neural NIL prediction rather than popularity heuristics.
 
 \subsection{Entity Extraction in the Italian Language}
 \label{sec:sota:ee:ita}
 
-Italian datasets for \ac{ner} include multilingual resources~\cite{tedeschi-navigli-2022-multinerd,NOTHMAN2013151} as well as domain-specific corpora, e.g.\ in the medical domain~\cite{CATELLI2020106779}. Italian \ac{nel} datasets likewise comprise multilingual resources such as VoxEL~\cite{rosales2018voxel} and collections based on short texts~\cite{basile2016neelit}.
+% Italian datasets for \ac{ner} include multilingual resources~\cite{tedeschi-navigli-2022-multinerd,NOTHMAN2013151} as well as domain-specific corpora, e.g.\ in the medical domain~\cite{CATELLI2020106779}. Italian \ac{nel} datasets likewise comprise multilingual resources such as VoxEL~\cite{rosales2018voxel} and collections based on short texts~\cite{basile2016neelit}.
 
-Among ready-to-use libraries supporting Italian, \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2} provide \ac{ner}, while DBpedia Spotlight~\cite{mendes_2011_spotlight,Daiber2013spotlight} performs both \ac{ner} and \ac{nel}. \Spacy offers pre-trained \ac{ner} models of different sizes but currently includes no transformer-based model for Italian. Tint implements \ac{ner} using CRF taggers complemented by rule-based modules for dates and monetary amounts. 
+% Among ready-to-use libraries supporting Italian, \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2} provide \ac{ner}, while DBpedia Spotlight~\cite{mendes_2011_spotlight,Daiber2013spotlight} performs both \ac{ner} and \ac{nel}. \Spacy offers pre-trained \ac{ner} models of different sizes but currently includes no transformer-based model for Italian. Tint implements \ac{ner} using CRF taggers complemented by rule-based modules for dates and monetary amounts. 
 
-With respect to \ac{nel}, DBpedia Spotlight is a ready-to-use tool that performs both \ac{ner} and \ac{nel} against DBpedia~\cite{mendes_2011_spotlight,Daiber2013spotlight} also in Italian\footnote{\url{https://github.com/dbpedia-spotlight/dbpedia-spotlight-model}}. However, it is based on earlier generation techniques and has been shown to require substantial improvement to remain competitive with more recent approaches~\cite{ficlone}.
+% With respect to \ac{nel}, DBpedia Spotlight is a ready-to-use tool that performs both \ac{ner} and \ac{nel} against DBpedia~\cite{mendes_2011_spotlight,Daiber2013spotlight} also in Italian\footnote{\url{https://github.com/dbpedia-spotlight/dbpedia-spotlight-model}}. However, it is based on earlier generation techniques and has been shown to require substantial improvement to remain competitive with more recent approaches~\cite{ficlone}.
+
+% \subsection{Entity Extraction in the Italian Language}
+% \label{sec:sota:ee:ita}
+
+% \subsection{Entity Extraction in the Italian Language}
+% \label{sec:sota:ee:ita}
+
+% Italian datasets for \ac{ner} include multilingual resources~\cite{tedeschi-navigli-2022-multinerd,NOTHMAN2013151} as well as domain-specific corpora, for instance in the medical domain~\cite{CATELLI2020106779}. Italian \ac{nel} datasets likewise comprise multilingual resources such as VoxEL~\cite{rosales2018voxel} and collections based on short texts~\cite{basile2016neelit}.
+
+% Among ready-to-use libraries supporting Italian, \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2} provide \ac{ner}, while DBpedia Spotlight~\cite{mendes_2011_spotlight,Daiber2013spotlight} performs both \ac{ner} and \ac{nel}. \Spacy offers pre-trained \ac{ner} models of different sizes but currently includes no transformer-based model for Italian. Tint implements \ac{ner} using CRF taggers complemented by rule-based modules for dates and monetary amounts.
+
+% Beyond Italian-specific tools, multilingual transformer models such as mBERT~\cite{devlin-etal-2019-bert}, XLM-R~\cite{conneau-etal-2020-unsupervised}, and \textsc{MultiNERD}~\cite{tedeschi-navigli-2022-multinerd} provide competitive \ac{ner} performance across several languages, including Italian. Zero-shot models such as \textsc{GLiNER}~\cite{garcia2024gliner} further extend this capability by supporting multilingual \ac{ner} without task-specific fine-tuning, enabling generalization to new domains and label sets.
+
+
+
+Multilingual \ac{el} systems have also been proposed, including mGENRE~\cite{de-cao-etal-2022-multilingual}, which performs end-to-end linking in a generative manner across more than one hundred languages, as well as mReFinED~\cite{limkonchotiwat-etal-2023-mrefined} and BELA~\cite{plekhanov2023multilingualendendentity}, which adopt discriminative architectures to achieve efficient and scalable multilingual \ac{el}.
+However, multilingual models often underperform compared to monolingual ones on high-resource languages and domain-specific data, as parameter sharing across languages reduces language-specific capacity~\cite{wu-dredze-2020-languages,virtanen2019multilingualenoughbertfinnish}. They are also typically larger and more computationally demanding than their monolingual counterparts (e.g., \texttt{bert-base-multilingual-cased}\footnote{\url{https://huggingface.co/google-bert/bert-base-multilingual-cased}} with 178M parameters versus \texttt{bert-base-uncased}\footnote{\url{https://huggingface.co/google-bert/bert-base-uncased}} with 110M)~\cite{devlin-etal-2019-bert}.
+
+
+With respect to \ac{nel}, DBpedia Spotlight is a ready-to-use tool that performs both \ac{ner} and \ac{nel} against DBpedia~\cite{mendes_2011_spotlight,Daiber2013spotlight} also in Italian.\footnote{\url{https://github.com/dbpedia-spotlight/dbpedia-spotlight-model}} However, it is based on earlier generation techniques and has been shown to require substantial improvement to remain competitive with more recent approaches~\cite{ficlone}.
+
+Overall, while several multilingual and Italian-specific tools exist, their performance across the complete \acl{kc} pipeline---including \ac{ner}, \ac{nel}, and NIL prediction and clustering---remains largely unexplored, despite the relevance of novel entities in this domain. For this reason, this thesis evaluates and adapts \ac{ner} and \ac{nel} methods to Italian legal documents, as described in \Cref{chap:extraction}.
