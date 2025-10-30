@@ -39,7 +39,7 @@
 % Finally, scalability....
 
 
-Several architectures have been proposed to integrate and manage information from legal documents, motivated by the fact that legal professionals must process large collections of heterogeneous material under significant time constraints.
+Several architectures have been proposed to integrate and manage information from legal documents, motivated by the fact that legal professionals must process large collections of heterogeneous material under significant time constraints~\cite{bellandi2025streamlining,breit_legal_permits_2020,beniamino_strada_2022,HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}.
 % Among these, three lines of work are most closely related to the present thesis. \textcite{breit_legal_permits_2020} articulate architectural requirements for legal data processing (provenance, HITL correction, knowledge integration). \textcite{P_rez_2021} design a microservice-based pipeline for heterogeneous investigative evidence. \textcite{bellandi2025streamlining} present a platform for court decisions based on entity extraction, graph storage, and API-exposed pipelines for analytics. These will serve as the closest reference points.
 
 To assess how existing approaches relate to the requirements introduced in \Cref{sec:intro}, we organize the review along five dimensions: (i) generalizability to heterogeneous legal sources; (ii) traceability and verifiability of derived knowledge; (iii) error-correction and human oversight; (iv) scalability; and (v) support for downstream information-access tasks. Finally, we introduce a dedicated subsection on architectural choices, where we summarize the main design strategies adopted in the literature (e.g.\ microservices, service-oriented integration, provenance logging, orchestrators), independently of the tasks they support.
@@ -75,34 +75,65 @@ More recent systems couple extraction with interactive control. LegalAsst~\cite{
 \subsection{Scalability}
 
 Several proposals address scalability and robustness through architectural choices. 
-A common strategy is the adoption of microservices~\cite{P_rez_2021,buey2016,MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP,bellandi2025streamlining}, which support distributed execution, modular replacement of components, and incremental extensibility. 
+A common strategy is the adoption of microservices~\cite{P_rez_2021,buey2016,MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP,bellandi2025streamlining,breit_legal_permits_2020}, which support distributed execution, modular replacement of components, and incremental extensibility. 
 Lynx~\cite{MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP} additionally employs an orchestrator and a validation controller to coordinate microservices.
 
-Message-based coordination appears in~\cite{bellandi2025streamlining}, where pipelines are orchestrated via Apache Kafka\footnote{\url{https://kafka.apache.org/}} and exposed through \acp{api}, enabling asynchronous scaling of components.
+Message-based coordination appears in \textcite{bellandi2025streamlining,P_rez_2021}, where pipelines are orchestrated via the publish-subscribe paradigm~\cite{pubsub_2003}, enabling asynchronous scaling of components.
 Finally, \textcite{szekely2015building,kejriwal2017searchengine,kejriwal2018} explicitly consider scalability in the implementation choices for their algorithms and services, such the search engine.
 
 
 
 \subsection{Support for Downstream Information Access}
 
-Downstream \acl{ia} use cases are is supported to different extents. \textcite{human-ai-system-legal-precedent-search-china} provide \acp{ui} for faceted search and interactive retrieval for precedents; \textcite{szekely2015building,kejriwal2017searchengine,kejriwal2018} expose faceted and map-based visualizations for investigative data; Eunomos~\cite{boella2016eunomos} supports semantic navigation in legislation.
+Downstream \acl{ia} use cases are supported to different extents. \textcite{human-ai-system-legal-precedent-search-china} provide \acp{ui} for faceted search and interactive retrieval for precedents; \textcite{szekely2015building,kejriwal2017searchengine,kejriwal2018} expose faceted and map-based visualizations for investigative data; Eunomos~\cite{boella2016eunomos} supports semantic navigation in legislation.
 
 LegalAsst~\cite{HAN2024121052legalasst} provides graph-based visualizations and decision summaries. \textcite{bellandi2025streamlining} support semantic document visualization, enriched with entities and concepts, as well as an \ac{ui} for analytics. Investigative systems~\cite{P_rez_2021,pirzada2024framework} offer dashboards and communication graphs without generalized retrieval or QA.
 
 
+\subsection{Architectural Choices and Synthesis}
 
-\subsection{Architectural Choices}
+Beyond their specific functional goals, the reviewed systems differ in how they operationalize integration and control. 
+Many adopt modular, service-oriented architectures~\cite{buey2016,P_rez_2021,MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP,bellandi2025streamlining,breit_legal_permits_2020}, which facilitate distributed execution, independent service updates, and incremental extensibility. 
+Lynx~\cite{MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP,bellandi2025streamlining,P_rez_2021} complements this modularity with orchestration tools that coordinate the execution of services and maintain workflow consistency. 
+\textcite{breit_legal_permits_2020} explicitly introduce a provenance manager to record data transformations.
 
-Beyond the functional goals they pursue, the surveyed systems differ in the architectural strategies they adopt to operationalize integration. Several adopt service-oriented or microservice designs to allow modularity and component replacement over time. For instance, \textcite{buey2016} expose extraction services separately to enable the dynamic addition of new annotators, while \textcite{P_rez_2021} implement a microservice pipeline integrating speech-to-text, keyword extraction. Lynx~\cite{MorenoSchneider2021LynxCuration,RodriguezDoncel2019LynxDMP} introduces an orchestrator and a validation controller for coordinating services and enforcing schema conformance.
+Several systems also specify how processed information is represented and stored. 
+Knowledge graphs and graph databases are commonly adopted to represent extracted entities, relations, and legal concepts~\cite{amato2008,kejriwal2017searchengine,kejriwal2018,bellandi2025streamlining,boella2016eunomos,MorenoSchneider2021LynxCuration,breit_legal_permits_2020}. 
+In parallel, some systems~\cite{bellandi2025streamlining,boella2016eunomos,P_rez_2021} describe dedicated storage modules for documents and annotations, relying on different back-end technologies such as relational databases~\cite{boella2016eunomos}, NoSQL stores~\cite{P_rez_2021,szekely2015building,kejriwal2017searchengine,kejriwal2018}, or combining both~\cite{bellandi2025streamlining}. 
+Several architectures also integrate indexing or search-engine components~\cite{bellandi2025streamlining,szekely2015building,kejriwal2017searchengine,kejriwal2018,human-ai-system-legal-precedent-search-china} to support keyword-based retrieval as well as more advanced access patterns, such as faceted navigation or semantic search.
 
-Some architectures incorporate provenance or logging components to ensure reliable operation under evolution. \textcite{breit_legal_permits_2020} include a dedicated provenance manager to record all data transformations. Message-based coordination appears in \textcite{bellandi2025streamlining}, where pipelines are orchestrated through Kafka, and intermediate results are exposed through APIs to other client systems.
+Extraction services usually provide \ac{ner}, \ac{nel}, and rule-based annotation modules that populate these backends~\cite{boella2019semi,P_rez_2021,bellandi2025streamlining,beniamino_strada_2022}, and their results are often exposed through web-based \acp{ui} for visualization or correction~\cite{boella2019semi,HAN2024121052legalasst,bellandi2025streamlining,beniamino_strada_2022}. 
+This organization---comprising extraction, storage and integration, and exposure for information access---appears recurrent across several systems, even when their goals or document types differ.
 
-\todo{continua qui}
-% These choices indicate a tendency toward modular and auditable integration rather than monolithic processing, but they are usually applied within specific legal sub-domains and without a unified representation layer supporting both extraction and downstream information access over heterogeneous legal and investigative sources.
+\medskip
+\noindent
+Overall, these architectural patterns converge toward modular systems that can evolve over time, even though many are scoped to specific legal or investigative subdomains. 
+Taken together, the reviewed approaches demonstrate progress toward individual requirements such as generalizability, traceability, or scalability, but no existing architecture satisfies all of them simultaneously, or to the extent required in this thesis.
 
-\subsubsection*{Synthesis}
+Compared with \textcite{breit_legal_permits_2020}, the architecture presented in \Cref{chap:architecture} extends generalizability to a broader range of heterogeneous documents, including those from investigative contexts. 
+It also supports consolidated knowledge that goes beyond mention-level recognition (\acl{ner}) to entity-level consolidation through \acl{nel}, NIL prediction, and clustering, thereby enabling entities to serve as more powerful and semantically meaningful interlinks across diverse document collections.
 
-Existing work addresses the five dimensions individually but not jointly. Generalizability is handled within domain-specific systems; traceability and \acl{hitl} mechanisms exist but are not propagated across heterogeneous sources; scalability is obtained in specific pipelines without unifying representation; downstream information access is supported in isolated settings rather than on the same integrated layer. These observations motivate the architecture proposed in \Cref{chap:architecture}, which is designed to satisfy the same dimensions simultaneously and to serve as the substrate for retrieval, navigation, analytics, and grounded question answering over heterogeneous legal and investigative data.
+Similarly, with respect to \textcite{bellandi2025streamlining}, our proposal pursues broader generalization and places stronger emphasis on error correction and traceability. 
+Finally, relative to \textcite{P_rez_2021}, our architecture emphasizes traceability, verifiability, and error correction and supports entity-level knowledge consolidation, beyond mention-level, for integrating data.
+
+
+
+
+
+%Also we keep a minimum necessary design of the architecture and not consider orchestration or extraction tools as part of it.
+
+This observation motivates the design introduced in \Cref{chap:architecture}, which integrates these principles---including traceability, verifiability, and human oversight---into a unified, entity-centric architecture that supports heterogeneous data from both legal and investigative contexts, while remaining compatible with \acp{ui} for advanced \acl{ia} use cases, such as the ones defined in \Cref{sec:intro}.
+
+
+
+
+
+% \todo{continua qui}
+% % These choices indicate a tendency toward modular and auditable integration rather than monolithic processing, but they are usually applied within specific legal sub-domains and without a unified representation layer supporting both extraction and downstream information access over heterogeneous legal and investigative sources.
+
+% \subsubsection*{Synthesis}
+
+% Existing work addresses the five dimensions individually but not jointly. Generalizability is handled within domain-specific systems; traceability and \acl{hitl} mechanisms exist but are not propagated across heterogeneous sources; scalability is obtained in specific pipelines without unifying representation; downstream information access is supported in isolated settings rather than on the same integrated layer. These observations motivate the architecture proposed in \Cref{chap:architecture}, which is designed to satisfy the same dimensions simultaneously and to serve as the substrate for retrieval, navigation, analytics, and grounded question answering over heterogeneous legal and investigative data.
 
 
 
