@@ -1,7 +1,7 @@
 \subsection{Entity Recognition}
 \label{sec:rw:ner}
 \begin{definition}
-    [Entity Recognition (\acs{ner})]
+    [Entity Recognition]
     \Acf{ner} is the task of identifying and classifying named entities or concepts in text into predefined categories such as persons, organizations, and locations~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}.
 \end{definition}
 
@@ -42,6 +42,8 @@ While traditionally focused on entities like persons, organizations, and locatio
 Besides, \ac{ner} is applied in specific domains, such as the healthcare~\cite{hanisch2005prominer,archana2023effective,aioner_bioner_2023} or the legal~\cite{chalkidis_extracting_contracts_2017,cardellino_etal_2017_lowcost,ccetindaug2023name_legal_turkish} ones, to extract domain-specific entities and support specialized applications.
 Beyond these areas, \ac{ner} can contribute to document summarization~\cite{khademi2020persian,lin-zeldes-2024-gumsley,roha_ner_summarizaton_2023} and machine translation~\cite{xie2022end,hkiri-etal-2017-arabic}, where it helps preserve and highlight key entities, or question answering~\cite{molla2006named,ner_qa_review_2016}, by identifying entities mentioned in the query.
 
+
+\subsubsection{Formalization}
 Formally, given a sequence of tokens $X$,
 \begin{equation}
     X = [x_0, x_1, \ldots, x_{|X|}]
@@ -85,6 +87,8 @@ L^{II} = [\texttt{B-PER}, \texttt{I-PER}, \texttt{B-PER}, \texttt{I-PER}],
 thus correctly distinguishing two mentions of \texttt{Person}.
 Refer to \textcite{alshammari2021impact} for a comparison of different annotation schemes for \ac{ner} and their impact on model performance.
 
+
+\subsubsection{Literature}
 Early \ac{ner} systems used rule-based or manually engineered features, rules, or gazetteers. These approaches typically achieved high precision but low recall~\cite{keraghel2024recentadvancesnamedentity}.
 Later, machine learning methods enabled more adaptable and data-driven approaches. Effective \ac{ner} models have been built using hidden Markov models, support vector machines, and conditional random fields (CRFs)~\cite{keraghel2024recentadvancesnamedentity}---able to consider entire sentences for \ac{ner} predictions.
 With deep learning, and representation learning, \ac{ner} systems further improved. Combinations of deep architectures with CRFs---\eg BiLSTM-CRF~\cite{riedl-pado-2018-named,schweter-baiter-2019-towards} or BiLSTM-CNN-CRF~\cite{ma-hovy-2016-end}---achieved strong results~\cite{keraghel2024recentadvancesnamedentity}. The introduction of transformers~\cite{vaswani_transformers_2017}, BERT~\cite{devlin-etal-2019-bert} and its variants, reshaped the field, outperforming previous BiLSTM-CRF models on standard benchmarks~\cite{keraghel2024recentadvancesnamedentity}.
@@ -99,8 +103,9 @@ The \ac{llm}-based approaches have shown strong adaptability, thanks to their ze
 Recent studies have explored the use of smaller models---\ie DeBERTa~\cite{HeGChen2023} and RoBERTa~\cite{liu2020roberta}, which are improvement of BERT~\cite{devlin-etal-2019-bert}---for zero-shot \ac{ner}, where the entity types to recognize are provided as textual inputs for the model together with the input text~\cite{zaratiana-etal-2024-gliner,bogdanov-etal-2024-nuner}. An example application is to recognize entities of type \texttt{Clothing} or \texttt{Pet} by proving the strings ``clothing'' and ``pet'' in the input. These models achieve competitive performance compared to \acp{llm}, while being more efficient and easier to deploy~\cite{zaratiana-etal-2024-gliner,bogdanov-etal-2024-nuner}.
 
 
-For further information on recent advancements, refer to \textcite{keraghel2024recentadvancesnamedentity} for \ac{ner} and \textcite{xu2024llm_for_ie} for \ac{ie}---including \ac{ner}---with \acp{llm}.
+% For further information on recent advancements, refer to \textcite{keraghel2024recentadvancesnamedentity} for \ac{ner} and \textcite{xu2024llm_for_ie} for \ac{ie}---including \ac{ner}---with \acp{llm}.
 
+\subsubsection{Existing Libraries}
 Finally, several ready-to-use libraries exist for \ac{ner}, such as \spacy~\cite{honnibal2020spacy}, Flair~\cite{akbik2019flair}, Stanza~\cite{qi2020stanza}, Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}, and Transformers~\cite{wolf-etal-2020-transformers}. These libraries provide pre-trained models for multiple languages, and can be easily integrated into production applications.
 
 % For instance, \spacy offers efficient and accurate \ac{ner} models that can be fine-tuned on custom datasets~\cite{honnibal2020spacy}. Its models are based on a transition-based parser~\cite{AliEtAl2023UnintendedMemorization} that maps structured prediction tasks, such as \ac{ner} and dependency parsing, into a sequence of state transitions~\cite{lample-etal-2016-neural}. The underlying architecture combines multiple subnetworks. The tok2vec component encodes tokens into embeddings enriched with sub-word features (\eg prefixes, suffixes, or shapes such as ``xxxXx'' for ``spaCy'') using a CNN-based encoder. A lower subnetwork then constructs representations for each token by combining these features, while an optional upper feed-forward network refines the representation to predict action scores. When the upper network is not used, the lower subnetwork directly produces the scores~\cite{AliEtAl2023UnintendedMemorization}. SpaCy also provide transformer-based models in which the tok2vec component is replaced by a transformer---for example the ``en\_core\_web\_trf'' model\footnote{\url{https://spacy.io/models/en\#en\_core\_web\_trf}}.

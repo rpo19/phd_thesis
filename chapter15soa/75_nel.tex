@@ -2,7 +2,7 @@
 \label{sec:rw:nel}
 % \todo{say something about multilingual since I worked in italian}
 \begin{definition}
-    [Entity Linking (\acs{nel})]
+    [Entity Linking]
     \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or a \ac{kb}~\cite{entityorientedsearch2018balog,jm3}.
 \end{definition}
 
@@ -62,6 +62,7 @@ Furthermore, in entity-based search applications, \ac{nel} enables more powerful
 
 \ac{nel} is also applied in \acl{qa} and \acf{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \acl{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
 
+\subsubsection{Formalization}
 Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kr} $\mathrm{KR} = \{e_1, e_2, \ldots\}$ containing entities, a \ac{nel} system produces a mapping:
 \begin{equation}
 f: M \to \mathrm{KR} \cup \{\texttt{NIL}\},
@@ -69,6 +70,8 @@ f: M \to \mathrm{KR} \cup \{\texttt{NIL}\},
 where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr}.  
 For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Giovanni Bianchi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
 
+
+\subsubsection{Literature}
 Traditionally, \ac{nel} have been addressed by decomposing the task in two main steps~\cite{entity_linking_with_kb_2015}:
 \begin{enumerate}
     \item \emph{Candidate generation}: retrieving a limited (\eg 100~\cite{blink}) set of possible entities from the \ac{kb} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
@@ -88,11 +91,13 @@ Some approaches treated \ac{nel} as a binary classification problem, where each 
 
 Extending \ac{nel} to handle entities unseen at training time is crucial for the \nilchallenge and incremental \ac{el}, where NIL entities are later added to the \ac{kr}. This setting is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero} and can be addressed, for example, by learning to represent new entities from brief textual descriptions~\cite{logeswaran-etal-2019-zero,blink}.
 
+\subsubsection{Neural Entity Linking}
 Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
 
 With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, where entities and relations are embedded in a vector space preserving the \ac{kg} structure~\cite{kge_survey_2017}.
 Other models, instead, propose the use of entity typing information for \ac{nel}~\cite{gupta-etal-2017-entity,khalife-vazirgiannis-2019-scalable,Raiman_Raiman_2018,Onoe_Durrett_2020,Heist2023nastylinker}, with some using the dense embeddings also at retrieval time with efficient \acf{ann} search methods~\cite{gillick-etal-2019-learning,blink}.
 
+\subsubsection{Bi-Encoder and Cross-Encoder Architectures}
 
 A notable architecture is composed of a bi-encoder and a cross-encoder~\cite{Humeau2020Poly-encoders}, that from their introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, have been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023}.
 
@@ -170,7 +175,7 @@ The cross-encoder is typically trained with the same objective as the bi-encoder
 
 
 
-
+\subsubsection{}
 Additionally, other studies modeled \ac{nel} differently reducing it to \ac{qa}~\cite{barba-etal-2022-extend,procopio-etal-2023-entity,zhang2022entqa} or text-generations tasks~\cite{decao2021autoregressive}.
 \textcite{procopio-etal-2023-entity} models the entity ranking phase of \ac{nel} as an extractive \acl{qa} task, \ie when a question and a passage is given and the answer is \say{extracted} from the passage as is. This task can be performed by identifying a start token and an end token that mark the beginning and end of the answer~\cite{barba-etal-2022-extend}.
 For \textcite{procopio-etal-2023-entity}, the input sequence given to the transformer for linking ``Metropolis'' appear as follows.
