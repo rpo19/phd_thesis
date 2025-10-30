@@ -15,3 +15,24 @@ AI algorithms are often "off-the-shelf" with standardized solutions that can be 
 
 Data for AI” highlights the need for high-quality and well-structured data. Focusing on this approach enables businesses to prioritize data quality to realize the ROI on AI pursuits.
 """
+
+
+
+data integration arch in the ai era landscape? add per contestualizzare.
+
+
+argomentazione e conclusioni per quello che arriva dopo. qualcosa che aiuti il percorso logico e argomentazioni. e.g. elenchi puntati visibili
+
+
+presentazione:
+motivation
+idea con disegno
+
+partire esempio e poi discuto i punti
+
+
+poi analisi di come fare questo (contrained)
+
+prompt
+
+rappresentazione db e poi 
