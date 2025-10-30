@@ -6,7 +6,17 @@
 
 As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb} suffer from incompleteness, and one of the use of \ac{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog}. A component of \ac{kbp} is the identification of novel entities, missing from the \ac{kr}, and their insertion into it, so that they become available for linking in subsequent documents (\acl{nel}); we refer to this task as \emph{\acf{inel}}.
 
-Since populating a \ac{kb} can include also the identification of relations between \ac{kb} entities, in this work we use \emph{\acf{inel}} for referring the task of identifying 
+
+\begin{figure}
+    \centering
+    \includegraphics[
+        width=.9\textwidth,
+        keepaspectratio]{images/ijckg/Incremental Entity Linking}
+    \caption{In \acf{inel}, NIL entities are identified and added into the \ac{kr} and used for \acl{el} incoming documents.}
+    \label{fig:ijckg_overview}
+\end{figure}
+
+Since populating a \ac{kb} can include also the identification of relations between \ac{kb} entities, in this work we use \emph{\acf{inel}} for referring the task of identifying NIL entities, adding them to the \ac{kb} or \ac{kr}, and using them for linking new documents. An illustration of this task is depicted in \Cref{fig:ijckg_overview}.
 
 The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where \emph{NIL} may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 
@@ -29,9 +39,8 @@ This task is closely related to \emph{coreference resolution}, the task that ide
 
 NIL prediction has frequently been overlooked in \ac{nel}
 systems, as many approaches exclude NIL mentions from their evaluation datasets and
-eventually leave this task to future work~\cite{blink}. In fact, among the 38 approaches\todo{verify the published version}
-compared by the survey \textcite{Sevgili2022NeuralEL} only 8 addressed NIL prediction. \todo{update for clustering too}
-\todo{say blink embeddings are not normalized so not ready for NIL pred?}
+eventually leave this task to future work~\cite{blink}. In fact, among the 55 approaches
+compared by the survey \textcite{Sevgili2022NeuralEL} only 11 addressed NIL prediction. 
 
 % dico che le TAC hanno dato importanza al NIL
 Early work on NIL prediction dates back to 2006, with \textcite{bunescu-pasca-2006-using} using a threshold-based approach.
@@ -41,8 +50,7 @@ Also, from the 2015 edition, NIL prediction and NIL clustering have been include
 
 
 %% nil pred
-\medskip
-\noindent
+\subsubsection{Approaches to NIL Prediction.}
 \Acl{nel} with NIL prediction can be framed as a classification problem with a reject option. The classes corresponds the entities from the \ac{kr}, while the reject option is NIL~\cite{Sevgili2022NeuralEL}. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
 \begin{enumerate}
 \item Assigning NIL whenever candidate generation produces no possible entities.
@@ -51,63 +59,26 @@ Also, from the 2015 edition, NIL prediction and NIL clustering have been include
 \item Training a separate binary classifier on mention-entity pairs, often with extra features such as the top linking score or \ac{ner} labels, to decide whether a mention is linkable or not.
 \end{enumerate}
 
-Some studies \cite{Zhang2012TheNE, Rao2013EntityLF} argue that the second and the third methods are essentially equivalent, although the latter avoids manual threshold tuning.
 
-%%%%%%%%%%%%%%%%%%%%5
+Threshold-based variants remain prevalent~\cite{BernierColborne2017CRIMsSF,Jiang2017SRCBED,tan2015buptteam}, while explicit NIL classes~\cite{Broscheit_2019,Rao2013EntityLF,Li2017AHM} or binary classifiers with auxiliary features~\cite{moreno_combining_word_entity_embeddings_2017,Yang2017TheTS}, other than the linking score, have been explored to improve robustness.  
+Joint formulations combine NIL prediction with \ac{ner} or document-level coherence~\cite{martins-etal-2019-joint,Fahrni2012HITSMA}.
 
-Threshold-based approaches remain common, including TAC 2017 systems~\cite{BernierColborne2017CRIMsSF,Jiang2017SRCBED} and earlier work~\cite{tan2015buptteam,Byrne2013UCDIA,huang2013msr,dalton2013umass}, where a score threshold determines when a mention is assigned NIL.
+\subsubsection{Approaches to NIL Clustering.}
+Early clustering methods relied on surface-form similarity (e.g., Jaccard or edit distance) and handcrafted rules~\cite{simone_15,simone_33,simone_68}. Later systems employed feature-based or embedding-based clustering~\cite{simone_77,simone_2,simone_6}, sometimes organized into multi-stage pipelines combining grouping, splitting, and merging~\cite{simone_24}.
 
-Another frequently adopted variant is to explicitly add NIL as a class~\cite{Broscheit_2019,Rao2013EntityLF,Li2017AHM,klang2019overview,chen2013casia,barrena2013ubc,zhang2012nlprir,mcnamee2011cross}; for instance, \textcite{Broscheit_2019} use BERT with a classification layer.
-
-Binary-classification formulations have also been explored~\cite{moreno_combining_word_entity_embeddings_2017,Yang2017TheTS,yang2013buptteam,Pink2013SYDNEYCA,zhou2013description,monahan2012lorify}, often incorporating auxiliary statistical features; \textcite{Yang2017TheTS}, for example, use the second-best score and the standard deviation over the top-$k$ candidates.
-
-Finally, alternative formulations and joint approaches have also been explored. Some systems estimate document-level coherence between linked entities to inform NIL decisions~\cite{Paikens-EtAl:2017:TAC-KBP}, while others retrieve Web context for NIL candidates under the assumption that, although absent from the \ac{kr}, evidence may exist in Web pages~\cite{nil_web_2019}. Joint models have likewise been proposed: \textcite{martins-etal-2019-joint} perform \ac{ner}, \ac{nel}, and NIL prediction with a single LSTM-based architecture, whereas \textcite{Fahrni2012HITSMA,Fahrni2013hits} jointly address \ac{nel}, NIL prediction, and NIL clustering.
-
-%%%%%%%%%55
-
-\todo{same for clustering. moller is useful here too. review 7-15 from moller and from ijckg}
-\todo{better check and rephrase. include something from moller}
-In the context of NIL clustering, several basic models \cite{simone_15,simone_33,simone_73,simone_68,simone_27,simone_67,simone_38,simone_65,simone_63,simone_31} tackle the task by comparing surface forms directly, often relying on fuzzy similarity measures such as Jaccard~\cite{jaccard1901etude} or edit distances~\cite{jm3}, or on handcrafted rules (\eg for handling acronyms). Other methods \cite{simone_77,simone_65,simone_33} employ unsupervised or supervised learning with task-specific features to form clusters. Alternative strategies \cite{simone_2} leverage embedding-based approaches, such as custom Word2Vec models \cite{simone_6} developed for languages lacking pretrained resources. A different line of work \cite{simone_24} proposes a three-step procedure: mentions are first grouped by surface form, then split using a bag-of-words representation of documents, and finally re-merged according to the centroid distance between sub-clusters.
+Recent work leverages dense mention embeddings for cross-document entity coreference~\cite{streaming_crossdoc_coreference}, and joint NIL prediction and clustering approaches use both mention and \ac{kg} embeddings to cluster NIL entities~\cite{moller2024entity}.
 
 
-In the context of NIL clustering, several approaches~\cite{simone_15,simone_33,simone_73,simone_68,simone_27,simone_67,simone_38,simone_65,simone_63,simone_31} operate directly on surface forms, typically using fuzzy similarity measures such as Jaccard~\cite{jaccard1901etude} or edit distance~\cite{jm3}, or handcrafted rules (e.g., for acronyms). Subsequent methods~\cite{simone_77,simone_65,simone_33} adopt unsupervised or supervised learning with task-specific features. Embedding-based variants have also been proposed~\cite{simone_2}, including custom Word2Vec models~\cite{simone_6} for languages lacking pretrained resources. Another line of work~\cite{simone_24} introduces a three-stage pipeline: grouping mentions by surface form, splitting clusters using a bag-of-words representation of documents, and finally re-merging them based on centroid distances.
+\subsubsection{Incremental and NIL-aware Models.}
+The problem of dynamically updating \acp{kr} motivated incremental \ac{nel} frameworks~\cite{ijckg2022,kassner-etal-2022-edin}.
+\textcite{ijckg2022}---one of the contributions of this \phd, further detailed in \Cref{sec:ijckg}---introduced a benchmark dataset, an evaluation methodology, and a baseline pipeline for \acl{inel}. 
+\textcite{kassner-etal-2022-edin} similarly divide data chronologically, performing threshold-based NIL prediction and clustering mentions and entities together by embedding similarity.  
+Other datasets include TempEL~\cite{tempel_2022} and NILK~\cite{nilk_dataset_2022}, both derived from Wikipedia and Wikidata snapshots.  
+Subsequent proposed end-to-end \ac{nel} approach supporing NIL prediction~\cite{ayoola-etal-2022-refined} or extended the dual-encoder architectures~\cite{blink} with NIL-aware mechanisms~\cite{aydin-etal-2022-find,Heist2023nastylinker,zhu-etal-2023-learn,dong_reveal_the_unknown_2023}, which add NIL as a candidate or threshold output.  
+Graph-based methods~\cite{agarwal-etal-2022-entity} link mentions and entities through similarity-weighted graphs pruned by heuristic constraints, while joint NIL prediction and clustering formulations~\cite{moller2024entity} combine bi-encoder and \ac{kg} embeddings to rank candidates and cluster NIL mentions by fusing the two representations.
+More recently, \ac{llm}-based models perform NIL prediction as multi-choice \ac{qa}, including ``none-of-the-candidates'' as an option~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}.
 
 
-More recently, \textcite{streaming_crossdoc_coreference} benchmarked different clustering approaches, based on dense mention embeddings~\cite{blink}, for streaming cross document entity coreference, the task of clustering coreferent entities from streaming data---considering both NIL and not NIL ($\neg$NIL) entities.
-
-Since 2022, the interest in NIL prediction has motivated multiple studies to improve the popular dual-encoder (bi-encoder and cross-encoder) \ac{nel} approach~\cite{blink} for NIL prediction~\cite{ijckg2022,kassner-etal-2022-edin,aydin-etal-2022-find,Heist2023nastylinker,zhu-etal-2023-learn}.
-
-\textcite{ijckg2022}---that is one of the contributions of my \phd, and is better detailed in \Cref{ijckg2022}---proposed a benchmark dataset, an evaluation procedure, and a baseline pipeline for \emph{incremental \acl{nel}}. In this scenario, given $N$ batches of textual documents $b_0..b_N$, corresponding to $N$ time-steps, and an initial \ac{kr}, $\mathrm{KR}_0$, each time a batch of documents $b_k$ is processed, the identified NIL entities are added to the \ac{kr} $\mathrm{KR}_{k+1}$, which will be used as the reference \ac{kr} when processing the batch $b_{k+1}$.
-
-Similarly, \textcite{kassner-etal-2022-edin} propose a dataset derived from Wikipedia and newspapers data, divided into two parts. The first part contains the documents existing before a time $t$, while the second the documents created after. The authors also proposed a pipeline-based system for end-to-end incremental \acl{nel}, based on the bi-encoder. They use a threshold for NIL prediction and cluster all the identified mentions (including $\neg$NIL) together with the entities from the \ac{kr}, based on embeddings similarities and thresholds. The clusters without entities from the \ac{kr} corresponds to NIL entities.
-
-Other two datasets have been proposed for incremental \ac{nel} in 2022~\cite{tempel_2022,nilk_dataset_2022}.
-\textcite{tempel_2022} proposal is composed of ten yearly snapshots of Wikipedia from 2013 to 2022. NILK~\cite{nilk_dataset_2022}, instead, is composed of two snapshots: Wikidata 2017 and 2022, considers Wikidata as the reference \ac{kb}, and English Wikipedia as the source text containing the entity mentions.
-
-% main entity linking approach also include nil 
-Still in 2022, \textcite{ayoola-etal-2022-refined} proposed ReFinED for addressing end-to-end \ac{nel}, which is based on the bi-encoder architecture, and is additionally able to perform NIL prediction. However, NIL prediction was not studied in the evaluation.
-\textcite{aydin-etal-2022-find} studied \ac{el} with NIL prediction in the funding domain, to better aid funding organization in tracking the outcome of their expenses.
-
-\textcite{zhu-etal-2023-learn} introduce both a new dataset and an improved dual-encoder \ac{nel} model that performs NIL prediction using a similarity threshold. The dataset is constructed by selecting aliases of ambiguous seed entities and extracting Wikipedia passages in which the alias appears, balanced between cases where the mention is hyperlinked and where it is not. This design enables the authors to distinguish true NIL entities from \emph{non-entity phrases} (i.e.\ common expressions such as ``the householder'' that should not trigger linking). Approximately 10{,}000 instances were collected and manually annotated.
-
-Also, \textcite{Heist2023nastylinker} proposed a NIL-prediction aware \ac{nel} method, based on the dual encoder architecture~\cite{blink}, that uses a clustering phase, followed by a conflict resolution phase, to identify NIL entities as clusters without entities from the \ac{kr}. They evaluate on the NILK~\cite{nilk_dataset_2022} dataset.
-
-\textcite{agarwal-etal-2022-entity} method involves building a graph whose nodes correspond to mention and entities. The edges are weighted according to the mention-mention or mention-entity similarity, calculated using bi-encoder embeddings. Next, edges are pruned with heuristics that maintain the validity of constraints, \eg a cluster contains at most one entity.
-
-\textcite{dong_reveal_the_unknown_2023} propose another extension of the dual encoder architecture of \textcite{blink} for NIL prediction. The authors add a NIL entity to the \ac{kr} described by ``It is a NIL option'' and use it with both bi-encoder and cross-encoder---including it in top-k entity retrieved, if not present, before the cross-encoder step. They add an additional linear layer to the cross-encoder with a sigmoid function to compute a NIL probability score and jointly train the cross-encoder for \ac{nel} and NIL prediction. Finally, they experiment different strategies for building NIL-aware datasets, namely manual labeling, pruning---which implies removing a portion of entities, labeling their mentions to NIL---or \ac{kr} versioning---based on snapshots of the same \ac{kr}, taken at different times.
-
-\todo{improve this review with some categorization,... not just a mere drop of summaries}
-
-\textcite{moller2024entity} jointly address NIL prediction and clustering on Wikidata by combining a bi-encoder with \acl{kg} embeddings~\cite{kge_survey_2017}. Candidate entities (up to 100) are first retrieved using TF--IDF~\cite{jm3} and fuzzy search, then ranked using: (i) bi-encoder similarity between the mention in context and the Wikidata entity description, (ii) entity popularity, and (iii) the average similarity to previously linked mentions computed with \ac{kg} embeddings. In a second stage, NIL mentions are clustered using both the mention-encoder embeddings and \ac{kg} embeddings, fused through a trained linear layer.
-
-An alternative approach is suggested by \textcite{Gu_Qu_Wang_Huai_Yuan_Gui_2021} which focuses on microposts and avoids the dual-encoder paradigm. The authors modeled the ranking phase of \ac{nel} with NIL prediction task as multi-choice \acl{qa}, giving the mention with candidate entities with description and the NIL option as input to a BERT model.\todo{similar to extend? maybe categorize nel and extend here}
-
-% llm based
-With respect to \ac{llm}-based approaches~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}, they perform NIL prediction in the candidate ranking step of \ac{nel} by mapping the task to a multi-choice question answering problem\todo{extend this categorization to el and nil pred}, including the NIL option, in the form of ``None of the Candidates'' and ``None of the entity match'', respectively.
-
-
-
-
-
-
+\subsubsection{}
+Overall, NIL prediction has evolved from heuristic thresholds to embedding-based and joint models, while NIL clustering progressed from surface-form similarity to dense, cross-document approaches. Yet, several \ac{nel} systems still neglect NIL entities, despite their relevance in knowledge-intensive domains such as legal or investigative contexts. This limitation motivated the work described in \Cref{sec:ijckg}, which introduced dedicated evaluation methodologies for \acl{inel}, as well as a baseline pipeline, and a benchmark dataset.
 

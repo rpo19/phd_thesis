@@ -91,13 +91,13 @@ Some approaches treated \ac{nel} as a binary classification problem, where each 
 
 Extending \ac{nel} to handle entities unseen at training time is crucial for the \nilchallenge and incremental \ac{el}, where NIL entities are later added to the \ac{kr}. This setting is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero} and can be addressed, for example, by learning to represent new entities from brief textual descriptions~\cite{logeswaran-etal-2019-zero,blink}.
 
-\subsubsection{Neural Entity Linking}
+\paragraph{Neural Entity Linking}
 Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
 
 With respect to entity encoding, some methods apply techniques similar to word2vec~\cite{mikolov2013} to learn entity embeddings that lay in the same vector space as word embeddings~\cite{moreno_combining_word_entity_embeddings_2017,yamada-etal-2017-learning}. Alternatively, when considering a \ac{kg}, some approaches use \acl{kg} embeddings~\cite{pnel_pointer_network_based_end_to_end_entity_linking_2020,sorokin-gurevych-2018-mixing}, where entities and relations are embedded in a vector space preserving the \ac{kg} structure~\cite{kge_survey_2017}.
 Other models, instead, propose the use of entity typing information for \ac{nel}~\cite{gupta-etal-2017-entity,khalife-vazirgiannis-2019-scalable,Raiman_Raiman_2018,Onoe_Durrett_2020,Heist2023nastylinker}, with some using the dense embeddings also at retrieval time with efficient \acf{ann} search methods~\cite{gillick-etal-2019-learning,blink}.
 
-\subsubsection{The Bi-Encoder Architecture}
+\paragraph{The Bi-Encoder Architecture}
 
 A notable architecture is the bi-encoder that from its introduction to \acl{nel}~\cite{gillick-etal-2019-learning,logeswaran-etal-2019-zero,blink}, has been employed by several studies~\cite{kassner-etal-2022-edin,Heist2023nastylinker,bhargav-etal-2022-zero,dong_reveal_the_unknown_2023,ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}.
 
@@ -180,7 +180,7 @@ This setup typically yields higher accuracy than the bi-encoder alone but is com
 % % \end{equation}
 
 
-\subsubsection{Alternative Formulations of Entity Linking}
+\paragraph{Alternative Formulations of Entity Linking}
 
 Beyond bi- and cross-encoder architectures, several works reformulate \ac{nel} as other \ac{nlp} tasks, such as \acl{qa} or text generation.
 \textcite{procopio-etal-2023-entity} and \textcite{barba-etal-2022-extend}, for instance, model entity ranking as an \emph{extractive \ac{qa}} task, where the model identifies the correct entity span among a set of candidate entities concatenated with the mention context. This formulation enables processing multiple candidates in a single forward pass and allows interactions among them, though it remains computationally demanding for very large \acp{kb}.
@@ -191,7 +191,7 @@ Extending this work, the authors also addressed \emph{multilingual \acl{el}} fin
 % These alternative formulations show that \ac{nel} can be expressed as a structured prediction or generation task, paving the way for later work combining constrained generation and large language models.
 
 
-\subsubsection{End-to-End and Multilingual Entity Linking}
+\paragraph{End-to-End and Multilingual Entity Linking}
 
 Recent approaches focus on efficient, end-to-end \ac{el} systems that can recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
 Unlike traditional pipelines, these models avoid separate re-ranking stages and instead learn to detect mentions and predict their linked entities jointly. 
@@ -199,7 +199,7 @@ Mention detection typically follows the BIO scheme~\cite{ramshaw-marcus-1995-tex
 Linking then proceeds as in bi-encoders, by comparing mention and entity embeddings through similarity search, often with \ac{ann}.  
 ReFinED~\cite{ayoola-etal-2022-refined} also supports \emph{NIL prediction} by including NIL examples during training, while the model proposed by \textcite{plekhanov2023multilingualendendentity} extends this paradigm to a \emph{multilingual} setting.
 
-\subsubsection{LLM-Based and Instruction-Following Approaches}
+\paragraph{\acs{llm}-Based Approaches}
 
 None of the previously discussed models rely on billion-parameter \acp{llm}. 
 Recent work explores using them either as knowledge sources or as reasoning components for \ac{nel}.  

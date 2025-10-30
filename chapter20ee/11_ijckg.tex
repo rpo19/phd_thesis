@@ -2,6 +2,8 @@
 \section[Adapting an Entity Linking Benchmark to Incremental Entity Linking][Adapting an \acs{nel} Benchmark to \acs{inel}]{Adapting an Entity Linking Benchmark to Incremental Entity Linking}
 \label{sec:ijckg}
 
+\todo{describe inel. also refer to rw}
+% \acl{inel}. In this setting, given $N$ batches of textual documents $b_0, \ldots, b_N$ corresponding to $N$ time steps, and an initial \ac{kr} $\mathrm{KR}_0$, each batch $b_k$ is processed to identify NIL entities, which are then added to the \ac{kr} to obtain $\mathrm{KR}_{k+1}$. The updated \ac{kr} $\mathrm{KR}_{k+1}$ is subsequently used as the reference knowledge resource for processing the next batch $b_{k+1}$.
 
 
 The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}.
@@ -24,7 +26,12 @@ The contributions to \acl{inel} are described in the next sections and can be su
     \item An assessment of the performance and main challenges of the baseline pipeline on the incremental scenario.
 \end{enumerate}
 
-\todo{dire che non facciamo ner e perche?}
+\todo{modify how present my contribution}
+Contributions related to this chapter:
+\begin{itemize}
+    \item ijckg2022
+    \item mammotab
+\end{itemize}
 
 The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges (\Cref{sec:ijckg:experiments}).\todo{divide exp and discussion?}
 
