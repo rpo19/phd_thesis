@@ -56,6 +56,7 @@ Also, in sensitive domains such as law or healthcare, documents often contain pe
 % \todo{important: motivate why we should treat judgments and criminal investigations with the same model}
 
 %\paragraph{introduce kg intensive and start to move to the legal domain}
+\paragraph{Knowledge-Intensive Domains}
 Besides being sensitive in terms of data protection and confidentiality, the legal and healthcare sectors are also domains that require specialized expertise, deep understanding, and extensive information processing. Decisions in these fields rely heavily on expert knowledge and the careful interpretation of complex information sources. Another example of such a domain is finance, where similar forms of domain-specific expertise and reasoning are essential~\cite{niu-etal-2025-tree,cambridge-knowledge-intensive,kg-intensive-nlu-xai-2021}. In the remaining of this work, we refer to these as \emph{knowledge-intensive domains}, encompassing areas in which effective decision-making depends on the ability to access, interpret, and integrate heterogeneous and highly specialized information sources.
 
 %\paragraph{NLP in knowledge-intensive domains}
@@ -67,7 +68,7 @@ Several \acf{nlp}-based approaches have been developed to support and enhance in
 Even though different knowledge-intensive domains have their own specific characteristics, certain recurring features can be observed across them. These include the central roles of entities---such as parties, judges, and lawyers in the legal domain; patients, doctors, and clinical staff in healthcare; and companies, investors, and regulators in finance---as well as the reliance on heterogeneous information sources. In the legal domain, these sources include court documents, such as civil court judgments, notary documents, or other contracts~\cite{HAN2024121052legalasst,amato2008,buey2016}. In the context of criminal investigations, it might be necessary to analyze chat messages extracted from suspects' mobile phone~\cite{subbulakshmi2024forensic,pirzada2024framework,kaushik2022forensic,Sonakshi_whatsapp_group_2025},  bank statements~\cite{data_mining_money_laundering_2003}, emails, or posts on social media platforms~\cite{jarrett2021impact}. In healthcare, relevant sources consist of laboratory reports~\cite{lab_reports_2023}, clinical trials, electronic health records, medical imaging, and data from health monitoring devices~\cite{XIAO2024108577}, while financial professionals consult financial news, statements, and market data~\cite{nlp_finance_survey_2025}.
 
 \section{Legal Domain and Use Cases}
-In the rest of this thesis, we focus on the Italian legal domain. Specifically, we examine civil trials and criminal investigations through two types of sources: civil court judgments and investigative chat logs.
+In the rest of this thesis, we focus on different use cases within the legal domain, a broad and knowledge-intensive area that shares many characteristics with other sensitive contexts such as healthcare. Specifically, we examine civil trials and criminal investigations through two representative types of sources: civil court judgments and investigative chat logs.
 
 Civil court judgments are formal acts issued by the judge at the conclusion of a civil proceeding, constituting the official expression of the court's decision. They typically identify the parties involved, outline the relevant facts and procedural background, and present the legal reasoning supporting the decision, followed by the operative part specifying its effects. Their structure and mandatory elements are established by the Italian Code of Civil Procedure~\cite[Art.~132]{CPC}, which requires, among other things, the indication of the court and the parties, the statement of facts, and the reasoning in fact and law.
 
@@ -83,16 +84,12 @@ Moreover, this domain is characterized by a peculiar language that follows impli
 
 Other challenges include compliance with regulations, as described above, as well as the evolving nature of the legal framework. Statutes may change over time, meaning that cases previously considered similar may no longer be so under current legislation~\cite{feng-etal-2024-legal}. In addition, legal documents are structured into multiple sections serving distinct purposes~\cite[Art.~132]{CPC}, and the relevance of each section depends on the analytical task~\cite{feng-etal-2024-legal}. For example, when identifying similar cases, the comparison should focus on the factual and legal reasoning sections, which contain the elements that determine the applicability of legal provisions. In contrast, when searching for precedents involving the same individuals or organizations, the relevant information may appear primarily in the introductory sections describing the parties. Models that ignore this internal structure and treat the text as a single unstructured block risk misleading results---for instance, ranking two cases as similar simply because they mention the same persons, even though the underlying legal issues and outcomes differ substantially.
 
-\todo{aggiungi paragrafo su information access}
-%Despite the above mentioned challenges, the above discussed advancements have unlocked incredible potential for content analysis. However, when developing applications for content analysis it should be considered that users in specialised domains are eventually interested in performing their tasks rather in the content analysis process themselves. In these domains, AI and NLP technologies are expected to support their activities, especially in finding, analysing and using information, where content processing is a means …  Qui puoi fare breve storia accesso (1 paragrafo) che finisce con chatbot.
-%%% da mail di matteo 14/10
-%% si può unire anche alle considerazioni legalasst e china legal search (collaborativo...) 
+\medskip
+\noindent
+Despite these challenges, advances in \ac{ai} and \ac{nlp} have greatly expanded the potential for content analysis. Yet, in professional and institutional contexts, the ultimate goal is not analysis itself, but the ability to find, interpret, and use information to support decision-making. In such domains, \ac{ai} technologies are most valuable when they enhance users’ \emph{information access}~\cite{human-ai-system-legal-precedent-search-china}, understood here as the ability to effectively identify, retrieve, and utilize information. Over time, information access has evolved from keyword-based search and faceted navigation to more interactive paradigms, such as conversational systems and \acp{llm} that assist users in exploring and reasoning over complex data.
 
-
-
-%\paragraph{Use cases addressed in this work}
-To illustrate the practical needs for accessing information---namely \ac{ia}---in knowledge-intensive domains, we consider several tasks in the legal and investigative contexts. These use cases highlight the types of queries, document navigation, and analysis that professionals often require, and motivate the design of tools to support them. In particular, users may rely on \ac{ia} systems for:
-
+Considering the challenges discussed above, it becomes essential to examine how professionals in the legal and investigative domains actually access and use information in their daily work.
+To illustrate these needs, we identify a set of representative use cases of \acf{ia}, which highlight typical queries, document navigation, and analytical activities.
 \begin{enumerate}[leftmargin=*,label=\textit{UC~\arabic*:},ref=\textit{UC~\arabic*}]
     \item \label{uc:case-retrieval} \emph{Case retrieval and precedent search:} Judges and lawyers may need to search for previous cases involving the same individuals or organizations~\cite{human-ai-system-legal-precedent-search-china}, or analyze outcomes of similar cases to identify legal trends to ensure uniformity in the interpretation of the law~\cite{egea2024does}.
     \item \label{uc:navigation} \emph{Document navigation and content exploration:} When reviewing lengthy judgments, legal professionals benefit from tools that allow them to quickly identify specific information or sections~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}, for example by locating all mentions of a given person.
@@ -147,80 +144,91 @@ However, most investigative systems do not perform \ac{kc} task, for example, to
 
 
 
-\todo{perception of ai tools. see china}
 
 % % studies for scalability
 % Later advancements, such as the microservices-based architecture proposed in \textcite{ruiz2020}, improved scalability and performance for large-scale language analysis of legal documents.
 
 %\paragraph{transition to objective}
-\section{Objectives}
-What is common to all the aforementioned approaches is the idea of building an
-architecture that sits between the users and the source data containing the
-information they seek. This general concept encompasses search engines, which
-index documents for efficient and relevant retrieval; visualization systems,
-which store key information to highlight them in \acp{ui}---for example, by
-coloring
-text~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}
-or pinpointing locations on
-maps~\cite{pirzada2024framework,P_rez_2021,kejriwal2018}---to help users quickly
-interpret it; and approaches that populate a
-\ac{kg}~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst}
-or a database~\cite{bellandi2025streamlining}, which, like the other methods,
-organize knowledge in a meaningful way tailored to users' needs.
 
-% mention graphrag and other proposals (also not rag) that create an intermediary representation of the information
-% idea di ordinamento (table of contents gerarchica, ir, ...)
-% integrazione conoscenza
+\section{Challenges and Objectives}
 
-\begin{figure}[t]
+The use cases introduced above highlight how \ac{ai} and \ac{nlp} can support professionals in fulfilling their information needs in the legal and investigative contexts.  
+However, developing such systems remains far from trivial. In practice, several key challenges must be addressed to ensure that these technologies are effective, reliable, and legally compliant.  
+The main challenges motivating this thesis can be summarized as follows:
+
+\begin{enumerate}[leftmargin=*,label=\textit{Ch.~\arabic*:},ref=\textit{Ch.~\arabic*}]
+    \item \label{ch:scalability} \emph{Scalability.} Legal and investigative corpora may include thousands of heterogeneous documents, requiring methods that can efficiently process and integrate large volumes of text and metadata.
+    \item \label{ch:heterogeneity} \emph{Heterogeneity.} The data vary widely in format and structure---from judgments and contracts to chat logs and structured evidence---which demands for flexible representations capable of integrating diverse sources within a unified framework.
+    \item \label{ch:traceability} \emph{Traceability and verifiability.} The outputs of \ac{ai}-driven systems must remain interpretable and auditable: each extracted or inferred element should be traceable back to its source document, supporting transparency and human oversight~\cite[Art.~14--15]{ai_act}.
+    \item \label{ch:nilintegration} \emph{Integration of novel entities.}
+    Legal and investigative documents---as well as those from other sensitive domains such as healthcare---often mention entities that are not publicly known or documented in existing \acl{kr} (\eg Wikipedia or Wikidata). Handling such \emph{novel} (or \emph{NIL}) entities is therefore a key challenge, as it requires extending the knowledge representation to include new individuals emerging from the data, while maintaining consistency and interoperability with existing resources.
+\end{enumerate}
+
+These challenges highlight the need for architectural solutions that can organize, connect, and make sense of heterogeneous data while preserving interpretability and compliance.
+
+
+\subsection{Research hypothesis}
+
+
+
+Across the diverse approaches reviewed in \Cref{chap:background}, a common principle emerges: the design of an intermediate architecture that mediates between users and the underlying sources of information. Such architectures may take the form of search engines indexing documents for efficient retrieval; visualization systems that highlight relevant elements in user interfaces~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023,pirzada2024framework,P_rez_2021,kejriwal2018}; or data infrastructures such as knowledge graphs and databases~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst,bellandi2025streamlining}. These systems share the goal of organizing and presenting information in a form that is meaningful to users and suited to their analytical tasks.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{images/overview_thesis.pdf}
-    \caption{Overview of the proposed architecture.}
+    \caption{Overview of the proposed architecture, which bridges information extraction and information access.}
     \label{fig:overview}
 \end{figure}
 
-% \paragraph{objective draft}
-% A central objective of my \phd is indeed to design this model addressing the \acl{ia} needs from the professionals in the legal domain, and supporting both proper legal documents, such as judgments or acts, and the heterogeneity of investigative data.
-% This model must be respect the following principles.
-% \begin{enumerate}
-%     \item Generalizability to heterogeneous documents and to new use cases, since certain investigation may require ad-hoc workflows.
-%     \item Traceability, for tracing the source of any assertion. For example, a user searching for documents mentioning a certain person must e able to read the exact mention, in the context, linked to that person. Or when receiving an answer from a \acl{qa} system, it is necessary that users can read the pieces of text supporting that answer.
-%     \item Scalability to vast document collections.
-% \end{enumerate}
-
-
-% Finally, an additional contribution is an efficient question answering system, ReFactX, with particular features that make it convenient for sensitive and knowledge-intensive domains such as the legal one.
-
-% \Cref{fig:overview} sketches a schema of the model proposed in this thesis.
-% To achieve generalizability, we decide for an entity-centric approach. Common examples of entities, include persons, locations, and organizations~\cite{entityorientedsearch2018balog}, but entities are also central for knowledge-intensive domains. Legal documents often mention law articles or other documents, such as judgments
+As illustrated in \Cref{fig:overview}, the architecture proposed in this thesis serves as a bridge between extraction and access, enabling the transition from unstructured data to semantically organized, queryable knowledge. It supports both formal legal documents (such as judgments and acts) and heterogeneous data produced in investigative contexts, providing the foundation for the use cases discussed above.
 
 
 
-% \paragraph{Main challenges addressed in this work}
-In this work, we address several key challenges that arise when integrating \ac{ai}-based systems in knowledge-intensive and, specifically, in the legal domain:
-\begin{enumerate}[leftmargin=*,label=\textit{Ch.~\arabic*:},ref=\textit{Ch.~\arabic*}]
-    \item \label{ch:scalability} \emph{Scalability.} Legal and investigative datasets may comprise thousands of heterogeneous documents, requiring solutions that can efficiently process and integrate large volumes of text and metadata.
-    \item \label{ch:heterogeneity} \emph{Heterogeneity.} The documents vary widely in structure and type---ranging from judgments and contracts to chat logs and structured records---which demands flexible models capable of representing diverse sources within a unified framework.
-    \item \label{ch:traceability} \emph{Traceability and verifiability.} Users must be able to verify the outcome of \ac{ai}-driven operations by tracing each piece of extracted or inferred information back to its source document~\cite[Art.~15]{ai_act}. Furthermore, without such mechanisms, user trust and accountability in \ac{ai}-assisted decision-making may be compromised~\cite{HAN2024121052legalasst}.
-\end{enumerate}
+Building on this idea, this thesis is grounded on the hypothesis that \emph{an entity-centric architecture can effectively integrate heterogeneous legal and investigative data, enabling advanced forms of information access and analysis while preserving scalability and traceability}. In particular, such an architecture would support the identified use cases in the legal and investigative domains. For instance, users may perform faceted search to filter relevant documents or messages based on entities such as persons, locations, or dates, ask questions in natural language to retrieve precise information, and even combine these capabilities---for example, applying question answering over a subset of documents filtered with faceted search.
 
-% \paragraph{Objectives}
 
-\paragraph{Research objectives and contributions}
-In response to these challenges, this thesis develops entity-oriented strategies for enabling both information extraction and information access in knowledge-intensive domains, with a focus on the legal domain. These strategies are articulated through the following objectives:
+
+Entities serve as conceptual anchors that connect information within and across documents, enabling cross-references and semantic aggregation. They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance. As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---enabling aggregation operations, such as computing counts or groupings over certain entities or entity types, and faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{images/entities_central_role.pdf}
+    \caption{The central role of entities in interconnecting heterogeneous data. The example shows how a criminal report, a civil judgment, a chat report (including a voice message), and structured bank transfers can be linked through shared entities.}
+    \label{fig:entities_central}
+\end{figure}
+
+
+
+\subsection{Research objectives and contributions}
+
+In response to the identified challenges and building on the hypothesis that an entity-centric architecture can integrate heterogeneous data and support advanced, composable forms of \acl{ia}, this thesis develops entity-oriented strategies that connect information extraction and access in knowledge-intensive domains, with a focus on the legal and investigative settings.  
+These strategies are articulated through the following objectives:
+
 \begin{enumerate}[leftmargin=*,label=\textit{Obj.~\arabic*:},ref=\textit{Obj.~\arabic*}]
-    \item \label{ob:extraction_assessment} \textbf{Evaluation of the feasibility of existing \ac{ie} technologies in the legal domain.}  
-    The first objective consists in empirically assessing the extent to which current \acl{ie} components (including \acl{ner}, \acl{nel}, and NIL prediction; see \Cref{sec:information_extraction}) can be adapted to legal and investigative data, thereby addressing the domain-specificity of language and concept interpretation.
 
-    \item \label{ob:architecture} \textbf{Design of an entity-centric architecture for data integration and \ac{ia}.}  
-    The second objective is the definition of an architecture that organizes heterogeneous and unstructured information around entities (\eg persons, locations, organizations, laws), supporting both formal legal documents and investigative sources under a unified and traceable representation.
+    \item \label{ob:extraction_assessment} \textbf{Assessment of existing \acl{ie} technologies considering legal domain challenges.}  
+    The first objective is to empirically evaluate the adaptability of existing \acl{ie} components---including \acl{ner}, \acl{nel}, and NIL prediction (see \Cref{sec:information_extraction})---to legal and investigative data, accounting for domain-specific constraints, linguistic heterogeneity, and the occurrence of novel (NIL) entities.
+    
+    This assessment provided quantitative evidence on domain adaptation needs and showed that handling NIL entities is prone to error propagation, with NIL prediction being a major source of errors. Existing \acl{ee} models can be applied to legal documents and investigative chats, but achieving satisfactory quality often requires in-domain fine-tuning or \acl{hitl} correction.
 
-    \item \label{ob:refactx} \textbf{Development of an efficient and scalable \acl{qa} system that returns grounded answers.}  
-    The third objective is to build a \acl{qa} system that produces answers supported by evidence from existing knowledge, enabling users to verify the result and mitigating hallucination risks. The system must additionally scale to large collections and remain efficient enough to run locally, as required in sensitive settings that prohibit the use of external \acp{api}.
+
+    \item \label{ob:architecture} \textbf{Design of an entity-centric architecture for data integration and \ac{ia}.}
+    The second objective is the definition of an architecture that organizes heterogeneous and unstructured information around entities (\eg persons, locations, organizations, or laws), bridging information extraction and access.
+    
+    The designed architecture enables the development of applications for advanced use cases---such as those considered in this thesis---and supports their eventual combination, for example by performing question answering after faceted search.
+
+    \item \label{ob:refactx} \textbf{Development of an efficient and scalable \acl{qa} system grounded in external knowledge.}  
+    The third objective is to design a \acl{qa} system capable of producing answers that are explicitly supported by evidence from the knowledge base, thus enabling verification and mitigating hallucination risks.  
+    The system should scale to large collections and operate efficiently in local environments, in compliance with regulatory and confidentiality constraints.  
+
+    To achieve these goals, the thesis introduces \refactx, a constrained-generation approach that efficiently guides an \ac{llm} through a disk-backed prefix tree to produce valid facts directly from large \acp{kb}, without the need for retrievers, complex pipelines, or architectural modifications to the underlying \ac{llm}.
+
 
 \end{enumerate}
 
-
+\todo{muovi in capitolo}
 As depicted in \Cref{fig:overview}, the architecture proposed in Obj.~\ref{ob:architecture} serves as the bridge between extraction and access and is therefore fundamental to the supported use cases: extracted information must be stored and integrated in a form that makes it easily accessible, and conversely, meaningful access presupposes that information has been correctly extracted and represented. To this end, a \acl{dia} architecture is designed to support both formal legal documents (such as judgments and acts) and the heterogeneous data produced in investigative contexts. Its design is guided by the following architectural principles:
 \begin{enumerate}
     \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
@@ -229,20 +237,8 @@ As depicted in \Cref{fig:overview}, the architecture proposed in Obj.~\ref{ob:ar
     \item \textbf{Scalability} to large and continuously growing document collections.
 \end{enumerate}
 
-Additionally, it should be capable of integrating both existing knowledge from public repositories---such as entities from Wikipedia, Wikidata, or legal codes---and knowledge from \emph{novel entities}, not publicly available, such as the parties in the judgments or the people composing the suspect's communication network in an investigation. In the remaining of this thesis, we will refer to this challenge as the \nilchallenge.
-
-\begin{figure}[htbp!]
-    \centering
-    \includegraphics[width=\linewidth]{images/entities_central_role.pdf}
-    \caption{The central role of entities in interconnecting heterogeneous data. The example shows how a criminal report, a civil judgment, a chat report (including a voice message), and structured bank transfers can be linked through shared entities.}
-    \label{fig:entities_central}
-\end{figure}
 
 % \paragraph{Design choices to achieve the objectives}
-To meet these objectives, the proposed approach adopts an \emph{entity-centric} paradigm.  
-Entities serve as conceptual anchors that connect information within and across documents, enabling cross-references and semantic aggregation.  
-They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance.  
-As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---enabling aggregation operations, such as computing counts or groupings over certain entities or entity types, and faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}. In this context, faceted search allows users to filter items---such as legal documents or chat messages---mentioning specific locations, persons, or laws, as well as to compose more complex queries combining multiple facets, for instance a location, a date, and certain persons.
 
 \medskip
 \noindent

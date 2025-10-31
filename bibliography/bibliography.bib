@@ -217,7 +217,6 @@ series = {IJCKG '22}
   pages={28-33},
   url={https://ceur-ws.org/Vol-3320/paper3.pdf},
   booktitle={SemTab@ISWC},
-  crossref={conf/semweb/2022semtab}
 }
 
 @article{yuan2023revisiting,
@@ -1925,12 +1924,7 @@ numpages = {390}
   year          = {2025},
   url           = {https://www.senato.it/leggi-e-documenti/disegni-di-legge/scheda-ddl?tab=testiEmendamenti&did=59313}
 }
-@misc{ethicalcharter2018,
-  author        = {{Council of Europe}},
-  year          = {2018},
-  url           = {https://rm.coe.int/ethical-charter-en-for-publication-4-december-2018/16808f699c},
-  title = {European ethical Charter on the use of Artificial Intelligence in judicial systems and their environment}
-}
+
 @misc{gdpr2016,
   author        = {{European Union}},
   year          = {2016},
@@ -2719,20 +2713,7 @@ numpages = {390}
   pages         = "1935--1945",
   abstract      = "Modern entity linking systems rely on large collections of documents specifically annotated for the task (\eg AIDA CoNLL). In contrast, we propose an approach which exploits only naturally occurring information: unlabeled documents and Wikipedia. Our approach consists of two stages. First, we construct a high recall list of candidate entities for each mention in an unlabeled document. Second, we use the candidate lists as weak supervision to constrain our document-level entity linking model. The model treats entities as latent variables and, when estimated on a collection of unlabelled texts, learns to choose entities relying both on local context of each mention and on coherence with other entities in the document. The resulting approach rivals fully-supervised state-of-the-art systems on standard test sets. It also approaches their performance in the very challenging setting: when tested on a test set sampled from the data used to estimate the supervised systems. By comparing to Wikipedia-only training of our model, we demonstrate that modeling unlabeled documents is beneficial."
 }
-@inproceedings{martins-etal-2019-joint,
-  title         = "Joint Learning of Named Entity Recognition and Entity Linking",
-  author        = "Martins, Pedro Henrique  and Marinho, Zita  and Martins, Andr{\'e} F. T.",
-  editor        = "Alva-Manchego, Fernando  and Choi, Eunsol  and Khashabi, Daniel",
-  booktitle     = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop",
-  month         = jul,
-  year          = "2019",
-  address       = "Florence, Italy",
-  publisher     = "Association for Computational Linguistics",
-  url           = "https://aclanthology.org/P19-2026/",
-  doi           = "10.18653/v1/P19-2026",
-  pages         = "190--196",
-  abstract      = "Named entity recognition (NER) and entity linking (EL) are two fundamentally related tasks, since in order to perform EL, first the mentions to entities have to be detected. However, most entity linking approaches disregard the mention detection part, assuming that the correct mentions have been previously detected. In this paper, we perform joint learning of NER and EL to leverage their relatedness and obtain a more robust and generalisable system. For that, we introduce a model inspired by the Stack-LSTM approach. We observe that, in fact, doing multi-task learning of NER and EL improves the performance in both tasks when comparing with models trained with individual objectives. Furthermore, we achieve results competitive with the state-of-the-art in both NER and EL."
-}
+
 @inproceedings{moreno_combining_word_entity_embeddings_2017,
   author        = "Moreno, Jose G. and Besan{\c{c}}on, Romaric and Beaumont, Romain and D'hondt, Eva and Ligozat, Anne-Laure and Rosset, Sophie and Tannier, Xavier and Grau, Brigitte",
   editor        = "Blomqvist, Eva and Maynard, Diana and Gangemi, Aldo and Hoekstra, Rinke and Hitzler, Pascal and Hartig, Olaf",
@@ -4360,17 +4341,6 @@ series = {I-Semantics '11}
 
 
 @article{vanOest2019,
-  author    = {Rutger van Oest},
-  title     = {A New Coefficient of Interrater Agreement: The Challenge of Highly Unequal Category Proportions},
-  journal   = {Communications in Statistics - Theory and Methods},
-  volume    = {48},
-  number    = {18},
-  pages     = {4441--4458},
-  year      = {2019},
-  doi       = {10.1080/03610926.2018.1478720}
-}
-
-@article{vanOest2019,
   title={A new coefficient of interrater agreement: The challenge of highly unequal category proportions.},
   author={Van Oest, Rutger},
   journal={Psychological Methods},
@@ -5517,26 +5487,6 @@ url={https://openreview.net/forum?id=WX0Y0rBsqo}
 }
 
 
-@inproceedings{scholak-etal-2021-picard,
-    title = "{PICARD}: Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models",
-    author = "Scholak, Torsten  and
-      Schucher, Nathan  and
-      Bahdanau, Dzmitry",
-    keditor = "Moens, Marie-Francine  and
-      Huang, Xuanjing  and
-      Specia, Lucia  and
-      Yih, Scott Wen-tau",
-    booktitle = "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
-    kmonth = nov,
-    year = "2021",
-    kaddress =  "Online and Punta Cana, Dominican Republic",
-    publisher = "Association for Computational Linguistics",
-    kurl = "https://aclanthology.org/2021.emnlp-main.779/",
-    doi = "10.18653/v1/2021.emnlp-main.779",
-    pages = "9895--9901",
-    abstract = "Large pre-trained language models for textual data have an unconstrained output space; at each decoding step, they can produce any of 10,000s of sub-word tokens. When fine-tuned to target constrained formal languages like SQL, these models often generate invalid code, rendering it unusable. We propose PICARD (code available at \kurl{https://github.com/ElementAI/picard}), a method for constraining auto-regressive decoders of language models through incremental parsing. PICARD helps to find valid output sequences by rejecting inadmissible tokens at each decoding step. On the challenging Spider and CoSQL text-to-SQL translation tasks, we show that PICARD transforms fine-tuned T5 models with passable performance into state-of-the-art solutions."
-}
-
 @inproceedings{dong2024survey,
   title={A Survey on In-context Learning},
   author={Dong, Qingxiu and Li, Lei and Dai, Damai and Zheng, Ce and Ma, Jingyuan and Li, Rui and others},
@@ -6615,15 +6565,6 @@ keywords = {Distribution, interaction, publish/subscribe}
     abstract = "End-to-end multilingual entity linking (MEL) is concerned with identifying multilingual entity mentions and their corresponding entity IDs in a knowledge base. Existing works assumed that entity mentions were given and skipped the entity mention detection step due to a lack of high-quality multilingual training corpora. To overcome this limitation, we propose mReFinED, the first end-to-end multilingual entity linking. Additionally, we propose a bootstrapping mention detection framework that enhances the quality of training corpora. Our experimental results demonstrated that mReFinED outperformed the best existing work in the end-to-end MEL task while being 44 times faster."
 }
 
-@misc{plekhanov2023multilingualendendentity,
-      title={Multilingual End to End Entity Linking}, 
-      author={Mikhail Plekhanov and Nora Kassner and Kashyap Popat and Louis Martin and Simone Merello and Borislav Kozlovskii and Frédéric A. Dreyer and Nicola Cancedda},
-      year={2023},
-      eprint={2306.08896},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2306.08896}, 
-}
 
 @misc{virtanen2019multilingualenoughbertfinnish,
       title={Multilingual is not enough: BERT for Finnish}, 
