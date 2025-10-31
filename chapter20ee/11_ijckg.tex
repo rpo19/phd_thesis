@@ -2,7 +2,6 @@
 \section[Adapting an Entity Linking Benchmark to Incremental Entity Linking][Adapting an \acs{nel} Benchmark to \acs{inel}]{Adapting an Entity Linking Benchmark to Incremental Entity Linking}
 \label{sec:ijckg}
 
-\todo{describe inel. also refer to rw}
 % \acl{inel}. In this setting, given $N$ batches of textual documents $b_0, \ldots, b_N$ corresponding to $N$ time steps, and an initial \ac{kr} $\mathrm{KR}_0$, each batch $b_k$ is processed to identify NIL entities, which are then added to the \ac{kr} to obtain $\mathrm{KR}_{k+1}$. The updated \ac{kr} $\mathrm{KR}_{k+1}$ is subsequently used as the reference knowledge resource for processing the next batch $b_{k+1}$.
 
 
@@ -33,7 +32,7 @@ Contributions related to this chapter:
     \item mammotab
 \end{itemize}
 
-The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by an experimental evaluation of the baseline pipeline on the incremental-WNUM and a discussion of the challenges (\Cref{sec:ijckg:experiments}).\todo{divide exp and discussion?}
+The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by the definition of an incremental evaluation procedure (\Cref{sec:ijckg:evaluation_procedure}) an experimental evaluation of the baseline pipeline on the incremental-WNUM (\Cref{sec:ijckg:experiments,sec:ijckg:results}), and a discussion of the results (\Cref{sec:ijckg:discussion}).
 
 \subsection{A Baseline Pipeline for Incremental Entity Linking}
 \label{sec:ijckg:pipeline}
@@ -214,7 +213,6 @@ $ALL$ &         100k &           6.5k &                501 &                    
 
 \subsection{Evaluation Procedure}
 \label{sec:ijckg:evaluation_procedure}
-\todo{better define metrics ith formulas}
 
 %The evaluation is run in two ways: first on the whole dataset (single-batch) to allow a comparison with other models from literature; then, it is run incrementally on each batch, so that the drop in performance, due to the lack of information provided in the first steps, can be quantified. \newline
 %As far as we know, however, there is no other work which uses the same dataset that train the model reducing the available information in any way: other works should be considered only as a reference for the task difficulty.
@@ -374,7 +372,7 @@ F_{1,\text{avg}} =
 
 Note that the handling of a mention $m$ referring to an entity $e$ previously added to the \ac{newkr} is considered correct only if it consists of linking $m$ to $e$, while labeling $m$ as NIL is considered an error. This ensures that the system does not achieve artificially high scores by treating every mention as a new entity.
 
-NIL prediction outcomes can also mitigate \ac{nel} errors. If the linking is incorrect, the NIL predictor should ideally classify the mention as NIL because the suggested entity is wrong---even if the correct entity exists in the \ac{bgkr}\todo{force the nil assumption}. Conversely, if the NIL predictor fails to classify a new entity as NIL, it is considered an error.
+NIL prediction outcomes can also mitigate \ac{nel} errors. If the linking is incorrect, the NIL predictor should ideally classify the mention as NIL because the suggested entity is wrong---even if the correct entity exists in the \ac{bgkr}. Conversely, if the NIL predictor fails to classify a new entity as NIL, it is considered an error.
 
 Finally, if a false positive in NIL prediction creates a new entity while the correct entity already exists in the \ac{bgkr}, all mentions linked to this incorrect new entity are treated  as errors.
 
@@ -522,7 +520,7 @@ These errors can be mitigated through a \acl{hitl} validation process, where a u
 
 
 
-\subsection{Discussion and Challenges in Incremental Entity Linking} \label{sec:futures}
+\subsection{Discussion and Challenges in Incremental Entity Linking} \label{sec:ijckg:discussion}
 % hitl
 
 

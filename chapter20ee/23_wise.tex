@@ -176,7 +176,6 @@ As the \ac{ner} component we use \emph{ITA+LGL+ICCJ900k}, the best performing mo
 % for the Italian legal domain and finally for \ac{ner} %TODO anon
 % in~\cite{aixia_2023}. 
 Using this model in the experiments can give us clues on how the best model for judgments (see \Cref{sec:eejudgements}) performs on investigative \ac{ima} data, allowing to understand the feasibility of using a single \ac{ner} model for both judgments and \ac{ima} data.
-\todo{add that the model is also trained for money??}
 
 
 % \subsubsection{\ac{nel}}
@@ -191,7 +190,7 @@ As the majority of the people of interest for the investigation refers to entiti
 
 % \subsubsection{NIL Prediction}
 In the NIL prediction component, we employ the \textit{logistic regression classifier} described in \Cref{sec:claw_consolidation}.
-It takes the \ac{nel} top-ranked score and \emph{secondiff} (the difference between the top-ranked score and the second-best) and produces a probability $p \in [0,1]$ as output, where 1 denotes the top-ranked link is correct and 0 assigns NIL.\todo{uniform notations of nil pred}
+It takes the \ac{nel} top-ranked score and \emph{secondiff} (the difference between the top-ranked score and the second-best) and produces a probability $p \in [0,1]$ as output, where 1 denotes the top-ranked link is correct and 0 assigns NIL.
 
         % \subsubsection{Entity Clustering and Consolidation}
 

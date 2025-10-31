@@ -1,8 +1,6 @@
 \section{Constrained Fact-Generation}
 \label{sec:constrained-gen}
 
-\todo{force more the verifiability somewhere: grounded facts can be read to ensure the answer is in line with them}
-
 The mechanism of constrained generation alters the autoregressive next-token generation process of causal language modeling (\acs{clm}). As formulated in 
 \Cref{sec:rw:llms}, normally an \ac{llm}, parameterized by $\theta$, given an initial sequence of tokens $X = [x_0, x_1, \ldots, x_{|X|}]$ and a vocabulary $V = \{v_0, v_1, \ldots, v_{|V|}\}$, estimates the probability distribution of $x_i$ over the entire $V$:
 \begin{equation}

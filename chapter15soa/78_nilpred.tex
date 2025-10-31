@@ -1,8 +1,5 @@
 \subsection{NIL Prediction and Clustering}
 \label{sec:incrementalel}
-\todo{add ijckg picture fox explaining incremental??}
-\todo{maybe join with clustering}
-\todo{incremental kbp picture from paper}
 
 As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb} suffer from incompleteness, and one of the use of \ac{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog}. A component of \ac{kbp} is the identification of novel entities, missing from the \ac{kr}, and their insertion into it, so that they become available for linking in subsequent documents (\acl{nel}); we refer to this task as \emph{\acf{inel}}.
 
@@ -34,7 +31,6 @@ For addressing the incompleteness problem of \acp{kr}, once identified, NIL ment
 \begin{definition}[NIL Clustering]
     \emph{NIL clustering} is the task that aims at clustering NIL mentions that refer to the same NIL entity~\cite{ji2011tac}.
 \end{definition}
-\todo{relation with coreference resolution }
 This task is closely related to \emph{coreference resolution}, the task that identifies whether two mentions corefer---\ie they refer to the same entity~\cite{jm3}. However, coreference resolution typically addresses anaphoric expressions as well~\cite{jm3}, for instance by grouping pronouns together with their corresponding explicit mentions.
 
 NIL prediction has frequently been overlooked in \ac{nel}

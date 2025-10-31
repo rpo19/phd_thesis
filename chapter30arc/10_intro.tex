@@ -29,7 +29,7 @@ The architecture is designed to support both structured legal documents (e.g., j
   \item \textbf{Traceability and verifiability}, ensuring that the provenance of any extracted information can always be inspected. For example, a user querying for documents mentioning a person should be able to view the original mention in its textual context, while a \acl{qa} component should expose the passages supporting its answers.
   \item \textbf{Error correction capability}, enabling users to identify and correct extraction errors through a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach, thereby supporting human oversight~\cite[Art.~14]{ai_act} and reinforcing system quality.
   \item \textbf{Scalability} to large and continuously growing document collections.
-  \item \textbf{Loose coupling} between components, including external services built on top of the architecture, allowing independent evolution, replacement, or reconfiguration of modules (e.g., switching to an alternative search engine or updating external \ac{ner} or \ac{qa} components) without affecting the rest of the system. Loose coupling also contributes to \textbf{availability}, as failures or maintenance operations affecting a single component do not compromise the operation of the overall architecture.
+  \item \textbf{Loose coupling} between components, including external services built on top of the architecture, allowing independent evolution, replacement, or reconfiguration of modules (e.g., switching to an alternative search engine or updating external \ac{ner} or \ac{qa} components) without affecting the rest of the system. Loose coupling also contributes to the architecture availability, as failures or maintenance operations affecting a single component do not compromise the operation of the overall architecture.
   \item \textbf{Interoperability} with internal and external systems, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary that all services \emph{communicate} using a \acf{uniof}, so that sequential workflows can be seamlessly modified by adding or removing extractors.
 \end{enumerate}
 
@@ -70,9 +70,9 @@ Principle &
 Scalability &
 Necessary for handling vast document collections, as during investigations. \\%
 
-Principle &
-Availability &
-Prevents \ac{dia} and services from failing when other services fail or are modified. \\%
+% Principle &
+% Availability &
+% Prevents \ac{dia} and services from failing when other services fail or are modified. \\%
 
 Principle &
 Loose Coupling &
@@ -249,7 +249,7 @@ To clearly define the components of our document--annotation--entity triad, addi
   A document represents a general unit of data and may vary in granularity depending on the use case---for instance, a legal judgment, a contract, or a single \acs{ima} message.  
   Each document is characterized by:
   \begin{itemize}
-    \item a unique \ac{uri}, ensuring global identifiability\todo{cambiare in IRI per generalizability? si può fare};
+    \item a unique \ac{uri}, ensuring global identifiability;
     \item a \emph{name}, used as a human-readable label;
     \item the \emph{text content};
     \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary.  
@@ -426,8 +426,8 @@ Error correction \ac{ui}, coupled with annotation versioning with history and ro
 Scalability &
 Network \acp{api} enables distributed execution, loose coupling services and independent annotation sets simplify parallelization, circular flows simplify multiservice orchestration. \\
 
-Availability &
-Achieved through loose coupling and exclusion of peripheral services from the core. \\
+% Availability &
+% Achieved through loose coupling and exclusion of peripheral services from the core. \\
 
 Loose Coupling &
 Supported as a design principle for services. \\

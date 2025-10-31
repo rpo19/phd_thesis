@@ -35,7 +35,9 @@ The \ac{llm} sketches a plan, makes two \emph{Fact} calls, and---with constraine
 % TODO fact command?
 Once the \emph{Fact} command is called, constrained generation is enabled (underlined in blue) and the model is guided to generate an existing fact. This way the model is able to first find that \textit{``Danny Boyle''} is the director of \textit{``Slumdog Millionaire''}, then to find his birthdate, and finally to answer the question correctly.
 
-Although not enforced, the \acl{dia} design proposed in \Cref{chap:architecture} supports the use of \aclp{kb} that contain facts, which can be required by advanced systems such as \refactx.\todo{maybe force it in the chap arch}
+Furthermore, the facts generated can be highlighted, as in \Cref{fig:example}, so that users are aware that those facts exist in the \ac{kb}, supporting traceability and verifiability (\ref{ch:traceability}).
+
+Although not enforced, the \acl{dia} design proposed in \Cref{chap:architecture} supports the use of \aclp{kb} that contain facts, which can be required by advanced systems such as \refactx.
 
 % \newpage
 The main contributions of this chapter can be summarized as follows:

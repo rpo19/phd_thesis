@@ -2,7 +2,7 @@
 \section[Entity Extraction from Italian Civil Judgments][EE from Italian Judgments]{Entity Extraction from Italian Civil Judgments}
 % \sectionmark{EE from Italian Judgments}
 \label{sec:eejudgements}
-\todo{maybe integrate commented code here to legal sota or preface}
+% \todo{maybe integrate commented code here to legal sota or preface}
 
 In this section, we evaluate the performance of existing \acl{ee} systems on Italian civil court judgments. We also investigate various domain adaptation techniques aimed at improving \ac{ee} performance on this type of data, using a labeled dataset. The analysis highlights which techniques offer the most favorable balance between computational cost and performance gain.
 
@@ -366,7 +366,6 @@ F_1 = 2 \times \frac{P \times R}{P + R}.
 Here, $P$ measures the fraction of correct predictions, $R$ measures coverage over the ground truth, and F$_1$ represents their harmonic mean.
 
 
-\todo{speak about metrics in rw}
 
 % \paragraph{Knowledge consolidation} % (\ac{nel}, NIL prediction, NIL clustering)
 % The evaluation of \ac{nel} is composed of two parts. The first part regards the base entity linking, which is evaluated on \textbf{recall@K} metric to assess if the correct link is contained in the top-K candidates with the highest score. The second part evaluated is the NIL predictor. Since it is a binary classifier, it is evaluated on the standard metrics of precision, recall, and F$_1$ score. 
@@ -389,7 +388,6 @@ Here, $P$ measures the fraction of correct predictions, $R$ measures coverage ov
 \begin{equation}
 \text{Recall@k} = \frac{\text{Number of mentions for which the correct entity is among the top-}k\text{ candidates}}{\text{Total number of mentions to link}}.
 \end{equation}
-\todo{define metrics in sota and refer to there}
 
 In our setting, accuracy and recall@1 are equivalent.  
 We evaluate \ac{nel}, as well as NIL prediction and NIL clustering, only on the entity types \texttt{Person}, \texttt{Location}, and \texttt{Organization}.
@@ -442,7 +440,6 @@ The hyperparameters for the combination rules were set by prioritizing Trie\ac{n
 
 
 \subsection{Results}\label{sec:results}
-\todo{paraphrase}
 
 % \subsubsection{\ac{ner}}
 % Since the actual experimentation does not involve algorithms for class specialization, which is left for future works, the types of \textit{Judge}, \textit{Lawyer}, \textit{Court}, \textit{Plaintiff}, \textit{Defendant}, and \textit{Law Article} have been excluded from the evaluation.
@@ -656,8 +653,8 @@ Finally, \Cref{tab:nereval:withlink} presents the end-to-end evaluation results 
 \subsection{Discussion}
 In the \textit{end-to-end} evaluation, the system achieved an F$_1$ score of 64.0\% (under the \textit{approximate linking} criterion), meaning that more than one mention out of two is correctly processed across \ac{ner}, \ac{nel}, and NIL prediction. Considering the domain's high specificity, the noisy input, and the absence of in-domain training or fine-tuning, these results represent a promising baseline for entity identification and linking.
 
-The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores\todo{discuss why muc is 100. singleton clusters?}. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial. A possible direction is to tune clustering hyperparameters (\eg thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
-\todo{ricorda perche succedeva. singleton?}
+The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial.
+% A possible direction is to tune clustering hyperparameters (\eg thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
 
 The NIL prediction component also shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (\eg plaintiffs, defendants, judges, and attorneys) are in fact NIL.
 
