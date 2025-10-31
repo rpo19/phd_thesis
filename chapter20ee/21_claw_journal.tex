@@ -17,6 +17,7 @@ In summary, the main contributions of this work on \acl{ee} applied to Italian c
     \item Creation of an annotated benchmark dataset for civil judgments, including \acf{iaa} analysis, enabling structured evaluation of \ac{ee} methods.
     \item Evaluation of \ac{ner} and incremental \ac{nel} pipelines on domain-specific data, assessing performance and identifying key challenges.
     \item Comparative study of domain adaptation techniques, highlighting which approaches provide the best trade-off between computational cost and performance improvement.
+    \item Training of the BLINK~\cite{blink} bi-encoder for the Italian language (\blinkita).
 \end{itemize}
 
 The remainder of this section is organized as follows: \Cref{sec:judgements_labeled_data} describes the creation of the labeled benchmark dataset; \Cref{sec:italia_ee_pipeline} presents the Italian \ac{ee} pipeline; and \Cref{sec:judgment_ee_eval} reports the experimental evaluation.
@@ -398,7 +399,7 @@ We evaluate \ac{nel}, as well as NIL prediction and NIL clustering, only on the 
 % \paragraph{NIL prediction}
 We first evaluate the NIL prediction classifier \textit{atomically}, computing precision, recall, and F$_1$ for both the NIL and $\neg$NIL classes. Since NIL prediction is tightly coupled with \ac{nel}, we decouple it by counting as correct also the cases where a mention linked to a wrong entity is classified as NIL: in such cases the top-ranked entity according to \ac{nel} is incorrect, and the NIL classifier correctly assumes that the true entity is not present in the \ac{kr}.
 
-NIL clustering is also evaluated \textit{atomically} using MUC, B$_3$, and CEAF$_e$ as in \Cref{ec:inel_metrics}, reporting precision, recall, and F$_1$ for each. To avoid error propagation, clustering is run only on the NIL mentions from the ground truth.
+NIL clustering is also evaluated \textit{atomically} using MUC, B$_3$, and CEAF$_e$ as in \Cref{sec:inel_metrics}, reporting precision, recall, and F$_1$ for each. To avoid error propagation, clustering is run only on the NIL mentions from the ground truth.
 
 Finally, we conduct a joint evaluation of \ac{nel} with NIL prediction. Starting from the reference \ac{ner} annotations and following \Cref{sec:ijckg:evaluation_procedure}, we compute accuracy on:
 \begin{enumerate}
@@ -658,7 +659,7 @@ The main weakness lies in the final NIL clustering stage, which obtained low B$^
 
 The NIL prediction component also shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (\eg plaintiffs, defendants, judges, and attorneys) are in fact NIL.
 
-Performance degradation was also observed in \ac{ner} models trained on publicly available datasets, with the only exception of the \texttt{Person} category. As \ac{ner} is the first component in the pipeline, its errors propagate to subsequent stages, amplifying their impact. This underscores the importance of domain-specific fine-tuning for \ac{ner} models---a topic further discussed in the next section (\Cref{sec:aixia}).
+Performance degradation was also observed in \ac{ner} models trained on publicly available datasets, with the only exception of the \texttt{Person} category. As \ac{ner} is the first component in the pipeline, its errors propagate to subsequent stages, amplifying their impact. This underscores the importance of domain-specific fine-tuning for \ac{ner} models---a topic further discussed in the next section (\Cref{sec:adaptation}).
 
 Overall, these findings confirm the feasibility of extracting and semantically consolidating entity mentions from Italian court judgments, especially in setting implementating \acl{hitl} revision of automatically generated annotations. The \ac{hitl} process used to construct the labeled dataset allowed us to estimate an average of 30 minutes to fully revise a single judgment, corresponding to approximately 320 judgments per month for one full-time annotator. This estimate provides an upper bound on the cost of human-assisted entity extraction.
 

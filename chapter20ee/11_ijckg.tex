@@ -43,15 +43,14 @@ The proposed baseline pipeline consists of three main modules: \ac{nel}, NIL pre
 \begin{figure}[htbp]
     \centering
     \includegraphics[
-    width=.35\textwidth,
+    width=.4\textwidth,
     keepaspectratio]
     %{imgs/pipeline_simple.drawio.png}
-    {images/ijckg/pipeline_simple.png}
+    {images/ijckg/pipeline_simple.drawio.pdf}
     \caption{Schema of the pipeline.
     }
     \label{fig:pipeline}
 \end{figure}
-\todo{rifare figura con acronimi giusti}
 
 \paragraph{Entity Linking} The \ac{nel} module relies on a bi-encoder architecture~\cite{Humeau2020Poly-encoders,blink,gillick-etal-2019-learning}, which retrieves candidate entities through \ac{ann} search and scores mention--entity pairs using similarity measures such as the dot product.
 
@@ -393,7 +392,7 @@ Finally, we conducted an additional experiment, called ``correct'', in which the
     \includegraphics[
     width=.5\textwidth,
     keepaspectratio]
-    {images/ijckg/experiments_expected.drawio.png}
+    {images/ijckg/experiments_expected.drawio.pdf}
     \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
     \label{fig:evluation_outcome}
 \end{figure}
@@ -519,8 +518,6 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 
 These errors can be mitigated through a \acl{hitl} validation process, where a user, with a dedicated \acp{ui}, can merge clusters referring to the same entity or split those that incorrectly group different mentions. This functionality has been developed as part of this \phd and is illustrated in \Cref{sec:iaui-from-prototypes}.
 
-
-\todo{This functionality has been implemented in our system.}
 
 
 
