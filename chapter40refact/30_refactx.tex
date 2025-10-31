@@ -182,7 +182,7 @@ Our prompt, shown in \Cref{fig:prompt}, instructs the \ac{llm} to, first, determ
     \item and to be aware of the description predicate (often useful with the Wikidata \ac{kb}).
 \end{enumerate}
 
-At the end of this prompt, we add two examples to better guide the model behavior. While two examples are not sufficient to represent all the possible types of questions, increasing the number of few-shot example may reduce the efficiency of our approach. Therefore, a two-shot prompt is used throughout this paper.
+At the end of this prompt, we add two examples to better guide the model behavior. While two examples are not sufficient to represent all the possible types of questions, increasing the number of few-shot example may reduce the efficiency of our approach. Therefore, a two-shot prompt is used.
 
 During inference, we detect when the \ac{llm} generates the sequence of tokens corresponding to the \emph{Fact} command and we activate constrained generation; at this point, the model is forced to generate an existing fact. After an entire fact is generated, we switch the model back to normal generation, allowing it to continue reasoning, to call again the \emph{Fact} command, or to answer. An example of \refactx in action is illustrated in \Cref{fig:example}.
 

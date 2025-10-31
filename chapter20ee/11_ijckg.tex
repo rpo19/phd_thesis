@@ -5,18 +5,24 @@
 % \acl{inel}. In this setting, given $N$ batches of textual documents $b_0, \ldots, b_N$ corresponding to $N$ time steps, and an initial \ac{kr} $\mathrm{KR}_0$, each batch $b_k$ is processed to identify NIL entities, which are then added to the \ac{kr} to obtain $\mathrm{KR}_{k+1}$. The updated \ac{kr} $\mathrm{KR}_{k+1}$ is subsequently used as the reference knowledge resource for processing the next batch $b_{k+1}$.
 
 
-The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}.
+
+% The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}.
 %
 % The proposed approach addresses the \nilchallenge by extending \ac{el} with a background \ac{kbr} with NIL prediction, novel entity clustering, and the incremental population of the \ac{kr} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
 % It focuses on batch-based \acl{inel}, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We applied this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} obtaining its incremental version, \emph{Incremental WNUM}, available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}.
 %
-When the work has been published, in 2022, the advancements in the NIL prediction task were left behind the one in \ac{nel}, as described in \Cref{sec:incrementalel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
-For this reason we addressed the \nilchallenge, working towards producing a dataset and an evaluation procedure for aiding the research in this field.
+% When the work has been published, in 2022, the advancements in the NIL prediction task were left behind the one in \ac{nel}, as described in \Cref{sec:incrementalel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
+% For this reason we addressed the \nilchallenge, working towards producing a dataset and an evaluation procedure for aiding the research in this field.
 
-Following this line, during my \phd I co-authored \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. \mammotab is not part of this thesis but still addresses a related topic, \acf{sti}---the field that studies interpretation tasks for tabular data, that include linking cells containing entity mentions to the correct entry in a \ac{kr} (similarly to \ac{nel} for text), identifying the types of table columns, and the relations between different columns of the table~\cite{cremaschi2024surveysemanticinterpretationtabular}. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, including NIL-labeled instances. This work has been published in the Proceedings of the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)~\cite{mammotab}.
+% Following this line, during my \phd I co-authored \emph{\mammotab}~\cite{mammotab}, a large-scale dataset of 1 million annotated Wikipedia tables extracted from 20 million pages and aligned with Wikidata. \mammotab is not part of this thesis but still addresses a related topic, \acf{sti}---the field that studies interpretation tasks for tabular data, that include linking cells containing entity mentions to the correct entry in a \ac{kr} (similarly to \ac{nel} for text), identifying the types of table columns, and the relations between different columns of the table~\cite{cremaschi2024surveysemanticinterpretationtabular}. Among the challenges addressed, \mammotab was also constructed for the \nilchallenge, including NIL-labeled instances. This work has been published in the Proceedings of the Fourth edition of the Semantic Web Challenge on Tabular Data to Knowledge Graph Matching (SemTab 2022)~\cite{mammotab}.
 
-Adapting and evaluating existing techniques for \acl{inel} is part of the \ref{ob:extraction_assessment}, which aims at assessing the feasibility of using existing approaches in the legal domain, for which the \nilchallenge is important.
-The contributions to \acl{inel} are described in the next sections and can be summarized as follows.
+
+
+In this section, we address \ref{ob:extraction_assessment}, especially focusing on the \nilchallenge, by evaluating and adapting existing \ac{nel} techniques to \acf{inel}---which extends \acl{el} techniques to an incremental scenario where NIL mentions are identified, clustered, and finally added to the reference \ac{kr} (see \Cref{sec:incrementalel} for more).
+
+Indeed, entities in domains such as law or healthcare are often unknown in public \acp{kr}, such as Wikipedia. Examples are the individuals mentiones in court judgments, the suspects of an investigation, or patients in healthcare.
+
+The contributions in this chapter can be summarized as follows.
 \begin{enumerate}
     \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
     \item A dataset for \ac{inel}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering in the incremental scenario. The dataset was created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying the proposed adaptation methodology.
@@ -25,12 +31,7 @@ The contributions to \acl{inel} are described in the next sections and can be su
     \item An assessment of the performance and main challenges of the baseline pipeline on the incremental scenario.
 \end{enumerate}
 
-\todo{modify how present my contribution}
-Contributions related to this chapter:
-\begin{itemize}
-    \item ijckg2022
-    \item mammotab
-\end{itemize}
+This chapter relates to the \phd publication \textcite{ijckg2022}.
 
 The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by the definition of an incremental evaluation procedure (\Cref{sec:ijckg:evaluation_procedure}) an experimental evaluation of the baseline pipeline on the incremental-WNUM (\Cref{sec:ijckg:experiments,sec:ijckg:results}), and a discussion of the results (\Cref{sec:ijckg:discussion}).
 
