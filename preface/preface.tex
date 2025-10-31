@@ -209,8 +209,8 @@ These strategies are articulated through the following objectives:
 \begin{enumerate}[leftmargin=*,label=\textit{Obj.~\arabic*:},ref=\textit{Obj.~\arabic*}]
 
     \item \label{ob:extraction_assessment} \textbf{Assessment of existing \acl{ie} technologies considering legal domain challenges.}  
-    The first objective is to empirically evaluate the adaptability of existing \acl{ie} components---including \acl{ner}, \acl{nel}, and NIL prediction (see \Cref{sec:information_extraction})---to legal and investigative data, accounting for domain-specific constraints, linguistic heterogeneity, and the occurrence of novel (NIL) entities.
-    
+    The first objective is to empirically evaluate the adaptability of existing \acl{ie} components---including \acl{ner}, \acl{nel}, and NIL prediction---to legal and investigative data, accounting for domain-specific constraints, linguistic heterogeneity, and the occurrence of novel (NIL) entities.
+
     This assessment provided quantitative evidence on domain adaptation needs and showed that handling NIL entities is prone to error propagation, with NIL prediction being a major source of errors. Existing \acl{ee} models can be applied to legal documents and investigative chats, but achieving satisfactory quality often requires in-domain fine-tuning or \acl{hitl} correction.
 
 
@@ -227,21 +227,6 @@ These strategies are articulated through the following objectives:
 
 
 \end{enumerate}
-
-\todo{muovi in capitolo}
-As depicted in \Cref{fig:overview}, the architecture proposed in Obj.~\ref{ob:architecture} serves as the bridge between extraction and access and is therefore fundamental to the supported use cases: extracted information must be stored and integrated in a form that makes it easily accessible, and conversely, meaningful access presupposes that information has been correctly extracted and represented. To this end, a \acl{dia} architecture is designed to support both formal legal documents (such as judgments and acts) and the heterogeneous data produced in investigative contexts. Its design is guided by the following architectural principles:
-\begin{enumerate}
-    \item \textbf{Generalizability} to heterogeneous documents and new use cases, as certain investigations may require ad-hoc workflows.
-    \item \textbf{Traceability and Verifiability}, ensuring that the origin of any extracted information can always be verified. For instance, a user searching for documents mentioning a person must be able to read the exact mention within its context, while a \acl{qa} system should provide references to the text passages supporting its answers.
-    \item \textbf{Error correction capability}, allowing users to identify and correct machine errors, thus improving system quality with a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach\todo{mention human oversight from ai act 14}.
-    \item \textbf{Scalability} to large and continuously growing document collections.
-\end{enumerate}
-
-
-% \paragraph{Design choices to achieve the objectives}
-
-\medskip
-\noindent
 
 This \phd thesis is organized as follows. \Cref{chap:background} presents the background concepts required for this work, including \aclp{llm} and an overview of the Italian legal system. \Cref{chap:background_soa} reviews the state of the art relevant to the three research objectives: information extraction (including \acl{ner}, \acl{nel}, and novel entities), data-integration architectures for knowledge-intensive domains, and \acl{qa}. \Cref{chap:extraction} addresses Obj.~\ref{ob:extraction_assessment}, \Cref{chap:architecture} addresses Obj.~\ref{ob:architecture}, and \Cref{chap:refactx} addresses Obj.~\ref{ob:refactx}. Finally, \Cref{chap:conclusion} concludes the thesis.
 
