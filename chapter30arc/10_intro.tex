@@ -12,7 +12,7 @@ During this collaboration I contributed to the development of proofs of concept 
 
 
 
-In the remaining of this chapter we remind the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}), compare it with the prototypes previously developed as part of this \phd{} (\Cref{sec:arch_proto}), and finally describe the advanced \acp{ui} that can be paired with an implementation of the proposed \ac{dia} (\Cref{sec:iaui-from-prototypes}). The chapter concludes with a summary of the main points (\Cref{sec:arch:conclusion}).
+In the remaining of this chapter we define the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}), compare it with the prototypes previously developed as part of this \phd{} (\Cref{sec:arch_proto}), and finally describe the advanced \acp{ui} that can be paired with an implementation of the proposed \ac{dia} (\Cref{sec:iaui-from-prototypes}). The chapter concludes with a summary of the main points (\Cref{sec:arch:conclusion}).
 
 
 
@@ -21,23 +21,17 @@ The publications related to this chapter are \textcite{BELLANDI2024,pozzi_wise_2
 \section{Requirements}
 \label{sec:arch:reqs}
 
-To remind the reader about the non-functional \emph{architectural principles} we anticipated in \Cref{sec:intro}, I additionally report them in the following lines. They are:
+As anticipated in \Cref{sec:intro}, the proposed \acl{dia} architecture serves as the bridge between the information extraction and access layers. It ensures that extracted information is stored, integrated, and made accessible in a consistent and verifiable manner.
+
+The architecture is designed to support both structured legal documents (e.g., judgments, legislative acts) and the heterogeneous data produced in investigative contexts. Its design follows a set of guiding principles:
 \begin{enumerate}
-    \item \textbf{Generalizability}, to handle heterogeneous documents and adapt to new use cases, such as a new investigation.  
-    \item \textbf{Traceability and Verifiability}, to ensure that automatically extracted or inferred information can be traced back to its textual origin.
-    \item \textbf{Error correction capability}, to enable users to detect and machine errors through \acl{hitl} validation.
-    \item \textbf{Scalability}, to efficiently manage large and continuously growing document collections.
+  \item \textbf{Generalizability} to heterogeneous documents and new use cases, as different investigations may require ad-hoc workflows or specialized processing chains.
+  \item \textbf{Traceability and verifiability}, ensuring that the provenance of any extracted information can always be inspected. For example, a user querying for documents mentioning a person should be able to view the original mention in its textual context, while a \acl{qa} component should expose the passages supporting its answers.
+  \item \textbf{Error correction capability}, enabling users to identify and correct extraction errors through a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach, thereby supporting human oversight~\cite[Art.~14]{ai_act} and reinforcing system quality.
+  \item \textbf{Scalability} to large and continuously growing document collections.
+  \item \textbf{Loose coupling} between components, including external services built on top of the architecture, allowing independent evolution, replacement, or reconfiguration of modules (e.g., switching to an alternative search engine or updating external \ac{ner} or \ac{qa} components) without affecting the rest of the system. Loose coupling also contributes to \textbf{availability}, as failures or maintenance operations affecting a single component do not compromise the operation of the overall architecture.
+  \item \textbf{Interoperability} with internal and external systems, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary that all services \emph{communicate} using a \acf{uniof}, so that sequential workflows can be seamlessly modified by adding or removing extractors.
 \end{enumerate}
-
-
-We also borrow the \textbf{availability} requirement from previous work~\cite{BELLANDI2024}, which aims at ensuring that the \acf{dia} does not suffer from changes or failures in other services such as extractors---\ie \acl{ee} tools that annotate documents with entities---or \aclp{ui}. Moreover, this requirement extends to the ecosystem of services operating around the \ac{dia}. For example, extraction tools and all other services built around the \ac{dia} should be designed for
-\begin{itemize}
-    \item \textbf{Loose coupling}, to minimize cross-dependencies and prevent failures or changes in one service from propagating to others;
-    \item \textbf{Interoperability}, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary that all services \emph{communicate} using a \ac{uniof}, so that sequential workflows can be seamlessly modified by adding or removing extractors.
-\end{itemize}
-Loose coupling also indirectly improves scalability since independent services can run in parallel.
-
-
 
 \paragraph{Document--Annotation--Entity Triad}
 Before introducing the functional requirements that support the architectural principles and the domain-specific use cases, we first define the three conceptual pillars that underpin our representation of heterogeneous textual data: \emph{documents}, \emph{annotations}, and \emph{entities}.
