@@ -1,0 +1,47 @@
+note 31 ott
+
+forse troppi dettagli sui requisiti architetturali
+
+contributi anzichè obiettivi
+
+anitcipare contributi / risultati
+ob1: con un po' di risorse è possibile raggiungere buoni risultati
+ob2: permette di costriìuire app con ai cahtbot e ir. forza cosa permette l'architettura
+ob3: ok ma magari più generico
+
+figura troppo tardi: ipotesi: con processi di estrazione entità posso supportare meglioo le capacità di accesso,... (unità e poi declino contributi)
+discuto immagine. possibilità di estrarre entità permette di collegare estrazione e accesso.
+
+nel background: esplicitare rapporto tra kg vs annotations. tante altre metodologie kr? che si basano
+
+training di blink ita come contributi del capitolo
+
+
+
+
+ultimo lavoro: dare struttura. c'è questo, poi si discute contributo originale. all'inizio dei cap: stato dell'arte in ref, i contributi sono: key findings alla fine dei chap
+
+ottica di chi vuole fare sistemi in kg intensive: cosa serve a utenti che devno farlo. anche nuovi sviluppi, problemi nil. elenchi puntati
+
+
+rifinire titoli. refactx come si colloca: sperimentare metodi efficinti per usare kg, con qa, sfruttare llm
+
+feasibility brutto. quanto è difficile fare strategie di estrazione entità. quali sono problemi importanti? eg nil per domini spec
+
+intro: prima idea poi contrib specifici (immagini). idea combinare entity extraction (con nil pred.... per domini spec)
+
+si possono fare archit per aggregare kg con entity. non necessariamente kg. link importanti perchè se fai chatbot qa, la capacità di manipolare testo è aumentato.
+ma se c'è attenzione a ntità consolidamento posso supportare chatbot, semantic search, combinato al chatbot -> human oversight. esplicitare queste relazioni, strutturare di più. contributi individuali devono contribuire alla visioe di insieme: costruzione di kr con tecniche di kg extraction (ora si può fare anche meglio), attenzione a problemi sottoconsiderati. sviluppo di interfacce modeerne e interfacce che contribuiscono a risolvere i rischi delle interfacce moderne.
+
+
+arch: scopo costruire dati che poi possono alimentare interfacce che coprono questo spettro di problemi
+
+mappa: capitolo - pubblicazione. a fine intro. mammotab tolgo.
+
+in conclu: concentrato sui testi ma ci sono procedure per dati tabellari -> mammotab
+
+
+cosa imparo per fare un sistemi in questi domini.
+
+
+conclu: enfatizzare refactx e orizzonte (parla di come apre possibilità. anche velocità, fattoidi). mostrare nel posto giusto
