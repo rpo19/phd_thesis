@@ -89,7 +89,7 @@ Some approaches treated \ac{nel} as a binary classification problem, where each 
 
 \ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training.
 
-Extending \ac{nel} to handle entities unseen at training time is crucial for the \nilchallenge and incremental \ac{el}, where NIL entities are later added to the \ac{kr}. This setting is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero} and can be addressed, for example, by learning to represent new entities from brief textual descriptions~\cite{logeswaran-etal-2019-zero,blink}.
+Extending \ac{nel} to handle entities unseen at training time is crucial for the \nilchallenge and incremental \ac{nel}, where NIL entities are later added to the \ac{kr}. This setting is known as \emph{zero-shot} \ac{nel}~\cite{logeswaran-etal-2019-zero} and can be addressed, for example, by learning to represent new entities from brief textual descriptions~\cite{logeswaran-etal-2019-zero,blink}.
 
 \paragraph{Neural Entity Linking}
 Neural \ac{nel} approaches typically leverage semantic vector representations of mentions and entities, which they compare to estimate a linking score~\cite{Sevgili2022NeuralEL}. For encoding the mention in the context, early neural models used techniques such as convolutional encoders~\cite{francis-landau-etal-2016-capturing,nguyen-etal-2016-joint,sorokin-gurevych-2018-mixing,sun-etal-2015-modeling} or attention between mentions and candidate entities~\cite{ganea-hofmann-2017-deep,le-titov-2019-boosting}, while more recent methods employ recurrent neural networks (RNNs)~\cite{kolitsas-etal-2018-end,gupta-etal-2017-entity,martins-etal-2019-joint} and later self-attention~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}, which has become the preferred technique for \ac{nel} encoders~\cite{Sevgili2022NeuralEL} with several approaches based on BERT~\cite{logeswaran-etal-2019-zero,blink,yamada-etal-2022-global}.
@@ -186,14 +186,14 @@ Beyond bi- and cross-encoder architectures, several works reformulate \ac{nel} a
 \textcite{procopio-etal-2023-entity} and \textcite{barba-etal-2022-extend}, for instance, model entity ranking as an \emph{extractive \ac{qa}} task, where the model identifies the correct entity span among a set of candidate entities concatenated with the mention context. This formulation enables processing multiple candidates in a single forward pass and allows interactions among them, though it remains computationally demanding for very large \acp{kb}.
 
 Alternatively, \textcite{decao2021autoregressive} proposed a \emph{text-generation} formulation that performs end-to-end \ac{nel}, jointly detecting mentions and generating their linked entity names. To guarantee that the generated entities correspond to real \ac{kb} entries, constrained decoding is applied over a prefix tree built from Wikipedia titles. This approach eliminates the need to store large embedding indexes (tens of gigabytes in BLINK~\cite{blink}) and allows the model to consider previous links as contextual information.
-Extending this work, the authors also addressed \emph{multilingual \acl{el}} fine-tuning a multilingual generative model~\cite{de-cao-etal-2022-multilingual}.
+Extending this work, the authors also addressed \emph{multilingual \acl{nel}} fine-tuning a multilingual generative model~\cite{de-cao-etal-2022-multilingual}.
 
 % These alternative formulations show that \ac{nel} can be expressed as a structured prediction or generation task, paving the way for later work combining constrained generation and large language models.
 
 
 \paragraph{End-to-End and Multilingual Entity Linking}
 
-Recent approaches focus on efficient, end-to-end \ac{el} systems that can recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
+Recent approaches focus on efficient, end-to-end \ac{nel} systems that can recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
 Unlike traditional pipelines, these models avoid separate re-ranking stages and instead learn to detect mentions and predict their linked entities jointly. 
 Mention detection typically follows the BIO scheme~\cite{ramshaw-marcus-1995-text-bio-scheme}, and mention representations are derived either by averaging token embeddings~\cite{ayoola-etal-2022-refined} or using lightweight feed-forward layers~\cite{plekhanov2023multilingualendendentity}. 
 Linking then proceeds as in bi-encoders, by comparing mention and entity embeddings through similarity search, often with \ac{ann}.  
@@ -209,7 +209,7 @@ Others integrate \acp{llm} directly into the linking pipeline.
 
 Prompt-based approaches~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,geng-etal-2023-grammar} further reduce fine-tuning requirements. 
 \textcite{liu-etal-2024-onenet} use in-context learning to select entities directly from candidate lists, while \textcite{ding-etal-2024-chatel} combines traditional candidate generation (via priors and BLINK~\cite{blink}) with \ac{llm}-based augmentation and final entity selection. 
-\textcite{geng-etal-2023-grammar} use task-specific grammars to constrain generation, guiding \acp{llm} in \ac{nlp} tasks such as \ac{el} re-ranking without fine-tuning. 
+\textcite{geng-etal-2023-grammar} use task-specific grammars to constrain generation, guiding \acp{llm} in \ac{nlp} tasks such as \ac{nel} re-ranking without fine-tuning. 
 
 Overall, these methods achieve higher accuracy and better domain adaptability~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed}.
 

@@ -8,8 +8,8 @@
 
 % The work presented in this section was published in 2022 at the 11th International Joint Conference on Knowledge Graphs (IJCKG 2022)~\cite{ijckg2022}.
 %
-% The proposed approach addresses the \nilchallenge by extending \ac{el} with a background \ac{kbr} with NIL prediction, novel entity clustering, and the incremental population of the \ac{kr} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
-% It focuses on batch-based \acl{inel}, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We applied this method to the WNUM \ac{el} dataset~\cite{Onoe_Durrett_2020} obtaining its incremental version, \emph{Incremental WNUM}, available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}.
+% The proposed approach addresses the \nilchallenge by extending \ac{nel} with a background \ac{kbr} with NIL prediction, novel entity clustering, and the incremental population of the \ac{kr} with novel entities. We apply this methodology to an existing benchmark, propose a baseline pipeline, and demonstrate the increased difficulty of \acl{ee} in incremental settings.
+% It focuses on batch-based \acl{inel}, proposing a procedure to adapt existing \ac{nel} datasets to this setting. We applied this method to the WNUM \ac{nel} dataset~\cite{Onoe_Durrett_2020} obtaining its incremental version, \emph{Incremental WNUM}, available from GitHub~\footnote{https://github.com/rpo19/Incremental-Entity-Extraction}.
 %
 % When the work has been published, in 2022, the advancements in the NIL prediction task were left behind the one in \ac{nel}, as described in \Cref{sec:incrementalel}. For instance, the BLINK approach~\cite{blink} was not yet adapted for NIL prediction.
 % For this reason we addressed the \nilchallenge, working towards producing a dataset and an evaluation procedure for aiding the research in this field.
@@ -18,7 +18,7 @@
 
 
 
-In this section, we address \ref{ob:extraction_assessment}, especially focusing on the \nilchallenge, by evaluating and adapting existing \ac{nel} techniques to \acf{inel}---which extends \acl{el} techniques to an incremental scenario where NIL mentions are identified, clustered, and finally added to the reference \ac{kr} (see \Cref{sec:incrementalel} for more).
+In this section, we address \ref{ob:extraction_assessment}, especially focusing on the \nilchallenge, by evaluating and adapting existing \ac{nel} techniques to \acf{inel}---which extends \acl{nel} techniques to an incremental scenario where NIL mentions are identified, clustered, and finally added to the reference \ac{kr} (see \Cref{sec:incrementalel} for more).
 
 Indeed, entities in domains such as law or healthcare are often unknown in public \acp{kr}, such as Wikipedia. Examples are the individuals mentiones in court judgments, the suspects of an investigation, or patients in healthcare.
 
@@ -511,7 +511,7 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 & macro F$_1$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{el}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption{Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table}
 \end{landscape}
