@@ -51,38 +51,38 @@ An example of \ac{nel} applied the illustrative legal judgment and chat is avail
 
 
 
-While \ac{ner} identifies spans of text that correspond to named entities (\eg ``Barack Obama''), \ac{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \ac{kr} (\eg the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This \acl{kg} process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity.
+While \acl{ner} identifies spans of text that correspond to entity mentions (\eg ``Barack Obama''), \acl{nel} goes one step further by resolving the ambiguity of the mention and associating it with a unique identifier in a \acl{kr} (\eg the Wikidata entity Barack Obama\footnote{\url{https://www.wikidata.org/entity/Q76}} or the English Wikipedia page Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack_Obama}}). This \acl{kc} process is crucial when mentions can correspond to multiple entities or when different surface forms all refer to the same entity.
 
 For example, in the first case, the mention ``Lisbon'' may refer to Lisbon, Capital of Portugal\footnote{\url{https://www.wikidata.org/entity/Q597}} or to the movie Lisbon (1956 film)\footnote{\url{https://www.wikidata.org/entity/Q3203631}}. Furthermore, ambiguity can arise also for entities with the same type, such as Lisbon, Connecticut\footnote{\url{https://en.wikipedia.org/wiki/Lisbon,_Connecticut}}, or the other cities named ``Lisbon''\footnote{\url{https://en.wikipedia.org/wiki/Lisbon_(disambiguation)}}.
 
 While, in the second case, the mentions ``Barack Obama'' and ``President Obama'' should both be linked to the entity Barack Obama, Former US President\footnote{\url{https://www.wikidata.org/entity/Q76}}.
 
-Similarly to \ac{ner}, \acl{nel} is part of \ac{ie}, contributing to \acl{sta}, \acl{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \ac{kr} allows to create clickable hyperlinks that let users browse directly to entity pages (\eg Wikipedia or Wikidata).
-Furthermore, in entity-based search applications, \ac{nel} enables more powerful facets and filters based on the entries in the \ac{kb} instead of on the mention surface forms.
+Similarly to \acl{ner}, \acl{nel} is part of \acl{ie}, and contributes to \acf{sta}, \acf{kbp}, and downstream tasks like entity-based semantic search. In \ac{sta}, besides highlighting entities identified with \ac{ner}, linking them to a \acl{kr} allows creating clickable hyperlinks that let users browse directly to entity pages (\eg Wikipedia or Wikidata).
+Furthermore, in entity-based search applications, \ac{nel} enables more powerful facets and filters based on the entries in the \ac{kr} instead of on the mention surface forms.
 
-\ac{nel} is also applied in \acl{qa} and \acf{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \acl{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to a \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
+\acl{nel} is also applied in \acl{qa} and \acf{ir}. Some \ac{qa} systems rely on entity linking to understand the entities mentioned in the question and retrieve relevant information from a \ac{kr} or a \ac{kg}~\cite{li-etal-2020-efficient,el_differences_for_qa_2022,eal_el_re_for_qa_2018}. Similarly, in \acl{ir}, linked entities support \emph{query understanding}~\cite{el_in_queries_2015}. In some cases, entity-based queries can be fully reduced to an \ac{nel} task, while in others, \ac{nel} serves as a bridge to access the relevant entity facts, as illustrated in \Cref{fig:rome-search,fig:barack-search}.
 
 \subsubsection{Formalization}
-Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by a \ac{ner} system---and a \acl{kr} $\mathrm{KR} = \{e_1, e_2, \ldots\}$ containing entities, a \ac{nel} system produces a mapping:
+Formally, given a set of entity mentions $M = \{m_1, m_2, \ldots\}$---for instance, detected by an \ac{ner} system---and a \acl{kr} $\mathrm{KR} = \{e_1, e_2, \ldots\}$ containing entities, an \ac{nel} system produces a mapping:
 \begin{equation}
 f: M \to \mathrm{KR} \cup \{\texttt{NIL}\},
 \end{equation}
-where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr}.  
+where \texttt{NIL} denotes that the mention does not correspond to any entry in the \acl{kr} KR.  
 For example, considering the input sentence ``Barack Obama was born in Hawaii.'' and Wikidata as the reference \ac{kr}, the mention ``Barack Obama'' should be linked to the entity \texttt{Barack Obama} in Wikidata\footnote{\url{https://www.wikidata.org/entity/Q76}}. While in domain-specific scenarios, such as the illustrative legal judgment depicted in \Cref{fig:extract-ner-judgment}, the mention ``Giovanni Bianchi'' may not correspond to any entity in a general-purpose \ac{kb} like Wikidata, and thus should be linked to \texttt{NIL}.
 
 
 \subsubsection{Literature}
 Traditionally, \ac{nel} have been addressed by decomposing the task in two main steps~\cite{entity_linking_with_kb_2015}:
 \begin{enumerate}
-    \item \emph{Candidate generation}: retrieving a limited (\eg 100~\cite{blink}) set of possible entities from the \ac{kb} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
-    \item \emph{Candidate ranking}: ranking, or re-ranking if a preliminary ranking is available~\cite{blink}, the candidate entities to select the best match. This step can be performed with powerful but resource-intensive methods that are prohibitive to apply to the entire \ac{kb}~\cite{blink}.
+    \item \emph{Candidate generation}, which involves retrieving a limited (\eg 100~\cite{blink}) set of possible entities from the \ac{kr} for a given mention, to filter out irrelevant entities and reduce the search space, since \ac{kr} can contain millions of entities.
+    \item \emph{Candidate ranking}, which involves ranking (or re-ranking if a preliminary ranking is available) the limited set (\eg 100~\cite{blink}) of candidate entities to select the best match. This step can be performed with powerful but resource-intensive methods that are prohibitive to apply to the entire \ac{kb}~\cite{blink}.
 \end{enumerate}
 
 Pre-deep learning approaches for \ac{nel} relied on dictionaries, acronym expansion, or web search engines for the candidate retrieval phase~\cite{entity_linking_with_kb_2015}.
-For instance, dictionaries can be created from Wikipedia, leveraging redirect and disambiguation pages, that---respectively---can be used for entities aliases and to obtain a list of the entities sharing the same name~\cite{entity_linking_with_kb_2015}.
+For instance, dictionaries can be created from Wikipedia, leveraging redirect and disambiguation pages, that, respectively, can be used for entity aliases and to obtain a list of the entities sharing the same name~\cite{entity_linking_with_kb_2015}.
 The expansion of acronyms served to augment the mention surface form for matching with dictionaries or search engines~\cite{entity_linking_with_kb_2015}. For example, the mention ``PSG'' can be expanded to ``Paris Saint-Germain'' to facilitate linking to the corresponding entity in a \ac{kb}. web search engines, such as Google (filtering for Wikipedia pages only) or the Wikipedia search engine, have been used to retrieve candidate entities by querying them with the mention in the context and using the top-ranked resulting pages as candidate entities~\cite{entity_linking_with_kb_2015}.
 
-For the ranking step, instead, both supervised and unsupervised methods have been used, either considering the mentions to link as independent or jointly disambiguating mentions in a document to exploit coherence among them~\cite{entity_linking_with_kb_2015}. These methods used a variety of features, including string similarity between the mention and entity names, entity popularity (\eg \texttt{Lisbon (1956 film)} is less popular than \texttt{Lisbon, Capital of Portugal}), the consistency of the entity types with the \ac{ner} labels, the textual context, or measures of coherence among entities linked in the same document~\cite{entity_linking_with_kb_2015}.
+For the ranking step, instead, both supervised and unsupervised methods have been applied, either considering the mentions to link as independent or jointly disambiguating mentions in a document to exploit coherence among them~\cite{entity_linking_with_kb_2015}. These methods used a variety of features, including string similarity between the mention and entity names, entity popularity (\eg \texttt{Lisbon (1956 film)} is less popular than \texttt{Lisbon, Capital of Portugal}), the consistency of the entity types with the \acl{ner} labels, the textual context, or measures of coherence among entities linked in the same document~\cite{entity_linking_with_kb_2015}.
 
 Some approaches treated \ac{nel} as a binary classification problem, where each candidate entity is classified as correct or incorrect for a given mention~\cite{entity_linking_with_kb_2015}. Other methods ranked candidates using learning-to-rank algorithm or by calculating mention-entity similarities using training-free vector representations~\cite{entity_linking_with_kb_2015}. To jointly link multiple entities exploiting coherence, probabilistic graphical models and graph-based methods have been employed~\cite{entity_linking_with_kb_2015}.
 % \todo{better to add also citing lists of approaches from the survey}
@@ -120,7 +120,7 @@ The functioning of the bi-encoder is exemplified in \Cref{fig:bi-cross-encoders}
 Formally, the bi-encoder is composed of two networks, one for encoding mentions $T_m$, and one for encoding entities $T_e$.
 This architecture is commonly referred to also as \emph{dual encoder} or \emph{two-tower} model~\cite{gillick-etal-2019-learning}.
 When using a transformer like BERT~\cite{devlin-etal-2019-bert}, as in \textcite{blink}, the output consists of a vector for each input token and requires a $red(.)$ function to reduce it to a single embedding for the entire input~\cite{blink,Humeau2020Poly-encoders}. Example functions are averaging the output embeddings or considering the embedding from the \texttt{CLS} token~\cite{Humeau2020Poly-encoders}, \ie a special token whose representation from the last layer is used as an aggregate representation of the entire input sentence~\cite{devlin-etal-2019-bert}.
-Thus, the mention and entity embeddings are obtained as follows.
+Thus, the mention and entity embeddings are obtained as follows:
 \begin{equation}
     y_m = red(T_m(m)),
 \end{equation}
@@ -134,15 +134,15 @@ Where the input $m$ and $e$ include, respectively, mention and entity informatio
 \begin{equation}
     x_e = \texttt{[CLS]} \;\text{title} \;\texttt{[ENT]} \;\text{description} \;\texttt{[SEP]}.
 \end{equation}
-\texttt{CLS} and \texttt{SEP} are special BERT tokens that are always added at the beginning and at the end of the input sequence. $\;\texttt{[M}_\texttt{s}\texttt{]}$, $\;\texttt{[M}_\texttt{e}\texttt{]}$, and \texttt{[ENT]} are custom tokens for marking, in order, the start of the mention (for distinguishing mention and context tokens), the end of the mention, and the start of the entity description (dividing it from the entity title).
+\texttt{CLS} and \texttt{SEP} are special BERT tokens that are always added at the beginning and at the end of the input sequence. $\;\texttt{[M}_\texttt{s}\texttt{]}$, $\;\texttt{[M}_\texttt{e}\texttt{]}$, and \texttt{[ENT]} are custom tokens for marking, respectively, the start of the mention (for distinguishing mention and context tokens), the end of the mention, and the start of the entity description (dividing it from the entity title).
 For additionally exploiting typing information, \textcite{Heist2023nastylinker} included, in both templates, a single token after the \texttt{CLS} representing the mention and entity types.
 
-A first matching score from the bi-encoder can be calculated as the similarity between the two embeddings, \eg using the \emph{dot-product}:
+A first matching score from the bi-encoder can be calculated as the similarity between the two embeddings, \eg using \emph{dot-product}:
 \begin{equation}
 s^{bi}_{m,e} = y_m \cdot y_e
 \end{equation}
 
-The bi-encoder networks are trained to maximize the score of the correct mention-entity pair with respect to the remaining entities in the batch~\cite{blink}. The batches can be randomly sampled or created with \emph{hard negatives}, \eg the ten highest scored entities for linking $m$ that are not the correct entity to which $m$ refers~\cite{blink}. The loss function for a mention-entity pair $(m_i, e_i)$ appears as follows~\cite{blink}:
+The bi-encoder networks are trained to maximize the score of the correct mention-entity pair with respect to the remaining entities in the batch~\cite{blink}. The batches can be randomly sampled or created with \say{hard negatives}, \eg the ten highest scored entities for linking $m$ that are not the correct entity to which $m$ refers~\cite{blink}. The loss function for a mention-entity pair $(m_i, e_i)$ appears as follows~\cite{blink}, where $B$ is the batch size:
 \begin{equation}
 \mathcal{L}(m_i, e_i) = -s(m_i, e_i) + \log \sum_{j=1}^{B} \exp \big( s(m_i, e_j) \big)
 \end{equation}
@@ -150,7 +150,7 @@ The bi-encoder networks are trained to maximize the score of the correct mention
 
 % \paragraph{re-ranking with Cross-Encoders.}
 To improve the precision of retrieved candidates, \textcite{blink} combined the bi-encoder with a \emph{cross-encoder} that jointly encodes the mention and each candidate entity in a single transformer input sequence. By concatenating the mention context, entity title, and description, the model can attend over both components simultaneously and compute a refined similarity score~\cite{blink,logeswaran-etal-2019-zero,Humeau2020Poly-encoders}.
-This setup typically yields higher accuracy than the bi-encoder alone but is computationally expensive, since it must process every mention--entity pair independently. Consequently, it is used only as a \textbf{re-ranking stage} applied to the top-$k$ candidates (e.g., $k=100$) produced by the bi-encoder~\cite{blink,Heist2023nastylinker}.
+This setup typically yields higher accuracy than the bi-encoder alone but is computationally expensive, since it must process every mention--entity pair independently. Consequently, it is used only as a re-ranking stage applied to the top-$k$ candidates (e.g., $k=100$) produced by the bi-encoder~\cite{blink,Heist2023nastylinker}.
 
 % % cross
 % \textcite{blink} paired the bi-encoder for retrieval and obtaining initial rankings with a \emph{cross-encoder} for more accurate re-ranking. The cross-encoder jointly encodes the mention and a candidate entity, for instance, by concatenating mention, mention context, entity title, and entity description and passing them through an encoder-only transformer~\cite{blink,logeswaran-etal-2019-zero} to produce a mention-entity similarity score. This setup allows the model to attend over both the mention context and the entity description simultaneously, typically leading to more accurate predictions compared to bi-encoders~\cite{blink}. However, this approach must be repeated for each mention-entity pair, resulting in high computational costs that require to limit the candidate entity set, \eg to 100 candidates per mention~\cite{blink}. 
@@ -183,9 +183,9 @@ This setup typically yields higher accuracy than the bi-encoder alone but is com
 \paragraph{Alternative Formulations of Entity Linking}
 
 Beyond bi- and cross-encoder architectures, several works reformulate \ac{nel} as other \ac{nlp} tasks, such as \acl{qa} or text generation.
-\textcite{procopio-etal-2023-entity} and \textcite{barba-etal-2022-extend}, for instance, model entity ranking as an \emph{extractive \ac{qa}} task, where the model identifies the correct entity span among a set of candidate entities concatenated with the mention context. This formulation enables processing multiple candidates in a single forward pass and allows interactions among them, though it remains computationally demanding for very large \acp{kb}.
+\textcite{procopio-etal-2023-entity} and \textcite{barba-etal-2022-extend}, for instance, model entity ranking as an extractive \ac{qa} task, where the model identifies the correct entity span among a set of candidate entities concatenated with the mention context. This formulation enables processing multiple candidates in a single forward pass and allows interactions among them, though it remains computationally demanding for very large \acp{kb}.
 
-Alternatively, \textcite{decao2021autoregressive} proposed a \emph{text-generation} formulation that performs end-to-end \ac{nel}, jointly detecting mentions and generating their linked entity names. To guarantee that the generated entities correspond to real \ac{kb} entries, constrained decoding is applied over a prefix tree built from Wikipedia titles. This approach eliminates the need to store large embedding indexes (tens of gigabytes in BLINK~\cite{blink}) and allows the model to consider previous links as contextual information.
+Alternatively, \textcite{decao2021autoregressive} proposed to model \ac{nel} as text generation, performing end-to-end \ac{nel}, jointly detecting mentions and generating their linked entity names. To guarantee that the generated entities correspond to real \ac{kr} entries, constrained decoding is applied over a prefix tree built from Wikipedia titles. This approach eliminates the need to store large embedding indexes (tens of gigabytes in BLINK~\cite{blink}) and allows the model to consider previous links as contextual information.
 Extending this work, the authors also addressed \emph{multilingual \acl{nel}} fine-tuning a multilingual generative model~\cite{de-cao-etal-2022-multilingual}.
 
 % These alternative formulations show that \ac{nel} can be expressed as a structured prediction or generation task, paving the way for later work combining constrained generation and large language models.
@@ -193,11 +193,11 @@ Extending this work, the authors also addressed \emph{multilingual \acl{nel}} fi
 
 \paragraph{End-to-End and Multilingual Entity Linking}
 
-Recent approaches focus on efficient, end-to-end \ac{nel} systems that can recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
+Recent approaches focus on efficient, end-to-end \ac{nel} systems that can both recognize and link entities within a single forward pass~\cite{ayoola-etal-2022-refined,plekhanov2023multilingualendendentity}. 
 Unlike traditional pipelines, these models avoid separate re-ranking stages and instead learn to detect mentions and predict their linked entities jointly. 
 Mention detection typically follows the BIO scheme~\cite{ramshaw-marcus-1995-text-bio-scheme}, and mention representations are derived either by averaging token embeddings~\cite{ayoola-etal-2022-refined} or using lightweight feed-forward layers~\cite{plekhanov2023multilingualendendentity}. 
-Linking then proceeds as in bi-encoders, by comparing mention and entity embeddings through similarity search, often with \ac{ann}.  
-ReFinED~\cite{ayoola-etal-2022-refined} also supports \emph{NIL prediction} by including NIL examples during training, while the model proposed by \textcite{plekhanov2023multilingualendendentity} extends this paradigm to a \emph{multilingual} setting.
+Linking then proceeds as in bi-encoders, by comparing mention and entity embeddings through similarity search, often with \acf{ann}.  
+ReFinED~\cite{ayoola-etal-2022-refined} also supports \emph{NIL prediction} by including NIL examples during training, while the model proposed by \textcite{plekhanov2023multilingualendendentity} targets a multilingual setting.
 
 \paragraph{\acs{llm}-Based Approaches}
 
@@ -212,8 +212,6 @@ Prompt-based approaches~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,geng-et
 \textcite{geng-etal-2023-grammar} use task-specific grammars to constrain generation, guiding \acp{llm} in \ac{nlp} tasks such as \ac{nel} re-ranking without fine-tuning. 
 
 Overall, these methods achieve higher accuracy and better domain adaptability~\cite{liu-etal-2024-onenet,ding-etal-2024-chatel,zhou-etal-2024-gendecider,xiao-etal-2023-instructed}.
-
-
 However, efficiency remains a concern: among the discussed approaches, only \textcite{xiao-etal-2023-instructed} explicitly address it by reducing the number of model calls. Nonetheless, \acp{llm} are substantially larger than those of \textcite{ayoola-etal-2022-refined} and \textcite{plekhanov2023multilingualendendentity}, and cannot perform document-level \ac{nel} in a single forward pass, making their application costly for large-scale or batch annotation tasks.
 
 

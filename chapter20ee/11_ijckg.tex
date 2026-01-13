@@ -129,7 +129,7 @@ Although including all mention vectors yields the highest recall, we adopt the m
 
 % Despite human validation, the challenge of selecting the most representative mentions for new entities remains. Since embeddings are not interpretable, a validator may inadvertently choose non-representative mentions, introducing bias in subsequent batches.
 
-% \subsection{Transforming a \ac{nel} Benchmark into an Incremental Entity Extraction Benchmark}
+% \subsection{Transforming an \ac{nel} Benchmark into an Incremental Entity Extraction Benchmark}
 \subsection{Benchmark Adaptation Procedure: \ac{nel} to \ac{inel}}
 \label{sec:ijckg:dataset}
 To evaluate our pipeline in a realistic setting, the chosen test dataset should reflect the characteristics expected in real-world scenarios. In particular, it should satisfy the following conditions:
@@ -206,7 +206,7 @@ $ALL$ &         100k &           6.5k &                501 &                    
     \includegraphics[
         width=.8\textwidth,
         keepaspectratio]{images/ijckg/dataset_creation}
-    \caption{Construction of the I-\ac{nel} dataset from a \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kb} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
+    \caption{Construction of the I-\ac{nel} dataset from an \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kb} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
     \label{fig:evluation_outcome}
 \end{figure}
 

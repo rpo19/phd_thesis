@@ -1,7 +1,7 @@
 \subsection{NIL Prediction and Clustering}
 \label{sec:incrementalel}
 
-As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb} suffer from incompleteness, and one of the use of \ac{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog}. A component of \ac{kbp} is the identification of novel entities, missing from the \ac{kr}, and their insertion into it, so that they become available for linking in subsequent documents (\acl{nel}); we refer to this task as \emph{\acf{inel}}.
+As anticipated in \Cref{sec:incompleteness}, \aclp{kr} and \aclp{kb} suffer from incompleteness, and one of the use of \acl{ie} is to automatically populate them for instance, with new movies extracted from newspapers. This task is known as \acf{kbp}~\cite{entityorientedsearch2018balog}. A component of \ac{kbp} is the identification of novel entities, missing from the \ac{kr}, and their insertion into it, so that they become available for linking in subsequent documents (\acl{nel}); we refer to this task as \emph{\acf{inel}}.
 
 
 \begin{figure}
@@ -15,7 +15,7 @@ As anticipated in \Cref{sec:incompleteness}, \acp{kr} and \acp{kb} suffer from i
 
 Since populating a \ac{kb} can include also the identification of relations between \ac{kb} entities, in this work we use \emph{\acf{inel}} for referring the task of identifying NIL entities, adding them to the \ac{kb} or \ac{kr}, and using them for linking new documents. An illustration of this task is depicted in \Cref{fig:ijckg_overview}.
 
-The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where \emph{NIL} may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
+The entities missing from a \ac{kr} are usually referred to as \emph{NIL entities}~\cite{entityorientedsearch2018balog}, where ``NIL'' may stand for ``not in lexicon''~\cite{ILIEVSKI2020100565}. Another interpretation is that it simply refers to the English word ``nil'' that means ``nothing''~\cite{cambridge_nil}.
 
 \begin{definition}[NIL Prediction]
     Given an entity mention $m$ and a reference \ac{kr}, \emph{NIL prediction} is the subtask of \acl{nel} that identifies whether $m$ refers to an entity that does not exist in the \ac{kr}, \ie a \emph{NIL entity}~\cite{entity_linking_with_kb_2015}. 
@@ -24,7 +24,7 @@ Through this work we will also speak of \emph{NIL mentions}, referring to mentio
 
 This task has also been called with different names: ``unlinkable mention prediction''~\cite{entity_linking_with_kb_2015}, ``out-of-knowledge-base mention discovery''~\cite{dong_reveal_the_unknown_2023}, ``out-of-knowledge-graph entity detection''~\cite{moller2024entity}, ``unknown entity discovery''~\cite{kassner-etal-2022-edin}, and ``emerging entity discovery''~\cite{hoffart_discovering_emergin_entities_2014}.
 
-\textcite{zhou-etal-2024-gendecider} distinguishes between NIL prediction and ``none of the candidates'' detection, arguing that \emph{NIL} means the referred entity is not in the \ac{kr}, while ``none of the candidates'' means the referred entity has not been retrieved, without assuming it is not present in the \ac{kr}. However, in practice, NIL prediction is often performed by predicting whether the top-ranked entity, returned by the \ac{nel} ranking step, is correct or not~\cite{entity_linking_with_kb_2015}. It is impractical and prohibitive to compare a mention with every entity in a \ac{kr} for ensuring the mentions is NIL. Thus, in this work, we consider the practical assumption that if a mention does not refer to the top-ranked candidate or candidates, returned by the \ac{nel} system, the mention is NIL. Under this assumption there is no difference between NIL prediction and none-of-the-candidates prediction.
+\textcite{zhou-etal-2024-gendecider} distinguishes between NIL prediction and ``none of the candidates'' detection, arguing that NIL means the referred entity is not in the \ac{kr}, while ``none of the candidates'' means the referred entity has not been retrieved, without assuming it is not present in the \ac{kr}. However, in practice, NIL prediction is often performed by predicting whether the top-ranked entity, returned by the \ac{nel} ranking step, is correct or not~\cite{entity_linking_with_kb_2015}. It is impractical and prohibitive to compare a mention with every entity in a \ac{kr} for ensuring the mentions is NIL. Thus, in this work, we consider the practical assumption that if a mention does not refer to the top-ranked candidate or candidates, returned by the \ac{nel} system, the mention is NIL. Under this assumption, there is no distinction between NIL prediction and none-of-the-candidates prediction.
 
 For addressing the incompleteness problem of \acp{kr}, once identified, NIL mentions that refer to the same NIL entity can be clustered to gather more contextual information, useful for obtaining a better representation of the new entity. Indeed, \textcite{kassner-etal-2022-edin} achieved better results when constructing the entity representation from clusters of NIL mentions with respect to just using individual mentions.
 
@@ -47,7 +47,7 @@ Also, from the 2015 edition, NIL prediction and NIL clustering have been include
 
 %% nil pred
 \subsubsection{Approaches to NIL Prediction.}
-\Acl{nel} with NIL prediction can be framed as a classification problem with a reject option. The classes corresponds the entities from the \ac{kr}, while the reject option is NIL~\cite{Sevgili2022NeuralEL}. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
+\Acl{nel} with NIL prediction can be framed as a classification problem with a reject option. The classes corresponds to the entities from the \ac{kr}, while the reject option is NIL~\cite{Sevgili2022NeuralEL}. According to \textcite{Sevgili2022NeuralEL}, four main strategies are typically used:
 \begin{enumerate}
 \item Assigning NIL whenever candidate generation produces no possible entities.
 \item Applying a threshold to the linking score, below which the mention is treated as unlinkable.
@@ -60,19 +60,19 @@ Threshold-based variants remain prevalent~\cite{BernierColborne2017CRIMsSF,Jiang
 Joint formulations combine NIL prediction with \ac{ner} or document-level coherence~\cite{martins-etal-2019-joint,Fahrni2012HITSMA}.
 
 \subsubsection{Approaches to NIL Clustering.}
-Early clustering methods relied on surface-form similarity (e.g., Jaccard or edit distance) and handcrafted rules~\cite{simone_15,simone_33,simone_68}. Later systems employed feature-based or embedding-based clustering~\cite{simone_77,simone_2,simone_6}, sometimes organized into multi-stage pipelines combining grouping, splitting, and merging~\cite{simone_24}.
+Early clustering methods relied on surface-form similarity (e.g., Jaccard or edit distance) and handcrafted rules~\cite{simone_15,simone_33,simone_68}. Later systems employed feature-based or embedding-based clustering techniques~\cite{simone_77,simone_2,simone_6}, sometimes organized into multi-stage pipelines combining grouping, splitting, and merging operations~\cite{simone_24}.
 
 Recent work leverages dense mention embeddings for cross-document entity coreference~\cite{streaming_crossdoc_coreference}, and joint NIL prediction and clustering approaches use both mention and \ac{kg} embeddings to cluster NIL entities~\cite{moller2024entity}.
 
 
 \subsubsection{Incremental and NIL-aware Models.}
 The problem of dynamically updating \acp{kr} motivated incremental \ac{nel} frameworks~\cite{ijckg2022,kassner-etal-2022-edin}.
-\textcite{ijckg2022}---one of the contributions of this \phd, further detailed in \Cref{sec:ijckg}---introduced a benchmark dataset, an evaluation methodology, and a baseline pipeline for \acl{inel}. 
+\textcite{ijckg2022}---one of the contributions of this \phd, related to \Cref{sec:ijckg}---introduced a benchmark dataset, an evaluation methodology, and a baseline pipeline for \acl{inel}. 
 \textcite{kassner-etal-2022-edin} similarly divide data chronologically, performing threshold-based NIL prediction and clustering mentions and entities together by embedding similarity.  
 Other datasets include TempEL~\cite{tempel_2022} and NILK~\cite{nilk_dataset_2022}, both derived from Wikipedia and Wikidata snapshots.  
-Subsequent proposed end-to-end \ac{nel} approach supporing NIL prediction~\cite{ayoola-etal-2022-refined} or extended the dual-encoder architectures~\cite{blink} with NIL-aware mechanisms~\cite{aydin-etal-2022-find,Heist2023nastylinker,zhu-etal-2023-learn,dong_reveal_the_unknown_2023}, which add NIL as a candidate or threshold output.  
+Subsequent work proposed end-to-end \ac{nel} approach supporting NIL prediction~\cite{ayoola-etal-2022-refined} or extended the dual-encoder architectures~\cite{blink} with NIL-aware mechanisms~\cite{aydin-etal-2022-find,Heist2023nastylinker,zhu-etal-2023-learn,dong_reveal_the_unknown_2023}, which add NIL as a candidate or threshold output.  
 Graph-based methods~\cite{agarwal-etal-2022-entity} link mentions and entities through similarity-weighted graphs pruned by heuristic constraints, while joint NIL prediction and clustering formulations~\cite{moller2024entity} combine bi-encoder and \ac{kg} embeddings to rank candidates and cluster NIL mentions by fusing the two representations.
-More recently, \ac{llm}-based models perform NIL prediction as multi-choice \ac{qa}, including ``none-of-the-candidates'' as an option~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}.
+More recently, \ac{llm}-based models perform NIL prediction as multi-choice \acl{qa}, including ``none-of-the-candidates'' as an option~\cite{zhou-etal-2024-gendecider,ding-etal-2024-chatel}.
 
 
 \subsubsection{}
