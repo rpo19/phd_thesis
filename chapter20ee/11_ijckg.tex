@@ -18,11 +18,11 @@
 
 
 
-In this section, we address \ref{ob:extraction_assessment}, especially focusing on the \nilchallenge, by evaluating and adapting existing \ac{nel} techniques to \acf{inel}---which extends \acl{nel} techniques to an incremental scenario where NIL mentions are identified, clustered, and finally added to the reference \ac{kr} (see \Cref{sec:incrementalel} for more).
+In this section, we address \ref{ob:extraction_assessment}, especially focusing on the \nilchallenge, by evaluating and adapting existing \acl{nel} techniques to \acf{inel}---which extends \ac{nel} techniques to an incremental scenario where NIL mentions are identified, clustered, and finally added to the reference \acf{kr} (see \Cref{sec:incrementalel} for more).
 
-Indeed, entities in domains such as law or healthcare are often unknown in public \acp{kr}, such as Wikipedia. Examples are the individuals mentiones in court judgments, the suspects of an investigation, or patients in healthcare.
+Indeed, entities in domains such as law or healthcare are often unknown in public \acp{kr}, such as Wikipedia. Examples are the individuals mentions in court judgments, the suspects of an investigation, or patients in healthcare.
 
-The contributions in this chapter can be summarized as follows.
+The contributions in this section relate to the \phd publication \textcite{ijckg2022} and can be summarized as follows.
 \begin{enumerate}
     \item A general methodology to adapt any \ac{nel} dataset to incremental \ac{nel}.
     \item A dataset for \ac{inel}, suitable for evaluating \ac{nel}, NIL prediction, and NIL clustering in the incremental scenario. The dataset was created from an existing \ac{nel} benchmark~\cite{Onoe_Durrett_2020}, applying the proposed adaptation methodology.
@@ -31,14 +31,12 @@ The contributions in this chapter can be summarized as follows.
     \item An assessment of the performance and main challenges of the baseline pipeline on the incremental scenario.
 \end{enumerate}
 
-This chapter relates to the \phd publication \textcite{ijckg2022}.
-
 The following sections describe, in order, the baseline pipeline with the motivations behind the choice of each component (\Cref{sec:ijckg:pipeline}), the procedure to adapt an \ac{nel} dataset to the incremental setting and its application to WNUM~\cite{Onoe_Durrett_2020} (\Cref{sec:ijckg:dataset}), followed by the definition of an incremental evaluation procedure (\Cref{sec:ijckg:evaluation_procedure}) an experimental evaluation of the baseline pipeline on the incremental-WNUM (\Cref{sec:ijckg:experiments,sec:ijckg:results}), and a discussion of the results (\Cref{sec:ijckg:discussion}).
 
 \subsection{A Baseline Pipeline for Incremental Entity Linking}
 \label{sec:ijckg:pipeline}
 
-The proposed baseline pipeline consists of three main modules: \ac{nel}, NIL prediction, and NIL clustering. As illustrated in \Cref{fig:pipeline}, the process operates as follows. Given a mention and its context, the linking module retrieves the most suitable candidate from a \emph{\acf{bgkr}}. The NIL prediction module then verifies whether this candidate is correct. If so, the mention is linked to the \ac{bgkr}; otherwise, it is marked as NIL. All NIL mentions in the current batch are subsequently passed to the NIL clustering module, which groups together those referring to the same unseen entity. Each resulting cluster corresponds to a new entity, which is added to the \emph{\acf{newkr}} to support future linking tasks. Although the distinction between \ac{bgkr} and \ac{newkr} is not strictly necessary---as \ac{inel} could also be achieved by storing all entities in a single reference \ac{kr}---we maintain this conceptual separation for greater clarity.
+The proposed baseline pipeline consists of three main modules: \acl{nel}, NIL prediction, and NIL clustering. As illustrated in \Cref{fig:pipeline}, the process operates as follows: given a mention and its context, the linking module retrieves the most suitable candidate from a \emph{\acf{bgkr}}. The NIL prediction module then verifies whether this candidate is correct. If so, the mention is linked to the \ac{bgkr}; otherwise, it is marked as NIL, assuming that the correct candidate is not present in the \ac{kr}. All NIL mentions in the current batch are subsequently passed to the NIL clustering module, which groups together those referring to the same unseen entity. Each resulting cluster corresponds to a new entity, which is added to the \emph{\acf{newkr}} to support future linking tasks. Although the distinction between \ac{bgkr} and \ac{newkr} is not strictly necessary---as \ac{inel} could also be achieved by storing all entities in a single reference \acl{kr}---we maintain this conceptual separation for greater clarity.
 
 \begin{figure}[htbp]
     \centering
@@ -47,18 +45,18 @@ The proposed baseline pipeline consists of three main modules: \ac{nel}, NIL pre
     keepaspectratio]
     %{imgs/pipeline_simple.drawio.png}
     {images/ijckg/pipeline_simple.drawio.pdf}
-    \caption{Schema of the pipeline.
+    \caption{Schema of the \acl{inel} pipeline.
     }
     \label{fig:pipeline}
 \end{figure}
 
-\paragraph{Entity Linking} The \ac{nel} module relies on a bi-encoder architecture~\cite{Humeau2020Poly-encoders,blink,gillick-etal-2019-learning}, which retrieves candidate entities through \ac{ann} search and scores mention--entity pairs using similarity measures such as the dot product.
+\paragraph{Entity Linking} The \ac{nel} module relies on a bi-encoder architecture~\cite{Humeau2020Poly-encoders,blink,gillick-etal-2019-learning}, which retrieves candidate entities through \acl{ann} search and scores mention--entity pairs using similarity measures such as the dot product.
 
 In our experiments, we used the pre-trained BLINK~\cite{blink} bi-encoder, publicly available on GitHub\footnote{\url{https://github.com/facebookresearch/BLINK}}. For the \ac{bgkr}, we adopted the FAISS~\cite{faiss} index built from the August 2019 Wikipedia dump released by \textcite{blink}, ensuring that entities designated as NIL for the experiments were excluded.
 
 \paragraph{NIL Prediction} Given a mention and the scored entity candidates produced by the linking system, NIL prediction determines whether the top-ranked candidate entity is correct or not. According to this prediction, the mention is either linked to the top-ranked entity or marked as NIL. NIL prediction does not alter the ranking produced by the \ac{nel} module, under the assumption that if the top-ranked candidate according to the \ac{nel} system is incorrect, than the correct candidate is not present in the \ac{kr}.
 
-Our implementation employs a logistic regression model whose input features include the score of the top candidate (the dot product between bi-encoder mention and entity embeddings) and the difference between the top and second-best scores (\textit{secondiff}). This configuration was selected through an ablation study (\Cref{tab:feature_ablation_study}) conducted using the training set for model fitting and the development set for evaluation. The study explored additional features such as textual similarity between the mention and the entity title---using Levenshtein~\cite{levenshtein1966} and Jaccard~\cite{jaccard1901etude} similarities---and basic statistics of the scores of the top-$k$ candidates---namely mean, median, and standard deviation.
+Our implementation employs a logistic regression model whose input features include the score of the top candidate (the dot product between bi-encoder mention and entity embeddings) and the difference between the top and second-best scores (\textit{secondiff}). This configuration was selected through an ablation study, available in \Cref{tab:feature_ablation_study}. The study explored additional features such as textual similarity between the mention and the entity title---using Levenshtein~\cite{levenshtein1966} and Jaccard~\cite{jaccard1901etude} similarities---and basic statistics of the scores of the top-$k$ candidates---namely mean, median, and standard deviation.
 
 The logistic regression estimates $p \in [0,1]$, which represents the estimate probability that the top candidate is correct (values close to~0 indicate NIL). If the prediction is NIL, the mention is passed to the NIL clustering step to identify possible coreferent NIL mentions.
 % Note that the bi-encoder scores used in this model are unnormalized (dot-product based) and highly dependent on the embedding space.
@@ -79,7 +77,7 @@ Max, Secondiff, Levenshtein, Jaccard &  51.2 &  83.0 &          67.1 \\
 Max, Secondiff                     &  51.4 &  83.1 &          67.3 \\
 \bottomrule
 \end{tabular}
-    \caption{NIL prediction feature ablation study on the dev set (trained on the train set). \textit{max} is the score of the best candidate, \textit{levenshtein} and \textit{jaccard} are textual similarities between the mention and the entity title, \textit{secondiff} is the difference between the best and the second-best score.}
+    \caption{NIL prediction feature ablation study on the WNUM~\cite{Onoe_Durrett_2020} dataset, using the training set for model fitting and the development set for evaluating. \textit{max} is the score of the best candidate, \textit{levenshtein} and \textit{jaccard} are textual similarities between the mention and the entity title, \textit{secondiff} is the difference between the best and the second-best score.}
     \label{tab:feature_ablation_study}
 \end{table}
 
@@ -87,9 +85,9 @@ Max, Secondiff                     &  51.4 &  83.1 &          67.3 \\
 
 We evaluated three clustering strategies. The first, \textit{$\text{GNN}_\text{B}$}, applies a greedy nearest-neighbor (GNN) algorithm on the dense mention vectors obtained from the bi-encoder. Each mention $m$ is clustered with others whose similarity with $m$ exceeds a predefined threshold. This method, combined with various vectorizers, has shown promising results in \textcite{streaming_crossdoc_coreference}.
 
-The second method, \textit{$\text{GNN}_\text{F}$}, also relies on GNN but uses a feature-based vectorizer following \textcite{shrimpton-etal-2015-sampling}. Mentions are encoded as character skip-bigram indicator vectors for surface text and TF-IDF~\cite{jm3} vectors for context. For both $\text{GNN}_\text{B}$ and $\text{GNN}_\text{F}$.
+The second method, \textit{$\text{GNN}_\text{F}$}, also relies on GNN but uses a feature-based vectorizer following \textcite{shrimpton-etal-2015-sampling}. Mentions are encoded as character skip-bigram indicator vectors for surface text and TF-IDF~\cite{jm3} vectors for context.
 
-The third method, referred to as \emph{three-step clustering (3-step)}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance (Damerau-Levenshtein edit distance~\cite{damerau1964}) $\le 3$ are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (\eg \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on semantic similarity derived from bi-encoder embeddings, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
+The third method, referred to as \emph{three-step clustering (3-step)}, follows \textcite{simone_24}. First, mentions are grouped by surface similarity: mentions with an edit distance $\le 3$ (using the Damerau-Levenshtein edit distance~\cite{damerau1964}) are clustered together, except for short mentions of less than 3 characters that are clustered only if identical. This step groups similar mentions but may combine semantically different entities (\eg \texttt{Lisbon (1956 film)} and \texttt{Lisbon, Capital of Portugal}). Next, we apply single-linkage agglomerative hierarchical clustering~\cite{Rokach2005} within each group based on the semantic similarity calculated with the embeddings from the bi-encoder, to separate polysemous mentions. Finally, each sub-cluster is represented by its medoid vector, and semantically close sub-clusters are merged based on their medoid similarities, with another single-linkage agglomerative hierarchical clustering pass.
 
 All clustering thresholds were tuned via grid search so that the number of predicted clusters on the development set roughly matched the number of unique entities---as in \textcite{streaming_crossdoc_coreference}.
 
@@ -99,15 +97,16 @@ We evaluated three strategies for representing new entities from the clusters of
 \begin{itemize}
     \item the \textit{first} mention encountered,
     \item the \textit{medoid} vector of all mentions in the cluster at insertion time,
-    \item or including \textit{all} mention vectors in the \ac{kb}, treating them as separate entries.
+    \item or including \textit{all} the mention vectors in the \ac{kr}, treating them as separate entries. In this case, multiple entries may correspond to the same entity.
 \end{itemize}
 
-\Cref{tab:new_entities_recall} reports the recall values obtained by the bi-encoder for each strategy, together with the corresponding time and storage requirements, as measured on the AIDA dataset~\cite{aida}.
-Although including all mention vectors yields the highest recall, we adopt the medoid-based strategy as a compromise between efficiency and effectiveness. It achieves comparable performance while requiring only 5\% of the time and 22\% of the storage of the full approach.
+In this experiment, all the mentions from the AIDA~\cite{aida} training set have been added to the \ac{kr} according to the three strategies.
+\Cref{tab:new_entities_recall} reports the recall values obtained by the bi-encoder linking the mentions from AIDA test$_a$, for each strategy, together with the corresponding time and storage requirements, as measured on the AIDA dataset~\cite{aida}.
+Although including all mention vectors yields the highest recall, we adopt the \textit{medoid} strategy as a compromise between efficiency and effectiveness. It achieves comparable performance while requiring only 5\% of the time and 22\% of the storage compared to the \textit{all} strategy.
 \begin{table}[!htbp]
 \centering
 \begin{threeparttable}
-    \caption{Recall@k results of the linking from scratch experiment (on AIDA~\cite{aida}) with retrieval time and the disk usage of each indexing configuration. The indexes were created using FAISS~\cite{faiss} IndexFlatIP class\tnote{1}.}
+    \caption{Recall@k \ac{nel} results between different representation strategies for NIL entities, with retrieval time and the disk usage. The \acl{kr} has been built using the mentions in the AIDA~\cite{aida} training set, while the results refer to linking the mentions from AIDA test$_a$. The indexes were created using FAISS~\cite{faiss} IndexFlatIP class\tnote{1}.}
     \label{tab:new_entities_recall}
     \begin{tabular}{l|rrrr|rrr}
         \toprule
@@ -155,9 +154,9 @@ p_{NIL}(e) = p^{\frac{\#e}{M}} \hspace{10pt} \in (0, 1],
 where $M$ is the median entity frequency in the training set. We use the median rather than the mean because the mean is skewed by the long tail of low-frequency entities. This monotonically decreasing function ensures that entities mentioned only once are more likely to be marked as new, reflecting the real-world scenario in which many entities occur rarely, while only a few become popular over a short period.
 
 
-In this work, we set $p = 0.1$ to obtain 10\% of NIL entities, following~\cite{agarwal_2021_arborescence_arxiv} and apply Bernoulli trial with probability $p_{NIL}(e)$ to decide, for each $e$, whether to flag it as NIL. Entities marked as NIL are removed from the \ac{bgkr} and treated as unknown. To increase the number of new entities in the development and test sets, some mentions of NIL entities are randomly transplanted from the training set. Both development and test sets are assigned 500 new mentions each to ensure robust evaluation (see \Cref{tab:dataset_nils}).
+In this work, we set $p = 0.1$ to obtain 10\% of NIL entities, following~\cite{agarwal_2021_arborescence_arxiv} and apply a Bernoulli trial with probability $p_{NIL}(e)$ to decide, for each $e$, whether to flag it as NIL. Entities marked as NIL are removed from the \ac{bgkr} and treated as unknown. To increase the number of new entities in the development and test sets, some mentions of NIL entities are randomly transplanted from the training set. Both development and test sets are assigned 500 new mentions each to ensure robust evaluation (see \Cref{tab:dataset_nils}).
 %
-Finally, the test set is split into 10 batches using stratified sampling based on entity frequencies and NIL status. \Cref{tab:dataset_stats_extended} reports detailed per-batch statistics.
+Finally, the test set is split into 10 batches using stratified sampling based on entity frequencies and NIL status. \Cref{fig:incel_dataset_construction} displays the entire dataset adaptation process, while detailed per-batch statistics are available in \Cref{tab:dataset_stats_extended}.
 
 \begin{table}[htbp]
     \centering
@@ -204,15 +203,16 @@ $ALL$ &         100k &           6.5k &                501 &                    
 \begin{figure}[htbp]
     \centering
     \includegraphics[
-        width=.8\textwidth,
-        keepaspectratio]{images/ijckg/dataset_creation}
-    \caption{Construction of the I-\ac{nel} dataset from an \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kb} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
-    \label{fig:evluation_outcome}
+        width=\textwidth,
+        keepaspectratio]{images/ijckg/incel_construction.drawio.pdf}
+    \caption{Construction of the \ac{inel} dataset from an \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kr} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
+    \label{fig:incel_dataset_construction}
 \end{figure}
 
-
+\FloatBarrier
 \subsection{Evaluation Procedure}
 \label{sec:ijckg:evaluation_procedure}
+\todo{break figures before starting this}
 
 %The evaluation is run in two ways: first on the whole dataset (single-batch) to allow a comparison with other models from literature; then, it is run incrementally on each batch, so that the drop in performance, due to the lack of information provided in the first steps, can be quantified. \newline
 %As far as we know, however, there is no other work which uses the same dataset that train the model reducing the available information in any way: other works should be considered only as a reference for the task difficulty.
@@ -223,9 +223,27 @@ $ALL$ &         100k &           6.5k &                501 &                    
 %In fact, the updating process, consisting only in the addition of the new vectors in the index, does not require a train phase, and therefore model weights have a constant value during all the test process: the only component which is modified, guaranteeing an incremental procedure, is the index of entities.
 
 % mostrare challenge dell'incremental
-To evaluate \ac{inel}, we must consider that the correct handling of a mention $m$ referring to an entity $e$ may depend on previous batches. If $e$ is not present in the \ac{bgkr} at time $t_i$, $m$ should be classified as NIL. However, if a previous batch already contained a mention of $e$, the system should have added it to the \ac{newkr}, and $m$ should be linked to $e$. \Cref{fig:evluation_outcome} summarizes how mentions should be processed depending on the entity they refer to.
+To evaluate \ac{inel}, we must consider that the correct handling of a mention $m$ referring to an entity $e$ may depend on previous batches. If $e$ is not present in the \ac{bgkr} at time $t_i$, $m$ should be classified as NIL. However, if a previous batch already contained a mention of $e$, the system should have added it to the \ac{newkr}, and $m$ should be linked to $e$. 
 
-The evaluation procedure for the \ac{inel} task should measure both the overall system performance and the performance on subsets of mentions that, in each batch, need to be: (a) linked to the \ac{bgkr}, (b) classified as NIL, or (c) linked to the \ac{newkr} (see \Cref{fig:evluation_outcome}).  
+The evaluation procedure for the \ac{inel} task should measure both the overall system performance and the performance on subsets of mentions that, in each batch, need to be:
+\begin{enumerate}[label=(\alph*)]
+  \item linked to the \ac{bgkr};
+  \item classified as NIL;
+  \item linked to the \ac{newkr}.
+\end{enumerate}
+\begin{figure}
+    \centering
+    \includegraphics[
+    width=.5\textwidth,
+    keepaspectratio]
+    {images/ijckg/experiments_expected.drawio.pdf}
+    \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
+    \label{fig:evluation_outcome}
+\end{figure}
+\Cref{fig:evluation_outcome} summarizes how mentions should be processed depending on the entity they refer to.
+
+
+
 %
 Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
 
@@ -387,15 +405,6 @@ Finally, we conducted an additional experiment, called ``correct'', in which the
 
 
 
-\begin{figure}
-    \centering
-    \includegraphics[
-    width=.5\textwidth,
-    keepaspectratio]
-    {images/ijckg/experiments_expected.drawio.pdf}
-    \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
-    \label{fig:evluation_outcome}
-\end{figure}
 
 \subsection{Results}
 \label{sec:ijckg:results}
