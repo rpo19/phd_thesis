@@ -4,18 +4,17 @@
 \label{sec:eejudgements}
 % \todo{maybe integrate commented code here to legal sota or preface}
 
-In this section, we evaluate the performance of existing \acl{ee} systems on Italian civil court judgments. We also investigate various domain adaptation techniques aimed at improving \ac{ee} performance on this type of data, using a labeled dataset. The analysis highlights which techniques offer the most favorable balance between computational cost and performance gain.
-
+In this section, we evaluate the performance of existing \acf{ee} systems on Italian civil court judgments.
 The work presented in this section is related to the publication \textcite{BELLANDI2024}.
 
-As discussed in \Cref{sec:background:ai4legal}, legal data often contain personal information, making compliance with privacy regulations a key challenge. This is reflected in the scarcity of labeled data for training or evaluating \ac{ee} systems~\cite{li-etal-2022-parameter}. Furthermore, the language used in legal documents differs significantly from everyday language~\cite{ccetindaug2023name_legal_turkish}, whereas most open datasets employed to train neural models---such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}---are derived from general web sources.
+As discussed in \Cref{sec:background:ai4legal}, legal data often contain personal information, making compliance with privacy regulations a key challenge. This is reflected in the scarcity of labeled legal data for training or evaluating \ac{ee} systems~\cite{li-etal-2022-parameter}. Furthermore, the language used in legal documents differs significantly from everyday language~\cite{ccetindaug2023name_legal_turkish}, whereas most open datasets employed to train neural models---such as Common Crawl~\cite{commoncrawl} or The Pile~\cite{gao2020pile800gbdatasetdiverse}---are derived from general web sources.
 
-Another related issue concerns the use of external \acp{api}, such as those offered by OpenAI\footnote{\url{https://openai.com/api/}}, on legal data containing personal information. Unless the input data are anonymized or pseudonymized, their use may result in transferring sensitive data outside the European Union, raising compliance concerns under \textcite[Art.~44--49]{gdpr2016}. Consequently, many institutions must rely on locally deployed models, which, while ensuring full control over data storage and security in line with \textcite[Art.~32]{gdpr2016}, may be constrained by the available computational infrastructure.
+Another related issue concerns the use of external \acp{api}, such as those offered by OpenAI\footnote{\url{https://openai.com/api/}}, on legal data containing personal information. Unless the input data are anonymized or pseudonymized, their use may result in transferring sensitive data outside the European Union, raising compliance concerns with respect to the GDPR regulations~\cite[Art.~44--49]{gdpr2016}. Consequently, many institutions must rely on locally deployed models, which, while ensuring full control over data storage and security~\cite[Art.~32]{gdpr2016}, may be constrained by the available computational infrastructure.
 
 In summary, the main contributions of this work on \acl{ee} applied to Italian civil judgments are as follows:
 \begin{itemize}
-    \item Creation of an annotated benchmark dataset for civil judgments, including \acf{iaa} analysis, enabling structured evaluation of \ac{ee} methods.
-    \item Evaluation of \ac{ner} and incremental \ac{nel} pipelines on domain-specific data, assessing performance and identifying key challenges.
+    \item Creation of an annotated benchmark dataset for civil judgments, including the calculation of the \acf{iaa}, for enabling structured evaluation of \acl{ee} methods.
+    \item Evaluation of \acl{ner} and \acf{inel} pipelines on domain-specific data (Italian civil judgments), assessing performance and identifying key challenges.
     \item Comparative study of domain adaptation techniques, highlighting which approaches provide the best trade-off between computational cost and performance improvement.
     \item Training of the BLINK~\cite{blink} bi-encoder for the Italian language (\blinkita).
 \end{itemize}
@@ -25,11 +24,11 @@ The remainder of this section is organized as follows: \Cref{sec:judgements_labe
 \subsection{Annotation of a Legal Benchmark}
 \label{sec:judgements_labeled_data}
 
-We started from a corpus of 927,453 real judgments in civil trials published from 2008 to 2021 (the majority of the judgments, $\approx 86\%$, are published from 2016 to 2021).
+We started from a corpus of 927,453 judgments in civil trials published from 2008 to 2021 (the majority of them, $\approx 86\%$, have been published from 2016 to 2021).
 This number can be compared to the total number of trials that are estimated per year according to~\cite{bankitalia}, which falls between 2 and 2.5 millions from 2010 to 2019.
 For the remainder of this work, we will refer to this corpus or more than 900 thousand civil judgments as \emph{ICCJ900k}---from ``Italian Civil Court Judgments''.
 
-Data includes the judgment text and 41 metadata with information about the judge (or the president if several judges are involved), the number and year of the judgment and of the trial, the court and the district it belongs to, the instance (trial or appeal), references to the trial in case of appeal, a code describing the subject and some technical fields of no interest here. This dataset has been provided by the Italian Ministry of Justice and consists of real documents as they were archived. As a consequence, in many cases, the texts contain spurious lines that must be cleared before processing, for instance, some metadata at the very beginning, duplicate headings, extra blank lines or characters from stamps present in the printed version.
+Data includes the judgment text and 41 metadata with information about the judge (or the president if several judges are involved), the number and year of the judgment and of the trial, the court and the district it belongs to, the instance (trial or appeal), references to the trial in case of appeal, a code describing the subject and additional technical fields. This dataset has been provided by the Italian Ministry of Justice and consists of real documents as they were archived. As a consequence, in many cases, the texts contain spurious lines that must be cleared before processing, for instance, some metadata at the very beginning, duplicate headings, extra blank lines or characters from stamps present in the printed version.
 
 %structure
 The judgments' structure consists of several sections. The most important are the following:
@@ -42,7 +41,7 @@ The judgments' structure consists of several sections. The most important are th
 %%%%%%%
 
 From ICCJ900k, we constructed a benchmark dataset of 146 documents labeled for \acf{ee}---which we call \emph{ICCJ146-EE}. The documents have been selected using stratified sampling on the province of the court that made the judgment.
-The annotation was performed semi-automatically. In order,
+The annotation steps was performed semi-automatically according to the following order:
 \begin{enumerate}
     \item the documents have been automatically annotated for \ac{ner};
     \item human annotators corrected \ac{ner} errors;
@@ -54,7 +53,7 @@ In summary, the annotations include labels for \ac{ner}, \ac{nel}, NIL predictio
 This approach, where algorithms are used to speed up annotation has been used for labeling \ac{ner} data in previous work~\cite{lrec2022kind}, and we can consider this process as a \say{simulation} of a real \emph{\acf{hitl}} use case, where humans manually verify and correct automatic annotations, for enhancing their quality.
 Furthermore, this \say{simulation} allows to estimate the amount of time required by the final users-in-the-loop to correct automatic annotations obtained with the \ac{ee} pipeline described in \Cref{sec:italia_ee_pipeline}.
 
-Initially, \ac{ner} annotations have been labeled on all the 146 documents by two annotators. Later, a subset of 30 documents has been additionally labeled for \ac{inel}. We will use ICCJ30-\ac{inel} to specifically refer to this subset.
+Initially, \ac{ner} annotations have been labeled on all the 146 documents by two annotators. Later, a subset of 30 documents has been additionally labeled for \ac{inel}. We refer to this subset as ``ICCJ30-\ac{inel}''.
 The annotation process focused the entities of class \texttt{Person}, \texttt{Location}, \texttt{Organization}, \texttt{Money}, \texttt{Date}, and \texttt{Miscellaneous}.
 
 
@@ -68,9 +67,11 @@ The annotations were carried out by two annotators using \textit{doccano}~\cite{
 Based on~\cite{jha2017all}, a detailed set of annotation guidelines was prepared and provided to the annotators for reducing the inconsistencies arising from different annotation styles. During the annotation process, the guidelines were iteratively refined by recording and addressing the annotators' doubts and edge cases.
 
 The guidelines cover both span selection and type assignment.  
-For span selection---for example, in the case of nested entities, the span corresponding to the most informative and specific entity type should be annotated: ``\underline{Main Street 18, London}[LOC]'' should be preferred over ``\underline{Main Street 18}[LOC], \underline{London}[LOC]''.
-For type assignment---for example, the entity type should be determined from the surrounding context: ``John Smith, born in \underline{France}[LOC]'' versus ``\underline{France}[ORG] announced new trade regulations''.  
-Each entity type also has its own specific guidelines to handle particular exceptions---for instance, ``Exclude titles from person names.'': ``Dr. \underline{John Smith}[PER]'' is preferred over ``\underline{Dr. John Smith}[PER]''.  
+For span selection, for example in the case of nested entities, the span corresponding to the most informative and specific entity type should be annotated. ``\underline{Main Street 18, London}[LOC]'' should be preferred over ``\underline{Main Street 18}[LOC], \underline{London}[LOC]''.  
+
+For type assignment, the entity type should be determined from the surrounding context. For instance, ``John Smith, born in \underline{France}[LOC]'' versus ``\underline{France}[ORG] announced new trade regulations''.  
+
+Each entity type also has its own specific guidelines to handle particular exceptions. For example, titles should be excluded from person names: ``Dr. \underline{John Smith}[PER]'' is preferred over ``\underline{Dr. John Smith}[PER]''.
 
 Finally, we also decided to annotate mentions such as ``the Judge'' or ``the Court'', which are not strictly within the scope of \ac{ner} but are closely related to coreference resolution, as these entities are particularly relevant in the legal domain.
 
@@ -96,7 +97,7 @@ To assess the quality of the annotations and the clarity of the guidelines we co
 
 
 Inter-annotator agreement measures such as \textit{Scott's~$\pi$}, \textit{Cohen's~$\kappa$}, \textit{Fleiss'~$\kappa$}, and \textit{Krippendorff's~$\alpha$} were developed to correct observed agreement for the portion that may occur purely by chance~\cite{vanOest2019}. In other words, these measures estimate how much of the observed consistency between annotators exceeds what would be expected if both raters assigned categories independently according to their own labeling probabilities~\cite{HayesKrippendorff2007}.
-Formally, they compare the observed agreement $P_o$ to the expected agreement $P_e$ under a chance model, and express reliability as
+Formally, they compare the observed agreement $P_o$ to the expected agreement $P_e$ under a chance model, and express reliability with the following formula:
 \begin{equation}
     (P_o - P_e)/(1 - P_e).
 \end{equation}
@@ -105,7 +106,7 @@ However, these measures may not be suitable for complex labeling tasks such as \
 
 Also, the aforementioned IAA coefficients differ primarily in how the expected-by-chance term $P_e$ is estimated~\cite{vanOest2019}, with Fleiss'~$\kappa$ and Scott's~$\pi$ being equivalent when considering two annotators, since the former is a generalization of the latter~\cite{HayesKrippendorff2007}. Thus, when there are only two annotators and the category proportions are highly unequal---as is common in \ac{ner}, where most tokens belong to the ``outside-of-entity-mention'' class---both annotators exhibit almost identical marginal label distributions. Consequently, these coefficients tend to converge toward similar values in such settings.
 
-For these reasons, we adopted the \ac{ner} F$_1$ score as the main metric is a more robust alternative to the classic metrics~\cite{hripcsak2005agreement, grouin2011proposal}.
+For these reasons, we adopted the \acl{ner} F$_1$ score as the main metric, since it is a more robust alternative to the classic \ac{iaa} metrics~\cite{hripcsak2005agreement,grouin2011proposal}.
 %, wang2021nero}.
 The F$_1$ score---calculated with the matching criteria described in \Cref{sec:metrics}---is pair-wisely computed between annotators: for each combination, the labels from an annotator are used as the ground truth to evaluate the labels from another annotator; an average is computed in case of more than two annotators. 
 
@@ -130,7 +131,7 @@ Partial-typed                       & 90.6           \\\midrule
 $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa \approx \text{Krippendorff's~}\alpha$
  & 66.2           \\\bottomrule
 \end{tabular}
-\caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in \Cref{sec:metrics}. *based on strong-typed match}
+\caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in \Cref{sec:metrics}. *based on strong-typed match.}
 \label{tab:iaa}
 \end{table}
 
@@ -155,10 +156,10 @@ The larger portion of 814 refers to NIL entities, as expected within the conside
 \subsection{Italian Incremental Entity Linking Pipeline}
 \label{sec:italia_ee_pipeline}
 
-Inspired by the \ac{inel} pipeline described in \Cref{sec:ijckg:pipeline} and inspired by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline-based system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
-For \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE. These methods are described in detail in the remainder of this section.
+Inspired by the \ac{inel} pipeline described in \Cref{sec:ijckg:pipeline} and by recent work on \ac{inel}~\cite{Heist2023nastylinker,kassner-etal-2022-edin} we develop a pipeline-based system that, first, orchestrates \ac{ner} and then the knowledge consolidation processes, namely \ac{nel}, NIL prediction, and NIL clustering.
+For \ac{ner} we combine different methods to extract all the types annotated in ICCJ146-EE.
 
-\Cref{tab:algotypes} illustrates the supported types by each \ac{ner} extractor, as well as by the \ac{nel}, NIL prediction, and NIL clustering algorithms. Notably, for the latter three tasks, we exclusively consider the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. This decision is based on the fact that \texttt{Date} and \texttt{Money} are not directly associated with any linkable entity. With respect to the \texttt{Miscellaneous} class, during an exploratory phase, we found that the quality of the prediction for this class---significantly lower than for the other classes---was not promising enough to proceed with the knowledge consolidation process. We further discuss this issue in the experimental evaluation.
+\Cref{tab:algotypes} illustrates the types supported by each \ac{ner} extractor, as well as by the \ac{nel}, NIL prediction, and NIL clustering algorithms. Notably, for the latter three tasks, we exclusively consider the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. This decision is based on the fact that \texttt{Date} and \texttt{Money} are not directly associated with any linkable entity. With respect to the \texttt{Miscellaneous} class, during an exploratory phase, we found that the quality of the prediction for this class---significantly lower than for the other classes---was not promising enough to proceed with the knowledge consolidation process. We further discuss this issue in the experimental evaluation.
 
 
 % Our primary objective is to assess the performance of existing algorithms, trained on publicly available training data, on civil judgments.
@@ -181,14 +182,15 @@ For \ac{ner} we combine different methods to extract all the types annotated in 
             % + Law article   & RAE    & -         & -         & -             & -           & Normattiva  & Implicit          & Implicit  \\
         \end{tabular}
         % }
-    \caption{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type \texttt{Person} and \texttt{Organization}, since the knowledge base (derived from documents metadata) of reference is limited to these two types.}
+    \caption{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type \texttt{Person} and \texttt{Organization}, since its \ac{kr} (derived from documents metadata) of reference is limited to these two types.}
     % (``Implicit'' derives from RAE, since rule-based additional extractors perform recognition and linking as a whole)
     \label{tab:algotypes}
 \end{table}
 
 %inally, we observe that \ac{nel} and NIL clustering can be viewed as two faces of the same process aimed at consolidating the mentions found by \ac{ner} algorithms into a \textit{knowledge layer}: mentions linked to the same knowledge base entity are, in fact, clustered together, while NIL mentions clustered together are linked to the same new entity. As discussed in \Cref{sec:related_work}, this process of knowledge consolidation is the most novel aspect in our proposal, the one whose feasibility we want to evaluate and the one we mainly focus on in this paper.
 
-By using multiple \ac{ner} algorithms, it becomes necessary to combine the extracted annotations and resolve any conflicts that may arise. To this end, we present heuristic-based combination rules, which are described in the remainder of this section. 
+When multiple \ac{ner} algorithms are employed, it is necessary to combine their extracted annotations and resolve any resulting conflicts. To this end, we introduce heuristic-based combination rules. Both the \ac{ner} algorithms and the combination rules adopted in this work are described in detail in the remainder of this section.
+
 
 
 
@@ -200,18 +202,18 @@ By using multiple \ac{ner} algorithms, it becomes necessary to combine the extra
 
 \subsubsection{Entity Recognition}          
 For the \ac{ner} task, we selected two general-domain, ML-based algorithms for Italian: \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}. 
-In addition, we developed a rule-based service, referred to as Trie\ac{ner}, which performs efficient gazetteer-based lookup using a prefix tree.  
+In addition, we developed a rule-based service, referred to as ``Trie\ac{ner}'', which performs efficient gazetteer-based lookup using a prefix tree.  
 Each algorithm recognizes a different set of entity types. \Cref{tab:algotypes} reports the correspondence between the entity types in our benchmark dataset and those detected by each algorithm, including their combination.  
 
 \ac{ner} with \spacy is carried out using the Italian transformer model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pre-trained by \textcite{stefan_schweter_2020_4263142}.  
 The model produces contextual representations that are then processed by a neural transition-based parser (see \Cref{sec:rw:ner}).  
-We fine-tuned the \spacy pipeline---including both the transformer and the parser---on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which contains Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
+We fine-tuned the \spacy pipeline---including both the transformer and the parser---on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is based on Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
 
 Tint~\cite{2018tint2} is an Italian NLP suite based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}.  
 Its \ac{ner} module combines CRF-based sequence taggers~\cite{Lafferty2001} with rule-based recognizers for \texttt{Money}, \texttt{Number}, and temporal expressions (\texttt{Time}).
 
 Trie\ac{ner} relies on a gazetteer efficiently indexed with a prefix tree (trie)~\cite{s-yata-marisa-trie}, following prior work on tree-based \ac{ner}~\cite{Nguyen_tree_ner_2014}.  
-Our gazetteer is built from document metadata: entity labels are tokenized, enriched with all name permutations (for personal names), and inserted into the trie.  
+Our gazetteer is built from the document metadata: entity labels are tokenized, enriched with all name permutations (for personal names), and inserted into the trie.  
 The algorithm supports partial matches---\eg detecting ``Smith'' when the full label ``Jane Smith'' exists in the gazetteer.  
 Unlike standard \ac{ner}, Trie\ac{ner} also provides the link between the matched text and the originating entity (or entities, if shared).  
 This approach leverages metadata fields such as plaintiffs, defendants, and judges to increase the likelihood that these entities are also recognized in the text.
@@ -229,7 +231,7 @@ We resolve these conflicts as follows:
 \begin{enumerate}
     \item Span conflicts: overlapping annotations can be total (same boundaries) or partial.  
     In partial overlaps, we select the longest annotation, assuming it provides the most information.  
-    As an exception, for entities of type \texttt{Person}, we deprioritize spans longer than $k$ tokens, using $k=6$ after identifying it as the maximum number of tokens for names from ICCJ900k metadata.
+    As an exception, for entities of type \texttt{Person}, we deprioritize spans longer than $k$ tokens, using $k=6$ after identifying it as the maximum number of tokens for names in ICCJ900k metadata.
     \item Type conflicts: different algorithms may predict different types.  
     To handle this, we assign a weight to each algorithm and perform a \textit{weighted majority vote} to select the final type.  
     If multiple algorithms predict the same type, their weights are summed.  
@@ -247,11 +249,11 @@ The knowledge consolidation process comprises three tasks: \ac{nel}, NIL predict
 The pipeline is adapted from the English version introduced in \textcite{ijckg2022} and detailed in \Cref{sec:ijckg:pipeline}. It consists of the BLINK bi-encoder~\cite{blink}, a logistic regression classifier for NIL prediction, and a three-step algorithm for NIL clustering.  
 Although we do not evaluate an incremental scenario with legal documents, we adopt a bi-encoder-based architecture because it supports the representation of new entities---a crucial property for the legal domain.
 
-To enable \ac{nel} for the Italian language, we trained a bi-encoder following the methodology proposed by the BLINK~\cite{blink} authors for English.  
+To enable \ac{nel} for the Italian language, we trained a bi-encoder following the methodology proposed by \textcite{blink} for English.  
 We initialized the encoder with weights from the Italian BERT-base model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}~\cite{stefan_schweter_2020_4263142} and fine-tuned it on 9 million mention--entity pairs derived from Italian Wikipedia hyperlinks.  
 Training was conducted for four epochs with in-batch random negatives, using the AdamW optimizer~\cite{loshchilov2018decoupled} with an initial learning rate of $1 \times 10^{-5}$ and a batch size of 20.  
 A fifth epoch was then performed using hard negatives---one per sample---selected as the incorrect entity with the highest linking score for the given mention.  
-The knowledge base contains approximately 1.5M entities extracted from Italian Wikipedia\footnote{\url{https://it.wikipedia.org}} after removing redirects and disambiguation pages.  
+As the \acl{kr} we use the $\approx$1.5M entities extracted from Italian Wikipedia\footnote{\url{https://it.wikipedia.org}} after filtering out redirects and disambiguation pages.  
 In the remainder of this work, we refer to the resulting model as \blinkita.
 
 For NIL prediction, we use the same Wikipedia-based dataset employed to train the \ac{nel} model.  
@@ -305,7 +307,7 @@ We evaluate the entity extraction pipeline in the following experimental setting
 \begin{enumerate}
     \item \textit{Atomic}: we analyze the performance of each algorithm atomically to isolate it from the effects of error propagation. In practice, before analyzing the performance of each task, the prediction from the previous tasks in the pipeline are corrected according to the ground truth. For \ac{ner} we use the 146-documents ICCJ146-EE as the evaluation dataset and the 30-documents subset ICCJ30-\ac{inel} for the knowledge consolidation tasks. \ac{nel}, NIL prediction, and NIL clustering are applied, and evaluated, only on annotations of type \texttt{Person}, \texttt{Location}, \texttt{Organization}. This analysis aligns with the concept of \acf{hitl} validation, in which the results of each step are refined by humans prior to being utilized as input for the subsequent stages within the pipeline. For \ac{ner}, we additionally calculate performance metrics on a per-type basis and with different matching criteria, including more relaxed ones that also accept spans that are partially correct (defined below).  
     \item \textit{\ac{nel} with NIL prediction}: we study the combined performance of \ac{nel} and NIL prediction, since these two tasks are closely related, isolating them from \ac{ner} errors. To achieve this, we execute \ac{nel} and NIL prediction on ground truth \ac{ner} annotations from ICCJ30-\ac{inel}.
-    \item \textit{End-to-end}: we evaluate the performance of our system on each mention in ICCJ30-\ac{inel}, considering \ac{ner}, \ac{nel}, and NIL prediction---as done, for example, in the NEEL challenge~\cite{basile2016neelit}. In this setting, each mention can be either linked to an entity in the \ac{kr} or classified as NIL. We exclude NIL clustering from this evaluation, since assessing whether a NIL mention is in the correct cluster would overly complicate the analysis; instead, clustering is evaluated separately in the \textit{atomic} setting.
+    \item \textit{End-to-end}: we evaluate the performance of our system on each mention in ICCJ30-\ac{inel} considering \ac{ner}, \ac{nel}, and NIL prediction---as done, for example, in the NEEL challenge~\cite{basile2016neelit}. In this setting, each mention can be either linked to an entity in the \ac{kr} or classified as NIL. We exclude NIL clustering from this evaluation, since assessing whether a NIL mention is in the correct cluster would overly complicate the analysis; instead, clustering is evaluated separately in the \textit{atomic} setting.
 
 
 \end{enumerate}
@@ -664,3 +666,4 @@ Performance degradation was also observed in \ac{ner} models trained on publicly
 Overall, these findings confirm the feasibility of extracting and semantically consolidating entity mentions from Italian court judgments, especially in setting implementating \acl{hitl} revision of automatically generated annotations. The \ac{hitl} process used to construct the labeled dataset allowed us to estimate an average of 30 minutes to fully revise a single judgment, corresponding to approximately 320 judgments per month for one full-time annotator. This estimate provides an upper bound on the cost of human-assisted entity extraction.
 
 
+\clearpage

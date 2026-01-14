@@ -21,8 +21,8 @@
 
 
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
-\todo{add the publication related to this section aixia2023}
-After assessing the performance of a general-domain \ac{ee} pipeline on Italian civil judgments (ICCJ146-EE), we study different adaptation strategies to this domain.
+
+After assessing the performance of a general-domain \ac{ee} pipeline on Italian civil judgments (ICCJ146-EE), we study different adaptation strategies to this domain. This analysis, related to the \phd publication \textcite{aixia_2023}, highlights which techniques offer the most favorable balance between computational cost and performance gain.
 
 We consider transformer-based \spacy~\cite{honnibal2020spacy} \ac{ner} models which combines the representations from transformers with transition-based parsers (see \Cref{sec:rw:ner}). We evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pretraining data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
 
@@ -111,3 +111,4 @@ Furthermore, the difference between strong and partial matching is limited for \
 
 \input{table/overall4type}
 
+\clearpage
