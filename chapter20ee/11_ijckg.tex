@@ -240,12 +240,11 @@ The evaluation procedure for the \ac{inel} task should measure both the overall 
     \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
     \label{fig:evluation_outcome}
 \end{figure}
+Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
 \Cref{fig:evluation_outcome} summarizes how mentions should be processed depending on the entity they refer to.
 
 
 
-%
-Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
 
 \subsubsection{Evaluation Measures} \label{sec:inel_metrics}
 
@@ -255,13 +254,13 @@ First, we define measures for the overall \ac{inel} pipeline:
 
 \begin{enumerate}[leftmargin=*, label=(\alph*), ref=(\alph*)]
 
-\item \textbf{Link to \ac{bgkr}:} accuracy for mentions that should be linked to the \ac{bgkr}:
+\item \textbf{Link to \ac{bgkr}:} accuracy for mentions that should be linked to the \acl{bgkr}:
 \begin{equation}
 \text{Acc}_{\text{BGKR}} =
 \frac{TP_{\text{BGKR}}}{N_{\text{BGKR}}}
 \end{equation}
 where $TP_{\text{BGKR}}$ is the number of mentions correctly linked to the \ac{bgkr}, 
-and $N_{\text{BGKR}}$ is the total number of mentions whose gold target is in the \ac{bgkr}.
+and $N_{\text{BGKR}}$ is the total number of mentions referring to entities in the \ac{bgkr}, according to the ground truth.
 
 \item \textbf{NIL:} accuracy for mentions that should be classified as NIL:
 \begin{equation}
@@ -269,7 +268,7 @@ and $N_{\text{BGKR}}$ is the total number of mentions whose gold target is in th
 \frac{TP_{\text{NIL}}}{N_{\text{NIL}}}
 \end{equation}
 where $TP_{\text{NIL}}$ is the number of mentions correctly predicted as NIL, 
-and $N_{\text{NIL}}$ is the number of mentions whose gold label is NIL.
+and $N_{\text{NIL}}$ is the number of mentions whose ground truth label is NIL.
 
 \item \textbf{Link to \ac{newkr}:} accuracy for mentions linked to the \ac{newkr}:
 \begin{equation}
@@ -277,7 +276,8 @@ and $N_{\text{NIL}}$ is the number of mentions whose gold label is NIL.
 \frac{TP_{\text{NEWKR}}}{N_{\text{NEWKR}}}
 \end{equation}
 where $TP_{\text{NEWKR}}$ is the number of mentions correctly linked to entities previously added to the \ac{newkr},
-and $N_{\text{NEWKR}}$ is the corresponding gold count.
+and $N_{\text{NEWKR}}$ is the total number of mentions that, according to the ground truth, refer to entities previously added to the \ac{newkr}, and thus should be linked to it.
+
 
 \item \textbf{Overall Accuracy:} accuracy across all mentions:
 \begin{equation}
@@ -288,6 +288,7 @@ and $N_{\text{NEWKR}}$ is the corresponding gold count.
 
 \end{enumerate}
 
+\medskip\noindent
 Secondly, to understand how each component of the pipeline performs on its specific task, 
 we also evaluate the modules separately.
 
@@ -301,7 +302,7 @@ counts a prediction as correct when the top-ranked entity matches the reference 
 \end{equation}
 
 \paragraph{NIL Prediction}
-For NIL prediction, modeled as a binary classification, we compute precision, recall and $F_1$ on the NIL class:
+For NIL prediction, which is modeled as a binary classification, we compute precision, recall and $F_1$ on the NIL class:
 \begin{equation}
 \text{Precision}_{\text{NIL}} = 
 \frac{TP_{\text{NIL}}}{TP_{\text{NIL}} + FP_{\text{NIL}}}, \qquad
@@ -328,7 +329,7 @@ F_{1,\text{NIL}} =
 % \frac{F_{1,\text{MUC}} + F_{1,\text{B}^3} + F_{1,\text{CEAF}_e}}{3}.
 % \end{equation}
 \paragraph{NIL Clustering}
-For NIL clustering we follow the standard co-reference evaluation formulation
+For NIL clustering we follow the standard coreference evaluation metrics
 of MUC~\cite{vilain1995}, B$^3$~\cite{bagga-baldwin-1998}, 
 and CEAF$_e$~\cite{luo2005coreference}, as in \textcite{streaming_crossdoc_coreference}.  
 Let $K=\{k_i\}$ be the set of annotated clusters and $R=\{r_j\}$ the set of predicted clusters. 
@@ -365,11 +366,11 @@ where $p(k_i)$ is the set of partitions obtained by intersecting $k_i$ with $R$ 
 \noindent\textbf{CEAF$_e$}~\cite{luo2005coreference} aligns clusters one-to-one by maximizing a similarity $\phi$.  
 We use the entity-based similarity $\phi_e(k_i,r_j)= \frac{2\,|k_i\cap r_j|}{|k_i|+|r_j|}$. Let $g^*$ be the optimal
 one-to-one mapping of clusters (maximizing $\sum \phi$), and let $K^*$ be the subset of annotated clusters
-that participate in this optimal mapping:
+that participate in this optimal mapping. Then, we define:
 \begin{equation}
 \Phi = \sum_{k_i \in K^*} \phi_e(k_i, g^*(k_i)).
 \end{equation}
-Then:
+Precision and recall are computed as:
 \begin{equation}
 \text{Recall}_{\text{CEAF}_e} =
 \frac{\Phi}{\sum_{k_i \in K} \phi_e(k_i,k_i)}, \qquad
@@ -379,7 +380,7 @@ Then:
 
 
 \medskip
-Finally, the $F_1$ scores are calculated with the harmonic mean, as for NIL prediction, and we calculate the macro average of the $F_1s$:
+Finally, the $F_1$ scores are calculated with the harmonic mean, as for NIL prediction, and we calculate their macro average as:
 \begin{equation}
 F_{1,\text{avg}} =
 \frac{F_{1,\text{MUC}} + F_{1,\text{B}^3} + F_{1,\text{CEAF}_e}}{3}.
@@ -397,7 +398,9 @@ Finally, if a false positive in NIL prediction creates a new entity while the co
 \subsection{Experiments}
 \label{sec:ijckg:experiments}
 
-To enable comparison with other models, we tested our baselines using two experiments. The first experiment evaluates the models on the entire unbatched test set in a \emph{single pass} ($\varnothing$), performing only one step of clustering. The second experiment conducts an incremental evaluation over the 10 batches of the test set, which is the main focus of this section and simulates the arrival of new documents to the pipeline. Note that the evaluation procedures differ between the two experiments because NIL clustering adds novel entities to the \ac{newkr} that can be linked in subsequent batches.
+To enable comparison with other models, we tested our baselines using two experiments. The first experiment evaluates the models on the entire unbatched test set in a \emph{single pass} ($\varnothing$), performing only one step of clustering. 
+
+The second experiment conducts an incremental evaluation over the 10 batches of the test set, which is the main focus of this section and simulates the arrival of new documents to the pipeline. Note that the evaluation procedures differ between the two experiments because NIL clustering adds novel entities to the \ac{newkr} that can be linked in subsequent batches.
 
 The first experiment serves two purposes: it provides results comparable to those reported in the literature, and it allows us to estimate the performance drop introduced by the incremental procedure. We evaluated the three baselines, which differ in their clustering approach, using both experimental setups. In \Cref{tab:superresults}, we report only the NIL clustering performance for all baselines, while the remaining metrics are obtained using the top-performing clustering approach (3-step).
 
@@ -425,7 +428,7 @@ In order to investigate which component of the pipeline has a stronger contribut
 % Errors in the novel entities identification (NIL prediction) and representation (NIL clustering) affect also the \ac{nel} process in the following steps, since the index suffers of ambiguous representations (entities which are linked to a cluster that represents a novel entity which should be linked to a pre-existing one).
 
 The results of the experiments are reported in \Cref{tab:superresults}.
-The performance of the \ac{nel} module (BLINK bi-encoder~\cite{blink}) is competitive with more complex models, such as GENRE~\cite{decao2021autoregressive}, which achieves R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$, on mention--entity pairs unseen at training time, values that are very close to ours (excluding error propagation).
+The performance of the \acl{nel} module (BLINK bi-encoder~\cite{blink}) is competitive with more complex models, such as GENRE~\cite{decao2021autoregressive}, which achieves R@1$_\text{total} = 74.7$ and R@1$_\text{unseen} = 70.4$, on mention--entity pairs unseen at training time, values that are very close to ours (excluding error propagation).
 
 As expected, the observed performance drop is mainly due to error propagation in the incremental procedure rather than to limitations of the \ac{nel} model itself. 
 Indeed, in the ``correct'' experiment, where errors are prevented from propagating, the performance remains stable across batches.
@@ -437,7 +440,7 @@ This results in redundant representations of the same entity in the \ac{newkr} a
 For this reason, to mitigate error propagation over time, achieving higher precision is preferable to higher recall, as \emph{false links} count as local errors but do not cause propagation by polluting the \ac{newkr} with redundant entities.
 
 
-With respect to NIL clustering, \Cref{fig:clusters} shows the number of predicted clusters as a function of their size, together with the expected distribution. The general agreement between the two indicates that the pipeline does not overproduce clusters, and that the high precision yields cluster sizes broadly consistent with the expected values. However, the observed MUC score of 100.0 may be explained by the large proportion of singleton clusters~\cite{recasens_hovy_2011}.
+With respect to NIL clustering, \Cref{fig:clusters} shows the number of predicted entity clusters as a function of their size, together with the expected distribution. The general agreement between the two indicates that the pipeline does not overproduce clusters, and that the high precision yields cluster sizes broadly consistent with the expected values. However, the observed MUC score of 100.0 may be explained by the large proportion of singleton clusters~\cite{recasens_hovy_2011}.
 
 
 % Regarding NIL clustering, analyzing and understanding this component is crucial, since it produces side effects that propagate through subsequent steps, leading to different outcomes when evaluated incrementally versus in a single pass.
@@ -454,7 +457,7 @@ Among the evaluated approaches, the top-performing one is the \textit{3-step} me
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{images/ijckg/clusters.png}
-    \caption{The absolute frequency of clusters by size (the points) vs the expected values (the curve) from the test-set.}
+    \caption{The absolute frequency of entity clusters by size (the points) vs the expected values (the curve) from the test-set.}
     \label{fig:clusters}
 \end{figure}
 
@@ -520,7 +523,7 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 & macro F$_1$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when a NEL error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where the gold standard contains one element per cluster; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption{Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when an \ac{nel} error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where ground truth clusters contain one element; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table}
 \end{landscape}
