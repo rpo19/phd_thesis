@@ -52,7 +52,7 @@ The proposed baseline pipeline consists of three main modules: \acl{nel}, NIL pr
 
 \paragraph{Entity Linking} The \ac{nel} module relies on a bi-encoder architecture~\cite{Humeau2020Poly-encoders,blink,gillick-etal-2019-learning}, which retrieves candidate entities through \acl{ann} search and scores mention--entity pairs using similarity measures such as the dot product.
 
-In our experiments, we used the pre-trained BLINK~\cite{blink} bi-encoder, publicly available on GitHub\footnote{\url{https://github.com/facebookresearch/BLINK}}. For the \ac{bgkr}, we adopted the FAISS~\cite{faiss} index built from the August 2019 Wikipedia dump released by \textcite{blink}, ensuring that entities designated as NIL for the experiments were excluded.
+In our experiments, we used the pretrained BLINK~\cite{blink} bi-encoder, publicly available on GitHub\footnote{\url{https://github.com/facebookresearch/BLINK}}. For the \ac{bgkr}, we adopted the FAISS~\cite{faiss} index built from the August 2019 Wikipedia dump released by \textcite{blink}, ensuring that entities designated as NIL for the experiments were excluded.
 
 \paragraph{NIL Prediction} Given a mention and the scored entity candidates produced by the linking system, NIL prediction determines whether the top-ranked candidate entity is correct or not. According to this prediction, the mention is either linked to the top-ranked entity or marked as NIL. NIL prediction does not alter the ranking produced by the \ac{nel} module, under the assumption that if the top-ranked candidate according to the \ac{nel} system is incorrect, than the correct candidate is not present in the \ac{kr}.
 
@@ -537,7 +537,7 @@ These errors can be mitigated through a \acl{hitl} validation process, where a u
 % hitl
 
 
-%Results obtained in this work show that the approach is promising, using pre-trained neural networks, but can be further improved by the addition of new modules and improvements of existing ones.
+%Results obtained in this work show that the approach is promising, using pretrained neural networks, but can be further improved by the addition of new modules and improvements of existing ones.
 
 %In particular, as already described above, a transformer-based model able to distinguish between mention-mention could significantly improve performances of the whole pipeline, with both a re-ranking of the candidates and providing a better distance score during NIL clustering.
 % In addition, it can be used also as a distance score between mentions in order to cluster them in the NIL clustering step.
@@ -547,7 +547,7 @@ These errors can be mitigated through a \acl{hitl} validation process, where a u
 % even if the classifier obtains relatively high precision levels (see \Cref{tab:superresults}) the error rate is high enough to degrade the performance in the subsequent batches.
 
 %In addition, the NIL predictor, which at the moment uses a logistic regression, may be improved by the use of linear transformations, since the use of non-linear and more complex models (such as random forest) offer no better results.
-%A future version may include more features, based on candidates distribution, as well as a standardization layer so that it can be pre-trained on a different dataset.
+%A future version may include more features, based on candidates distribution, as well as a standardization layer so that it can be pretrained on a different dataset.
 %All those improvements however are not trivial both to train and test in order to obtain a model not based on dataset scores.
 
 % \begin{enumerate}

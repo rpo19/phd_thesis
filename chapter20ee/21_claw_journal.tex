@@ -205,7 +205,7 @@ For the \ac{ner} task, we selected two general-domain, ML-based algorithms for I
 In addition, we developed a rule-based service, referred to as ``Trie\ac{ner}'', which performs efficient gazetteer-based lookup using a prefix tree.  
 Each algorithm recognizes a different set of entity types. \Cref{tab:algotypes} reports the correspondence between the entity types in our benchmark dataset and those detected by each algorithm, including their combination.  
 
-\ac{ner} with \spacy is carried out using the Italian transformer model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pre-trained by \textcite{stefan_schweter_2020_4263142}.  
+\ac{ner} with \spacy is carried out using the Italian transformer model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pretrained by \textcite{stefan_schweter_2020_4263142}.  
 The model produces contextual representations that are then processed by a neural transition-based parser (see \Cref{sec:rw:ner}).  
 We fine-tuned the \spacy pipeline---including both the transformer and the parser---on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is based on Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
 

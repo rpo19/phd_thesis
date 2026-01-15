@@ -26,24 +26,25 @@ After assessing the performance of a general-domain \ac{ee} pipeline on Italian 
 
 We consider transformer-based \spacy~\cite{honnibal2020spacy} \ac{ner} models which combines the representations from transformers with transition-based parsers (see \Cref{sec:rw:ner}). We evaluate five different BERT~\cite{devlin-etal-2019-bert} encoders as backbone transformers. These encoders differ in their pretraining data, which we categorize into three levels of specificity: general-domain Italian data (\textit{ITA}), legal-domain data (\textit{LGL}), and the ICCJ900k corpus comprising approximately 900,000 Italian civil court judgments.
 
-\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pretraining data used for each and the masked language modeling (\acs{mlm}) procedure applied. Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) are pre-trained exclusively on legal-domain data, without prior training on generic Italian data.
+\Cref{tab:backbones} summarizes all five \ac{ner} backbone configurations, indicating the pretraining data used for each and whether they have been adapted to ICCJ900k with masked language modeling (\acs{mlm}). Notably, some models (\textit{LGL} and \textit{LGL+ICCJ900k}) have been exclusively trained on legal-domain data, without prior training on generic Italian data.
 
 \input{table/backbones}
 
-As a baseline, we use the general-domain \textit{ITA} model, which is available pre-trained on HuggingFace as ``dbmdz/bert-base-italian-xxl-cased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}}~\cite{stefan_schweter_2020_4263142}. Additionally, the \textit{ITA+LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT}}~\cite{licari_italian-legal-bert_2022}and \textit{LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT-SC}} models---developed in a subsequent work by the same authors---are also available pre-trained on HuggingFace. For the \textit{ICCJ900k} variants, we perform adaptation using \ac{mlm}.
+As a baseline, we use the general-domain \textit{ITA} model, which is available pretrained on HuggingFace as ``dbmdz/bert-base-italian-xxl-cased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-xxl-cased}}~\cite{stefan_schweter_2020_4263142}. Additionally, the \textit{ITA+LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT}}~\cite{licari_italian-legal-bert_2022} and \textit{LGL}\footnote{\url{https://huggingface.co/dlicari/Italian-Legal-BERT-SC}} models are also available pretrained on HuggingFace.
 
-All five configurations are then fine-tuned for \ac{ner} with the \spacy library, employing early stopping on the development set. Optimization is performed using AdamW~\cite{loshchilov2018decoupled} with an initial learning rate of $5 \times 10^{-5}$.
+Finally, all five configurations are fine-tuned for \ac{ner} with the \spacy library on the annotated ICCJ146-EE corpus, which have been split into three subsets. The 30 documents annotated for \ac{inel} serve as the test set, while 12 randomly selected documents from the remaining set form the development set, leaving 102 documents for training. \Cref{tab:dataset_stats} presents detailed statistics, including the number of annotations per class.
+
+Fine-tuning is performed using AdamW~\cite{loshchilov2018decoupled} with an initial learning rate of $5 \times 10^{-5}$ and early stopping on the development set.
+To reduce bias from random initialization, we train five models per configuration with different random seeds for the \ac{ner} layers (see \Cref{sec:rw:ner}). This results in a total of 25 \ac{ner} fine-tuned models.
 
 \input{table/dataset_stats}
 
-For \ac{ner} fine-tuning, we use the annotated ICCJ146-EE corpus, split into three subsets. The 30 documents annotated for \ac{inel} serve as the test set, while 12 randomly selected documents from the remaining set form the development set, leaving 102 documents for training. \Cref{tab:dataset_stats} presents detailed statistics, including the number of annotations per class.
 
-To reduce bias from random initialization, we train five models per configuration with different random seeds for the \ac{ner} layers (see \Cref{sec:rw:ner}). This results in a total of 25 \ac{ner} fine-tuning experiments.
 
 % \subsubsection{Experimental Evaluation} \label{sez:experiments}
 
 \paragraph{Evaluation Settings and Measures}
-For the evaluation we consider the same experimental settings as in \Cref{sec:judgment_ee_eval}---namely, \textit{Atomic}, \textit{\ac{nel} with NIL prediction} on ground truth \ac{ner}, and \textit{end-to-end}. Additionally, we investigate the performance with different backbone transformers and the impact of different \ac{mlm} adaptation strategies on the \ac{ner} performance.
+For the evaluation we adopt the same experimental settings as in \Cref{sec:judgment_ee_eval}---\textit{Atomic}, \textit{\ac{nel} with NIL prediction} on ground truth \ac{ner}, and \textit{end-to-end}---and examine the impact of backbone transformers differing in their pretraining data.
 As before, the \ac{nel} and NIL prediction components are applied only to mentions classified as \texttt{Person}, \texttt{Location}, and \texttt{Organization} by the \ac{ner} component.
 %
 Please note that the ICCJ146-EE training set is only used to fine-tune the \ac{ner} component. All results refer to the ICCJ146-EE test set. 
@@ -52,19 +53,17 @@ Please note that the ICCJ146-EE training set is only used to fine-tune the \ac{n
 \ac{ner} is evaluated using the \textit{strong} and \textit{partial} matching criteria from \Cref{sec:judgment_ee_eval}.
 % Both measures rigorously require that the predicted class matches the gold standard one, while they differ with respect to span detection: the former measure considers an annotation correct when the predicted boundaries perfectly match the gold standard, the latter when there is an overlap between them.
 % Considering both measures is useful also for two other reasons: 1) we can investigate to what extent some correct annotations are returned by the algorithms, even when the span of the mention is not perfectly identified; 2) by considering the gap between strong and partial matching measures in a per-class performance analysis, we can investigate which classes are more affected by boundary identification issues.
-We calculate \textit{precision}, \textit{recall}, and \textit{F$_1$-measure}, micro and macro-averaged on the class, and separately for each class.
+We calculate \textit{precision}, \textit{recall}, and \textit{F$_1$-measure}, micro- and macro-averaged on the class, and separately for each class.
 
 % \paragraph{Comparison of Backbone Transformers for \ac{ner}}
-We calculate the mean and the standard deviation of the micro \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} of the five initializations for each transformer.
-We identify the top-performing model based on its \textit{F$_1$-measure} and utilize it as the foundation of the \ac{ner} component for subsequent evaluations.
-
-The subsequent evaluations repeat the experiments done in \Cref{sec:judgment_ee_eval} but using the best in-domain fine-tuned \ac{ner} model. 
-It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}. In order, we calculate:
+We also compute the mean and standard deviation of the micro-averaged \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} across the five random initializations for each transformer. The top-performing model, based on its \textit{F$_1$-measure}, is then used as the \ac{ner} component for subsequent evaluations, which replicate the experiments in \Cref{sec:judgment_ee_eval} using the best in-domain fine-tuned \ac{ner} model.
+It is important to remind that the \ac{nel} evaluation and the following ones (NIL prediction, and end-to-end) exclusively focus on the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}.
+We calculate the following metrics:
 \begin{itemize}
-    \item accuracy and recall@100 for \ac{nel},
-    \item precision, recall, and F$_1$ of the NIL prediction,
-    \item for \ac{nel} \& NIL Prediction the accuracy on the \textit{mentions to link} (a), on \textit{NIL mentions} (b), and on all the mentions (d), as in \Cref{sec:judgment_ee_eval,sec:ijckg:evaluation_procedure}.
-    \item For the end-to-end \ac{ee}, we proceed similarly as in \Cref{sec:judgment_ee_eval}, using the \textit{strong typed linking} and \textit{partial typed linking} matching criteria. An annotation is correct when the predicted class matches the ground truth, the span matches according to the matching criterion, and the mention is linked to the correct entity (if $\neg$NIL) or correctly identified as NIL. We calculate \textit{precision}, \textit{recall}, \textit{F$_1$-measure} micro and macro-averaged for each class, exactly as in the \ac{ner} evaluation. While in previous experiments we privileged the approximate criterion, here we use strong and partial---the strictest and the most relaxed---to estimate lower and upper bounds for the performance achievable with fine-tuning.
+    \item Accuracy and recall@100 for \ac{nel}.
+    \item Precision, recall, and F$_1$ for NIL prediction.
+    \item For \ac{nel} and NIL prediction, accuracy on (a) \textit{mentions to link}, (b) \textit{NIL mentions}, and (d) all mentions, as in \Cref{sec:judgment_ee_eval}.
+    \item For the end-to-end \ac{ee}, we proceed similarly to \Cref{sec:judgment_ee_eval}, using the \textit{strong typed linking} and \textit{partial typed linking} criteria. An annotation is correct if the predicted class matches the ground truth, the span matches according to the criterion, and the mention is linked to the correct entity (if $\neg$NIL) or correctly identified as NIL. We compute micro- and macro-averaged \textit{precision}, \textit{recall}, and \textit{F$_1$-measure} for each class, as in the \ac{ner} evaluation. While previous experiments privileged the approximate criterion, here we use the strong and partial criteria---the strictest and most relaxed---to estimate lower and upper bounds of performance achievable with fine-tuning.
 \end{itemize}
 
 
@@ -72,30 +71,30 @@ It is important to remind that the \ac{nel} evaluation and the following ones (N
 
 \paragraph{Comparison of backbone transformers}
 Table \ref{tab:result_5seed} shows the results for the comparison of the 5 backbone transformers for \ac{ner}.
-Based on the sample mean, the encoder that gives the best results is ITA+LGL+ICCJ900k, while the worst one is LGL+ICCJ900k.
+Based on the average F$_1$ across the five random initializations, the encoder that achieves the best results is ITA+LGL+ICCJ900k.
 
-In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the \textit{F$_1$-measure}. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pretraining on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
+In order to properly analyze the presence of statistical differences based on the choice of the backbone transformer, we conducted an analysis of variance (ANOVA) test on the F$_1$-measure. The results reveal a highly significant difference (with significance level $\alpha=0.05$). To further investigate the pairwise differences, we conducted a Tukey's HSD test with a significance level of $\alpha=0.05$. We observe that \textit{ITA}, the pretraining on general-domain Italian data, has a positive impact on performance: the models \textit{ITA+LGL+ICCJ900k} and \textit{ITA+LGL} tend to perform better than those trained from scratch on domain-specific data (\textit{LGL} and \textit{LGL+ICCJ900k}).
 
-Surprisingly, the findings suggest that employing a domain-specific legal BERT does not result in a substantial enhancement in \ac{ner} performance compared to a generic Italian BERT. This observation extends to the adaptation to the corpus of judgments (ICCJ900k) as well. Furthermore, we emphasize that the use of a pre-trained generic Italian BERT significantly reduces the effort required for adaptation in terms of time, costs, and environmental imprint.
+Surprisingly, the findings suggest that employing a domain-specific legal BERT does not result in a substantial enhancement in \ac{ner} performance compared to a generic Italian BERT. This observation extends to the adaptation to the corpus of judgments (ICCJ900k) as well. Furthermore, we emphasize that the use of a pretrained generic Italian BERT significantly reduces the effort required for adaptation in terms of time, costs, and environmental imprint.
 
 \input{table/result_5seed}
 
 \paragraph{Entity Recognition}
 
-The evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \ac{ner} recognition. The classes \texttt{Money} and \texttt{Person} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \texttt{Miscellaneous} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the MISC class. Additionally, \texttt{Miscellaneous} exhibits the largest disparity between strong matching performance and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \texttt{Organization}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
+The detailed evaluation results for the \ac{ner} component, as shown in Table \ref{tab:ner4type}, are promising. All the strong matching measures exceed $80\%$, and all the partial matching measures surpass $90\%$, indicating overall proficiency in \acl{ner}. The classes \texttt{Money} and \texttt{Person} achieve high recognition rates, surpassing $90\%$ with the strong matching measure. However, the performance for \texttt{Miscellaneous} is lower compared to other types. This discrepancy may be attributed to the intrinsic heterogeneity of the \texttt{Miscellaneous} class, which exhibits the largest disparity between strong and partial matching performance. A significant difference (approximately $12\%$) between strong and partial matching outcomes also affects the class \texttt{Organization}, highlighting the difficulty in precisely detecting the boundaries of organization mentions.
 
-We also consider the successful results achieved by the \ac{ner} component indicative of the high quality of our annotated corpus ICCJ146-EE.
+We also consider the successful results achieved by the \ac{ner} component indicative of the good quality of our annotated corpus ICCJ146-EE.
 
 \input{table/ner4type}
 
 \paragraph{Entity Linking and NIL Prediction}
 
-Table~\ref{tab:consolidation} reveals that the \ac{nel} and NIL prediction components do not exhibit the same level of effectiveness as the \ac{ner} component. The independent evaluation of the \ac{nel} component ($\ac{nel}_\perp$) demonstrates a lower \textit{accuracy} ($73.52\%$) but achieves a \textit{recall@100} of $90.81\%$, suggesting that the integration of a re-ranking system could potentially enhance our results. Additionally, the comparison with the outcomes obtained with the news-based VoxEL benchmark~\cite{rosales2018voxel} further underscores the challenges presented by the domain. We also remind that the \ac{nel} component has not been fine-tuned on domain data, and that the utilized knowledge base has not been restricted to domain-related entities. These two factors represent possibilities for enhancing this component.
+Table~\ref{tab:consolidation} reveals that the \ac{nel} and NIL prediction components do not exhibit the same level of effectiveness as the \ac{ner} component. The independent evaluation of the \ac{nel} component ($\ac{nel}_\perp$) demonstrates a lower accuracy ($73.52\%$) but achieves a recall@100 of $90.81\%$, suggesting that the integration of a re-ranking system could potentially enhance our results. Additionally, the comparison with the outcomes obtained with the news-based public benchmark VoxEL~\cite{rosales2018voxel} (available in the same \Cref{tab:consolidation}), where our \ac{nel} model's accuracy reaches $88.89\%$, further underscores the challenges presented by the domain. We also remind that the \ac{nel} component has not been fine-tuned on domain data, and that the \acl{kr} has not been restricted to domain-related entities. These two factors represent possibilities for enhancing this component.
 
-The NIL prediction classifier (NIL$_\perp$) is effective in recognizing the $NIL$ class, while it suffers with $\neg{NIL}$ mentions: the low precision of $58.45\%$ highlights that several $NIL$ mentions are wrongly predicted as $\neg{NIL}$.
+The NIL prediction classifier (NIL$_\perp$) is effective in recognizing the NIL class, while it suffers with $\neg$NIL mentions: the low precision of $58.45\%$ highlights that several NIL mentions are wrongly predicted as $\neg$NIL.
 
 
-During the evaluation of \textit{\ac{nel} with NIL prediction$_\perp$}, we notice the \textit{overall accuracy} is acceptable ($76.85\%$) and the \textit{recall} on the NIL mentions is satisfactory at $86.31\%$. However, we observe that the performance of $\neg$NIL mentions (Link$_{Rec}$), which should have been linked to the knowledge base (KB), is not up to the desired standard. The errors for this measure include both mentions linked to incorrect entities and mentions inaccurately identified as NIL. After the NIL prediction, indeed, only $52.95\%$ of the $\neg$NIL mentions are correctly classified, whereas the accuracy of \ac{nel}$_\perp$ stands at $73.52\%$. This substantial $20\%$ decline in performance can be attributed to the false-NIL predictions.
+During the evaluation of \ac{nel} with NIL prediction$_\perp$, we notice the overall accuracy is acceptable ($76.85\%$) and the recall on the NIL mentions is satisfactory at $86.31\%$. However, we observe that the performance on $\neg$NIL mentions, which should have been linked to the \ac{kr} (marked as ``(a) to Link$_\mathrm{Acc}$'' in \Cref{tab:consolidation}), is not up to the desired standard. The errors for this measure include both mentions linked to incorrect entities and mentions inaccurately identified as NIL. After the NIL prediction, indeed, only $52.95\%$ of the $\neg$NIL mentions are correctly classified, whereas the accuracy of \ac{nel}$_\perp$ stands at $73.52\%$. This substantial $20\%$ decline in performance can be attributed to the prediction of false-NILs.
 
 For these reasons, we consider the NIL prediction to be the most significant challenge in \ac{ee}. It is important to further study and improve this component in order to enhance the overall performance and reliability of \ac{ee} systems.
 
@@ -110,5 +109,7 @@ Lastly, Table \ref{tab:overall4type} presents the comprehensive results for the 
 Furthermore, the difference between strong and partial matching is limited for \texttt{Person} and \texttt{Location}, but significant for \texttt{Organization}, confirming the difficulty in accurately detecting boundaries for \texttt{Organization} entities previously observed in the \ac{ner} results. Additionally, the relatively modest overall difference of $6\%$ between partial and strong matching, along with the disparity with \ac{ner}-only results ($72.24\%$ vs $91.74\%$), highlights that the \ac{nel} and NIL prediction components are responsible for the majority of errors. This observation, combined with the fact that we fine-tuned only the \ac{ner} component, suggests that fine-tuning the \ac{nel} and NIL prediction components on the data could potentially enhance the overall performance of the end-to-end \ac{ee} system.
 
 \input{table/overall4type}
+
+\todo{check discussion after every paper. yes or no to all.}
 
 \clearpage

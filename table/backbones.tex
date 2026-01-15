@@ -1,7 +1,7 @@
 \begin{table}[tb]
 \centering
 % (among the three ITA, LGL, and ICCJ900k)
-\caption{\ac{ner} backbones details with the applied MLM-adaptations (one model per column). Model names indicate the order of applied adaptations.
+\caption{\ac{ner} backbones' pretraining domains (one model per column). Model names indicate the order in which the domain data were used for training.
 Legal domain data used for the LGL adaptation vary: *$3.7 GB$ legal corpus from the National Jurisprudential Archive; **$6.6 GB$ legal corpus composed of civil and criminal cases.
 %ITA, LGL, and ICCJ900k respectively refer to masked language modeling (MLM) adaptation with $13 GB$ Italian general-domain data, legal domain data (*$3.7 GB$ legal corpus is from the National Jurisprudential Archive; **$6.6 GB$ legal corpus composed of civil and criminal cases), and 900k Italian civil court judgments.
 }
@@ -10,9 +10,9 @@ Legal domain data used for the LGL adaptation vary: *$3.7 GB$ legal corpus from 
 \toprule
                               & \textbf{ITA} & \textbf{ITA+LGL+ICCJ900k}                                  & \textbf{ITA+LGL}                                      & \textbf{LGL+ICCJ900k}                                 & LGL                                     \\
                               \midrule
-ITA & Y            & Y                                             & Y                                             & -                                        & -                                        \\
-LGL            & -            & Y$^*$ & Y$^*$ & Y$^{**}$ & Y$^{**}$ \\
-ICCJ900k                          & -            & Y                                             & -                                             & Y                                        & Y             \\
+ITA & \ding{51}            & \ding{51}                                             & \ding{51}                                             & -                                        & -                                        \\
+LGL            & -            & \ding{51}$^*$ & \ding{51}$^*$ & \ding{51}$^{**}$ & \ding{51}$^{**}$ \\
+ICCJ900k                          & -            & \ding{51}                                             & -                                             & \ding{51}                                        & \ding{51}             \\
 \bottomrule
 \end{tabular*}
 \end{table}

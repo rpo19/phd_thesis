@@ -138,7 +138,7 @@ The WER measures the edit distance between the predicted transcription and the r
 \end{equation}
 Lower WER values indicate better performance.  
 
-BERTScore~\cite{zhang2020bertscore} instead measures the semantic similarity between two sentences based on contextual embeddings from a pre-trained BERT model~\cite{devlin-etal-2019-bert}. It computes precision, recall, and F$_1$ by aligning words in the reference and candidate transcriptions according to cosine similarity in embedding space.
+BERTScore~\cite{zhang2020bertscore} instead measures the semantic similarity between two sentences based on contextual embeddings from a pretrained BERT model~\cite{devlin-etal-2019-bert}. It computes precision, recall, and F$_1$ by aligning words in the reference and candidate transcriptions according to cosine similarity in embedding space.
 Unlike WER, BERTScore captures paraphrastic and semantic equivalence beyond exact word matching.
 
 
@@ -419,7 +419,7 @@ Metadata are precisely identified enabling accurate filtering with faceted searc
         
 
 % \textbf{Limitations and Challenges.}
-% Results in Table~\ref{tab:eval} confirm that \ac{inel} on \ac{ima} data is challenging due to the peculiar distribution of entities, indicating that in-distribution fine-tuning is required to attain competitive performance. At the same time, metadata are reliably identified, enabling accurate filtering via faceted search. To overcome the weaknesses of pre-trained models in the \ac{inel} pipeline, the labeled benchmark must be enlarged and the models fine-tuned on \ac{ima} data.%; based on our previous experience~\cite{ijckg2022}, we expect a significant improvement across all performance measures. % TODO anon. valutare se riaggiungere
+% Results in Table~\ref{tab:eval} confirm that \ac{inel} on \ac{ima} data is challenging due to the peculiar distribution of entities, indicating that in-distribution fine-tuning is required to attain competitive performance. At the same time, metadata are reliably identified, enabling accurate filtering via faceted search. To overcome the weaknesses of pretrained models in the \ac{inel} pipeline, the labeled benchmark must be enlarged and the models fine-tuned on \ac{ima} data.%; based on our previous experience~\cite{ijckg2022}, we expect a significant improvement across all performance measures. % TODO anon. valutare se riaggiungere
 %
 %The \ac{inel} stack should be better customized for the domain, \eg via in-domain fine-tuning. %Clustering is attracting the attention of the research community and we believe that investigations and \ac{ima} data provide a representative and challenging domain to develop better algorithms for this task. 
 %\todo{forse potremmo togliere questa discussione sul clustering visto che non è tanto esplorato nel paper}
