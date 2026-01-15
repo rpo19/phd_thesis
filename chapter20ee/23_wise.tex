@@ -21,18 +21,18 @@ During my \phd, I collaborated with prosecutors and judicial police officers fro
 Our work was conducted under an official consultancy agreement within the framework of judicial investigations. All data, due to the private information contained, was stored locally and accessed only by authorized consultants, through a secure virtual private network (VPN) with user-password authentication; no external \acp{api} have been used at any stage.
 
 
-Accordingly, this section focuses on the extraction and organization of entities from \ac{ima} data. Messages---including transcribed voice notes---were modeled within a knowledge graph designed to represent the network of contacts of the main suspect (\Cref{chap:architecture}). An improved version of the \ac{ee} pipeline introduced in \Cref{sec:eejudgements,sec:adaptation} was then applied and evaluated on a labeled corpus of chat logs. This corpus has been created through a procedure similar to the one employed for legal judgments~\Cref{sec:eejudgements}.
+Accordingly, this section focuses on the extraction and organization of entities from \ac{ima} data. Messages---including transcribed voice notes---were modeled within a knowledge graph designed to represent the network of contacts of the main suspect (\Cref{chap:architecture}). An improved version of the \acf{ee} pipeline introduced in \Cref{sec:eejudgements,sec:adaptation} was then applied and evaluated on a labeled corpus of chat logs. This corpus has been created through a procedure similar to the one employed for legal judgments in \Cref{sec:eejudgements}.
 As in that case, the availability of labeled data for \ac{ima} analysis is limited by the presence of personal and sensitive information.
 
 % % ok ma non qui. ne parlerò anche prima
 % Our work is governed by an official investigation consultant contract. Data is stored locally with access via secure VPN and user-password authentication, and no external APIs have been used.
 % Our solution processes the original data to assist investigators. However, as with any intermediary processing, whether by humans or machines, there is a risk of introducing errors, such as incomplete extractions, which could lead to bias. To mitigate this, our system is designed to allow prosecutors to verify all extracted information against the original data.
 
-The work presented in this section was published at the \emph{25th International Conference on Web Information Systems Engineering (WISE 2024)}~\cite{pozzi_wise_2025}. Its main contributions, with respect to \acl{ee} applied to \acl{ima} data, can be summarized as follows:
+The work presented in this section is related to the \phd publication \textcite{pozzi_wise_2025}. Its main contributions, with respect to \acl{ee} applied to \acl{ima} data, can be summarized as follows:
 \begin{itemize}
     \item Creation of an annotated benchmark dataset for investigative \ac{ima} data, enabling structured evaluation of \ac{ee} methods.
     \item Selection of a suitable speech-to-text model for transcribing voice messages.
-    \item Assessment of \ac{ner} and incremental \ac{nel} pipelines on domain-specific data, identifying performance trends and key challenges.
+    \item Assessment of \acf{ner} and incremental \acf{nel} pipelines on domain-specific data, identifying performance trends and key challenges.
 \end{itemize}
 
 
@@ -60,7 +60,7 @@ For this reason, in this work we directly leverage chat metadata to construct a 
 \caption{Knowledge Graph schema} \label{fig:model}
 \end{figure}
 
-The entire schema of the \emph{chat \acl{kg}} is depicted in \Cref{fig:model}. It incorporates all the metadata present in chat dumps and it is predisposed to host the new entities identified from an \ac{inel} pipeline---namely \texttt{Location}, \texttt{Organization}, \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous}, all of which are subclasses of \texttt{Entity}, together with \texttt{Person}. Finally, the relation \emph{mentioned in} allows persisting in which messages and chats entities have been mentioned. Consequently, investigators can trace entities to the source messages and verify the correctness of potential deduction reading the original messages (\ref{ch:traceability}). 
+The entire schema of the \emph{chat \acl{kg}} is depicted in \Cref{fig:model}. It incorporates all the metadata present in chat dumps and it is predisposed to host the new entities identified from an \ac{inel} pipeline---namely \texttt{Location}, \texttt{Organization}, \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous}, all of which are subclasses of \texttt{Entity}, together with \texttt{Person}. Finally, the \emph{mentioned in} relation allows persisting the association between entities and the messages and chats in which they are mentioned. Consequently, investigators can trace entities to the source messages and verify the correctness of potential deduction reading the original messages (\ref{ch:traceability}). 
 
 
 We consider the metadata from the dump we received to be applicable to most \acp{ima}.
@@ -75,7 +75,7 @@ And each message is described by
   \item the timestamp it was sent,
   \item the name of the sender,
   \item the number of the sender,
-  \item and optionally the attachments.
+  \item and optionally the attachments it contains.
 \end{itemize}
 
 
@@ -94,7 +94,7 @@ And each message is described by
   \label{tab:chatstats}
 \end{table}
 
-\Cref{tab:chatstats} shows the resulting statistics of the metadata extraction in both the investigations I was involved. The remainder of this section refers solely to the second investigate about suspected corruption.
+\Cref{tab:chatstats} shows the resulting statistics of the metadata extraction in both the investigations I was involved. The remainder of this section refers solely to the second investigation about suspected corruption.
 
 
 \subsection{Benchmark Annotation}
@@ -113,7 +113,7 @@ And each message is described by
 \label{tab:chat_ner_stats}
 \end{table}
 
-We annotated a benchmark dataset for evaluating \ac{ner} using six chat conversations, three of which are group chats. These were selected among those sufficiently long and accompanied by audio transcripts. We adopted the same semi-automatic annotation procedure used for the judgments described in \Cref{sec:judgements_labeled_data}. Specifically, we first generated automatic annotations with the \ac{ner} component and then manually revised them using doccano~\cite{doccano}.
+We annotated a benchmark dataset for evaluating \ac{ner} using six chat conversations, three of which are group chats. These were selected among those sufficiently long and accompanied by audio transcripts. We adopted the same semi-automatic annotation procedure used for the judgments, described in \Cref{sec:judgements_labeled_data}. Specifically, we first generated automatic annotations with the \ac{ner} component and then manually revised them using doccano~\cite{doccano}.
 % In total, the dataset contains 668 mentions of \texttt{Person}, 268 of \texttt{Organization}, 207 of \texttt{Location}, 157 of \texttt{Date}, and 11 of \texttt{Money}.
 The final dataset includes 1,311 annotated entity mentions, distributed across five entity types as reported in \Cref{tab:chat_ner_stats}.
 
@@ -134,7 +134,7 @@ Since these datasets contain high-quality recordings, we artificially degraded t
 We evaluated the transcription quality using two complementary metrics: the \textit{Word Error Rate} (WER)~\cite{jm3} and the \textit{BERTScore}~\cite{zhang2020bertscore} (F$_1$).  
 The WER measures the edit distance between the predicted transcription and the reference, normalized by the reference length~\cite{jm3}:  
 \begin{equation}
-  \mathrm{WER} = \frac{\text{Insertions} + \text{Substitutions} + \text{Deletions}}{\text{Number of words in Ground-truth transcript}}
+  \mathrm{WER} = \frac{\text{Insertions} + \text{Substitutions} + \text{Deletions}}{\text{Number of words in ground-truth transcript}.}
 \end{equation}
 Lower WER values indicate better performance.  
 
@@ -158,14 +158,14 @@ The best-performing model was Whisper (Large), which achieved a BERT score of 90
 
 \begin{figure}
 \includegraphics[width=\textwidth]{images/NEEL_chat_complete.drawio.pdf}
-\caption{\Ac{inel} pipeline on chats}% \ac{ner} identifies mentions of entities,
+\caption{\Ac{inel} pipeline on chats.}% \ac{ner} identifies mentions of entities,
 % \underline{steve brown}, \underline{steve}, and \underline{Tom} as Person and \underline{Boston} as Location.
 % \ac{nel} identifies candidate entities from the knowledge graph (KG). NIL prediction detects that \underline{steve brown}, \underline{steve}, and \underline{Tom} are linked to wrong entities and assumes they are not in the KG (NIL), while \underline{Boston} is linked to the KG. Entity clustering assigns \underline{steve brown} and \underline{steve} to the same cluster (\underline{NIL-1}), as they refer to the same entity, and \underline{Tom} to another cluster (\underline{NIL-2}).}
 \label{fig:neel}
 \end{figure}
 
 Most pipeline components for entity extraction are the same as in \Cref{sec:eejudgements,sec:adaptation},
-while the entity clustering has been improved for this study. 
+while NIL clustering has been improved for this study. 
 Figure~\ref{fig:neel} depicts an example application of the \ac{inel} pipeline on chat messages.
 In the remainder of this section, we describe each component of the \ac{inel} pipeline.
 
@@ -180,7 +180,7 @@ Using this model in the experiments can give us clues on how the best model for 
 
 % \subsubsection{\ac{nel}}
 
-For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} obtained from Italian Wikipedia---as in \Cref{sec:claw_consolidation}---additionally populated with the chat participants from the chat \ac{kg}.
+For \ac{nel}, we use the bi-encoder architecture of \blinkita considering the \ac{kr} obtained from Italian Wikipedia, as in \Cref{sec:claw_consolidation}, extended with the chat participants from the chat \ac{kg}.
 To represent chat participants, we leverage BLINK zero-shot capability to encode an entity given its title and textual description. For each of them, we obtain a representation by giving the following input to the bi-encoder:
 \begin{lstlisting}
 [CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP].
@@ -189,13 +189,13 @@ As the majority of the people of interest for the investigation refers to entiti
 %are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.%\todo{controllare che sia vero}\todo{in realtà cerca di linkare anche le date}
 
 % \subsubsection{NIL Prediction}
-In the NIL prediction component, we employ the \textit{logistic regression classifier} described in \Cref{sec:claw_consolidation}.
-It takes the \ac{nel} top-ranked score and \emph{secondiff} (the difference between the top-ranked score and the second-best) and produces a probability $p \in [0,1]$ as output, where 1 denotes the top-ranked link is correct and 0 assigns NIL.
+In the NIL prediction component, we employ the logistic regression classifier described in \Cref{sec:claw_consolidation}.
+It takes the \ac{nel} top-ranked score and ``secondiff'' (the difference between the top-ranked score and the second-best) and produces a probability $p \in [0,1]$ as output, where 1 denotes the top-ranked link is correct and 0 assigns NIL.
 
         % \subsubsection{Entity Clustering and Consolidation}
 
 
-The entity clustering approach, which has been improved with respect to previous work in \Cref{sec:eejudgements}, uses a supervised XGBoost classifier~\cite{chen2016xgboost}, trained with the mentions from the labeled dataset, to calculate a similarity score between pairs of mentions. The input features include lexical similarity measures, namely Jaro-Winkler~\cite{winkler1990string} and Jaccard~\cite{jaccard1901etude}, as well as semantic similarity computed as the cosine similarity of vectors from the \blinkita bi-encoder, applied to the surface forms of the two mentions. The classifier outputs a synthetic similarity score.  
+The entity clustering approach, which has been improved with respect to previous work in \Cref{sec:eejudgements}, uses a supervised XGBoost classifier~\cite{chen2016xgboost}, trained with the mentions from the labeled \ac{ima} dataset, to calculate a similarity score between pairs of mentions. The input features include lexical similarity measures, namely Jaro-Winkler~\cite{winkler1990string} and Jaccard~\cite{jaccard1901etude}, as well as semantic similarity computed as the cosine similarity of the mention vectors obtained from the \blinkita bi-encoder. The classifier outputs a synthetic similarity score.  
 
 Next, the pairwise similarity scores are used to create weighted graphs, where mentions are represented as nodes and the edge weights reflect the mention similarities. The final mention clusters are obtained by applying a community detection algorithm (Louvain method~\cite{blondel2008fast}) on these graphs.
 
@@ -204,9 +204,9 @@ Entity clustering is applied at document-level to group the NIL mentions referri
 %\todo{cosa ne facciamo delle annotazioni?}
 
 
-The application of \ac{inel} has two outcomes: the chat file is annotated (\acl{sta}))
+The application of \ac{inel} has two outcomes: the chat file is annotated (\acl{sta})
 %in such a way that each annotation is associated with a span in the input text;
-and the knowledge graph is updated with the discovered entities---which correspond to the entity clusters---using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).
+and the knowledge graph is updated with the discovered entities, which correspond to the entity clusters, using the ``mentioned in'' relationship (see Figure~\ref{fig:model}).
 % Annotations include information about links to Wikipedia, if present, or the cluster the mention is associated with.    
 
 % consolidation
@@ -218,9 +218,9 @@ and the knowledge graph is updated with the discovered entities---which correspo
 % The results discussed in this section reflect the two-stage development of the project (see Section~\ref{sec:context}) and the maturity gap between the extraction of the enriched graph (first stage) and the application of the \ac{inel} pipeline (second stage). We consider data from the two investigations, focusing on the second one for specific analyses.  
 Our evaluation has three main objectives:
 \begin{enumerate}
-  \item demonstrating that the combination of graph-based modeling, multimedia enrichment, and NLP-based entity extraction enhances \ac{ima} data analysis in criminal investigations through graph queries and semantic search;
-  \item assessing the current quality of the proposed solution;
-  \item discussing limitations and challenges.
+  \item Demonstrating that the combination of graph-based modeling, multimedia enrichment, and NLP-based entity extraction enhances \ac{ima} data analysis in criminal investigations through graph-based querying and semantic search.
+  \item Assessing the current quality of the proposed solution.
+  \item Discussing limitations and challenges.
 \end{enumerate} 
       
 
@@ -401,7 +401,7 @@ We discuss a first evaluation of the \ac{ner} component.
 
 % Results shown in Table~\ref{tab:eval} are significantly worse than those obtained on other domain-specific data on which the pipeline we adapted was tested~\cite{ijckg2022,aixia_2023}. This confirms that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggests that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
 Results shown in Table~\ref{tab:eval} are not satisfactory, confirming that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggesting that in-distribution fine-tuning is necessary.
-Metadata are precisely identified enabling accurate filtering with faceted search.
+On the other hand, metadata are precisely identified enabling accurate filtering with faceted search.
 % Indeed \ac{ima} data contain peculiarities such as person name abbreviations or inconsistent capitalization of names and locations. In relation to fitness for use, we make two remarks. 1) Metadata are precisely identified enabling accurate filtering in DAVE, for instance, by message sender. 2) DAVE supports text search, which makes it possible to complement entity-based retrieval to improve result recall.        
 
 
