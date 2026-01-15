@@ -301,7 +301,6 @@ In \Cref{fig:data-model}, entities are placed in the \acl{kr}, since they are st
 
 \section{Architectural Model}
 \label{sec:arch:mainmodel}
-\todo{da qui}
 
 \begin{figure}[t]
   \centering
@@ -315,16 +314,16 @@ Inside we find the \emph{storage layer}, whose objective is to store information
 This layer is composed of:
 \begin{itemize}
   \item \emph{\Acf{ad}}, which stores documents, annotations, and annotation sets as defined in the data model, supporting multiple document collections.
-  \item \emph{\Acf{krms}}, which stores local entity knowledge, eventually in multiple \aclp{kr} (see \Cref{back:entities} for the definitions of entity and \acl{kr}). Note that, while in the \ac{dia} design this is not enforced, the \ac{kr} components can be \aclp{kb} holding facts about entities in the form of \ac{rdf} triples.
+  \item \emph{\Acf{krms}}, which stores local entity knowledge, eventually in multiple \aclp{kr} (see \Cref{back:entities} for the definitions of entity and \acl{kr}). Note that, while in the \ac{dia} design this is not enforced, the \ac{kr} components can be \aclp{kb} holding facts about entities in the form of \acs{rdf} triples.
   \item \emph{\Acf{ri}}, which holds indexes for efficient retrieval and supports sparse, dense, and hybrid retrieval paradigms.
 \end{itemize}
 
 On top of the storage layer sits the \ac{api} layer, which exposes interfaces to interact with the persisted data. This is the component that must provide the mandatory \acp{api} defined by the requirements:
 \begin{itemize}
   \renewcommand\labelitemi{$\diamond$}
-  \item \emph{\ac{crud} \acp{api}} for all the resources in the data model: documents, annotations, annotation sets, and document collections---stored in the \ac{ad}---entities and \aclp{kr}---stored in the \ac{krms}.
+  \item \emph{\ac{crud} \acp{api}} for all the resources in the data model: documents, annotations, annotation sets, and document collections, stored in the \ac{ad}, entities and \aclp{kr}, stored in the \ac{krms}.
   \item \emph{Sparse, dense, and hybrid retrieval \acp{api}} using the indexes from the \ac{ri} for efficient retrieval.
-  \item \emph{\acl{ql} \acp{api}} supporting aggregation and filtering operations required to compute statistics, derive distributions, and answer structured analytical queries over documents, annotations, and entities. These interfaces must support at least the standard family of operations found in declarative query languages---such as grouping and aggregation (\eg counts, distinct counts, maxima/minima, or averages)---as documented in mainstream \acp{dbms} (\eg PostgreSQL~\cite{postgresql-agg-doc}). Such capabilities are essential to support use case~\ref{uc:stats}, \ie statistical analysis and monitoring. This requirement reflects in the implementation choice of the annotation \ac{db}, which has to support such operations.
+  \item \emph{\acl{ql} \acp{api}} supporting aggregation and filtering operations required to compute statistics, derive distributions, and answer structured analytical queries over documents, annotations, and entities. These interfaces must support at least the standard family of operations found in declarative query languages---such as grouping and aggregation (\eg counts, distinct counts, maxima/minima, or averages)---as documented in mainstream \acp{dbms} (\eg PostgreSQL~\cite{postgresql-agg-doc}). Such capabilities are essential to support use case~\ref{uc:stats}, \ie statistical analysis and monitoring. This requirement is reflected in the implementation choice of the annotation \ac{db}, which has to support such operations.
 \end{itemize}
 These \acp{api} must operate over the network to support distributed deployments, enabling parallel processing and horizontal scalability. Furthermore, they must support the GateJSON format for both input and output of annotated documents, ensuring interoperability across heterogeneous components.
 
@@ -344,18 +343,18 @@ On the other hand, the \emph{Error correction \ac{ui}} provides functionalities 
   % \end{itemize}
   \item For documents, it only provides the delete operation, which consequently deletes all the associated annotation sets and annotations.
   \item Also, for document collections it provides the delete operation, which consequently deletes all documents and annotations.
-  \item Similarly, for knowledge repository it allows for deletion, which propagates to all contained entities.
-  \item For annotations:
+  \item Similarly, for \aclp{kr}, it allows for deletion, which propagates to all contained entities.
+  \item For annotations, it provides the following operations:
   \begin{itemize}
     \item create;
     \item delete;
     \item move---same as modify start and end;
     \item modify properties (type and metadata)---for example to change the linked entity;
-    \item for versioning, each modification---with annexed the user ID and a message explaining the changes---must be persisted in a \emph{history} at the annotation set level. This centralizes the annotation versioning management to the annotation set, allowing to visualize the history of the entire annotation set and to perform rollback operations. 
+    \item versioning: each modification---with annexed the user ID and a message explaining the changes---must be persisted in a \emph{history} at the annotation set level. This centralizes the annotation versioning management to the annotation set, allowing to visualize the history of the entire annotation set and to perform rollback operations. 
   \end{itemize}
-  \item For annotation sets:
+  \item For annotation sets, it allows to:
   \begin{itemize}
-    \item delete together with all the annotations;
+    \item delete a set, together with all the annotations;
     \item view history, including user IDs and message for each modification;
     \item rollback to a specific version, undoing all the modifications performed afterwards.
   \end{itemize}
@@ -375,13 +374,15 @@ We conclude the core architectural description by defining three information flo
 External services process raw data, serialize it in GateJSON, and inject it into the \ac{dia} via \acp{api}. This corresponds to the green arrows in \Cref{fig:architectural-model}, incoming from outside to the core of the \ac{dia}.
 
 \item \emph{\Acl{ia} flow.}
-\acp{ui} retrieve stored information in GateJSON via read or retrieval \acp{api} and present it to users. This corresponds to the outgoing red arrow in \Cref{fig:architectural-model}.
+\acp{ui} retrieve information stored in the \ac{dia} via read or retrieval \acp{api} (using GateJSON) and present it to users. This corresponds to the outgoing red arrow in \Cref{fig:architectural-model}.
 
 \item \emph{Circular flow.}
 Some services both read from and write to the \ac{dia}, such as sequential processors that enrich documents (e.g.\ by adding annotation sets). The \emph{Error-correction \ac{ui}} is similar: it reads from the \ac{dia} and persists human-made revisions back into it.
 \end{enumerate}
 
-These three flows enable external services to ingest, access, and iteratively refine information, allowing the \ac{dia} to generalize across use cases. Moreover, running processing on top of previously generated results, combined with network-based \acp{api}, enables complex workflows and distributed execution. Operating on separate annotation sets minimizes conflicts among concurrent processes, and loose coupling supports scalability when combined with an orchestrator. The systematic use of \acp{uri} ensures that documents and annotations can be retrieved unambiguously via the \acp{api}.
+These three flows enable external services to ingest, access, and iteratively refine information, allowing the \ac{dia} to generalize across use cases.
+Moreover, executing processing steps on top of previously generated results, combined with network-based \acp{api}, enables complex workflows and distributed execution.
+The ability to operate on separate annotation sets minimizes conflicts among concurrent processes, while loose coupling supports scalability when combined with an orchestrator. The systematic use of \acp{uri} ensures that documents and annotations can be retrieved unambiguously via the \acp{api}.
 
 
 
@@ -428,13 +429,13 @@ Annotation Versioning &
 Part of the error correction \ac{ui}; history handled at annotation-set level with rollback. \\
 
 Retrieval \acp{api} &
-Sparse/dense/hybrid retrieval via the \ac{ri}. \\
+Sparse, dense, hybrid retrieval via the \ac{ri}. \\
 
 Support for a \ac{ql} &
 Necessary requirements for choosing the annotation \ac{db} implementation. \\
 
 Visualization \ac{ui} &
-Designed to display annotated documents, selecting annotation sets, inspecting properties, tracing entity-annotation links, supporting traceability and basic \ref{uc:navigation} navigation. \\
+Designed to display annotated documents, selecting annotation sets, inspecting properties, tracing entity-annotation links, supporting traceability and basic \ref{uc:navigation} (navigation). \\
  
 Error Correction \ac{ui} &
 Designed to revise or delete annotations and entities, with versioning to preserve history and support error correction capability. \\
