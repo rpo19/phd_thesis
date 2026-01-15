@@ -6,13 +6,13 @@ Although the work takes inspiration from different projects in the legal domain,
 
 
 
-Over the past years I have contributed to several research projects aimed at incorporating \ac{ai} technologies into the Italian legal ecosystem. As shown by the document types considered in this thesis, my work has primarily concentrated on two contexts: Italian civil judgments and criminal investigations. This activity began in 2021, when I started collaborating with my future \phd supervisor, Professor Matteo Palmonari, on the application of \acl{ee} methods to investigative data.
+Over the past years I have contributed to several research projects aimed at incorporating \acf{ai} technologies into the Italian legal ecosystem. As shown by the document types considered in this thesis, my work has primarily concentrated on two contexts: Italian civil judgments and criminal investigations. This activity began in 2021, when I started collaborating with my future \phd supervisor, Professor Matteo Palmonari, on the application of \acl{ee} methods to investigative data.
 %
 During this collaboration I contributed to the development of proofs of concept and architectural prototypes for integrating and managing documents in these contexts, which gave me continuous exposure to real use cases and the opportunity to collect feedback from legal professionals.
 
 
 
-In the remainder of this chapter we define the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}), compare it with the prototypes previously developed as part of this \phd{} (\Cref{sec:arch_proto}), and finally describe the advanced \acp{ui} that can be paired with an implementation of the proposed \ac{dia} (\Cref{sec:iaui-from-prototypes}). The chapter concludes with a summary of the main points (\Cref{sec:arch:conclusion}).
+In the remainder of this chapter we define the requirements for the architectural design (\Cref{sec:arch:reqs}), then we describe our proposal, including the data model with the chosen interchange format (\Cref{sec:arch:datamodel}) and the model of the architecture (\Cref{sec:arch:mainmodel}), compare it with the prototypes previously developed as part of this \phd{} (\Cref{sec:arch_proto}), and finally describe the advanced \acfp{ui} that can be paired with an implementation of the proposed \acf{dia} (\Cref{sec:iaui-from-prototypes}). The chapter concludes with a summary of the main points (\Cref{sec:arch:conclusion}).
 
 
 
@@ -21,7 +21,7 @@ The \phd publications related to this chapter are the following: \textcite{BELLA
 \section{Requirements}
 \label{sec:arch:reqs}
 
-As anticipated in \Cref{sec:intro}, the proposed \acl{dia} architecture serves as the bridge between the information extraction and access layers. It ensures that extracted information is stored, integrated, and made accessible in a consistent and verifiable manner.
+As anticipated in \Cref{sec:intro}, the proposed \acl{dia} serves as the bridge between the information extraction and access layers. It ensures that extracted information is stored, integrated, and made accessible in a consistent and verifiable manner.
 
 The architecture is designed to support both structured legal documents (e.g., judgments, legislative acts) and the heterogeneous data produced in investigative contexts. Its design follows a set of guiding principles:
 \begin{enumerate}
@@ -29,7 +29,7 @@ The architecture is designed to support both structured legal documents (e.g., j
   \item \textbf{Traceability and verifiability}, ensuring that the provenance of any extracted information can always be inspected. For example, a user querying for documents mentioning a person should be able to view the original mention in its textual context, while a \acl{qa} component should expose the passages supporting its answers.
   \item \textbf{Error correction capability}, enabling users to identify and correct extraction errors through a \acf{hitl}~\cite{klie-etal-2020-zero} validation approach, thereby supporting human oversight~\cite[Art.~14]{ai_act} and reinforcing system quality.
   \item \textbf{Scalability} to large and continuously growing document collections.
-  \item \textbf{Loose coupling} between components, including external services built on top of the architecture, allowing independent evolution, replacement, or reconfiguration of modules (e.g., switching to an alternative search engine or updating external \ac{ner} or \ac{qa} components) without affecting the rest of the system. Loose coupling also contributes to the architecture availability, as failures or maintenance operations affecting a single component do not compromise the operation of the overall architecture.
+  \item \textbf{Loose coupling} between components, including external services built on top of the architecture, allowing independent evolution, replacement, or reconfiguration of modules (e.g., switching to an alternative search engine or updating external \acl{ner} or \acl{qa} components) without affecting the rest of the system. Loose coupling also contributes to the architecture availability, as failures or maintenance operations affecting a single component do not compromise the operation of the overall architecture.
   \item \textbf{Interoperability} with internal and external systems, to support complex workflows in which several extractors are executed in sequence. For this reason, it is necessary that all services \emph{communicate} using a \acf{uniof}, so that sequential workflows can be seamlessly modified by adding or removing extractors.
 \end{enumerate}
 
@@ -85,12 +85,12 @@ Simplifies integration of new services and composition of pipelines. \\%
 Principle &
 Minimum Necessary Functionality &
 To restrict the \ac{dia} design to only what is needed to support the requirements and all use cases
-\ref{uc:case-retrieval}--\ref{uc:stats}. \\%
+(\ref{uc:case-retrieval}--\ref{uc:stats}). \\%
 \midrule
 Functional &
-\ac{crud} \acp{api} &
+\Ac{crud} \acp{api} &
 Foundation to create and revise resources required in all use cases
-\ref{uc:case-retrieval}--\ref{uc:stats}. \\%
+(\ref{uc:case-retrieval}--\ref{uc:stats}). \\%
 
 Functional &
 Multiple Document Collections &
@@ -101,17 +101,17 @@ Annotation Versioning &
 Required for traceability and error correction capability. \\%
 
 Functional &
-Retrieval \acp{api} (sparse/dense/hybrid) &
-Required for \ref{uc:case-retrieval} case retrieval and
-\ref{uc:investigative-retrieval} investigative retrieval, and \ref{uc:qa} \ac{qa}. \\%
+Retrieval \acp{api} (sparse, dense, hybrid) &
+Required for \ref{uc:case-retrieval} (case retrieval), 
+\ref{uc:investigative-retrieval} (investigative retrieval), and \ref{uc:qa} (\ac{qa}). \\%
 
 Functional &
 Support for a \ac{ql} &
-Required for \ref{uc:stats} statistical analysis and performance monitoring. \\%
+Required for \ref{uc:stats} (statistical analysis and performance monitoring). \\%
 
 Functional &
 Visualization \ac{ui} &
-Needed to verify and trace extracted information (\eg where an entity is mentioned). Providing basic \ref{uc:navigation} document navigation. \\%
+Needed to verify and trace extracted information (\eg where an entity is mentioned). Providing basic \ref{uc:navigation} (document navigation). \\%
 % Provides basic \ref{uc:navigation}
 
 Functional &
@@ -145,17 +145,17 @@ The additional functional requirements are the following:
 \begin{itemize}
   \renewcommand\labelitemi{$\diamond$}
     \item \emph{\acf{crud}~\cite{martin1983managing} \acp{api}} for creating, reading, updating, deleting documents, entities, and annotations. However, an important exception need to be applied: since the annotations refer and depend on the document text, modifying it should normally be forbidden as it invalidates all the existing annotations.
-    \item Support for \emph{multiple collections of documents}. While, for example, storing data from different investigations in the same \ac{dia} instance may not be advisable due to risks in data protection, this requirement allows handling---and interlink via \acp{uri}---different but related set of documents, or to host multiple \say{models} of the same data. As a practical example derived from the experience as investigative consultant, investigator may need to visualize entire chats from \acf{ima} data and also to navigate single messages---\eg searching for messages sent in a specific time interval. In the first scenario it is preferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, \eg for visualizing the entire chat containing a message. Finally, different document collections should be allowed to refer to different \aclp{kr}.
+    \item Support for \emph{multiple collections of documents}. While, for example, storing data from different investigations in the same \ac{dia} instance may not be advisable due to risks in data protection, this requirement allows handling---and interlinking via \acp{uri}---different but related set of documents, or to host multiple \say{models} of the same data. As a practical example derived from the experience as investigative consultant, investigator may need to visualize entire chats from \acf{ima} data and also to navigate single messages---\eg searching for messages sent in a specific time interval. In the first scenario it is preferable to model chats as documents, while in the second to atomically model messages as documents. This requirement enables this kind of flexibility, also allowing to interlink items, \eg for visualizing the entire chat containing a message. Finally, different document collections should be allowed to refer to different \aclp{kr}.
     \item Support for \emph{annotation versioning}. The architectural model prototyped in previous work~\cite{BELLANDI2024} was already able to manage multiple versions of the same document. This functionality was introduced for storing the original document and additional pre-processed copies. In this formalization of the \ac{dia} we simplify this functionality to versioning only the annotations---which can be modified by humans through the Error correction \ac{ui}---in order to allow \emph{error correction capability} and \emph{traceability} at the same time. For fully supporting these principles, we borrow consolidated concepts from version control systems for software development~\cite{version_control_survey_2018}: it should be possible to maintain, and potentially restore, previous versions of all the annotations and any modification should be recorded with an identifier of the user who performed the operation and an explanatory message describing the changes---similarly to a git commit~\cite{version_control_survey_2018}. For more complex needs requiring documents' modifications, users can rely on the support for \emph{multiple collections} and ingest the processed documents in a new collection.
     \item \textit{Retrieval \acp{api}}, supporting:
       \begin{itemize}[nosep]
-        \item sparse \ac{ir} for keyword-based retrieval or faceted search
+        \item sparse \acf{ir} for keyword-based retrieval or faceted search
               (\ref{uc:case-retrieval}, \ref{uc:investigative-retrieval})~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted};
-        \item dense semantic retrieval for question answering~\ref{uc:qa}~\cite{negar_sparse_dense_retrieval_2021};
+        \item dense semantic retrieval for question answering~(\ref{uc:qa})~\cite{negar_sparse_dense_retrieval_2021};
         \item hybrid retrieval combining sparse and dense~\cite{negar_sparse_dense_retrieval_2021}.
       \end{itemize}
-      In fact, users may benefit from both: sparse retrieval systems allow to exactly search for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining sparse may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
-    \item Support for a \emph{\acf{ql}} capable of expressing complex queries to enable advanced statistical analysis \ref{uc:stats}.
+      In fact, users may benefit from both: sparse retrieval systems allow to exactly search for a certain keyword; while \ac{rag} applications generally use dense retrieval~\cite{old_ir_methods_rag_2024}; and combining both may provide complementary information~\cite{negar_sparse_dense_retrieval_2021}.
+    \item Support for a \emph{\acf{ql}} capable of expressing complex queries to enable advanced statistical analysis~(\ref{uc:stats}).
     \item \emph{Visualization \ac{ui}} that allow users to visualize documents with automatic annotations, to trace and verify the mentioned entities, in support of the requirement for \emph{traceability and verifiability}.
     \item \emph{Error correction \ac{ui}} that allow users to access documents and automatic annotations, to correct machine errors in support of the requirement for \emph{error correction capability}.
 \end{itemize}
@@ -183,22 +183,15 @@ However, differently from those works, the present chapter---which addresses \re
 % properties of annotations,... gate for standard communication and existing apis
 
 % \paragraph{Document--Annotation--Entity Triad}
-As anticipated, to support the integration of heterogeneous data sources within a unified representation, we formalize three core concepts: \emph{documents}, \emph{annotations}, and \emph{entities}. These concepts establish the structural basis for storing and integrating heterogeneous data from knowledge-intensive domains. Their design is inspired by the GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} project, from which we adopt the notions of documents\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}}, annotations\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation.html}}, and annotation sets\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation_set.html}}---that allows to organize annotations in sets---as well as the use of key--value metadata, corresponding to the ``features'' property of GateNLP objects.
+As anticipated, to support the integration of heterogeneous data sources within a unified representation, we formalize three core concepts: \emph{documents}, \emph{annotations}, and \emph{entities}. These concepts establish the structural basis for storing and integrating heterogeneous data from knowledge-intensive domains. Their design is inspired by the GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} project, from which we adopt the notions of documents\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}}, annotations\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation.html}}, and annotation sets\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/annotation_set.html}}---that allows to organize annotations in sets---as well as the use of key--value metadata.
 
-\begin{figure}[htbp!]
-  \centering
-  \includegraphics[width=\linewidth]{images/data_model.drawio.pdf}
-  \caption{Data model for documents, annotations, annotation sets, and entities.}
-  \label{fig:data-model}
-\end{figure}
-%
 GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} is a Python framework for natural language processing that provides a flexible representation of documents and annotations, also offering interactive visualization in Jupyter notebooks.
 
-We also choose GateNLP python objects serialized in JSON format~\cite{rfc8259} as the \emph{data interchange format}, to achieve interoperability of services. The integration of dedicated services, indeed, is supported by the designed \ac{dia} for the purpose of generalizability, as dedicated processors may be required by specific use case.
-For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \ac{ner} and \ac{nel}, must be in \emph{GateJSON} format---which means an instance of the GateNLP document object\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}} serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations, as shown in \Cref{lst:gatejson-format}.
+We also adopt GateNLP python objects serialized in JSON format~\cite{rfc8259} as the \emph{data interchange format}, to achieve interoperability of different services. The integration of dedicated services, indeed, is supported by the designed \ac{dia} for the purpose of generalizability, as dedicated processors may be required by specific use case.
+For example, the input of the \emph{create document} \ac{api} or the output of systems that produce annotations, such as for \acl{ner} and \acl{nel}, must be in \emph{GateJSON} format---which means an instance of the GateNLP document object\footnote{\url{https://gatenlp.github.io/python-gatenlp/pythondoc/gatenlp/document.html}} serialized in JSON. The serialized documents, indeed, also contain the annotation sets and the annotations, as shown in \Cref{lst:gatejson-format}.
 This choice also maintain compatibility with GateNLP functions (after deserializing documents into Python objects) which support advanced operations on annotation sets, useful, for instance, to identify overlapping annotations, or annotations contained in another annotation. 
 
-\begin{lstlisting}[language=json,basicstyle=\ttfamily\small,caption={The GateJson format with an illustrative judgment, obtained by serializing a GateNLP document with \texttt{json.dumps(gate\_doc.to\_dict())}. Metadata are represented in the ``features'' field.},label={lst:gatejson-format},float]
+\begin{lstlisting}[language=json,basicstyle=\ttfamily\small,caption={The GateJson format with an illustrative judgment. Metadata are represented in the ``features'' field.},label={lst:gatejson-format},float]
 { "name": "Judgment No.~987/2025",
   "text": "Giovanni Bianchi, residing in Bologna [...] -- plaintiff and Davide Ricci, residing in Milan [...] -- defendant FACTS [...] April 3, 2022 [...] EUR 10,000 [...] December 31, 2022 [...] Article 1813 c.c. [...]",
   "features": {"uri": "https://anndb.example.org/document/Judgment9872025},
@@ -216,28 +209,14 @@ This choice also maintain compatibility with GateNLP functions (after deserializ
       ]}}}
 \end{lstlisting}
 
-As a real example, suppose to have a document, derived from a legal judgment, with two annotation sets, one containing annotations for the sections of the judgment, and the second containing \ac{ner} annotation for the people involved in the judgment. For identifying plaintiffs and defendants we usually focus on the beginning of the document with the section ``identification of the parties''. So given this section, with GateNLP \acp{api} we are able to obtain which people are mentioned in that section:
-\begin{lstlisting}[language=Python, caption={Example of using GateNLP~\cite{cunningham-etal-2002-gate,gatenlp} \acp{api}.}, label={lst:gatenlp-section-example},float]
-from gatenlp import Document
-import json
+\begin{figure}[htbp!]
+  \centering
+  \includegraphics[width=\linewidth]{images/data_model.drawio.pdf}
+  \caption{Data model for documents, annotations, annotation sets, and entities, additionally including the \acf{kr}. \acs{krms} stands for \acl{krms}.}
+  \label{fig:data-model}
+\end{figure}
 
-# Load the JSON serialized document
-with open("judgment_doc.json") as file:
-    raw_doc = json.load(file)
-
-# Deserialize the document
-gate_doc = Document.from_dict(raw_doc)
-
-# Get the annotation sets
-sections = gate_doc.annset("sections")
-people = gate_doc.annset("persons")
-
-# Select the section of interest, in this case the first
-parties_id_section = sections[0]
-
-# Retrieve all person annotations contained in that section
-mentions = people.within(parties_id_section)
-\end{lstlisting}
+As a real example, suppose to have a document, derived from a legal judgment, with two annotation sets, one containing annotations for the sections of the judgment, and the second containing \ac{ner} annotation for the people involved in the judgment. For identifying plaintiffs and defendants we usually focus on the beginning of the document, in the section ``identification of the parties''. So given this section, with GateNLP \acp{api} we are able to obtain which people are mentioned in that section.
 
 To clearly define the components of our document--annotation--entity triad, additionally enriched by annotation sets, we describe each element separately and provide a conceptual schema in \Cref{fig:data-model}.
 %in the following enumeration. This structured presentation highlights the properties and relationships of documents, annotations, and annotation sets, and clarifies their role in supporting traceability, interoperability, and advanced annotation-based operations.
@@ -252,7 +231,7 @@ To clearly define the components of our document--annotation--entity triad, addi
     \item a unique \ac{uri}, ensuring global identifiability;
     \item a \emph{name}, used as a human-readable label;
     \item the \emph{text content};
-    \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary.  
+    \item optional \emph{metadata}, stored as key--value pairs.  
   \end{itemize}
   Documents serve as the source layer for annotations and the reference point for traceability.
 
@@ -261,7 +240,7 @@ To clearly define the components of our document--annotation--entity triad, addi
   \begin{itemize}
     \item a unique \ac{uri};
     \item the \ac{uri} of the \emph{source document}, ensuring that the annotation can always be traced back to its origin---even when processed within collections derived from another collection;
-    \item the \ac{uri} of the \emph{annotation set} the annotation is part of, similarly for ensuring traceability;
+    \item the \ac{uri} of the \emph{annotation set} it is part of, for ensuring traceability;
     \item the \emph{start} and \emph{end} character offsets in the document text;
     \item the \emph{type} of the annotation, \eg the \ac{ner} type, or the name of a section;
     \item optional \emph{metadata}, as key--value pairs, representing additional properties, \eg the linked entity \ac{uri} for \ac{nel} annotation or the version of the annotation algorithm.  
@@ -276,7 +255,7 @@ To clearly define the components of our document--annotation--entity triad, addi
     \item the \ac{uri} of the \emph{document} to which the annotation set refers;
     \item a \emph{name}, describing the set (\eg ``\ac{ner}-v1'' or ``\ac{nel}-v1'');
     \item a list of contained \emph{annotations};
-    \item optional \emph{metadata}, stored as feature key--value pairs.
+    \item optional \emph{metadata}, stored as key--value pairs.
   \end{itemize}
 %   Managing annotations through sets facilitates versioning, organization by task or algorithm, and selective querying.
   \item \textbf{Entity.}  
@@ -284,7 +263,7 @@ To clearly define the components of our document--annotation--entity triad, addi
     \begin{itemize}
         \item a unique \ac{uri}, ensuring global identifiability;
         \item a \emph{name}, used as a human-readable label;
-        \item optional \emph{metadata}, stored as key--value pairs in a feature dictionary. For example, metadata may contain the entity type (or types).
+        \item optional \emph{metadata}, stored as key--value pairs. For example, metadata may contain the entity type (or types).
     \end{itemize}
     % Entities provide a generalizable way to interlink heterogeneous documents and annotations.
 
@@ -312,16 +291,17 @@ To clearly define the components of our document--annotation--entity triad, addi
 
 \end{enumerate}
 
-The metadata, present in each model, correspond to GateNLP's general-purpose \emph{features} property, implemented as a key--value dictionary. While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, which simplify locating resources, enabling inter-document linking, and the use with distributed storage.
+While GateNLP uses internal numeric identifiers for its objects, we extend it by introducing globally unique \acp{uri}, which simplify locating resources, enabling inter-document linking, and the use with distributed storage.
 Furthermore, \acp{uri} allow for the seamless integration of public \acp{kr} and \acp{kb}, allowing to link annotations to entities from Wikipedia, Wikidata, or domain specific \acp{kr}.
 
-In \Cref{fig:data-model}, entities are placed in the \acl{kr}. This is because entities are stored and managed in the \acl{kr}, as we will describe in the next section.
+In \Cref{fig:data-model}, entities are placed in the \acl{kr}, since they are stored and managed there, as described in the next section.
 
 
 
 
 \section{Architectural Model}
 \label{sec:arch:mainmodel}
+\todo{da qui}
 
 \begin{figure}[t]
   \centering
