@@ -3,16 +3,8 @@
 
 The architectural model introduced in this chapter derives from the experience acquired in previous projects. In this section we compare it with previous prototypes developed as part of my \phd, namely \textcite{BELLANDI2024,pozzi_wise_2025,Agazzi2025DAVE}. Among these, only \textcite{BELLANDI2024} explicitly treated architecture as a research goal, but all these works implemented parts of the principles and functional requirements that are now formalized in this chapter.
 
-\todo{move table before (here?)}
+
 Table~\ref{tab:arch-proto-support} compares the requirements defined here with what was actually supported by earlier prototypes. The comparison shows that the systems did not converge to a stable architecture, but they provided the practical experience and feedback that led to the general model presented in this chapter.
-
-In \textcite{BELLANDI2024} we built the first prototype that integrated storage, extraction, and \ac{ia} \acsp{ui} for civil judgments. That work explicitly considered architectural aspects, prototyped search and visualization over annotated judgments, adopted the document--annotation--entity representation, and showed generalizability and interoperability with ad-hoc services---\ie rule-based extractors (RAE)---for extracting law articles and postal addresses.
-
-In \textcite{pozzi_wise_2025} we applied a similar design to investigative \ac{ima} data. That evaluation made clear that it was necessary to generalize the notion of document (chat vs.\ message) and that the existing implementation lacked support for multiple document collections---which would have been needed to represent both chats and messages within the same instance. In that work we instead used a \acl{kg} (implemented with neo4j~\cite{neo4j}, a graph database) to represent messages. The graph-based visualization provided in neo4j~\cite{neo4j} \ac{ui} received positive feedback from investigators. Although, in that case, only a small set of relations was instantiated, using a \ac{kg} enables storing entity facts as triples and increases the modeling capacity, as shown for instance by the \textit{participant-in} relation between \texttt{Person} and \texttt{Chat}. Such facts can also support more advanced \ac{ia} methods such as \refact, discussed in \Cref{chap:refactx}. Nevertheless, a \ac{kg} was not prescribed in the final architecture, since it is not strictly required under the minimum-necessity principle, and \ac{kr} is a more general abstraction than a \ac{kg}.
-
-Finally, \textcite{Agazzi2025DAVE} focused on improving \ac{ia} \aclp{ui} adding support for all retrieval modes. That work did not address other requirements such as multiple document collections, annotation versioning, or full error correction---\eg entity or document deletion was not available from the \acp{ui}.
-
-In summary, the prototypes developed during the \phd anticipated many components of the \acl{dia} and also revealed the missing parts that motivated its explicit formalization.
 
 
 \begin{table}[htbp]
@@ -20,32 +12,31 @@ In summary, the prototypes developed during the \phd anticipated many components
 \caption{Support of \ac{dia} requirements across prior works
 (\yes full,\ \almost almost, \psup partial,\ \no none).}
 \label{tab:arch-proto-support}
-\begin{tabularx}{\textwidth}{p{1cm} X X X X}
+\begin{tabularx}{\textwidth}{p{1.1cm} X X X X}
 \toprule
 \textbf{Req.} & \textbf{Aspect} & \textbf{Ref. \cite{BELLANDI2024}} & \textbf{Ref. \cite{pozzi_wise_2025}} & \textbf{Ref. \cite{Agazzi2025DAVE}} \\
 \midrule
 
-Gen. & doc--ann--ent & \yes & \yes & \yes \\
-% & multi-collection & \no & \no & \no \\
-& \ac{uri} & \psup not universal & \psup not universal & \psup not universal \\
-& multi collect. & \almost not all \acp{ui} supp. & \no & \no \\
+Gener- & doc--ann--ent & \yes & \yes & \yes \\
+aliza- & \ac{uri} & \psup not universal & \psup not universal & \psup not universal \\
+bility & multi collect. & \almost not all \acp{ui} supp. & \no & \no \\
 & service integration & \yes RAE & \yes in principle & \yes in principle \\ % not tested. GateJSON below
 & interop. \ac{uniof} & \yes GateJSON & \yes GateJSON & \yes GateJSON \\
 & loose coupl. & \yes & \no not addressed & \no not addressed \\
 \midrule
 
-Trace. & trace. annotations & \yes w/ GateNLP & \yes w/ GateNLP & \yes w/ GateNLP \\
-& visual. \ac{ui} & \almost no entity page & \yes & \yes \\
+Trace- & trace. annotations & \yes w/ GateNLP & \yes w/ GateNLP & \yes w/ GateNLP \\
+ability & visual. \ac{ui} & \almost no entity page & \yes & \yes \\
 
 \midrule
 
-ErrCorr. & version/rollback & \no & \no & \no \\
-& err corr. \ac{ui} & \psup no ent. no hist. & \psup no ent. no hist. & \psup no ent. no hist. \\
-& ann. versioning & \psup multi doc vers. & \no & \no \\
+Error & version/rollback & \no & \no & \no \\
+Cor- & err corr. \ac{ui} & \psup no ent. no hist. & \psup no ent. no hist. & \psup no ent. no hist. \\
+rection & ann. versioning & \psup multi doc vers. & \no & \no \\
 \midrule
 
-Scalab. & net \ac{api} & \yes & \yes & \yes \\
-& annset parallel. & \yes & \yes & \yes \\
+Scal- & net \ac{api} & \yes & \yes & \yes \\
+ability & annset parallel. & \yes & \yes & \yes \\
 & other & implements service orchestrator & -- & -- \\
 \midrule
 
@@ -66,6 +57,20 @@ Scalab. & net \ac{api} & \yes & \yes & \yes \\
 \bottomrule
 \end{tabularx}
 \end{table}
+
+
+
+In \textcite{BELLANDI2024} we built the first prototype that integrated storage, extraction, and \acl{ia} \acsp{ui} for civil judgments. The study explicitly considered architectural aspects, prototyped search and visualization over annotated judgments, adopted the document--annotation--entity representation, and showed generalizability and interoperability with ad-hoc services---\ie rule-based extractors (RAE)---for extracting law articles and postal addresses.
+
+In \textcite{pozzi_wise_2025} we applied a similar design to investigative \ac{ima} data. The evaluation made clear that it was necessary to generalize the notion of document (chat vs.\ message) and that the existing implementation lacked support for multiple document collections---which would have been needed to represent both chats and messages within the same instance. In that prototype we instead used a \acl{kg} (implemented with neo4j~\cite{neo4j}, a graph database) to represent messages. The graph-based visualization provided in neo4j~\cite{neo4j} \ac{ui} received positive feedback from investigators.
+
+Although, in that case, only a limited set of relations was considered, using a \acf{kg} enables storing entity facts as triples and increases the modeling capacity, as shown for instance by the \textit{participant-in} relation between \texttt{Person} and \texttt{Chat}. Such facts can also support more advanced \acl{ia} methods such as \refact, discussed in \Cref{chap:refactx}. Nevertheless, a \ac{kg} was not prescribed in the final architecture, since it is not strictly required under the minimum-necessity principle, and the \acf{kr} is a more general abstraction than a \ac{kg}.
+
+Finally, \textcite{Agazzi2025DAVE} focused on improving \aclp{ui} for \acl{ia}, adding support for all retrieval modes. This work did not address other requirements such as multiple document collections, annotation versioning, or full error correction (\eg entity or document deletion was not available from the \acp{ui}).
+
+In summary, the prototypes developed during the \phd anticipated many components of the \acl{dia} and also revealed the missing parts that motivated its explicit formalization.
+
+
 
 
 

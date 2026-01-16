@@ -19,22 +19,22 @@ entity-centric framework for assisting users in analyzing documents from
 knowledge-intensive domains and its main \acp{ui} functionalities follow below. Furthermore, these are illustrated at the end of this section, in \Cref{fig:dave-explorer-types,fig:dave-explorer-instance,fig:dave-facets,fig:dave-qa,fig:dave-editing}, using court documents from proceedings concerning the 1995 Oklahoma City bombing.\footnote{\url{https://en.wikipedia.org/wiki/Oklahoma_City_bombing}}
 
 \begin{itemize}
-    \item  \emph{Faceted search}~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}: users can retrieve documents (in support of the retrieval use cases, \ref{uc:case-retrieval} and \ref{uc:investigative-retrieval}) by entering keywords, as shown in \Cref{fig:dave-facets}. Additionally, they can refine their search results by applying multiple filters corresponding to the entities in the documents or their entity types. Users can filter the corpus based on specific entities, such as individuals or locations. For example, a user interested in bombing cases in Austin, Texas might search for the keyword ``bombing'' and later narrow the focus using the filtering panel and selecting \textsc{Austin, Texas} from the list of identified entities. In this case, the resulting document will match the keyword ``bombing'' and contain a link to the entity \textsc{Austin, Texas}.
+    \item  \emph{Faceted search}~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}: users can retrieve documents (in support of the retrieval use cases, \ref{uc:case-retrieval} and \ref{uc:investigative-retrieval}) by entering keywords, as shown in \Cref{fig:dave-facets}. Additionally, they can refine their search results by applying multiple filters corresponding to the entities in the documents or their types. Users can filter the corpus based on specific entities, such as individuals or locations. For example, a user interested in bombing cases in Austin, Texas might search for the keyword ``bombing'' and later narrow the focus using the filtering panel and selecting \textsc{Austin, Texas} from the list of identified entities. In this case, the resulting document will match the keyword ``bombing'' and contain a link to the entity \textsc{Austin, Texas}.
 
     
     \item  \emph{Document explorer}: users can visualize documents enriched with \acl{sta} by coloring the entity mentions~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023} according to their types (\Cref{fig:dave-explorer-types}). Each annotation is clickable allowing to inspect its details (\Cref{fig:dave-explorer-instance}).
     Furthermore, this \ac{ui} enables entity-based document exploration by providing, in a panel on the left, the list of mentioned entities grouped by type. Users can expand a type, search for specific entity, and visualize the list of all its mentions. By clicking a mention, the document explorer focuses it in the document allowing the user to see it in its entire context.  
     This interface supports the navigation and exploration use case (\ref{uc:navigation}) and implements \emph{traceability and verifiability} to a considerable extent, although the entity view is per-document rather than global.
 
-    \item  \emph{Conversational \acl{qa}} supports natural language queries (use case \ref{uc:qa}), using the \ac{rag} paradigm, and allowing users to ask questions about entities and factual information across a single document, a selection of documents previously filtered with faceted search, or all the documents. Besides giving an answer in natural language, it provides the text passages used by the \ac{llm} for generating the answer---preserving traceability. It is illustrated in \Cref{fig:dave-qa}
+    \item  \emph{Conversational \acl{qa}} supports natural language queries (use case \ref{uc:qa}), with the \acf{rag} paradigm, and allows users to ask questions about entities and factual information across a single document, a selection of documents (previously filtered with faceted search), or all the documents. Besides giving an answer in natural language, it provides the text passages used by the \ac{llm} for generating the answer---preserving traceability. It is illustrated in \Cref{fig:dave-qa}
 
     \item  \emph{Error correction and refinement}: users can refine annotations by deleting them from the document explorer, or modify the linked entity. Additionally, entity clusters can be refined with drag-and-drop by selecting two clusters from a dedicated \ac{ui} and dragging the mentions from one to another, as shown in \Cref{fig:dave-editing}. These capabilities support error correction.
     
 \end{itemize}
 
-Overall, \ac{dave} provides a unified environment that integrates entity-based document management, faceted search, conversational \ac{qa} with \ac{rag}, and \acl{hitl} refinement in a single framework. Rather than proposing new algorithms for extraction or retrieval, the system operationalizes known components in a way that is directly usable by professionals, while preserving traceability, verifiability, and error correction capability.
+Overall, \ac{dave} provides a unified environment that integrates entity-based document management, faceted search, conversational \acf{qa} with \ac{rag}, and \acl{hitl} refinement in a single framework. Rather than proposing new algorithms for extraction or retrieval, the system operationalizes known components in a way that is directly usable by professionals, while preserving traceability, verifiability, and error correction capability.
 
-Finally, the graph-based visualization for \acl{ima} in investigative contexts~\cite{pozzi_wise_2025} is worth a mention: it represents communication networks derived from chats and---thanks to the underlying graph database---supports investigative queries that cannot be expressed through keyword search alone. This \ac{ui}, illustrated in \Cref{fig:kg-exploration}, was reported as useful in practitioner feedback, and its integration with the other functionalities in \ac{dave} is a direction for future work.
+Finally, the graph-based visualization for \acl{ima} in investigative contexts~\cite{pozzi_wise_2025} is worth a mention: it represents communication networks derived from chats and, thanks to the underlying graph database, it supports investigative queries that cannot be expressed through keyword search alone. This \ac{ui}, illustrated in \Cref{fig:kg-exploration}, was reported as useful in practitioner feedback, and its integration with the other functionalities in \ac{dave} is a direction for future work.
 
 
 % \paragraph{Error correction and refinement.}
@@ -46,7 +46,7 @@ Finally, the graph-based visualization for \acl{ima} in investigative contexts~\
 
 \begin{table}[htbp]
 \centering
-\caption{\aclp{ui} and supported use cases.}
+\caption{\Aclp{ui} and supported use cases.}
 \label{tab:uc:ui}
 \begin{tabularx}{\textwidth}{p{6cm} X}
 \toprule
@@ -60,10 +60,10 @@ Finally, the graph-based visualization for \acl{ima} in investigative contexts~\
 \ref{uc:case-retrieval} (case retrieval);
 \ref{uc:investigative-retrieval} (investigative retrieval) \\
 
-\ac{dave} Conversational \ac{qa} \ac{ui} &
+\ac{dave} Conversational \ac{qa} &
 \ref{uc:qa} (\ac{qa} over documents/collections) \\
 
-\ac{dave} Cluster refinement \ac{ui} &
+\ac{dave} Cluster refinement &
 error correction (partial, entity-level refinement)  \\
 
 Graph-based exploration &
@@ -75,11 +75,12 @@ Graph-based exploration &
 
 \medskip
 \noindent
-Summarizing, \Cref{tab:uc:ui} reports the coverage of the \acp{ui} presented in this section with respect to the target use cases of this thesis. While a substantial subset of the intended functionality is already supported, the coverage is not complete and exposes gaps to fill in a full implementation of the \ac{dia}. In particular:
+Summarizing, \Cref{tab:uc:ui} shows how the \acp{ui} presented in this section cover the target use cases of the thesis.
+While a substantial subset of the intended functionality is already supported, the coverage is not complete, highlighting gaps to fill in a full implementation of the \ac{dia}. In particular:
 
 \begin{enumerate}
-    \item Lack of a deployed interface for the computation of advanced statistics (\ref{uc:stats}).
-    \item Partial error correction: some of the designed correction functionalities are not available in the current implementations; for instance, entity or document deletion is not available from the \acp{ui}.
+    \item No deployed interface exists for the computation of advanced statistics (\ref{uc:stats}).
+    \item Partial error correction: some of the designed correction functionalities are not yet available; for example, entity or document deletion cannot be performed from the \acp{ui}.
 \end{enumerate}
 
 % These missing capabilities directly motivated the architectural requirements for visualization and error-correction interfaces defined earlier in this chapter, as well as the need for a dedicated statistics interface to support \ref{uc:stats}.
@@ -131,7 +132,7 @@ Summarizing, \Cref{tab:uc:ui} reports the coverage of the \acp{ui} presented in 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{images/wise/KGexploration.png}
-\caption[Graph-based exploration of chat-derived knowledge graph]{Graph-based exploration of chat-derived communication networks supporting complex instances of \ref{uc:investigative-retrieval}.}
+\caption[Graph-based exploration of chat-derived knowledge graph]{Graph-based exploration of chat-derived communication networks supporting complex instances of \ref{uc:investigative-retrieval} (investigative retrieval).}
 \label{fig:kg-exploration}
 \end{figure}
 
