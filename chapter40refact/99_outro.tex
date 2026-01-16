@@ -1,6 +1,8 @@
 \section{Findings and Open Directions}
 \label{sec:rx:conclusion}
 
+\todo{rivedi un attimo rispetto a obbiettivi tesi e modifiche al resto}
+
 This chapter addressed Objective~\ref{ob:refactx} by presenting \refactx, a knowledge-base-constrained decoding mechanism that enables any autoregressive \ac{llm} to exploit large external \acp{kb} without external retrievers or architectural changes. In our experiments, we indexed more than 800 million Wikidata facts in a 95~GB on-disk prefix tree. By restricting decoding to valid continuations in this structure, \refactx injects factual evidence during generation with only about 1.3\% latency overhead. Empirically, it improves \ac{qa} over \acp{llm} relying solely on their parametric knowledge, and the comparison with reference approaches shows that \refactx can achieves competitive performance.
 
 We further assessed \refactx generalizability in a domain-specific, knowledge-intensive setting (corporate finance) by adapting the instruction prompt and indexing reversed triples to enable tail-to-head reasoning. Although the overall scores on this dataset remain modest, simpler questions are handled substantially better, indicating headroom for improvement through stronger domain adaptation (\eg fine-tuning or other in-domain optimizations).
