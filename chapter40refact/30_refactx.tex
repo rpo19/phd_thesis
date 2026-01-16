@@ -91,16 +91,17 @@ This mechanism is additionally improved by beam search~\cite{hu-etal-2015-improv
 \section[Scaling to 800 Million Facts from Wikidata][Scaling to 800M Facts]{Scaling to 800 Million Facts from Wikidata}
 \label{sec:wikidata-repr}
 
-To demonstrate the scalability of \refactx (\ref{ch:scalability}), we use Wikidata~\cite{wikidata} as a large-scale \ac{kb}. While this study focuses on structured knowledge, applying \refactx to extract facts directly from unstructured text in knowledge-intensive domains remains an avenue for future work, as it would require to additionally extract facts from text. From the Wikidata truthy dump---which contains the highest-confidence statements while excluding qualifiers\footnote{\url{https://www.wikidata.org/wiki/Wikidata:Database_download/en\#RDF\_dumps}}---we extract approximately 800 million triples\footnote{The dump from 11 December 2024 was used.}.
+To demonstrate the scalability of \refactx (\ref{ch:scalability}), we use Wikidata~\cite{wikidata} as a large-scale \ac{kb}. While this study focuses on structured knowledge, applying \refactx in the legal domains remains an avenue for future work, as it would likely require to extract facts from text.
 
-
+From the Wikidata truthy dump---which contains the highest-confidence statements while excluding qualifiers\footnote{\url{https://www.wikidata.org/wiki/Wikidata:Database_download/en\#RDF\_dumps}}---we extract approximately 800 million triples\footnote{The dump from 11 December 2024 was used.}.
+%
 To filter out uninformative facts only triples whose subject and relation have Wikidata identifiers are retained. For the object, we allow entities with Wikidata identifiers, English literals, numbers, dates, and literals with no language.
 
-Then, for each entity, we obtain a meaningful textual label---because Wikidata IDs lack meaning for \acp{llm}---corresponding to the Wikipedia title, if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise, since the Wikidata label alone is not unique, the entity description is additionally considered, using the following template.
+Then, for each entity, we obtain a meaningful textual label---because Wikidata IDs lack meaning for \acp{llm}---corresponding to the Wikipedia title if the entity is described in English Wikipedia\footnote{\url{https://en.wikipedia.org/}}. Otherwise, since the Wikidata label alone is not unique, the entity description is additionally considered, using the following template.
 \begin{verbatim}
     {entity label} ({entity description})
 \end{verbatim}
-For example, the entity \textsc{Jane Hajduk}\footnote{\url{https://www.wikidata.org/wiki/Q3734827}}---which is not present in English Wikipedia---is labeled as ``Jane Hajduk (American actress)''. In this case, the label comes from \texttt{rdfs:label}~\cite{rdfs-spec} and the description from \texttt{schema:description}~\cite{schemaorg-spec}.
+For example, the entity \textsc{Jane Hajduk}\footnote{\url{https://www.wikidata.org/wiki/Q3734827}}, which is not present in English Wikipedia, is labeled as ``Jane Hajduk (American actress)''. In this case, the label comes from \texttt{rdfs:label}~\cite{rdfs-spec} and the description from \texttt{schema:description}~\cite{schemaorg-spec}.
 
 
 
@@ -110,7 +111,6 @@ With this process more than 800 million facts like the ones underlined in \Cref{
 % Once the facts are tokenized and indexed in a prefix tree for efficient access.
 Additionally, while creating the tree, we calculate the number of reachable leaves from each node to avoid that \acp{llm} generate the same fact repeatedly, a behavior witnessed during preliminary experiments.
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/trie_example.drawio.pdf}
@@ -119,13 +119,13 @@ Additionally, while creating the tree, we calculate the number of reachable leav
     \label{fig:trie_example}
 \end{figure}
 
-Duplicate fact generation is prevented as follows. Consider the prefix $X = \text{``<Euro> <country> <S''}$ in \Cref{fig:trie_example}, where the number or reachable leaves is $numleaves(X)=2$. After generating $\text{``<Euro> <country> <Slovakia> .''}$, this number is decreased to $1$ and from $X$ the model is only allowed to select $\text{``lovenia> .''}$. At this point, all leaves reachable from $X$ have been generated, thus generating ``S'' from $X'=\text{``<Euro> <country> <''}$ is forbidden by constrained generation. From $X'$ the \ac{llm} can generate one of the remaining $numleaves(X') - 2 = 24$ facts (\eg $\text{``<Euro> <country> <Italy> .''}$). 
+Consider the prefix $X = \text{``<Euro> <country> <S''}$ in \Cref{fig:trie_example}, where the number or reachable leaves is $numleaves(X)=2$, duplicate facts generation is prevented as follows: after generating $\text{``<Euro> <country> <Slovakia> .''}$, the number of reachable leaves is decreased to $1$ and from $X$ the model is only allowed to select $\text{``lovenia> .''}$. At this point, all leaves reachable from $X$ have been generated, thus generating ``S'' from $X'=\text{``<Euro> <country> <''}$ is forbidden by constrained generation. From $X'$ the \ac{llm} can generate one of the remaining $numleaves(X') - 2 = 24$ facts (\eg $\text{``<Euro> <country> <Italy> .''}$). 
 
 While relatively small trees can be kept in memory, \eg using Python dictionaries, when dealing with bigger trees, such as the 800-million-fact tree derived from Wikidata, this is often impossible. Therefore, we rely on relational database software. PostgreSQL 17.2~\cite{postgresql_online} has been chosen and the fact-tree table was designed to ensure that all the information required for token generation is efficiently available.
-Given a prefix $X$, this includes the allowed next tokens $V^A_{X} = \{v_0,v_1,\ldots\}$, the number of leaves reachable from $X$, and the number of reachable leaves if choosing any $v \in V^A_{X}$ (to avoid selecting 0-leaves tokens and generating a fact twice). In \Cref{tab:postgres-table}, they are depicted respectively as \textit{Next Tokens} and \textit{\#Lv. (number of leaves)}, and \textit{Child.\#Lv.}.
+Given a prefix $X$, this includes the allowed next tokens $V^A_{X} = \{v_0,v_1,\ldots\}$, the number of leaves reachable from $X$, and the number of reachable leaves if choosing any $v \in V^A_{X}$ (to avoid selecting 0-leaves tokens and generating a fact twice). In \Cref{tab:postgres-table}, they are depicted respectively as \textit{Next Tokens}, \textit{\#Lv. (number of leaves)}, and \textit{Child.\#Lv.}.
 
-However, this tree-representation schema can quickly grow in disk space usage, as a single path of length $L$ requires storing $L-1$ rows. To reduce the disk space requirements, two additional measures are applied. First, after a certain prefix length $L_c$ we stop adding rows and instead directly save the Python subtree in Pickle format\footnote{\url{https://docs.python.org/3/library/pickle.html}}, as shown in the last row of \Cref{tab:postgres-table}.
-In this way, during inference, subtrees that are manageable in size are directly loaded in memory. In our case, with $L_c = 7$, 99\% of the subtrees use less than 116 kilobytes of memory.
+However, this tree-representation schema can quickly grow in disk space usage, as a single path of length $L$ requires storing $L-1$ rows. To reduce the disk space requirements, two additional measures are applied. First, after a certain prefix length $L_c$ we stop adding rows and instead directly save the subtree in Pickle format\footnote{\url{https://docs.python.org/3/library/pickle.html}}, as shown in the last row of \Cref{tab:postgres-table}.
+Consequently, at inference time subtrees are manageable in size and ca be directly loaded in memory. In our case, with $L_c = 7$, 99\% of the subtrees use less than 116 kilobytes of memory.
 Secondly, single-leaf sequences are represented in a single row, as visible at the fourth row in \Cref{tab:postgres-table}, saving the rest of the sequence in \textit{Child.\#Lv.} (the token 29 comes after 694, and 662 is the last in the sequence).
 %
 List items are saved as PostgreSQL arrays, while Pickle data is saved in \texttt{BYTEA}. For fast access, the \textit{Prefix} is indexed with a B-Tree\footnote{\url{https://www.postgresql.org/docs/current/btree.html}} index that provides logarithmic search time~\cite{cormen2022introduction}.
@@ -133,7 +133,7 @@ List items are saved as PostgreSQL arrays, while Pickle data is saved in \texttt
 
 \begin{table}[H]
     \centering
-    \caption{PostgreSQL table content. \textit{\#Lv.} stands for ``number of leaves''.}
+    \caption{PostgreSQL table content. \textit{\#Lv.} represent the number of leaves, reachable from that prefix.}
     % \small % shrink text a bit to fit
     \begin{tabular}{l|l|l|l|l}
     \toprule
@@ -152,15 +152,13 @@ List items are saved as PostgreSQL arrays, while Pickle data is saved in \texttt
     \end{table}
 
 
-The ingestion process consists of creating the tree in-memory and then persisting it in the database. Nevertheless, hardware memory limits do not allow keeping the entire tree in-memory. Thus, this process is performed in batches, constructing a limited-size tree, ingesting it, and then proceeding with the next one. 
+The ingestion process consists of constructing the tree in memory and then persisting it to the database. However, hardware memory constraints prevent keeping the entire tree in memory at once. For this reason, ingestion is performed in batches: a limited-size tree is built, persisted, and then discarded before proceeding to the next batch.
 
-This method, however, results in duplicated prefix rows, as identical prefixes from different batches are stored as different rows and must be merged during inference. The maximum number of duplicates corresponds to the number of batches used.
-With these mechanisms, we are able to index the 800 million facts using about 95~GB of on-disk storage.
+This approach inevitably introduces duplicated prefix rows, since identical prefixes originating from different batches are stored as distinct rows and must be merged at inference time. In the worst case, the number of duplicates is bounded by the number of batches used. Despite this overhead, the proposed mechanisms allow indexing 800 million facts using approximately 95~GB of on-disk storage.
 
+Note that the index stores token IDs and therefore depends on the vocabulary of the underlying \ac{llm}. As a consequence, \acp{llm} with different vocabularies require separate indexes.
 
-Note that the index, storing token IDs, depends on the \ac{llm} vocabulary, thus \acp{llm} using distinct vocabularies require separate indexes.
-
-At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numleaves$ access the prefix tree to obtain, respectively, the set of allowed next tokens and the number of reachable leaves for a given prefix. This information is acquired either through a SQL query to the database or from the in-memory subtree, which is loaded after prefix length exceeds $L_c$.
+% At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numleaves$ access the prefix tree to obtain, respectively, the set of allowed next tokens and the number of reachable leaves for a given prefix. This information is acquired either through a SQL query to the database or from the in-memory subtree, which is loaded after prefix length exceeds $L_c$.
 
 
 
@@ -176,16 +174,16 @@ At the implementation level, the functions $\mathrm{NT}_{\mathrm{kb}}$ and $numl
 \refactx relies on In-Context Learning (ICL)~\cite{dong2024survey} for instructing the model to access external knowledge.
 Our prompt, shown in \Cref{fig:prompt}, instructs the \ac{llm} to, first, determine the reasoning path needed for answering, then to use the \emph{Fact} command for getting relevant facts from the \ac{kb}, and finally to answer based on the proofs acquired with the \emph{Fact} command. Additionally, we instruct the model to:
 \begin{enumerate}
-    \item determine which kind of answer is required,
-    \item to respond ``I don't know'' when no useful facts have been found,
-    \item to understand when it is not able to find useful facts and stop,
-    \item to strictly adhere to the prompt,
-    \item and to be aware of the description predicate (often useful with the Wikidata \ac{kb}).
+\item determine the required answer type,
+\item respond with ``I don't know'' when no relevant facts are found,
+\item recognize when no useful facts can be retrieved and terminate generation,
+\item strictly adhere to the provided prompt,
+\item and be aware of the description predicate, which is often useful when querying the Wikidata \ac{kb}.
 \end{enumerate}
 
-At the end of this prompt, we add two examples to better guide the model behavior. While two examples are not sufficient to represent all the possible types of questions, increasing the number of few-shot example may reduce the efficiency of our approach. Therefore, a two-shot prompt is used.
+At the end of this prompt, we add two examples to better guide the model behavior. While this number is not sufficient to represent all the possible types of questions, increasing it further may reduce the efficiency of our approach. Therefore, a two-shot prompt is used.
 
-During inference, we detect when the \ac{llm} generates the sequence of tokens corresponding to the \emph{Fact} command and we activate constrained generation; at this point, the model is forced to generate an existing fact. After an entire fact is generated, we switch the model back to normal generation, allowing it to continue reasoning, to call again the \emph{Fact} command, or to answer. An example of \refactx in action is illustrated in \Cref{fig:example}.
+During inference, we detect when the \ac{llm} generates the sequence of tokens corresponding to the \emph{Fact} command and we activate constrained generation; at this point, the model is forced to generate an existing fact. After an entire fact is generated, we switch the model back to normal generation, allowing it to either continue reasoning, to call again the \emph{Fact} command, or to answer. An example of \refactx in action is illustrated in \Cref{fig:example}.
 
 \begin{figure}[H]
     \centering
@@ -213,7 +211,7 @@ The process to answer questions:
 
     \vspace{4pt}
 
-    You get relevant facts with the \textbf{``Fact:''} command. You can rely on these facts and use them a proof for your answer.
+    You get relevant facts with the \textbf{``Fact:''} command. You can rely on these facts and use them as proof for your answer.
     While getting facts you continue the reasoning explaining it step by step.
 
     \vspace{4pt}
@@ -248,7 +246,7 @@ You must always follow these instructions precisely and ensure your responses ad
 
 
  \end{tcolorbox}
-\caption{System prompt for the Wikidata \ac{kb}. The prompt instructs the \ac{llm} to reason step-by-step, issue \emph{Fact} calls to access facts from the Wikidata fact tree, and deliver an answer only after evidence is gathered---otherwise respond ``I don't know.''}
+\caption{System prompt for the Wikidata \ac{kb}. The prompt instructs the \ac{llm} to reason step-by-step, issue \emph{Fact} calls to access facts from the Wikidata fact tree, and deliver an answer only after evidence is gathered, or otherwise respond ``I don't know.''}
 \label{fig:prompt}
  
  \end{figure}
@@ -257,6 +255,7 @@ You must always follow these instructions precisely and ensure your responses ad
 
 \section{Experimental Setup}
 \label{sec:rx:experiments}
+\todo{continue from here}
 
 In this section we describe the experimental setup for the evaluation of \refactx performance on \ac{kgqa}, describing in order the pretrained \acp{llm}, the datasets, the evaluation metrics, and the reference approaches chosen.
 
