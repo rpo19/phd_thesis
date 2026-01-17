@@ -257,10 +257,9 @@ You must always follow these instructions precisely and ensure your responses ad
 \label{sec:rx:experiments}
 \todo{continue from here}
 
-In this section we describe the experimental setup for the evaluation of \refactx performance on \ac{kgqa}, describing in order the pretrained \acp{llm}, the datasets, the evaluation metrics, and the reference approaches chosen.
+In this section, we describe the experimental setup used to evaluate the performance of \refactx on \ac{kgqa} tasks and its adaptability to domain-specific data (financial). We detail, in turn, the pretrained \acp{llm}, the datasets, the evaluation metrics, and the selected reference approaches.
 
-
-Additionally, we evaluate \refactx by comparing its generation time in constrained mode---with \ac{kb}-guided decoding---against the unconstrained \textit{\ac{llm}-only} baseline.
+In addition, we assess the scalability of \refactx (\ref{ch:scalability}) by comparing its generation time under constrained decoding with an unconstrained \textit{\ac{llm}-only} baseline. This analysis is conducted on the 800-million-fact prefix tree constructed from Wikidata.
 We measure token generation time (in seconds) over 4{,}000 generated tokens using Qwen2.5-3B~\cite{qwen2025qwen25technicalreport} with PostgreSQL running on the same machine on one NVIDIA Tesla~T4\footnote{\url{https://www.nvidia.com/en-us/data-center/tesla-t4/}}, and enabling key--value caching~\cite{NEURIPS2023_cdaac2a0}.
 
 
@@ -425,34 +424,33 @@ Stacked bars show how each benchmark (Bank, Mintaka, 2WikiMH, WebQSP) varies in 
     \item Mintaka~\cite{sen-etal-2022-mintaka},
     \item 2WikiMultiHopQA~\cite{ho-etal-2020-constructing},
     \item WebQSP~\cite{yih-etal-2016-value},
-    \item the \textit{\say{Bank}} dataset: an anonymized proprietary financial dataset from Banca d'Italia\footnote{\url{https://www.bancaditalia.it/}}.
+    \item the \say{Bank} dataset: an anonymized proprietary financial dataset from Banca d'Italia\footnote{\url{https://www.bancaditalia.it/}}.
 \end{itemize}
 
-Mintaka~\cite{sen-etal-2022-mintaka} is a multilingual dataset containing nine question types annotated by crowdworkers with Wikidata IDs; in this work, we only consider eight question types, and only English questions. This dataset allows us to analyze \refactx's performance across diverse question types.
-% We consider Yes/No (considered as question type in Mintaka) as an answer type along with \textit{Generic} and \textit{Enumeration}.
-\textit{Yes/No}---which is considered a question type in Mintaka---is treated as an answer type, alongside \textit{Generic} and \textit{Enumeration}.
+Mintaka~\cite{sen-etal-2022-mintaka} is a multilingual dataset containing nine question types annotated by crowdworkers with Wikidata IDs. In this work, we consider only English questions and merge \textit{Yes/No} questions with \textit{Generic} ones, resulting in eight question types.
+\textit{Yes/No} is, instead, treated as an answer type, alongside \textit{Generic} and \textit{Enumeration}.
+This dataset allows us to analyze \refactx's performance across diverse question types.
 \Cref{fig:dataset_distribution} shows the distribution of questions and answer types across all datasets. 
 
+2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, to which we refer as 2WikiMH, is composed of multi-hop, comparative, and generic questions derived from Wikipedia and Wikidata. For this dataset, the evaluation considers the \textit{development} set, as the ground truth for the test set is not publicly available.
 
-2WikiMultiHopQA~\cite{ho-etal-2020-constructing}, to which we refer as 2WikiMH, is composed of multi-hop, comparative, and generic questions derived from Wikipedia and Wikidata. For this dataset, the evaluation considers the \textit{dev} set, as the ground truth for the test set is not publicly available.
+WebQSP~\cite{yih-etal-2016-value} contains generic questions annotated with Freebase~\cite{freebase_2008}.
+Together with 2WikiMH, it is used by the existing \ac{kgqa} approaches based on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into \refactx's performance relative to prior work.
 
-WebQSP~\cite{yih-etal-2016-value} contains generic questions annotated with Freebase~\cite{freebase_2008}. %
-These two dataset are used by the existing \ac{kgqa} approaches based on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}, providing insights into \refactx's performance relative to prior work.
-%
 With these datasets we use the 800-million-fact tree derived from Wikidata indexed in PostgreSQL (\Cref{sec:wikidata-repr}), and, for computational efficiency, a limited sample of 200 questions is considered for each public dataset, stratifying by question type.
 
 \medskip\noindent
-The proprietary \textit{Bank} dataset comes from Banca d'Italia, the Italian central bank. It covers the financial domain---which is a knowledge-intensive domain--- and allows us to study how \refactx adapts to domain-specific knowledge.
+The proprietary \textit{Bank} dataset comes from Banca d'Italia, the Italian central bank. It covers the financial domain---which is a knowledge-intensive domain---and allows us to study how \refactx adapts to domain-specific knowledge.
 
 %
 It includes 278 template questions derived from an anonymized corporate knowledge graph containing approximately 10,000 triples and nine relations, such as ownership and control.
 In this setting, we can evaluate \acp{llm} while minimizing data contamination issues, as the models are unlikely to have been exposed to this data during training. 
 % 
-Triples are verbalized, additionally adding inverted facts so that \refactx can use tail-to-head reasoning. Finally, an in-memory prefix tree index is built. Since in this dataset each relation is considered independent of the other ones, we add specific instructions in the prompt to consider each relation independently.
+Triples are verbalized, additionally adding inverted facts so that \refactx can use tail-to-head reasoning.
 %
 
 %
-The choice of public benchmark datasets reflects two main considerations. First, datasets that natively use only or also include Wikidata are prioritized---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}. Additionally, the proprietary \textit{Bank} dataset is included to evaluate on data free from any data contamination.
+The choice of public benchmark datasets reflects two main considerations. First, datasets that natively use only or also include Wikidata are prioritized---namely Mintaka and 2WikiMH. Second, we included WebQSP, based on Freebase, to extend the comparison with prior work on constrained generation~\cite{li-etal-2025-decoding-graphs,luo2024graphconstrainedreasoningfaithfulreasoning}. Finally, we include the proprietary \textit{Bank} dataset to assess performance on domain-specific data form a knowledge-intensive domain, free from data contamination.
 
 
 \subsection{Metrics}
@@ -461,14 +459,14 @@ The choice of public benchmark datasets reflects two main considerations. First,
 We evaluate on \textit{Accuracy} (A) and \textit{Precision} (P), to study, respectively, the overall correctness of our approach and its reliability when it provides an answer.
 
 \begin{equation}
-    A = \frac{|\text{Correct answers}|}{|\text{Questions}|},
+    A = \frac{\text{Number of correct answers}}{\text{Number of questions}},
 \end{equation}
 
 \begin{equation}
-    P = \frac{|\text{Correct answers}|}{|\text{Given answers}|}.
+    P = \frac{\text{Number of correct answers}}{\text{Number of given answers}|}.
 \end{equation}
 
-Accuracy (A) corresponds to the ratio of questions answered correctly. Precision (P), instead, is normalized on the number of given answers, excluding ``I don't know'' and answers not given when the allowed maximum number of new tokens have been reached.
+Accuracy (A) corresponds to the ratio of questions answered correctly. Precision (P), instead, is normalized by the number of provided answers, excluding ``I don't know'' responses and cases where no answer is produced because the maximum number of allowed new tokens is reached.
 
 Precision and accuracy are calculated in two settings: 
 \begin{enumerate}
@@ -481,18 +479,18 @@ Precision and accuracy are calculated in two settings:
 
 
 \subsection{Reference Approaches}
-First, the same \acp{llm} used with \refactx are evaluated without constrained generation. In this setting, referred as \textit{\ac{llm}-only}, we use the same settings and prompts, so that models generates not-grounded facts based solely on their parametric-knowledge, giving us clues on how important is to access external knowledge and, furthermore, on how much each dataset can be answered using only the \ac{llm}'s internal knowledge.
+As reference approaches, we first consider the same \acp{llm} used with \refactx without constrained generation (\textit{\ac{llm}-only}). We use the same configurations and prompts, so that models generates not-grounded facts based solely on their parametric-knowledge, giving us clues on how important is to access external knowledge and, furthermore, on how much each dataset can be answered using only the \ac{llm}'s internal knowledge.
 %
 
 Then, we compare against \ac{qa} methods that use constrained generation, specifically Decoding on Graphs (DoG)~\cite{li-etal-2025-decoding-graphs} and Graph-Constrained Reasoning (GCR)~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}.
 
-Additionally, Hybrid-QA (HQA)~\cite{lehmann2024beyond}---a tool-based \ac{qa} apprach---is included in the comparison. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
+Additionally, Hybrid-QA (HQA)~\cite{lehmann2024beyond}, a tool-based \ac{qa} apprach, is included in the comparison. For these approaches, we report the results from the respective papers. HQA is evaluated on a 200-question sample of Mintaka, DoG and GCR evaluate on larger subsets of 2WikiMH and WebQSP: for 2WikiMH DoG uses 6,964 questions; for WebQSP respectively DoG and GCR consider 1,542 and 1,628 questions (filtered during preprocessing).
 
 %
 % HQA
 HQA~\cite{lehmann2024beyond} achieves state-of-the-art results on Mintaka~\cite{sen-etal-2022-mintaka}. 
 % 
-Given a question, HQA first selects a limited set of few-shot examples maximizing their relevance for the question and the diversity between the examples, then, via ICL~\cite{dong2024survey} with the selected few-shot examples, instructs the \ac{llm} to acquire external information with tools, such as a Wikipedia search engine and a Wikidata SPARQL query engine, and finally answers the question.
+Given a question, it first selects a limited set of few-shot examples maximizing their relevance for the question and the diversity between the examples, then, it instructs the \ac{llm} with ICL~\cite{dong2024survey} to acquire external information with tools, such as a Wikipedia search engine and a Wikidata SPARQL query engine, and to finally answers the question.
 
 DoG~\cite{li-etal-2025-decoding-graphs} and GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning} are both based on constrained generation, while they consider smaller question-based prefix trees with respect to \refactx.
 % DoG
@@ -504,17 +502,17 @@ The KG, composed of up to 120 triples, is constructed for each question, from th
 
 
 
-GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}, instead, considers a pre-built subgraph of Freebase~\cite{freebase_2008} of 8 million triples containing the entities mentioned in the evaluation questions, then for each questions it constructs a smaller prefix tree from the paths obtained with breadth first search within 2-hops from question entities (obtained with entity linking). At this point an \ac{llm}, fine-tuned for the task, generates multiple reasoning paths from the prefix tree with constrained decoding and an answer hypothesis for each path. Finally, a powerful \ac{llm}, such as GPT-4o-mini, receives all the paths and the hypotheses answers and gives the final answer.
+GCR~\cite{luo2024graphconstrainedreasoningfaithfulreasoning}, instead, considers a pre-built subgraph of Freebase~\cite{freebase_2008} of 8 million triples containing the entities mentioned in the evaluation questions, then for each questions it constructs a smaller prefix tree from the paths obtained with breadth first search within 2-hops from question entities (obtained with entity linking). At this point an \ac{llm}, fine-tuned for the task, generates multiple reasoning paths from the prefix tree with constrained decoding and an answer hypothesis for each path. Finally, a powerful \ac{llm}, such as GPT-4o-mini, receives all candidate paths and hypothesis answers and produces the final answer.
 
 %
 % 
 \medskip\noindent
-DoG and HQA use accuracy in the evaluation, while GCR calculates \textit{Hit} and \textit{F1}. Considering \textit{enumeration} answer (containing a list of items), \textit{Hit} counts a prediction as correct whenever any item of the ground truth matches the prediction, whereas \textit{F1} is the average of the \textit{F1} of the single predictions. These measures are equivalent to accuracy for generic answers (not for enumerations).
+DoG and HQA use accuracy in the evaluation, while GCR calculates \textit{Hit} and F$_1$. Considering \textit{enumeration} answer (containing a list of items), \textit{Hit} counts a prediction as correct whenever any item of the ground truth matches the prediction, whereas F$_1$ is the average of the F$_1$ of the single predictions. These measures are equivalent to accuracy for generic answers, but not for enumerations.
 
 
 
 %
-In the experiments, beam search~\cite{hu-etal-2015-improved} is used with $\text{number of beams} = 3$ (GCR uses 10 beams, DoG 3), disable sampling, and set the maximum number of new tokens to generate to 1,000.
+In the experiments, beam search~\cite{hu-etal-2015-improved} is used with $\text{number of beams} = 3$ (GCR uses 10 beams, DoG 3), sampling is disabled, and the maximum number of new tokens to generate is set to 1,000.
 
 
 
@@ -539,8 +537,18 @@ We compare \refactx's \ac{kb}-guided constrained generation time with normal \te
 %
 \Cref{fig:generation_time} plots the token generation times calculated in the two settings. The time overhead added by constrained generation is very limited: the total time for generating 4,000 tokens increases by only 1.3\%, from 300.14 seconds to 303.89.
 
+
+
+
+
+
+
+
+\subsection{Performance Analysis}
+\label{sec:performance}
+
 \begin{table}[htbp]
-\caption{Comparison with \textbf{exact match} between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\caption{Comparison with \textit{exact match} between \refactx and \textit{\ac{llm}-only} on four datasets, with four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
 \label{tab:em_results_memorization}
 \centering
 \begin{tabular}{lll|ll|ll|ll}
@@ -565,7 +573,7 @@ $\text{Qwen}^{2.5}_{7B}$ & 21.7 & 18.0 & 45.3 & 41.0 & 21.6 & 18.0 & 10.9 & 10.5
 \end{table}
 
 \begin{table}[htbp]
-\caption{Comparison with \textbf{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only} across four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\caption{Comparison with \textit{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only} on four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
 \label{tab:judge_results_memorization}
 \centering
 \begin{tabular}{lll|ll|ll|ll}
@@ -591,6 +599,30 @@ $\text{Qwen}^{2.5}_{7B}$  &  28.1 & 21.9 & 65.7 & 60.0 & 35.9 & 30.0 & 66.7 & 64
 
 
 
+
+
+\Cref{tab:em_results_memorization,tab:judge_results_memorization} show \refactx results on benchmark datasets compared to \textit{\ac{llm}-only}, calculated with exact match and \acp{llm}-as-a-Judge, respectively. The gap between exact match and \ac{llm}-as-a-judge results derives from string comparison: correct answers with different date formats or item orders (for enumeration question) are counted as errors under exact match.% 
+
+% 
+Compared to \textit{\ac{llm}-only} models, \refactx consistently achieves higher precision in the \ac{llm}-as-a-judge evaluation.
+%
+In terms of accuracy, \refactx performs worse than \textit{\ac{llm}-only} on the Mintaka and WebQSP datasets. This reveals these datasets are largely covered by the models' parametric knowledge---reaching 82.0\% and 80.5\% accuracy respectively.
+%
+% 
+%
+Instead with 2WikiMH, % 
+whose questions seem harder for the \ac{llm} parametric knowledge,
+\refactx improves both accuracy and precision by more than 20\% with respect to \textit{\ac{llm}-only} models.
+% 
+
+The Bank dataset proved especially challenging, with \refactx achieving precision up to 51.3\% and accuracy up to 42.8\%. However, a type-wise analysis reveals good results on generic Yes/No questions achieving precision (P) of 85.2\% and accuracy (A) of 78.9 with Qwen2.5-72B while with Llama3.3-70B we achieve $P=77.8\%$ and $A=70.6\%$ (using \ac{llm}-as-a-judge in both cases). Our approach is, instead, particularly suffering with count questions: both models achieve less than 10\% accuracy on these questions. Similarly, enumeration questions pose difficulties, with correct answers achieved in only 30\% of cases on the Bank dataset.
+
+
+On the Mintaka dataset, \refactx struggles especially with superlative and count questions, with Llama3.3-70B achieving 14.3\% and 55.0\% accuracy, respectively. Qwen2.5-72B shows a contrasting pattern, achieving higher accuracy on superlatives (47.6\%) but lower on counts (35.0\%).
+On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and 57.9\% accuracy, respectively, while Llama3.3-70B reaches 66.7\% and 73.7\%, which are still below the performance levels in 2WikiMH, composed mostly by comparative and multi-hop questions. 
+
+On WebQSP, enumeration answers prove particularly difficult in terms of precision for \refactx with both Llama3.3-70B and Qwen2.5-72B, while when using Phi-4 it maintains consistent precision across all answer types.
+
 \begin{table}[h!]
     \caption{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
     \label{tab:res-comparison-rw}
@@ -612,35 +644,6 @@ HQA\cite{lehmann2024beyond} GPT$^4$$^\ddagger$ & -- & \textbf{95.9} & -- & -- & 
 \end{tabular}
 \end{table}
 
-
-
-
-
-
-\subsection{Performance Analysis}
-\label{sec:performance}
-\Cref{tab:em_results_memorization,tab:judge_results_memorization} show \refactx results on benchmark datasets compared to \textit{\ac{llm}-only}, calculated with exact match and \acp{llm}-as-a-Judge, respectively. The gap between exact match and \ac{llm}-as-a-judge results derives from string comparison: correct answers with different date formats or item orders (for enumeration question) are counted as errors under exact match.% 
-
-% 
-Compared to \textit{\ac{llm}-only} models, \refactx consistently achieves higher precision in the \ac{llm}-as-a-judge evaluation.
-%
-In terms of accuracy, \refactx performs worse than \textit{\ac{llm}-only} on the Mintaka and WebQSP datasets. This reveals these datasets are largely covered by the models' parametric knowledge---reaching 82.0\% and 80.5\% accuracy respectively.
-%
-% 
-%
-Instead with 2WikiMH, % 
-whose questions seem harder for the \ac{llm} parametric knowledge,
-\refactx improves both accuracy and precision by more than 20\% with respect to \textit{\ac{llm}-only} models.
-% 
-
-The Bank dataset proved especially challenging, with \refactx achieving precision up to 51.3\% and accuracy up to 42.8\%. However, a type-wise analysis reveals good results on generic Yes/No questions achieving precision (P) of 85.2\% and accuracy (A) of 78.9 (using \ac{llm}-as-a-judge) with Qwen2.5-72B while with Llama3.3-70B we achieve $P=77.8\%$ and $A=70.6\%$. Our approach is, instead, particularly suffering with count questions: both models achieve less than 10\% accuracy on these questions. Similarly, enumeration questions pose difficulties, with correct answers achieved in only 30\% of cases on the Bank dataset.
-
-
-On the Mintaka dataset, \refactx struggles especially with superlative and count questions, with Llama3.3-70B achieving 14.3\% and 55.0\% accuracy, respectively. Qwen2.5-72B shows a contrasting pattern, achieving higher accuracy on superlatives (47.6\%) but lower on counts (35.0\%).
-On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and 57.9\% accuracy, respectively, while Llama3.3-70B reaches 66.7\% and 73.7\%, which are still below the performance levels in 2WikiMH, composed mostly by comparative and multi-hop questions. 
-
-On WebQSP, enumeration answers prove particularly difficult in terms of precision for \refactx with both Llama3.3-70B and Qwen2.5-72B, while when using Phi-4 it maintains consistent precision across all answer types.
-
 Results from \Cref{tab:res-comparison-rw}, showing \refactx with reference approaches, suggest our approach can achieve competitive results. In fact, compared to DoG on 2WikiMH---although evaluated on different dataset samples---\refactx, even if considering a large \ac{kb}, achieves 73.0\% accuracy with Qwen2.5-7B and 92.5\% with Qwen2.5-72B, while DoG stands in the middle with 84.2\%.
 
 
@@ -660,7 +663,7 @@ While for Mintaka multi-hop questions, we notice that in some cases they require
 
 On Mintaka and WebQSP, the datasets widely covered by the internal knowledge of the tested \acp{llm}, when comparing \refactx behavior with \textit{\ac{llm}-only} on the same questions, \refactx still demonstrates interesting reasoning patterns. In some cases, it uses facts to prove an answer coming from \ac{llm} parametric knowledge.
 %
-In others, \eg for \textit{``Where did Rick Santorum attend high school?''}, in which \textit{\ac{llm}-only} fails, \refactx is able to acquire correct facts which lead to correcting model parametric knowledge.
+In others, where \textit{\ac{llm}-only} fails, \refactx is able to acquire correct facts which lead to correcting model parametric knowledge.
 % 
 
 
