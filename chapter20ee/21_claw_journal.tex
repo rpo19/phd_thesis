@@ -207,7 +207,7 @@ Each algorithm recognizes a different set of entity types. \Cref{tab:algotypes} 
 
 \ac{ner} with \spacy is carried out using the Italian transformer model ``dbmdz/bert-base-italian-uncased''\footnote{\url{https://huggingface.co/dbmdz/bert-base-italian-uncased}}, pretrained by \textcite{stefan_schweter_2020_4263142}.  
 The model produces contextual representations that are then processed by a neural transition-based parser (see \Cref{sec:rw:ner}).  
-We fine-tuned the \spacy pipeline---including both the transformer and the parser---on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, which is based on Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
+We fine-tuned the \spacy pipeline, including both the transformer and the parser, on the Italian WikiNER dataset~\cite{NOTHMAN2013151}, based on Wikipedia articles annotated with \texttt{Person}, \texttt{Location}, \texttt{Organization}, and \texttt{Miscellaneous} entities.
 
 Tint~\cite{2018tint2} is an Italian NLP suite based on Stanford CoreNLP~\cite{manning-EtAl:2014:P14-5}.  
 Its \ac{ner} module combines CRF-based sequence taggers~\cite{Lafferty2001} with rule-based recognizers for \texttt{Money}, \texttt{Number}, and temporal expressions (\texttt{Time}).
