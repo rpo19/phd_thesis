@@ -9,7 +9,6 @@
 % The gold standard dataset we use for training and evaluation is composed of 146 annotated judgments derived from a corpus of 900,000 legal judgments, organized as follows: 102 documents as the training set, 14 for development, and a test set of 30 documents. Unfortunately, we are unable to publish the corpus due to the sensitive nature of the data it contains. However, upon request, we are open to exploring the possibility of sharing it through bilateral agreements. 
 % The annotations in the corpus have been performed by two annotators. The inter-annotator agreement (IAA) has been calculated using the F$_1$-measure to assess the coherence between the annotations in terms of both class and span and using Cohen's Kappa, obtaining respectively $80.8\%$ and $66.2\%$.
 % % \input{table/dataset_stats}
-% \todo{use table dataset stats}
 
 % All the documents have \ac{ner} annotations considering the following classes: Person (\texttt{Person}), Organization (\texttt{Organization}), Location (\texttt{Location}), Date (\texttt{Date}), Money (\texttt{Money}), and Miscellaneous (\texttt{Miscellaneous}), that includes references to court judgments, law articles, court decrees, or any entity not covered by the above classes.
 % In total, the dataset is composed of more than 16,000 annotations and each document counts on average $\sim$1,900 words. Table~\ref{tab:dataset_stats} reports detailed statistics, including the number of annotations for each class.
@@ -17,7 +16,7 @@
 % The annotations for named entity linking (\ac{nel}) and NIL prediction are only available in the test set. These annotations are limited to the classes \texttt{Person}, \texttt{Organization}, and \texttt{Location}. \texttt{Date}, \texttt{Money}, and \texttt{Miscellaneous} mentions have not been annotated for \ac{nel} and NIL prediction because they are expected to be processed by rule-based algorithms that we do not cover in this work.
 
 
-% For the remainder of this work, we will refer to our annotated corpus of 146 documents as ICCJ (Italian Civil Court Judgment)\todo{use iccj names} and to the 900,000 legal judgment (without annotations) as ICCJ900k.
+% For the remainder of this work, we will refer to our annotated corpus of 146 documents as ICCJ (Italian Civil Court Judgment) and to the 900,000 legal judgment (without annotations) as ICCJ900k.
 
 
 % \subsection{\ac{ner} with MLM-adaptation and fine-tuning}
@@ -110,6 +109,5 @@ Furthermore, the difference between strong and partial matching is limited for \
 
 \input{table/overall4type}
 
-\todo{check discussion after every paper. yes or no to all.}
 
 \clearpage

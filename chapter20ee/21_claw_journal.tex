@@ -2,7 +2,6 @@
 \section[Entity Extraction from Italian Civil Judgments][EE from Italian Judgments]{Entity Extraction from Italian Civil Judgments}
 % \sectionmark{EE from Italian Judgments}
 \label{sec:eejudgements}
-% \todo{maybe integrate commented code here to legal sota or preface}
 
 In this section, we evaluate the performance of existing \acf{ee} systems on Italian civil court judgments.
 The work presented in this section is related to the publication \textcite{BELLANDI2024}.
@@ -196,9 +195,7 @@ When multiple \ac{ner} algorithms are employed, it is necessary to combine their
 
 
 
-% TODO SCHEMA
 
-% TODO pipeline
 
 \subsubsection{Entity Recognition}          
 For the \ac{ner} task, we selected two general-domain, ML-based algorithms for Italian: \spacy~\cite{honnibal2020spacy} and Tint~\cite{2018tint2}. 
@@ -242,7 +239,6 @@ We resolve these conflicts as follows:
 
 \subsubsection{Knowledge consolidation}
 \label{sec:claw_consolidation}
-% We opted for the BLINK bi-encoder because it provides a semantic representation of mentions and entities enabling us to represent newly identified entities starting from their mentions so that it is possible to use them as target entities for \ac{nel}. % TODO migliorare
 % Provato a scriverla meglio
 % As in \acl{inel}, we chose the bi-encoder paradigm because it is able to produce a semantic representation of both mentions and entities. This property allows us to calculate the semantic similarity of entity mentions during the NIL clustering step and to represent new entities using their mentions so that the \ac{nel} system is able to link to the new entities~\cite{ijckg2022}.
 The knowledge consolidation process comprises three tasks: \ac{nel}, NIL prediction, and NIL clustering.  
@@ -272,12 +268,10 @@ The clustering thresholds are determined through grid search on the same Wikiped
 % spostare negli experiments
 % We conduct a first evaluation of \blinkita on two italian datasets: the tweet-based NEEL-IT@Evalita 2016~\cite{basile2016neelit} and the news-based VoxEL~\cite{rosales2018voxel}. The results are available in \Cref{tab:nereval:atomic}.
 
-% TODO voxel multilingual \ac{nel} dataset
 
 % Although a systematic comparison is not possible (as further discussed in ~\Cref{app:blink}), our goal is to have some insights on the performance of \blinkita in a challenging linking scenario~\cite{basile2016neelit}.
 
 % The insights suggest that \blinkita achieves reasonable performance, despite some known limitations of its current implementation (see~\Cref{app:blink}).
-% todo ?
 
 %the 
 %Unfortunately a systematic comparison is not possible due to several reasons has been evaluated on the dataset NEEL-IT@Evalita 2016~\cite{basile2016neelit}, that is composed of tweets in the Italian language; see \Cref{tab:blink_ita_eval}.
@@ -356,7 +350,6 @@ The adopted criteria---taken from~\cite{tsai2006various} and extended to provide
     \item \textit{Partial-typed:} the predicted entity is overlapping with the correct span and the type is correct.
 \end{enumerate}
 
-% \todo{controlla HITL}
 
 For the sake of clarity, let $c$ denote the chosen evaluation criterion, $Y^i_c$ the number of correctly predicted annotations according to $c$, $Y^i$ the total number of predicted annotations, and $Y_{GT}$ the number of annotations in the ground truth.  
 Precision, recall, and F$_1$ score are then defined as:
@@ -375,7 +368,6 @@ Here, $P$ measures the fraction of correct predictions, $R$ measures coverage ov
 
 % Each consolidation step, namely \ac{nel}, NIL prediction, and NIL clustering, has been evaluated atomically to exclude the effects of error propagation. This evaluation setting is also in line with the scenario in which a \ac{hitl} validates the output of each step.
 
-% \todo{valutare se la figura si può togliere}
 % \Cref{fig:expected_outcome} shows the expected system behavior given a mention $m$ when it refers to an entity that exists in the \ac{kr} and when it is NIL.
 
 % \paragraph{\ac{nel}}
@@ -430,7 +422,6 @@ Finally, for the \textit{end-to-end} evaluation of \ac{ner}, \ac{nel}, and NIL p
 % \subsubsection{Scalability, Extensibiltiy, and Availability}
 % Finally, we study the scalability of the proposed architecture by calculating the required time for the execution of the generic algorithms and of the additional rule-based extractors, which recognize postal addresses and law articles.
 
-%\todo{la teniamo questa considerazione sui processi asincroni commentata? nella discussione?}
 % We argue that several operations are performed by independent systems that can run asynchronously in any order (apart for workflows), as they produce independent annotations. These operations include the \ac{ner} algorithms and the rule-based additional extractors, while other services like \ac{nel} strictly depend on the previous steps.
 
 The hyperparameters for the combination rules were set prioritizing Trie\ac{ner}, followed by \spacy, and then Tint. This choice reflects the reliability of Trie\ac{ner}, which leverages in-domain knowledge from metadata, and the fact that \spacy employs more recent models than Tint. The resulting weights are 0.6 for Trie\ac{ner}, 0.3 for \spacy, and 0.1 for Tint, ensuring that in cases of type conflict, Trie\ac{ner}'s prediction---based on metadata---takes precedence.
@@ -538,7 +529,6 @@ In \Cref{tab:nereval:bytype}, we provide a per-type comparison of the \textit{at
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
     \caption{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the \acl{kr} used by Trie\ac{ner}, thus only a few entities of this type (\ie $\approx$10) have been predicted.}
-    % TODO Trie\ac{ner}
     \label{tab:nereval:bytype}
 \end{table}
 
@@ -632,7 +622,6 @@ When jointly evaluating \ac{nel} and NIL prediction (disregarding \ac{ner} error
 
 % overall
 Finally, \Cref{tab:nereval:withlink} presents the end-to-end evaluation results using the \textit{approximate linking} and \textit{approximate-typed linking} criteria. The \textit{approximate linking} setup, which ignores the type predicted with \ac{ner}, yields noticeably better performance than \textit{approximate-typed linking}: the F$_1$ score reaches 64.0\%, nearly eight points higher. This result suggests that once a mention is successfully linked by \ac{nel}, the linked entity can help refine or even correct the type initially assigned by \ac{ner}.
-% todo we leave this to future works
 
 
 \begin{table}[H]
@@ -654,7 +643,6 @@ Finally, \Cref{tab:nereval:withlink} presents the end-to-end evaluation results 
 In the \textit{end-to-end} evaluation, the system achieved an F$_1$ score of 64.0\% (under the \textit{approximate linking} criterion), meaning that more than one mention out of two is correctly processed across \ac{ner}, \ac{nel}, and NIL prediction. Considering the domain's high specificity, the noisy input, and the absence of in-domain training or fine-tuning, these results represent a promising baseline for entity identification and linking.
 
 The main weakness lies in the final NIL clustering stage, which obtained low B$^3$ and CEAF$_e$ scores. Interpreting clustering metrics is inherently difficult, and prior work has shown wide variability across datasets and evaluation settings~\cite{streaming_crossdoc_coreference}. Since suboptimal clustering directly affects the consolidation of NIL mentions, improving this step is crucial.
-% A possible direction is to tune clustering hyperparameters (\eg thresholds) on domain-specific data, as suggested by recent studies~\cite{streaming_crossdoc_coreference}.\todo{which params we used?}
 
 Also, the NIL prediction component shows a bias toward the NIL class, which could be reduced through domain-specific training. However, in the context of court judgments, this limitation is less problematic, as most key entities (\eg plaintiffs, defendants, judges, and attorneys) are in fact often NIL.
 

@@ -83,7 +83,6 @@ In summary, the prototypes developed during the \phd anticipated many components
 % our colleagues contiunued....
 % orchestration: more relaxed than claw: no need of deciding request manageer,...
 
-% \todo{useful commented sections here}
 
 % In this chapter, instead, the focus is centered on the \acl{dia}. We will speak of some design principles for perimetral services, like extractors, and of the prototipation of \acl{ia} \acp{ui} (\Cref{sec:iaui}), but these components are considered, indeed, perimetral and not part of the \ac{dia} core.
 % Our objective is to define the \emph{minimum necessary} directives for guiding the implementation of a \acl{dia}---for knowledge-intensive domains and, in particular, for the legal domain---so that it provides the fundamental functionality required to satisfy the aforementioned \emph{architectural principles}.  
@@ -95,22 +94,14 @@ In summary, the prototypes developed during the \phd anticipated many components
 
 % Another difference with this works is that we enlarge our focus to investigative data, that are more heterogeneus, therefore requiring more generalization. For these reason, we do not consider document sections in our data model (differently from \textcite{bellandi2025streamlining}) and we generalize the concept of annotation in such a way that can even cover sections.
 
-% The need for relaxing the concepts of document and annotation came, indeed, from the investigative \ac{ima} data.\todo{chiedi a ruben perchè avevamo rappresentato con i messaggi}
-% In that case, using an implementation of the architecture from \textcite{BELLANDI2024}, for enabling complex use cases such as searching for messages sent in a certain date-range, we had to ingest separately the messages\footnote{\url{https://github.com/unimib-datAI/IKBP/tree/main/documents-message-based/src/models}} and the entire chats for supporting visualization \ac{ui}~\cite{pozzi_wise_2025}.\todo{footnote a github} 
-% \todo{say something more about wise and then go for the chapter.}
-
-% \todo{continue by saying that these requirements really were already developed, grounding this work. e.g. ijckg add entity}
-% \todo{speak more of my papers? e.g. of adptation with rae services? yes also says we extracted articles}
+% The need for relaxing the concepts of document and annotation came, indeed, from the investigative \ac{ima} data.
+% In that case, using an implementation of the architecture from \textcite{BELLANDI2024}, for enabling complex use cases such as searching for messages sent in a certain date-range, we had to ingest separately the messages\footnote{\url{https://github.com/unimib-datAI/IKBP/tree/main/documents-message-based/src/models}} and the entire chats for supporting visualization \ac{ui}~\cite{pozzi_wise_2025}.
 
 
 % \section{draft}
 
 % % In this section we cover the architectural contributions published during my \phd and analyze which principles they follow and which they do not. Two architectural prototypes, one in \textcite{BELLANDI2024} and another in \textcite{pozzi_wise_2025}, have been developed and experimented with legal documents---respectively Italian civil judgment and Italian chat logs from \ac{ima} data acquired during an investigation.
 
-% \todo{tabella con principi a come li supportano? cosa fanno? implementazione. prima fai tabella con principi in generale nelle sez precedenti}
-% \todo{menzionare i github?}
-
-% \todo{anche per dave: tabella use cases and dave uis. poi descrivo / discuto}
 
 
 
@@ -122,7 +113,6 @@ In summary, the prototypes developed during the \phd anticipated many components
 % %In Section~\ref{ssec:archview} we describe the main logical components and their functions, later, in Section~\ref{ssec:archimpl} we will concentrate on a specific implementation.
 % %\subsection{View}
 % %\label{ssec:archview}
-% % \todo{ricordare gli obiettivi a cui questa sezione risponde: RQ2}
 % The software architecture is the foundational structure that shapes the design and development of a software system. It serves as the blueprint for creating robust, scalable, and maintainable applications. The main characteristics of software architecture are pivotal in determining how well a system will perform, adapt, and evolve over time. These characteristics define the essence of the architecture and guide decisions throughout the development lifecycle. The main objective of our proposal is to define a full stack system capable of supporting the main functional characteristics such as: \textit{i)} document analysis and entity extraction, \textit{ii)} centralized annotation management \textit{iii)} storage persistent and univocal of the identified entities and \textit{iv)} the intra-documental and inter-documental search and entity management functions.  Furthermore, the modeling and design of the architecture must also take into consideration characteristics not related to the functionalities, in particular in our case we propose an architecture that takes into consideration the following Non-Functional Requirements (NFR):
 % \begin{itemize}
 %     \item scalability: it must be possible to add documents just increasing storage and computing resources, with no needs of system reconfiguration,
@@ -138,7 +128,6 @@ In summary, the prototypes developed during the \phd anticipated many components
 % % spostare qui i contenuti di final considerations
 % %%%%%%%
 
-% % \todo{remind of RQ2 and briefly recap the objectives at high level}
 
 % %\begin{enumerate}
 %     %\item 
@@ -217,7 +206,6 @@ In summary, the prototypes developed during the \phd anticipated many components
 %     \textbf{The Service Orchestrator (SO).} It manages workflows of SS to be applied at document sets and to schedule periodic operations, or task needed when a triggering event happens. Using the SO, it is possible to combine any services to implement complex workflows; for instance we created a workflow to feed the ER with entities acting as plaintiff, defendant or lawyers. The first service finds the preamble in the judgment; then are run services to find persons and organizations, fiscal codes, dates, places and postal addresses in the preambles. Finally another service links each person with their fiscal codes or place and date of birth; each organization with its fiscal code; each person and organization with their address (if specified). Resulting persons and organizations are added to the ER, using their names and fiscal codes or birth data as identifiers. %In this process multiple entities can be created when only incomplete data is available (e.g. neither fiscal code nor birth data is available). An a posteriori service is run, that looks for lawyers sharing their first and last names and addresses, suggesting the user to manually merge these instances.
 % %\end{enumerate}
 
-% % \todo{sposterei all inizio di questa sezione. ricordando obiettivi,...}
 % \textbf{Final Considerations.}
 % The situation is sketched in Figure~\ref{archview}, that highlights the main flows of data and control. The central role of the UI reflects the importance of the user in the whole process of knowledge extraction, especially for the validation and management of annotations (so called \acl{hitl}). 
 
@@ -229,7 +217,6 @@ In summary, the prototypes developed during the \phd anticipated many components
 % \end{itemize}
 
 
-% % \todo{muovere in concllusioni o discussion risultati}
 % The requirement of \textbf{scalability} is addressed by the implementation of the Document Storage and the Annotation Database. The requirement of \textbf{extensibility} to new types of documents and metadata is addressed by the implementation of the Data Storage and the Annotation Database; moreover as the Query Layer produces annotated documents in GateNLP, the consumer programs are not affected by data extensions. Extensibility of User Interfaces and services is guaranteed as they use the Query Layer to read and write the data, are registered in the Service Catalog and run through the Request Manager and the Service Orchestrator.
 % The requirement of \textbf{availability} is satisfied as, provided that the data related components (DS, AD and QL) are running, the User Interface(s) and Service Systems can be registered, run, stopped, changed and so on without interfering with each other. As they can be run on different computing units, they have no impacts on the performances of other components.
 % %We will give some more details on these topics in Section~\ref{discimple}

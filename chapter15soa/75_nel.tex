@@ -1,6 +1,5 @@
 \subsection{Entity Linking}
 \label{sec:rw:nel}
-% \todo{say something about multilingual since I worked in italian}
 \begin{definition}
     [Entity Linking]
     \Acf{nel} is the task of disambiguating and linking entity mentions detected in text to entities in a \acf{kr} or a \ac{kb}~\cite{entityorientedsearch2018balog,jm3}.
@@ -85,7 +84,6 @@ The expansion of acronyms served to augment the mention surface form for matchin
 For the ranking step, instead, both supervised and unsupervised methods have been applied, either considering the mentions to link as independent or jointly disambiguating mentions in a document to exploit coherence among them~\cite{entity_linking_with_kb_2015}. These methods used a variety of features, including string similarity between the mention and entity names, entity popularity (\eg \texttt{Lisbon (1956 film)} is less popular than \texttt{Lisbon, Capital of Portugal}), the consistency of the entity types with the \acl{ner} labels, the textual context, or measures of coherence among entities linked in the same document~\cite{entity_linking_with_kb_2015}.
 
 Some approaches treated \ac{nel} as a binary classification problem, where each candidate entity is classified as correct or incorrect for a given mention~\cite{entity_linking_with_kb_2015}. Other methods ranked candidates using learning-to-rank algorithm or by calculating mention-entity similarities using training-free vector representations~\cite{entity_linking_with_kb_2015}. To jointly link multiple entities exploiting coherence, probabilistic graphical models and graph-based methods have been employed~\cite{entity_linking_with_kb_2015}.
-% \todo{better to add also citing lists of approaches from the survey}
 
 \ac{nel} can also be treated as a multi-class classification problem, where each entity in the \ac{kb} represents a class~\cite{kar2018task}. However, the consequent large number of classes leads to suboptimal performance~\cite{Sevgili2022NeuralEL}, and this approach does not generalize to unseen entities, that have not been observed during training.
 
@@ -215,17 +213,6 @@ Overall, these methods achieve higher accuracy and better domain adaptability~\c
 However, efficiency remains a concern: among the discussed approaches, only \textcite{xiao-etal-2023-instructed} explicitly address it by reducing the number of model calls. Nonetheless, \acp{llm} are substantially larger than those of \textcite{ayoola-etal-2022-refined} and \textcite{plekhanov2023multilingualendendentity}, and cannot perform document-level \ac{nel} in a single forward pass, making their application costly for large-scale or batch annotation tasks.
 
 
-
-
-
-
-% \todo{chatel has a good overview of llms for ie}
-% \todo{llm for ie has a good overview of constrained generation approaches}
-
-% \todo{recent trends, bela, rexel , refined, relik??}
-% \todo{rexel at the end as multitask model}
-% \todo{nil pred}
-% \todo{something on clustering tooo}
 
 
 

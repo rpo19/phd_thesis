@@ -45,7 +45,6 @@ In practice, since at implementation level the models use log-probabilities, we 
     \end{cases}
 \end{equation}
 
-% TODO connect
 
 \begin{figure}[H]
     \centering
@@ -255,8 +254,6 @@ You must always follow these instructions precisely and ensure your responses ad
 
 \section{Experimental Setup}
 \label{sec:rx:experiments}
-\todo{continue from here}
-
 In this section, we describe the experimental setup used to evaluate the performance of \refactx on \ac{kgqa} tasks and its adaptability to domain-specific data (financial). We detail, in turn, the pretrained \acp{llm}, the datasets, the evaluation metrics, and the selected reference approaches.
 
 In addition, we assess the scalability of \refactx (\ref{ch:scalability}) by comparing its generation time under constrained decoding with an unconstrained \textit{\ac{llm}-only} baseline. This analysis is conducted on the 800-million-fact prefix tree constructed from Wikidata.

@@ -36,7 +36,6 @@ The \ac{llm} sketches a plan, makes two \emph{Fact} calls, and---with constraine
 
 
 \paragraph{Motivating Example.} The approach is illustrated in \Cref{fig:example}, by depicting an example with the question \textit{``When was the director of Slumdog Millionaire born?''}. The model is instructed to first reason on how to reach the correct answer, and then it starts to acquire facts.
-% TODO fact command?
 Once the \emph{Fact} command is called, constrained generation is enabled (underlined in blue) and the model is guided to generate an existing fact. This way the model is able to first find that \textit{``Danny Boyle''} is the director of \textit{``Slumdog Millionaire''}, then to find his birthdate, and finally to answer the question correctly.
 
 Furthermore, the facts generated can be highlighted, as in \Cref{fig:example}, so that users are aware that those facts exist in the \ac{kb}, supporting traceability and verifiability (\ref{ch:traceability}).

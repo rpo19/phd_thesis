@@ -212,7 +212,6 @@ $ALL$ &         100k &           6.5k &                501 &                    
 \FloatBarrier
 \subsection{Evaluation Procedure}
 \label{sec:ijckg:evaluation_procedure}
-\todo{break figures before starting this}
 
 %The evaluation is run in two ways: first on the whole dataset (single-batch) to allow a comparison with other models from literature; then, it is run incrementally on each batch, so that the drop in performance, due to the lack of information provided in the first steps, can be quantified. \newline
 %As far as we know, however, there is no other work which uses the same dataset that train the model reducing the available information in any way: other works should be considered only as a reference for the task difficulty.
@@ -420,7 +419,6 @@ In order to investigate which component of the pipeline has a stronger contribut
 %Results are not compared against other models to prevent the temptation of a direct comparison, regardless dataset modifications (as described above) and the different task (which, in our case, is incremental through time).
 
 % Being a binary classification, the NIL predictor performance is measured with precision and recall,
-% TODO ENSURE (normalized by the support)
 %As shown in \Cref{scores:nil_predictor}.
 % The NIL prediction component show high precision scores that grow from $b_0$ to $b_9$. Intuitively, this means that the number of false positives---$\neg$NIL mentions predicted as NIL, in our case---is decreasing over the batches. 
 
@@ -570,7 +568,6 @@ Another open problem concerns when to update the \ac{kr}. In the current setup, 
 Balancing the need for informative representations with the challenge of handling rare entities remains an interesting avenue for further research.
 
 
-% \todo{future works removed}
 % Future works include the application of our methodology to generate incremental versions of more datasets. In addition, we plan to elaborate on methods to address the main challenges found in I-\ac{nel}, especially in relation to the management of novel entities (NIL prediction and NIL mention representation).  
 % %, and deeper studies to improve novel entities representation.
 % % and additional studies on when to add a new entity to the KB.

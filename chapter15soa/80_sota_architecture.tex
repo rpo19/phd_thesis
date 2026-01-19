@@ -6,7 +6,6 @@
 % kms is not relevant!
 % data management system
 
-% \todo{maybe cite some requirements for legal: eg.g. semi automatic, traceability}
 % % knowledge management
 % \Acf{km} refers to the processes of generating, organizing, disseminating, and re-using an organization's information and expertise. A \emph{\acf{kms}} is the technological infrastructure that supports these processes by acquiring knowledge from internal or external sources, structuring it in a persistent and queryable form, and enabling efficient retrieval, sharing, and controlled evolution over time~\cite{computers12040072}.
 
@@ -19,7 +18,7 @@
 % Several systems for assisting legal professionals have been developed over time~\cite{amato2008,buey2016,breit_legal_permits_2020,HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}.
 % Early work by \textcite{amato2008} introduced a document management system for the legal domain that leverages ontologies and entity extraction, focusing primarily on notary documents.
 % \textcite{buey2016} focused on a wider range of legal documents---such as public acts and private agreements---by employing ontologies that model document structures and specify which entities should be extracted from each section.
-% \textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits\todo{add description once verified}.
+% \textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits.
 % More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
 % The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
 
@@ -137,7 +136,6 @@ These gaps and patterns in prior work motivate the architecture introduced in \C
 
 
 
-% \todo{continua qui}
 % % These choices indicate a tendency toward modular and auditable integration rather than monolithic processing, but they are usually applied within specific legal sub-domains and without a unified representation layer supporting both extraction and downstream information access over heterogeneous legal and investigative sources.
 
 % \subsubsection*{Synthesis}
@@ -161,7 +159,6 @@ These gaps and patterns in prior work motivate the architecture introduced in \C
 
 
 % % \paragraph{proper legal data management systems}
-% \todo{organizza per mostrare challenge, obiettivi e casi d'uso}
 
 % Eunomos~\cite{boella2016eunomos} is a legal data management system that integrates legislative XML---used to represent statutes in a structured and versioned form---with legal ontologies encoding legal concepts and relations (\eg \emph{replaced-by} for amendments). The platform automatically acquires legislation (\eg from Normattiva\footnote{\url{https://www.normattiva.it/}}), converts it to XML, extracts cross-references to build a network of norms, and maintains temporal versions of provisions. Concepts, prescriptions, roles, and sanctions are stored in an ontology and linked to specific legislative fragments, enabling semantic navigation and fine-grained queries. Population is semi-automatic: the system proposes annotations while still allowing manual correction. Targeted use cases include compliance in financial regulation and support for law firms and public bodies in tracking and structuring legal knowledge, as well as citizen-facing access to consolidated and concept-aware legislation. By coupling structured legislation with a concept layer, Eunomos goes beyond keyword-based retrieval and enables controlled, ontology-driven access to evolving legal norms.
 
@@ -194,11 +191,10 @@ These gaps and patterns in prior work motivate the architecture introduced in \C
 
 % \textcite{human-ai-system-legal-precedent-search-china} focus on case retrieval and identify three design requirements for human-AI collaboration in precedent search: visualized faceted search---\ac{ai} assists users by suggesting or grouping related search terms, but the user controls the facets and thresholds; semantic zoom---users can move across levels of detail in a precedent (facts, reasoning, citations) with optional support such as summarization or citation tracing, and can bookmark items to bridge exploration and documentation; and step-by-step assistance---the system provides procedural help at a low level, ensuring that legal conclusions remain under human control. Overall, \ac{ai} is explicitly positioned as an assistive layer that enhances the search and reading process without taking over legal judgement.
 
-% \todo{summarize interesting aspects of these works wrt my contrib}
 
 
 
-% \todo{bellandi streamlining}~\cite{bellandi2025streamlining} this paper is an evolution of \textcite{BELLANDI2024} which is one of the contributions of my \phd Our collogues continued the work improving it essentially. this is why this work shares similarities with the architecture proposed for \ref{ob:architecture}.
+% ~\cite{bellandi2025streamlining} this paper is an evolution of \textcite{BELLANDI2024} which is one of the contributions of my \phd Our collogues continued the work improving it essentially. this is why this work shares similarities with the architecture proposed for \ref{ob:architecture}.
 
 % designed to enforce the streamlined
 % management of legal documents, such as court decisions or
@@ -300,7 +296,6 @@ These gaps and patterns in prior work motivate the architecture introduced in \C
 %%%%%%%%%%%%%%%%%%%%%
 
 
-% \todo{paper architectural sota}
 
 % \paragraph{other more specific legal systems}
 % they are not \acp{kms} but do something related \eg legal case retrieval,...
@@ -310,34 +305,20 @@ These gaps and patterns in prior work motivate the architecture introduced in \C
 % Several systems for assisting legal professionals have been developed over time~\cite{amato2008,buey2016,breit_legal_permits_2020,HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}.
 % Early work by \textcite{amato2008} introduced a document management system for the legal domain that leverages ontologies and entity extraction, focusing primarily on notary documents.
 % \textcite{buey2016} focused on a wider range of legal documents---such as public acts and private agreements---by employing ontologies that model document structures and specify which entities should be extracted from each section.
-% \textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits\todo{add description once verified}.
+% \textcite{breit_legal_permits_2020} later explored the automation of processes related to legal permits
 % More recent work include \textcite{HAN2024121052legalasst,human-ai-system-legal-precedent-search-china}. The former proposed \emph{LegalAsst}, a system designed to enhance court productivity by integrating \acp{llm}, entity recognition, graph-based visualizations of trial facts, and decision-tree representations of judicial reasoning.
 % The latter developed a prototype for legal case retrieval that guides professionals interactively through a faceted search interface---an exploratory search paradigm that organizes results along multiple dimensions, or facets~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}, such as case type, court, date, or involved parties---recommending alternative search terms to support precedent discovery.
 
 
 % \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, \ie the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
-% \todo{adele}
-% \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
-% \todo{maybe order historically}
-% \todo{add approaches for criminal investigations from claw}
-
-% \paragraph{soa criminal}
-% \todo{add whatsapp}
 
 
 
-% \todo{paper architectural sota}
+
 
 % \paragraph{other more specific legal systems}
 
 
 % % \textcite{CHIEN2024105902} focus on Legal Judgment Prediction from indictments, \ie the task of predicting the applicable legal articles, charges, and sentences given the statement of facts. A criminal indictment typically contains the cause of charge, the narrative of facts and reasons, and the cited legal provisions and prosecutorial requests, providing a structured input for the prediction task.
 
-% \todo{adele}
-% \todo{non fanno nel ma alcuni organizzano in triple rdf. magari aggiungerlo}
-% \todo{maybe order historically}
-% \todo{add approaches for criminal investigations from claw}
-
-% \paragraph{soa criminal}
-% \todo{add whatsapp}

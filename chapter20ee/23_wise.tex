@@ -42,7 +42,6 @@ The following sections describe the annotation process for obtaining labeled ben
 % These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
 
 
-% \todo{maybe move later?}
 % Data labeling is an essential part of the process required to adapt entity extraction and knowledge consolidation algorithms to the legal domain, assess their performance, and drive their improvement. In the following section, we discuss the methodology used to create an annotated benchmark from a large corpus and its features.
 
 
@@ -173,7 +172,7 @@ As the \ac{ner} component we use \emph{ITA+LGL+ICCJ900k}, the best performing mo
 % The transformer we use is based on ITALIAN-LEGAL-BERT~\cite{licari_italian-legal-bert_2022},
 % % , an Italian BERT-base additionally fine-tuned with masked language modeling (MLM) for the Italian legal domain,
 % additionally fine-tuned with masked language modeling (MLM) %on Italian civil judgements, and finally for \ac{ner} on civil judgements data (the model \textit{ITA+LGL+ICCJ900k}
-% for the Italian legal domain and finally for \ac{ner} %TODO anon
+% for the Italian legal domain and finally for \ac{ner}
 % in~\cite{aixia_2023}. 
 Using this model in the experiments can give us clues on how the best model for judgments (see \Cref{sec:eejudgements}) performs on investigative \ac{ima} data, allowing to understand the feasibility of using a single \ac{ner} model for both judgments and \ac{ima} data.
 
@@ -186,7 +185,7 @@ To represent chat participants, we leverage BLINK zero-shot capability to encode
 [CLS] {name} [ENT] phone number: {phone1(,phone2,...)} [SEP].
 \end{lstlisting}
 As the majority of the people of interest for the investigation refers to entities not in Wikipedia, we link mentions of persons only to the chat participants. For organizations and locations, instead, we consider Wikipedia entities.
-%are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.%\todo{controllare che sia vero}\todo{in realtà cerca di linkare anche le date}
+%are the main targets for linking in the investigative context, as the references to known organizations and locations can help disambiguate references and link messages across different chats.
 
 % \subsubsection{NIL Prediction}
 In the NIL prediction component, we employ the logistic regression classifier described in \Cref{sec:claw_consolidation}.
@@ -201,7 +200,6 @@ Next, the pairwise similarity scores are used to create weighted graphs, where m
 
 %
 Entity clustering is applied at document-level to group the NIL mentions referring to the same unknown entity. %For computational efficiency we do not cluster mentions across different documents.
-%\todo{cosa ne facciamo delle annotazioni?}
 
 
 The application of \ac{inel} has two outcomes: the chat file is annotated (\acl{sta})
@@ -351,9 +349,9 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
 
 %%% old investigation
 
-% In these chats, the \ac{inel} pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes. We should note that the addition of the transcriptions of voice-messages 
+% In these chats, the \ac{inel} pipeline found 7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes. We should note that the addition of the transcriptions of voice-messages 
 
-% that contain actual messages was used to quantify the number of the ``mentioned in" relationships that could be added to the knowledge graph. In these chats, the \ac{inel} pipeline found \todo{update}7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes.
+% that contain actual messages was used to quantify the number of the ``mentioned in" relationships that could be added to the knowledge graph. In these chats, the \ac{inel} pipeline found 7486 mentions of entities: 4592 of type ``person", 1166 of type ``location", 606 of type ``date", 229 of type ``money" and 859 of type ``organization". This means that, thanks to NLP, we can enrich the knowledge graph with 7486 ``mentioned in" relationships between ``entity" nodes and the ``message" nodes.
 %%%% old investigation
 
 
@@ -361,7 +359,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
 % We should note that the addition of the transcriptions of voice-messages 
 %to the documents 
 % helped to recognize 138 more entities than when the pipeline was applied to the plain-text messages alone. This suggests that voice messages may have a higher information content, since the predicted average number of ``entity" nodes connected to them by a ``mentioned in" relation (0.24) is higher than the average number of ``entity" nodes connected to a ``Text-message" node (0.16).
-%At the time of writing this paper, we are still working on finalizing the interconnection between the \ac{inel} pipeline and the knowledge graph. For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+%At the time of writing this paper, we are still working on finalizing the interconnection between the \ac{inel} pipeline and the knowledge graph. For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.
 % An example of how the \ac{inel} pipeline identifies entities in a transcription is shown in Figure~\ref{fig:\ac{ner} example}. 
 %Please note that this 
 % The screenshot is taken directly from DAVE and shows how the annotated document is presented to the user. In this example, several mentions of locations and organizations were found in a voice message that referred to a meeting (``incontro" - one of the keywords searched to answer the investigative questions). 
@@ -377,7 +375,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
 We discuss a first evaluation of the \ac{ner} component. 
 %, the task for which a comparison with our previous work is easier.  
 %To quantify the quality of the NLP pipeline 
-% We annotated a labeled dataset for evaluating \ac{ner} from six chats of which three are group chats, selected from the ones long enough and with audio transcripts. %We used the same methodology used in previous work~\cite{BELLANDI2024105904,aixia_2023}: % TODO anon riaggiungere citazione
+% We annotated a labeled dataset for evaluating \ac{ner} from six chats of which three are group chats, selected from the ones long enough and with audio transcripts. %We used the same methodology used in previous work~\cite{BELLANDI2024105904,aixia_2023}:
 % We computed a first set of automatic annotations using the \ac{ner} component and thoroughly revised them with doccano~\cite{doccano}. At the end of the process, we annotated 668 mentions of Person, 268 of Organization, 207 of Location, 157 Dates, and 11 Money.
 
 % 78 mentions of time, 13 phone numbers, 18 website addresses, 2 email addresses, and 12 misc. However, the \ac{ner} evaluation only considers Person, Organization, Location, Date, and Money since they are the types currently extracted by the \ac{ner} module.
@@ -399,7 +397,7 @@ We discuss a first evaluation of the \ac{ner} component.
 % %In particular, 
 % %With respect to precision, we found some mistakes on transcriptions related to I'm  
 
-% Results shown in Table~\ref{tab:eval} are significantly worse than those obtained on other domain-specific data on which the pipeline we adapted was tested~\cite{ijckg2022,aixia_2023}. This confirms that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggests that in-distribution fine-tuning is necessary. % to detect entities. % TODO anonymized. valutare se reinserire
+% Results shown in Table~\ref{tab:eval} are significantly worse than those obtained on other domain-specific data on which the pipeline we adapted was tested~\cite{ijckg2022,aixia_2023}. This confirms that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggests that in-distribution fine-tuning is necessary. % to detect entities.
 Results shown in Table~\ref{tab:eval} are not satisfactory, confirming that \ac{inel} on \ac{ima} data is challenging because of the specific data distributions and suggesting that in-distribution fine-tuning is necessary.
 On the other hand, metadata are precisely identified enabling accurate filtering with faceted search.
 % Indeed \ac{ima} data contain peculiarities such as person name abbreviations or inconsistent capitalization of names and locations. In relation to fitness for use, we make two remarks. 1) Metadata are precisely identified enabling accurate filtering in DAVE, for instance, by message sender. 2) DAVE supports text search, which makes it possible to complement entity-based retrieval to improve result recall.        
@@ -414,17 +412,14 @@ On the other hand, metadata are precisely identified enabling accurate filtering
 %\end{itemize}
 
 
-%\todo{forse meglio mettere una sezione tipo challenges. e citare qualche challenge anche nell'intro.}
 
         
 
 % \textbf{Limitations and Challenges.}
-% Results in Table~\ref{tab:eval} confirm that \ac{inel} on \ac{ima} data is challenging due to the peculiar distribution of entities, indicating that in-distribution fine-tuning is required to attain competitive performance. At the same time, metadata are reliably identified, enabling accurate filtering via faceted search. To overcome the weaknesses of pretrained models in the \ac{inel} pipeline, the labeled benchmark must be enlarged and the models fine-tuned on \ac{ima} data.%; based on our previous experience~\cite{ijckg2022}, we expect a significant improvement across all performance measures. % TODO anon. valutare se riaggiungere
 %
 %The \ac{inel} stack should be better customized for the domain, \eg via in-domain fine-tuning. %Clustering is attracting the attention of the research community and we believe that investigations and \ac{ima} data provide a representative and challenging domain to develop better algorithms for this task. 
-%\todo{forse potremmo togliere questa discussione sul clustering visto che non è tanto esplorato nel paper}
 %In the customization of entity clustering in the domain of \ac{ima}, we also need to improve the interconnection between the knowledge graph and the \ac{inel} pipeline.
-%For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.\todo{Per Prof: controllare se OK}
+%For this reason, we can't yet provide any additional statistics on the number of different ``entity" nodes.
 % The integration of generative LLMs is still limited.
 % The QA module requires significant improvement and
 %We did not include image-to-text enrichment yet, a highly desired features.
