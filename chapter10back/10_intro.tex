@@ -12,12 +12,14 @@
 % literature of most relevant tasks (NER, NEL, coreference resolution, QA)
 This chapter presents the background concepts necessary to understand the rest of the thesis, which are directly connected to the thesis objectives and use cases.
 %
-\Cref{sec:back:informationaccess} introduces \acl{ia} and the notions of \emph{information needs} and \emph{information objects}~\cite{entityorientedsearch2018balog}, which are central to document navigation, \acl{qa}, and information retrieval scenarios in the legal and investigative domains (\ref{uc:navigation,uc:qa,uc:case-retrieval,uc:investigative-retrieval}).
-%
+\Cref{sec:back:informationaccess} introduces \acl{ia} and the notions of \emph{information needs} and \emph{information objects}~\cite{entityorientedsearch2018balog}, which are central to document navigation, \acl{qa}, and information retrieval scenarios in the legal and investigative domains (\ref{uc:navigation}, \ref{uc:qa}, \ref{uc:case-retrieval}, and \ref{uc:investigative-retrieval}).
+
 % entities are a crucial component for information extraction and this thesis hypothetises that  directly connected with the second objective (Design of an entity-centric architecture for data integration and information access.)
 In \Cref{back:entities}, we define what constitutes an entity and describe how entity-based knowledge is represented in \aclp{kr} and \aclp{kb}, since entities play a central role in \acl{ie} (\ref{ob:extraction_assessment}) and directly relate to design of an entity-centric architecture addressed by \ref{ob:architecture}.
-\todo{continue here}
-To better situate the discussion within the recent advancements in \ac{nlp} we detail the core concepts behind modern \aclp{llm} in \Cref{sec:rw:llms}. Once this broader context is established, in \Cref{sec:domains}, we describe the Italian legal system and the regulations for using \acl{ai} within it, with some example applications. We then present illustrative examples of an Italian civil judgment and a chat log from an Italian investigation---whose analysis has motivated several works~\cite{BELLANDI2024,aixia_2023,pozzi_wise_2025} produced during my \phd
+%
+Then, since \acl{ie} and access are fundamentally based on \acf{nlp} techniques, \Cref{sec:rw:llms} situates the discussion within recent advances in the field and outlines the core concepts underlying modern \acfp{llm}.
+
+Once this technical context is established, \Cref{sec:domains} focuses on the application domain considered in this thesis, namely the Italian legal context. We describe the Italian legal system and the regulatory framework governing the use of \acl{ai}, together with illustrative examples of legal documents, the analysis of which has motivated several works produced during my \phd~\cite{BELLANDI2024,aixia_2023,pozzi_wise_2025}. In particular, we present a civil judgment and a chat log from a criminal investigation, rendered in English for clarity but closely resembling the ones used in Italian courts and investigations.
 
 
 
