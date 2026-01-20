@@ -10,11 +10,10 @@ As discussed in \Cref{sec:background:ai4legal}, legal data often contain persona
 
 Another related issue concerns the use of external \acp{api}, such as those offered by OpenAI\footnote{\url{https://openai.com/api/}}, on legal data containing personal information. Unless the input data are anonymized or pseudonymized, their use may result in transferring sensitive data outside the European Union, raising compliance concerns with respect to the GDPR regulations~\cite[Art.~44--49]{gdpr2016}. Consequently, many institutions must rely on locally deployed models, which, while ensuring full control over data storage and security~\cite[Art.~32]{gdpr2016}, may be constrained by the available computational infrastructure.
 
-In summary, the main contributions of this work on \acl{ee} applied to Italian civil judgments are as follows:
+In summary, this section makes the following contributions to \acl{ee} applied to Italian civil judgments:
 \begin{itemize}
     \item Creation of an annotated benchmark dataset for civil judgments, including the calculation of the \acf{iaa}, for enabling structured evaluation of \acl{ee} methods.
     \item Evaluation of \acl{ner} and \acf{inel} pipelines on domain-specific data (Italian civil judgments), assessing performance and identifying key challenges.
-    \item Comparative study of domain adaptation techniques, highlighting which approaches provide the best trade-off between computational cost and performance improvement.
     \item Training of the BLINK~\cite{blink} bi-encoder for the Italian language (\blinkita).
 \end{itemize}
 
