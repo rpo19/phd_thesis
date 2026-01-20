@@ -30,14 +30,13 @@ As in that case, the availability of labeled data for \ac{ima} analysis is limit
 
 The work presented in this section is related to the \phd publication \textcite{pozzi_wise_2025}. Its main contributions, with respect to \acl{ee} applied to \acl{ima} data, can be summarized as follows:
 \begin{itemize}
+    \item Modeling of chat metadata in a knowledge graph to support graph-based investigative queries (\ref{uc:investigative-retrieval}).
     \item Creation of an annotated benchmark dataset for investigative \ac{ima} data, enabling structured evaluation of \ac{ee} methods.
     \item Selection of a suitable speech-to-text model for transcribing voice messages.
     \item Assessment of \acf{ner} and incremental \acf{nel} pipelines on domain-specific data, identifying performance trends and key challenges.
 \end{itemize}
 
-
-The following sections describe the annotation process for obtaining labeled benchmark data (\Cref{sec:wise_dataset}), methodology adopted for handling voice messages (\Cref{sec:wise_multimedia}), the entity extraction pipeline (\Cref{sec:wise_entity_extraction}), and the dataset, experiments, and evaluation procedures (\Cref{sec:wise_experiments}).
-
+The following sections describe the construction of the knowledge graph modeling chat metadata (\Cref{sec:wise:metdata_extraction}), the annotation process for obtaining labeled benchmark data (\Cref{sec:wise_dataset}), the methodology adopted for handling voice messages (\Cref{sec:wise_multimedia}), the entity extraction pipeline (\Cref{sec:wise_entity_extraction}), and the dataset, experiments, and evaluation procedures (\Cref{sec:wise_experiments}).
 
 % These works also include contributions in \acl{ia}, which are build upon the knowledge extracted from the domain data, and are described later in the next \Cref{chap:legalia}.
 
