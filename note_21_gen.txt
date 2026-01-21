@@ -1,0 +1,13 @@
+peso ai lavori migliori
+- parto meno generico (no prima slide)
+- discutere ruolo ent in ia
+- benchmark di qa mostrano importanza in qa
+
+- 70% of queries are related to entities: faccio capire impatto entità
+- alcune cose veloce
+- principali risultati
+- accorpare ee
+- quale narrrazione e messaggio
+- cosa deve imparare chi ascolta
+
+- el su judgments: imparo che per precisione ho bisogno di dati di training
