@@ -1,31 +1,28 @@
-Knowledge-intensive domains such as law require accessing, integrating, and
-reasoning over large collections of heterogeneous documents, while meeting
-strict requirements on privacy, traceability, and regulatory compliance. Despite
-recent advances in large language models, their direct use in these settings is
-limited by hallucination, lack of grounding, and the legal constraints that
-complicate the transfer of sensitive data to external APIs. This thesis
-investigates how to satisfy information needs in the legal domain, including
-precedent retrieval, investigative search on seized data, document navigation,
-question answering, and statistical monitoring, under these constraints. The
-work pursues three objectives. First, it quantiﬁes to what extent general-domain
-entity extraction pipelines (entity recognition, entity linking, NIL prediction)
-can be applied to legal judgments and investigative chat logs. The results show
-that incremental entity extraction, where novel entities are identiﬁed and added
-to the knowledge base, suﬀer from error propagation, and that NIL prediction is
-a major bottleneck, supporting the need for architectures that tolerate
-imperfect extraction. Second, it designs an entity-centric data integration
-architecture that integrates heterogeneous legal sources (judgments,
-investigative chats, attachments) around entities, supports traceability and
-human oversight via error correction functionalities, remains useful despite
-extraction errors, and enables the use cases above. Third, it develops ReFactX,
-a constrained-generation approach to question answering that injects facts from
-large knowledge bases into an large language model without retrievers or
-external calls, producing answers that are veriﬁable against grounded evidence
-while adding only negligible latency, thus remaining eﬃcient and suitable for
-local deployment. Together, the contributions form an integrated approach for
-information access in knowledge-intensive legal settings. The entity-centric
-data integration architecture integrates the knowledge received from extraction
-services and can be paired with user interfaces or ReFactX to support downstream
-use cases, while preserving traceability, veriﬁability, and error-correction
-capability in line with the GDPR and AI Act requirements on data control and
-human oversight.
+Knowledge-intensive domains such as law require accessing, integrating, and reasoning over
+large collections of heterogeneous documents, while meeting strict requirements on privacy,
+traceability, and regulatory compliance. Despite recent advances in large language models,
+their direct use in these settings is limited by hallucination, lack of grounding, and the legal
+constraints that complicate the transfer of sensitive data to external APIs. This thesis investigates
+how to satisfy information needs in the legal domain, including precedent retrieval,
+investigative search on seized data, document navigation, question answering, and statistical
+monitoring, under these constraints.
+The work pursues three objectives. First, it quantiﬁes to what extent general-domain entity
+extraction pipelines, including entity recognition, entity linking, and NIL prediction, can be
+applied to Italian legal judgments and investigative chat logs. The results show that incremental
+entity extraction, where novel (or NIL) entities are identiﬁed and added to the knowledge base,
+suﬀer from error propagation, and that detecting novel entities (NIL prediction) is a major performance
+bottleneck, supporting the need for architectures that tolerate imperfect extraction. Second,
+it designs an entity-centric data integration architecture that integrates heterogeneous legal
+sources (judgments, investigative chats, attachments) around entities, supports traceability and
+human oversight via error correction functionalities, remains useful despite extraction errors,
+and enables the use cases above. Third, it develops ReFactX, a constrained-generation approach
+to question answering that injects facts from large knowledge bases into a large language model
+without retrievers or external calls, producing answers that are veriﬁable against grounded
+evidence while adding only negligible latency, thus remaining eﬃcient and suitable for local
+deployment.
+Together, the contributions form an integrated approach for information access in
+knowledge-intensive legal settings. The designed entity-centric data integration architecture integrates
+the knowledge received from extraction services and can be paired with user interfaces or
+ReFactX to support downstream use cases, while preserving traceability, veriﬁability, and
+error-correction capability in line with the GDPR and AI Act requirements on data control
+and human oversight.
