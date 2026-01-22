@@ -81,7 +81,7 @@ Civil court judgments are formal acts issued by the judge at the conclusion of a
 Investigative chat logs consist of messages extracted from \acp{ima}, such as WhatsApp\footnote{\url{https://www.whatsapp.com/}}, from the mobile phones of suspects during criminal investigations. These logs may include textual conversations, exchanged multimedia files, and metadata~\cite{P_rez_2021}. In the forensic context, such data are carefully collected and analyzed to reconstruct events~\cite{P_rez_2021}, identify relationships among participants~\cite{Sonakshi_whatsapp_group_2025}, for gathering evidence in support of the proceeding~\cite{pirzada2024framework}.
 
 %\paragraph{legal challenges}
-However, applying \ac{nlp} techniques to the legal domain entails specific challenges, including regulatory constraints, evolving legislation, domain-specific language, and legal interpretations that differ from general usage.
+While \ac{nlp} has the potential to enhance information workflows in the legal domain~\cite{juliahb2024}, applying \ac{nlp} techniques in this domain entails specific challenges, including regulatory constraints, evolving legislation, domain-specific language, and legal interpretations that differ from general usage.
 %
 For instance, in tasks such as estimating the similarity between different legal proceedings, using general-domain methods for document similarity may incorrectly label two cases as similar, even when the law treats them very differently. For example, the theft of similar products can be judged under different laws depending on the value of the stolen items~\cite{feng-etal-2024-legal}, potentially leading to very different penalties.
 
@@ -177,7 +177,7 @@ These challenges highlight the need for architectural solutions that can organiz
 
 
 
-Across the diverse approaches reviewed in \Cref{chap:background}, a common principle emerges: the design of an intermediate architecture that mediates between users and the underlying sources of information. Such architectures may take the form of search engines indexing documents for efficient retrieval; visualization systems that highlight relevant elements in user interfaces~\cite{swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023,pirzada2024framework,P_rez_2021,kejriwal2018}; or data infrastructures such as knowledge graphs and databases~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst,bellandi2025streamlining}. These systems share the goal of organizing and presenting information in a form that is meaningful to users and suited to their analytical tasks.
+Across the diverse approaches for integrating legal data, reviewed in \Cref{sec:sota:arch}, a common principle emerges: the design of an intermediate architecture that mediates between users and the underlying sources of information. Such architectures may take the form of search engines indexing documents for efficient retrieval; visualization systems that highlight relevant elements in user interfaces~\cite{pirzada2024framework,P_rez_2021,kejriwal2018,swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}; or data infrastructures such as knowledge graphs and databases~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst,bellandi2025streamlining}. These systems share the goal of organizing and presenting information in a form that is meaningful to users and suited to their analytical tasks.
 
 \begin{figure}[H]
     \centering
