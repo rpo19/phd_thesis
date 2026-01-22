@@ -12,7 +12,8 @@
 
 % extraction and access
 
-In recent years, \ac{nlp}, the field studying automatic processing and understanding of natural language, has been revolutionized by the transformer architecture~\cite{vaswani_transformers_2017}. Introduced in 2017, transformers improved both performance and training-time parallelization compared to previous approaches~\cite{vaswani_transformers_2017}, enabling researchers to train bigger models on huge natural language corpora, for later \say{transferring} the generic linguistic knowledge acquired to specific downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5}. This technique is known as \emph{transfer learning}~\cite{torrey2010transfer} and allows to reduce the dependence on large labeled data~\cite{zhuang_survey_transfer_learning_2021}, therefore improving the efficiency of the learning process~\cite{torrey2010transfer}. Examples of downstream tasks that can be enhanced with generic linguistic knowledge~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5} include: \emph{\acf{ner}}, the task of identifying mentions of entities like persons, locations, or organizations~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}; \emph{\acf{qa}}, the task of understanding and responding to natural language questions~\cite{bates1995models}; and \emph{sentiment analysis}, which classifies texts as expressing positive or negative opinions~\cite{jm3}.
+In recent years, \ac{nlp}, the field studying automatic processing and understanding of natural language, has been revolutionized by the transformer architecture~\cite{vaswani_transformers_2017}. Introduced in 2017, transformers improved both performance and training-time parallelization compared to previous approaches~\cite{vaswani_transformers_2017}, enabling researchers to train bigger models on huge natural language corpora, for later \say{transferring} the generic linguistic knowledge acquired to specific downstream tasks~\cite{jm3,devlin-etal-2019-bert,radford2018improving,Raffel2020t5}, such as \acl{qa}, which responds to questions in natural language~\cite{bates1995models}, or \acl{ner}, which identifies entities like persons or locations in text~\cite{entityorientedsearch2018balog,keraghel2024recentadvancesnamedentity,jm3}.
+
 
 \begin{figure}[ht!]
     \centering
@@ -25,8 +26,6 @@ Later, transformer-based \acp{lm} have been scaled to billions of parameters, de
 %
 Today, even popular search engines, such as Google Search\footnote{\url{https://www.google.com/}} have integrated \acp{llm} to provide quick answers or overviews of the search results~\cite{Google2024generative_search}, as visible in \Cref{fig:actor-search}.
 
-Current state-of-the-art \acp{llm} count hundreds of billions of parameters---an example is DeepSeek-V3~\cite{deepseekai2025deepseekv3technicalreport} whose 671 billions parameters are available on HuggingFace\footnote{\url{https://huggingface.co/deepseek-ai/DeepSeek-V3}}---and are generally served as \acp{api} due to the high hardware requirements derived from their size.
-In practice, deploying models such as DeepSeek-V3 on-premise would require multiple terabytes of \acp{gpu} memory, which makes local execution infeasible for most organizations.
 % and reinforces the predominance of API-based access.
 % Serving DeepSeek-V3 on \acp{gpu} would normally require loading all 671B parameters into device memory.\footnote{Assuming 32-bit precision: $671\times10^9\times 4\,$bytes $\approx 2.68\,$TB.} Consumer-grade cards, such as a 32\,GB Nvidia RTX~5090,\footnote{\url{https://www.nvidia.com/it-it/geforce/graphics-cards/50-series/rtx-5090/}} can hold $\approx 8$B parameters in 32-bit or $\approx 64$B in 4-bit precision, making them viable only for small/medium \acp{llm}, but far from sufficient for state-of-the-art models.
 
@@ -37,10 +36,13 @@ In practice, deploying models such as DeepSeek-V3 on-premise would require multi
 % \]
 % Consumer-grade \acp{gpu}, such as the 2{,}000~\euro{} Nvidia RTX~5090\footnote{\url{https://www.nvidia.com/it-it/geforce/graphics-cards/50-series/rtx-5090/}}, featuring 32~GB of memory, allow loading approximately 8~billion parameters in 32-bit precision, or up to 64~billion parameters in 4-bit precision. This makes such hardware suitable for running small or medium-sized \acp{llm}, but far from sufficient for hosting state-of-the-art \acp{llm}.
 
-\todo{better connect}
-\medskip\noindent
+
 Despite their usefulness, \acp{llm} introduce non-negligible risks when deployed without safeguards, such as \emph{misuse} and \emph{misinformation}~\cite{bender2021stochastic,weidinger2022taxonomy}. They have been used as sources of factual knowledge despite being prone to \emph{hallucination}~\cite{maynez-etal-2020-faithfulness-hallucination,ji_etal-2023-survey-hallucination}---\ie the generation of incoherent, nonsensical, or unfaithful content. This risk is not merely hypothetical: in 2023, invented case law generated by ChatGPT was submitted and presented as authentic judicial decisions, an episode that resulted in formal sanctions by the court~\cite{milmo2023two_us_lawyers_fined_chatgpt}.
-A second risk concerns environmental impact: modern \acp{llm} require substantial computation for both training and inference, leading to high energy consumption and a significant carbon footprint~\cite{strubell2019energy,patterson2022carbon}.
+
+A second risk concerns environmental impact: modern \acp{llm} require substantial computation for both training and inference, leading to high energy consumption and a significant carbon footprint~\cite{strubell2019energy,patterson2022carbon}. These costs are largely driven by the scale of contemporary models.
+
+Indeed, state-of-the-art \acp{llm} count hundreds of billions of parameters---for instance, DeepSeek-V3~\cite{deepseekai2025deepseekv3technicalreport} comprises 671 billion parameters\footnote{\url{https://huggingface.co/deepseek-ai/DeepSeek-V3}}---and
+ are therefore generally served as \acp{api}, as their size entails prohibitive hardware requirements for local deployment.
 
 
 %%%%%%%%%
