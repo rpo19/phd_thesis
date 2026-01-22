@@ -19,7 +19,6 @@
 *.dvi
 
 # PDF output
-*.pdf
 main.pdf
 
 # Directory for auxiliary files created by latexmk
