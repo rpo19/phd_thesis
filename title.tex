@@ -72,7 +72,7 @@ Knowledge-intensive domains such as law require accessing, integrating, and reas
 
 The work pursues three objectives. First, it quantifies to what extent general-domain \acl{ee} pipelines, including \acl{ner}, \acl{nel}, and NIL prediction, can be applied to Italian legal judgments and investigative chat logs. The results show that incremental \acl{ee}, where novel (or NIL) entities are identified and added to the \acl{kb}, suffers from error propagation, and that detecting novel entities (NIL prediction) is a major performance bottleneck, supporting the need for architectures that tolerate imperfect extraction. Second, it designs an entity-centric \acl{dia} that integrates heterogeneous legal sources (judgments, investigative chats, attachments) around entities, supports traceability and human oversight via error correction functionalities, remains useful despite extraction errors, and enables the considered use cases. Third, it develops \refactx, a constrained-generation approach to \acl{qa} that injects facts from large knowledge bases into a \acl{llm} without retrievers or external calls, producing answers that are traceable and verifiable against grounded evidence while adding only negligible latency, thus remaining efficient and suitable for local deployment.
 
-Together, the contributions form an integrated approach for information access in knowledge-intensive legal settings. The designed entity-centric \acl{dia} integrates the knowledge received from extraction services and can be paired with \aclp{ui} or \refactx to support downstream use cases, while preserving traceability, verifiability, and error-correction capability in line with the GDPR and AI Act requirements on data control and human oversight.
+Together, the contributions represent an integrated approach for information access in knowledge-intensive legal settings. The designed entity-centric \acl{dia} integrates the knowledge received from extraction services and can be paired with \aclp{ui} or \refactx to support downstream use cases, while preserving traceability, verifiability, and error-correction capability in line with the GDPR and AI Act requirements on data control and human oversight.
 
 
 
@@ -96,6 +96,7 @@ Together, the contributions form an integrated approach for information access i
   \item \fullcite{Agazzi2025DAVE}
   \item \fullcite{Pozzi2025ReFactX}
 \end{itemize}
+\clearpage
 
 \section*{Contributions to conferences}
 As a \textbf{speaker} I presented:

@@ -45,7 +45,7 @@ The proposed baseline pipeline consists of three main modules: \acl{nel}, NIL pr
     keepaspectratio]
     %{imgs/pipeline_simple.drawio.png}
     {images/ijckg/pipeline_simple.drawio.pdf}
-    \caption{Schema of the \acl{inel} pipeline.
+    \caption[Schema of the \acs{inel} pipeline.]{Schema of the \acl{inel} pipeline.
     }
     \label{fig:pipeline}
 \end{figure}
@@ -77,7 +77,7 @@ Max, Secondiff, Levenshtein, Jaccard &  51.2 &  83.0 &          67.1 \\
 Max, Secondiff                     &  51.4 &  83.1 &          67.3 \\
 \bottomrule
 \end{tabular}
-    \caption{NIL prediction feature ablation study on the WNUM~\cite{Onoe_Durrett_2020} dataset, using the training set for model fitting and the development set for evaluating. \textit{max} is the score of the best candidate, \textit{levenshtein} and \textit{jaccard} are textual similarities between the mention and the entity title, \textit{secondiff} is the difference between the best and the second-best score.}
+    \caption[NIL prediction feature ablation study.]{NIL prediction feature ablation study on the WNUM~\cite{Onoe_Durrett_2020} dataset, using the training set for model fitting and the development set for evaluating. \textit{max} is the score of the best candidate, \textit{levenshtein} and \textit{jaccard} are textual similarities between the mention and the entity title, \textit{secondiff} is the difference between the best and the second-best score.}
     \label{tab:feature_ablation_study}
 \end{table}
 
@@ -106,7 +106,7 @@ Although including all mention vectors yields the highest recall, we adopt the \
 \begin{table}[!htbp]
 \centering
 \begin{threeparttable}
-    \caption{Recall@k \ac{nel} results between different representation strategies for NIL entities, with retrieval time and the disk usage. The \acl{kr} has been built using the mentions in the AIDA~\cite{aida} training set, while the results refer to linking the mentions from AIDA test$_a$. The indexes were created using FAISS~\cite{faiss} IndexFlatIP class\tnote{1}.}
+    \caption[Recall@k \acs{nel} results with different representations for NIL entities.]{Recall@k \ac{nel} results between different representation strategies for NIL entities, with retrieval time and the disk usage. The \acl{kr} has been built using the mentions in the AIDA~\cite{aida} training set, while the results refer to linking the mentions from AIDA test$_a$. The indexes were created using FAISS~\cite{faiss} IndexFlatIP class\tnote{1}.}
     \label{tab:new_entities_recall}
     \begin{tabular}{l|rrrr|rrr}
         \toprule
@@ -160,7 +160,7 @@ Finally, the test set is split into 10 batches using stratified sampling based o
 
 \begin{table}[htbp]
     \centering
-    \caption{Statistics about the dataset before and after the \textit{transplant}.}
+    \caption{Statistics about the \acs{inel} dataset before and after the \textit{transplant}.}
     \label{tab:dataset_nils}
     \begin{tabular}{ll|rr|rr}
     \toprule
@@ -179,7 +179,7 @@ Finally, the test set is split into 10 batches using stratified sampling based o
 
 \begin{table}[htbp]
     \centering
-    \caption{Per-batch statistics about the test set: number of mentions, entities, NIL mentions, new entities, and \emph{Prev~Entities}: new entities already found in a previous batch (that should be linked to an entity previously added to the \ac{newkr})}
+    \caption[Per-batch statistics about the \acs{inel} test set.]{Per-batch statistics about the \acs{inel} test set: number of mentions, entities, NIL mentions, new entities, and \emph{Prev~Entities}: new entities already found in a previous batch (that should be linked to an entity previously added to the \ac{newkr})}
     \label{tab:dataset_stats_extended}
 \begin{tabular}{l|rrrrrr}
 \toprule
@@ -205,7 +205,7 @@ $ALL$ &         100k &           6.5k &                501 &                    
     \includegraphics[
         width=\textwidth,
         keepaspectratio]{images/ijckg/incel_construction.drawio.pdf}
-    \caption{Construction of the \ac{inel} dataset from an \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kr} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
+    \caption[Construction of the \ac{inel} dataset.]{Construction of the \ac{inel} dataset from an \ac{nel} dataset (a): first $p\%$ of mentions from the corpus are flagged as NILs and corresponding entities are removed from the \ac{kr} (b); then observations are just \textit{transplanted} in order to obtain a well-represented distribution for the evaluation (c); finally the test set is split in batches (d).}
     \label{fig:incel_dataset_construction}
 \end{figure}
 
@@ -236,7 +236,7 @@ The evaluation procedure for the \ac{inel} task should measure both the overall 
     width=.5\textwidth,
     keepaspectratio]
     {images/ijckg/experiments_expected.drawio.pdf}
-    \caption{Schema of the expected outcome of the system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
+    \caption[Schema of the expected outcome of an \acs{inel} system.]{Schema of the expected outcome of the \acs{inel} system, given a mention $m$ referring to an entity $e$, when (a) $e$ is known in the \ac{bgkr}, (b) $e$ has already been added to the \ac{newkr} while processing the previous batches, (c) $e$ is not in \ac{bgkr}, nor in \ac{newkr}.}
     \label{fig:evluation_outcome}
 \end{figure}
 Finally, to assess the impact of error propagation across batches, the \ac{inel} evaluation should be comparable to a standard single-batch approach.
@@ -455,7 +455,7 @@ Among the evaluated approaches, the top-performing one is the \textit{3-step} me
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{images/ijckg/clusters.png}
-    \caption{The absolute frequency of entity clusters by size (the points) vs the expected values (the curve) from the test-set.}
+    \caption[Absolute frequency of entity clusters by size vs the expected values.]{The absolute frequency of entity clusters by size (the points) vs the expected values (the curve) from the test-set.}
     \label{fig:clusters}
 \end{figure}
 
@@ -521,7 +521,7 @@ $\text{GNN}_\text{F}$ & MUC F$_1$       &  36.08 &  31.05 &  31.04 &  29.84 &  2
 & macro F$_1$       &  100.0 &  91.38 &   66.67 &  100.0 &  85.62 &  86.86 &   66.67 &  100.0 &  64.13 &   66.67 &  82.80 & \\
 \bottomrule
 \end{tabular}
-    \caption{Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when an \ac{nel} error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where ground truth clusters contain one element; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
+    \caption[\acs{inel} Evaluation results.]{\acs{inel} Evaluation results: \textit{\ac{nel}}, \textit{NIL Pred}, \textit{Overall}, and \textit{Correct} are obtained using the pipeline with the 3-step clustering algorithm (the top performing one). \textit{Correct} results are obtained correcting the output of the previous components. $\varnothing$ refers to the unbatched single-pass experiment. NIL prediction performance are calculated considering correct when an \ac{nel} error is mitigated. *Nothing can be linked to previously added entities in $b_{0}$. ``--'' represents cases where ground truth clusters contain one element; in this case, \textit{MUC F$_1$} score (= 0) is not meaningful~\cite{recasens_hovy_2011}.}
     \label{tab:superresults}
 \end{table}
 \end{landscape}
