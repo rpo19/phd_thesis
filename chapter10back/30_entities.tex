@@ -27,7 +27,7 @@ A \acf{kr} is a structured or semi-structured collection of entities~\cite{entit
 
 Wikipedia~\cite{wikipedia:wikipedia} is a well-known semi-structured \acl{kr}, where each entity is represented as an article (\eg Barack Obama\footnote{\url{https://en.wikipedia.org/wiki/Barack\_Obama}}) containing text semi-structured in different sections, as well as pictures and hyperlinks connected to other entities, similarly to relationships. As of September 2025, Wikipedia contains more than 7 million articles in English alone~\cite{Wikipedia:SizeOfWikipedia}.
 
-While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \emph{\acl{sw}} community has been working to extend the \Ac{web} into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, \acfp{iri}~\cite{durst2005iri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
+While semi-structured repositories are well suited for human consumption, machines require more formalized representations. The \emph{\acl{sw}} community has been working to extend the Web into a machine-interpretable form~\cite{entityorientedsearch2018balog,decker_sw_rdf_xml_roles_2000}. This effort led to the development of the \acl{sw} stack, encompassing standards such as \acfp{uri}~\cite{berners-lee2005uri}, \acfp{iri}~\cite{durst2005iri}, XML, \acs{rdf}, SPARQL~\cite{prudhommeaux2008sparql}, and ontology languages like RDFS and OWL~\cite{entityorientedsearch2018balog}.
 
 The \acf{rdf}~\cite{klyne2004rdf} data model allows to represent an entity as a set of assertions or \emph{facts} about that entity. In this work, we will use the term \emph{fact} according to the following definition.
 \begin{definition}[Fact]
@@ -113,14 +113,14 @@ Examples of \acp{kb} include Wikidata~\cite{wikidata,vrandevcic2014wikidata}, DB
 
 
 
-% \subsection{Structured or Unstructured? the \Ac{web} versus Knowledge Bases}
+% \subsection{Structured or Unstructured? the Web versus Knowledge Bases}
 \subsection{Structure versus Completeness in Knowledge Repositories}
 \label{sec:incompleteness}
 %
 Structured \aclp{kb} are incomplete~\cite{west_kb_completion_2014,entityorientedsearch2018balog}: for example, as of 2014, 71\% of the people represented in Freebase~\cite{freebase_2008} lacked a recorded place of birth~\cite{west_kb_completion_2014}.
-This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (defined in \Cref{sec:sota:qa})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the \Ac{web}~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025,dehghan-etal-2024-ewek}.
+This incompleteness is further supported by several research proposals for questions answering---the task of answering natural language questions (defined in \Cref{sec:sota:qa})---that have focused on combining the high-quality, machine-readable but low-coverage knowledge from \acp{kb} with the vast amount of unstructured information available in a less reliable form on the Web~\cite{sawant_neural_kg_web_2016,west_kb_completion_2014,savenkov_qa_kb_text_2016,PRAMANIK2024100833_uniqorn_qa_kb_text,lehmann2024beyond,zhang-etal-2024-spaghetti_heterogeneus_qa,xin_atomr_heterogeneus_kg_2025,dehghan-etal-2024-ewek}.
 %
-Semi-structured \aclp{kr}, positioned between structured \acp{kb} and unstructured \ac{web} text, inherit both advantages and limitations from each end of this spectrum. Compared to raw \ac{web} sources, they provide a more explicit structure, while covering a broader range of information than typical \acp{kb} (though not as broad as the \Ac{web}). At the same time, they do not enforce the full rigidity of structured representations, which allows them to retain some of the flexibility and recall of textual sources, albeit with less support for fully compositional querying than strictly structured \acp{kb}~\cite{lehmann2024beyond}.
+Semi-structured \aclp{kr}, positioned between structured \acp{kb} and unstructured Web text, inherit both advantages and limitations from each end of this spectrum. Compared to raw Web sources, they provide a more explicit structure, while covering a broader range of information than typical \acp{kb} (though not as broad as the Web). At the same time, they do not enforce the full rigidity of structured representations, which allows them to retain some of the flexibility and recall of textual sources, albeit with less support for fully compositional querying than strictly structured \acp{kb}~\cite{lehmann2024beyond}.
 
 
 

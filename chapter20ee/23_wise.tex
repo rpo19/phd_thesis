@@ -33,7 +33,7 @@ The work presented in this section is related to the \phd publication \textcite{
     \item Modeling of chat metadata in a knowledge graph to support graph-based investigative queries (\ref{uc:investigative-retrieval}).
     \item Creation of an annotated benchmark dataset for investigative \ac{ima} data, enabling structured evaluation of \ac{ee} methods.
     \item Selection of a suitable speech-to-text model for transcribing voice messages.
-    \item Assessment of \acf{ner} and incremental \acf{nel} pipelines on domain-specific data, identifying performance trends and key challenges.
+    \item Assessment of \acf{ner} and incremental \acf{nel} on domain-specific data, identifying performance trends and key challenges.
 \end{itemize}
 
 The following sections describe the construction of the knowledge graph modeling chat metadata (\Cref{sec:wise:metdata_extraction}), the annotation process for obtaining labeled benchmark data (\Cref{sec:wise_dataset}), the methodology adopted for handling voice messages (\Cref{sec:wise_multimedia}), the entity extraction pipeline (\Cref{sec:wise_entity_extraction}), and the dataset, experiments, and evaluation procedures (\Cref{sec:wise_experiments}).
@@ -88,7 +88,7 @@ And each message is described by
     \textbf{2) Corruption} & 1,442 & 1,442  & 364,690 & 63,24 (51,532-6,273-4,066) & 2,351 \\
     \hline
   \end{tabulary}
-  \caption{Statistics about two investigations in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
+  \caption[Statistics about two investigations.]{Statistics about two investigations in which I have been consultant. The work described in this section refers only to the second investigation about suspected corruption.}
   \label{tab:chatstats}
 \end{table}
 
@@ -275,7 +275,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
       \texttt{Miscellaneous} & 32 & 1 & -- & -- & -- \\
       \bottomrule
     \end{tabular}
-    \caption{Statistics of the \ac{inel} extraction. *Links for Person refer to the chat knowledge graph, not to Wikipedia.}
+    \caption[Statistics of the \ac{inel} extraction from chats.]{Statistics of the \ac{inel} extraction from chats. *Links for Person refer to the chat knowledge graph, not to Wikipedia.}
     \label{tab:stats}
 \end{table}
 
@@ -289,7 +289,7 @@ The statistics also show that 2,361 mentions of persons have been linked to enti
       Partial-typed & 71.4 & 35.1 & 47.0 \\
       \bottomrule
     \end{tabular}
-    \caption{\ac{ner} Evaluation. \textit{Strong} counts perfect matches of span and type. \textit{Partial} counts as correct when there is an overlap between predictions and ground truth.}
+    \caption[\ac{ner} evaluation on the chat dataset.]{\ac{ner} evaluation on the chat dataset. \textit{Strong} counts perfect matches of span and type. \textit{Partial} counts as correct when there is an overlap between predictions and ground truth.}
     \label{tab:eval}
 \end{table}
 

@@ -1,9 +1,24 @@
+
 @inproceedings{blink,
-  title         = "Scalable Zero-shot Entity Linking with Dense Entity Retrieval",
-  author        = "Wu, Ledell  and Petroni, Fabio  and Josifoski, Martin  and Riedel, Sebastian  and Zettlemoyer, Luke",
-  month         = nov,
-  year          = "2020",
-  publisher     = "Association for Computational Linguistics"
+    title = "Scalable Zero-shot Entity Linking with Dense Entity Retrieval",
+    author = "Wu, Ledell  and
+      Petroni, Fabio  and
+      Josifoski, Martin  and
+      Riedel, Sebastian  and
+      Zettlemoyer, Luke",
+    ekditor = "Webber, Bonnie  and
+      Cohn, Trevor  and
+      He, Yulan  and
+      Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.519/",
+    doi = "10.18653/v1/2020.emnlp-main.519",
+    pages = "6397--6407",
+    abstract = "This paper introduces a conceptually simple, scalable, and highly effective BERT-based entity linking model, along with an extensive evaluation of its accuracy-speed trade-off. We present a two-stage zero-shot linking algorithm, where each entity is defined only by a short textual description. The first stage does retrieval in a dense space defined by a bi-encoder that independently embeds the mention context and the entity descriptions. Each candidate is then re-ranked with a cross-encoder, that concatenates the mention and entity text. Experiments demonstrate that this approach is state of the art on recent zero-shot benchmarks (6 point absolute gains) and also on more established non-zero-shot evaluations (e.g. TACKBP-2010), despite its relative simplicity (e.g. no explicit entity embeddings or manually engineered mention tables). We also show that bi-encoder linking is very fast with nearest neighbor search (e.g. linking with 5.9 million candidates in 2 milliseconds), and that much of the accuracy gain from the more expensive cross-encoder can be transferred to the bi-encoder via knowledge distillation. Our code and models are available at \url{https://github.com/facebookresearch/BLINK}."
 }
 
 @inproceedings{kassner-etal-2022-edin,
@@ -34,7 +49,8 @@
   booktitle     = "The Semantic Web",
   year          = "2023",
   publisher     = "Springer Nature Switzerland",
-  isbn          = "978-3-031-33455-9"
+  isbn          = "978-3-031-33455-9",
+  doi = "10.1007/978-3-031-33455-9_11"
 }
 
 @article{Sevgili2022NeuralEL,
@@ -108,13 +124,20 @@ keywords = {Named entity recognition, Information extraction, Wikipedia, Semi-st
 }
 
 @inproceedings{2018tint2,
-    author = {{Palmero Aprosio}, A. and {Moretti}, G.},
-    title = {Tint 2.0: an All-inclusive Suite for {NLP} in Italian},
-    keywords = {Computer Science - Computation and Language},
-    booktitle={Proceedings of the Fifth Italian Conference on Computational Linguistics CLiC-it},
-    volume={10},
-    BACKpages={12},
-    year={2018}
+    title = "Tint 2.0: an All-inclusive Suite for {NLP} in {I}talian",
+    author = "Palmero Aprosio, Alessio  and
+      Moretti, Giovanni",
+    ekditor = "Cabrio, Elena  and
+      Mazzei, Alessandro  and
+      Tamburini, Fabio",
+    booktitle = "Proceedings of the Fifth Italian Conference on Computational Linguistics (CLiC-it 2018)",
+    month = dec,
+    year = "2018",
+    address = "Turin, Italy",
+    publisher = "CEUR Workshop Proceedings",
+    url = "https://aclanthology.org/2018.clicit-1.55/",
+    pages = "312--318",
+    ISBN = "978-88-31978-41-5"
 }
 
 @inproceedings{licari_italian-legal-bert_2022,
@@ -315,10 +338,13 @@ series = {IJCKG '22}
   kurl          = {https://arxiv.org/abs/2402.15343}
 }
 @inproceedings{conll2003,
-  author        = "Tjong Kim Sang, Erik F.  and De Meulder, Fien",
-  year          = "2003",
-  kurl          = "https://aclanthology.org/W03-0419",
-  pages         = "142--147"
+    title = "Introduction to the {C}o{NLL}-2003 Shared Task: Language-Independent Named Entity Recognition",
+    author = "Tjong Kim Sang, Erik F.  and
+      De Meulder, Fien",
+    booktitle = "Proceedings of the Seventh Conference on Natural Language Learning at {HLT}-{NAACL} 2003",
+    year = "2003",
+    url = "https://aclanthology.org/W03-0419/",
+    pages = "142--147"
 }
 @inproceedings{pozzi_wise_2025,
   author        = "Pozzi, Riccardo and Barbera, Valentina and Alva Principe, Renzo and Giardini, Davide and Rubini, Riccardo and Palmonari, Matteo",
@@ -392,7 +418,8 @@ url="https://doi.org/10.1007/978-3-032-09527-5_16"
   journal={BMC bioinformatics},
   volume={7},
   year={2006},
-  publisher={Springer}
+  publisher={Springer},
+  doi={10.1186/1471-2105-7-92}
 }
 
 @inproceedings{rosales2018voxel,
@@ -400,7 +427,8 @@ url="https://doi.org/10.1007/978-3-032-09527-5_16"
   author={Rosales-M{\'e}ndez, Henry and Hogan, Aidan and Poblete, Barbara},
   booktitle={The Semantic Web--ISWC 2018: 17th International Semantic Web Conference, Monterey, CA, USA, October 8--12, 2018, Proceedings, Part II 17},
   year={2018},
-  organization={Springer}
+  organization={Springer},
+  doi={10.1007/978-3-030-00668-6_11}
 }
 
 @article{kejriwal2018,
@@ -414,12 +442,52 @@ url="https://doi.org/10.1007/978-3-032-09527-5_16"
   doi           = {10.1109/MIS.2018.111144556}
 }
 @inproceedings{szekely2015building,
-  title         = {Building and using a knowledge graph to combat human trafficking},
-  author        = {Szekely, Pedro and Knoblock, Craig A and Slepicka, Jason and Philpot, Andrew and Singh, Amandeep and Yin, Chengye and Kapoor, Dipsy and Natarajan, Prem and Marcu, Daniel and Knight, Kevin and others},
-  booktitle     = {{ISWC} Part II},
-  pages         = {205--221},
-  year          = {2015},
-  organization  = {Springer}
+  author="Szekely, Pedro
+and Knoblock, Craig A.
+and Slepicka, Jason
+and Philpot, Andrew
+and Singh, Amandeep
+and Yin, Chengye
+and Kapoor, Dipsy
+and Natarajan, Prem
+and Marcu, Daniel
+and Knight, Kevin
+and Stallard, David
+and Karunamoorthy, Subessware S.
+and Bojanapalli, Rajagopal
+and Minton, Steven
+and Amanatullah, Brian
+and Hughes, Todd
+and Tamayo, Mike
+and Flynt, David
+and Artiss, Rachel
+and Chang, Shih-Fu
+and Chen, Tao
+and Hiebel, Gerald
+and Ferreira, Lidia",
+ekditor="Arenas, Marcelo
+and Corcho, Oscar
+and Simperl, Elena
+and Strohmaier, Markus
+and d'Aquin, Mathieu
+and Srinivas, Kavitha
+and Groth, Paul
+and Dumontier, Michel
+and Heflin, Jeff
+and Thirunarayan, Krishnaprasad
+and Staab, Steffen",
+title="Building and Using a Knowledge Graph to Combat Human Trafficking",
+booktitle="The Semantic Web - ISWC 2015",
+year="2015",
+publisher="Springer International Publishing",
+address="Cham",
+pages="205--221",
+isbn="978-3-319-25010-6",
+doi="10.1007/978-3-319-25010-6_12"
+}
+
+
+  doi = {10.1007/978-3-319-25010-6_12}
 }
 @inproceedings{real_batini2021semantic,
   title         = {Semantic Data Integration for Investigations: Lessons Learned and Open Challenges},
@@ -847,7 +915,8 @@ numpages = {390}
   number        = {2},
   pages         = {167--195},
   year          = {2015},
-  publisher     = {SAGE Publications Sage UK: London, England}
+  publisher     = {SAGE Publications Sage UK: London, England},
+  doi={10.3233/SW-140134}
 }
 @online{wikipedia,
   author        = {{Wikimedia Foundation}},
@@ -888,16 +957,18 @@ numpages = {390}
   year          = {2004},
   url           = {http://www.w3.org/TR/rdf-concepts/}
 }
-@article{decker_sw_rdf_xml_roles_2000,
-  author        = {Decker, S. and Melnik, S. and van Harmelen, F. and Fensel, D. and Klein, M. and Broekstra, J. and Erdmann, M. and Horrocks, I.},
-  journal       = {IEEE Internet Computing},
-  year          = {2000},
-  volume        = {4},
-  number        = {5},
-  pages         = {63--73},
-  keywords      = {Semantic Web;XML;Resource description framework;Animals;Ontologies;Computer networks;IP networks;Search engines;Mechanical factors;Petroleum},
-  doi           = {10.1109/4236.877487}
-}
+
+@ARTICLE{decker_sw_rdf_xml_roles_2000,
+  author={Decker, S. and Melnik, S. and van Harmelen, F. and Fensel, D. and Klein, M. and Broekstra, J. and Erdmann, M. and Horrocks, I.},
+  journal={IEEE Internet Computing}, 
+  title={The Semantic Web: the roles of XML and RDF}, 
+  year={2000},
+  volume={4},
+  number={5},
+  pages={63-73},
+  keywords={Semantic Web;XML;Resource description framework;Animals;Ontologies;Computer networks;IP networks;Search engines;Mechanical factors;Petroleum},
+  doi={10.1109/4236.877487}}
+
 @misc{berners-lee2005uri,
   author        = {Berners-Lee, Tim and Fielding, Roy and Masinter, Larry},
   title         = {Uniform Resource Identifier (URI): Generic Syntax},
@@ -1066,16 +1137,28 @@ numpages = {390}
   url           = {https://www.sciencedirect.com/science/article/pii/S0885230898901024},
   author        = {L Hirschman}
 }
+
 @inproceedings{ace_2004,
-  title         = {The automatic content extraction (ACE) program-tasks, data, and evaluation.},
-  author        = {Doddington, George R and Mitchell, Alexis and Przybocki, Mark A and Ramshaw, Lance A and Strassel, Stephanie M and Weischedel, Ralph M and others},
-  booktitle     = {Lrec},
-  volume        = {2},
-  number        = {1},
-  pages         = {837--840},
-  year          = {2004},
-  organization  = {Citeseer}
+    title = "The Automatic Content Extraction ({ACE}) Program {--} Tasks, Data, and Evaluation",
+    author = "Doddington, George  and
+      Mitchell, Alexis  and
+      Przybocki, Mark  and
+      Ramshaw, Lance  and
+      Strassel, Stephanie  and
+      Weischedel, Ralph",
+    ekditor = "Lino, Maria Teresa  and
+      Xavier, Maria Francisca  and
+      Ferreira, F{\'a}tima  and
+      Costa, Rute  and
+      Silva, Raquel",
+    booktitle = "Proceedings of the Fourth International Conference on Language Resources and Evaluation ({LREC}{'}04)",
+    month = may,
+    year = "2004",
+    address = "Lisbon, Portugal",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "https://aclanthology.org/L04-1011/"
 }
+
 @article{gpt4_technical_report_2023,
   added-at      = {2024-03-15T09:52:22.000+0100},
   author        = {OpenAI},
@@ -1359,15 +1442,24 @@ numpages = {390}
   keywords      = {Task analysis;Decoding;Cognition;Training;Predictive models;Knowledge graphs;Chatbots;Natural language processing;large language models;generative pretraining;knowledge graphs;roadmap;bidirectional reasoning},
   doi           = {10.1109/TKDE.2024.3352100}
 }
+
 @article{vrandevcic2014wikidata,
-  title         = {Wikidata: a free collaborative knowledgebase},
-  author        = {Vrande{\v{c}}i{\'c}, Denny and Kr{\"o}tzsch, Markus},
-  volume        = {57},
-  number        = {10},
-  pages         = {78--85},
-  year          = {2014},
-  publisher     = {ACM New York, NY, USA}
+author = {Vrande\v{c}i\'{c}, Denny and Kr\"{o}tzsch, Markus},
+title = {Wikidata: a free collaborative knowledgebase},
+year = {2014},
+issue_date = {October 2014},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {57},
+number = {10},
+issn = {0001-0782},
+doi = {10.1145/2629489},
+journal = {Commun. ACM},
+month = sep,
+pages = {78–85},
+numpages = {8}
 }
+
 @article{shafee2023ten_rules_editing_wikidata,
   title         = {Ten quick tips for editing Wikidata},
   author        = {Shafee, Thomas and Mietchen, Daniel and Lubiana, Tiago and Jemielniak, Dariusz and Waagmeester, Andra},
@@ -1376,7 +1468,8 @@ numpages = {390}
   number        = {7},
   pages         = {e1011235},
   year          = {2023},
-  publisher     = {Public Library of Science San Francisco, CA USA}
+  publisher     = {Public Library of Science San Francisco, CA USA},
+  doi={10.1371/journal.pcbi.1011235}
 }
 @misc{seaborne2008sparqlupdate,
   author        = {Andy Seaborne and Geetha Manjunath and Chris Bizer and John Breslin and Souripriya Das and Ian Davis and Steve Harris and Kingsley Idehen and Olivier Corby and Kjetil Kjernsmo and Benjamin Nowack},
@@ -1395,7 +1488,7 @@ numpages = {390}
 }
 @book{elmasri2014fundamentals,
   title         = {Fundamentals of database systems},
-  author        = {Elmasri, Ramez and Navathe, Sham and others},
+  author        = {Elmasri, Ramez and Navathe, Shamkant B.},
   volume        = {7},
   year          = {2014},
   publisher     = {Pearson}
@@ -1739,14 +1832,17 @@ numpages = {390}
   url           = {https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf},
   year          = {2019}
 }
+
 @misc{zhang2025encoderdecodergemmaimprovingqualityefficiency,
-  author        = {Biao Zhang and Fedor Moiseev and Joshua Ainslie and Paul Suganthan and Min Ma and Surya Bhupatiraju and Fede Lebron and Orhan Firat and Armand Joulin and Zhe Dong},
-  year          = {2025},
-  eprint        = {2504.06225},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL},
-  url           = {https://arxiv.org/abs/2504.06225}
+      title={Encoder-Decoder Gemma: Improving the Quality-Efficiency Trade-Off via Adaptation}, 
+      author={Biao Zhang and Fedor Moiseev and Joshua Ainslie and Paul Suganthan and Min Ma and Surya Bhupatiraju and Fede Lebron and Orhan Firat and Armand Joulin and Zhe Dong},
+      year={2025},
+      eprint={2504.06225},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2504.06225}, 
 }
+
 @inproceedings{qorib-etal-2024-decoder,
   title         = "Are Decoder-Only Language Models Better than Encoder-Only Language Models in Understanding Word Meaning?",
   author        = "Qorib, Muhammad Reza  and Moon, Geonsik  and Ng, Hwee Tou",
@@ -1811,7 +1907,7 @@ numpages = {390}
   pages         = {24824--24837},
   publisher     = {Curran Associates, Inc.},
   title         = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  kurl          = {https://proceedings.neurips.cc/paper\_files/paper/2022/file/9d5609613524ecf4f15af0f7b31abca4-Paper-Conference.pdf},
+  url          = {https://proceedings.neurips.cc/paper\_files/paper/2022/file/9d5609613524ecf4f15af0f7b31abca4-Paper-Conference.pdf},
   volume        = {35},
   year          = {2022}
 }
@@ -2004,25 +2100,39 @@ numpages = {390}
 }
 
 @article{hripcsak2005agreement,
-  title={Agreement, the f-measure, and reliability in information retrieval},
-  author={Hripcsak, George and Rothschild, Adam S},
-  journal={Journal of the American medical informatics association},
-  volume={12},
-  number={3},
-  BACKpages={296--298},
-  year={2005},
-  publisher={BMJ Group BMA House, Tavistock Square, London, WC1H 9JR}
+title = {Agreement, the F-Measure, and Reliability in Information Retrieval},
+journal = {Journal of the American Medical Informatics Association},
+volume = {12},
+number = {3},
+pages = {296-298},
+year = {2005},
+issn = {1067-5027},
+doi = {https://doi.org/10.1197/jamia.M1733},
+url = {https://www.sciencedirect.com/science/article/pii/S1067502705000253},
+author = {George Hripcsak and Adam S. Rothschild},
+abstract = {Information retrieval studies that involve searching the Internet or marking phrases usually lack a well-defined number of negative cases. This prevents the use of traditional interrater reliability metrics like the κ statistic to assess the quality of expert-generated gold standards. Such studies often quantify system performance as precision, recall, and F-measure, or as agreement. It can be shown that the average F-measure among pairs of experts is numerically identical to the average positive specific agreement among experts and that κ approaches these measures as the number of negative cases grows large. Positive specific agreement—or the equivalent F-measure—may be an appropriate way to quantify interrater reliability and therefore to assess the reliability of a gold standard in these studies.}
 }
 
 @inproceedings{grouin2011proposal,
-  title={Proposal for an extension of traditional named entities: From guidelines to evaluation, an overview},
-  author={Grouin, Cyril and Rosset, Sophie and Zweigenbaum, Pierre and Fort, Kar{\"e}n and Galibert, Olivier and Quintard, Ludovic},
-  booktitle={Proceedings of the 5th linguistic annotation workshop},
-  BACKpages={92--100},
-  year={2011}
+    title = "Proposal for an Extension of Traditional Named Entities: From Guidelines to Evaluation, an Overview",
+    author = {Grouin, Cyril  and
+      Rosset, Sophie  and
+      Zweigenbaum, Pierre  and
+      Fort, Kar{\"e}n  and
+      Galibert, Olivier  and
+      Quintard, Ludovic},
+    ekditor = "Ide, Nancy  and
+      Meyers, Adam  and
+      Pradhan, Sameer  and
+      Tomanek, Katrin",
+    booktitle = "Proceedings of the 5th Linguistic Annotation Workshop",
+    month = jun,
+    year = "2011",
+    address = "Portland, Oregon, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/W11-0411/",
+    pages = "92--100"
 }
-
-
 
 @inproceedings{jha2017all,
   title={All that glitters is not gold--rule-based curation of reference datasets for named entity recognition and entity linking},
@@ -2030,7 +2140,8 @@ numpages = {390}
   booktitle={The Semantic Web: 14th International Conference, ESWC 2017, Portoro{\v{z}}, Slovenia, May 28--June 1, 2017, Proceedings, Part I 14},
   BACKpages={305--320},
   year={2017},
-  organization={Springer}
+  organization={Springer},
+  doi={10.1007/978-3-319-58068-5_19}
 }
 
 @inproceedings{deleger2012building,
@@ -2104,7 +2215,8 @@ numpages = {390}
   number        = {Suppl 1},
   pages         = {S14},
   year          = {2005},
-  publisher     = {Springer}
+  publisher     = {Springer},
+  doi = {10.1186/1471-2105-6-S1-S14}
 }
 @article{archana2023effective,
   title         = {An effective biomedical named entity recognition by handling imbalanced data sets using deep learning and rule-based methods},
@@ -2182,22 +2294,39 @@ numpages = {390}
   keywords      = {Semantics;Task analysis;Taxonomy;Joining processes;Ontologies;Natural language processing;Training;Entity analysis;fine-grained entity typing;semantic types;type taxonomy;knowledge base},
   doi           = {10.1109/TKDE.2022.3148980}
 }
+
 @inproceedings{sekine2002extended_150ner_types,
-  title         = {Extended named entity hierarchy.},
-  author        = {Sekine, Satoshi and Sudo, Kiyoshi and Nobata, Chikashi},
-  booktitle     = {LREC},
-  volume        = {1},
-  pages         = {2--1},
-  year          = {2002}
+    title = "Extended Named Entity Hierarchy",
+    author = "Sekine, Satoshi  and
+      Sudo, Kiyoshi  and
+      Nobata, Chikashi",
+    ekditor = "Gonz{\'a}lez Rodr{\'i}guez, Manuel  and
+      Suarez Araujo, Carmen Paz",
+    booktitle = "Proceedings of the Third International Conference on Language Resources and Evaluation ({LREC}{'}02)",
+    month = may,
+    year = "2002",
+    address = "Las Palmas, Canary Islands - Spain",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "https://aclanthology.org/L02-1120/"
 }
+
 @inproceedings{sekine2004definition_200ner_types,
-  title         = {Definition, Dictionaries and Tagger for Extended Named Entity Hierarchy.},
-  author        = {Sekine, Satoshi and Nobata, Chikashi},
-  booktitle     = {LREC},
-  pages         = {1977--1980},
-  year          = {2004},
-  organization  = {Lisbon, Portugal}
+    title = "Definition, Dictionaries and Tagger for Extended Named Entity Hierarchy",
+    author = "Sekine, Satoshi  and
+      Nobata, Chikashi",
+    ekditor = "Lino, Maria Teresa  and
+      Xavier, Maria Francisca  and
+      Ferreira, F{\'a}tima  and
+      Costa, Rute  and
+      Silva, Raquel",
+    booktitle = "Proceedings of the Fourth International Conference on Language Resources and Evaluation ({LREC}{'}04)",
+    month = may,
+    year = "2004",
+    address = "Lisbon, Portugal",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "https://aclanthology.org/L04-1051/"
 }
+
 @article{alshammari2021impact,
 title = {The impact of using different annotation schemes on named entity recognition},
 journal = {Egyptian Informatics Journal},
@@ -2225,7 +2354,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   journal       = {Iranian Journal of Science and Technology, Transactions of Electrical Engineering},
   pages         = {1--12},
   year          = {2020},
-  publisher     = {Springer}
+  publisher     = {Springer},
+  doi={10.1007/s40998-020-00352-2}
 }
 @inproceedings{lin-zeldes-2024-gumsley,
   title         = "{GUM}sley: Evaluating Entity Salience in Summarization for 12 {E}nglish Genres",
@@ -2248,16 +2378,25 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   publisher     = "Springer Nature Switzerland",
   address       = "Cham",
   pages         = "580--588",
-  isbn          = "978-3-031-28238-6"
+  isbn          = "978-3-031-28238-6",
+  doi = "10.1007/978-3-031-28238-6_49"
 }
+
 @inproceedings{molla2006named,
-  title         = {Named entity recognition for question answering},
-  author        = {Moll{\'a}, Diego and Van Zaanen, Menno and Smith, Daniel},
-  booktitle     = {Australasian Language Technology Association Workshop},
-  pages         = {51--58},
-  year          = {2006},
-  organization  = {Australasian Language Technology Association}
+    title = "Named Entity Recognition for Question Answering",
+    author = "Moll{\'a}, Diego  and
+      van Zaanen, Menno  and
+      Smith, Daniel",
+    ekditor = "Cavedon, Lawrence  and
+      Zukerman, Ingrid",
+    booktitle = "Proceedings of the Australasian Language Technology Workshop 2006",
+    month = nov,
+    year = "2006",
+    address = "Sydney, Australia",
+    url = "https://aclanthology.org/U06-1009/",
+    pages = "51--58"
 }
+
 @inproceedings{ner_qa_review_2016,
   author        = {Wongso, Rini and Meiliana and Suhartono, Derwin},
   booktitle     = {2016 3rd International Conference on Information Technology, Computer, and Electrical Engineering (ICITACEE)},
@@ -2333,7 +2472,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   number        = {6},
   pages         = {186357},
   year          = {2024},
-  publisher     = {Springer}
+  publisher     = {Springer},
+  doi={10.1007/s11704-024-40555-y}
 }
 @inproceedings{wang-etal-2025-gptner,
   title         = "{GPT}-{NER}: Named Entity Recognition via Large Language Models",
@@ -2476,7 +2616,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   publisher     = "Springer International Publishing",
   address       = "Cham",
   pages         = "108--126",
-  isbn          = "978-3-030-00671-6"
+  isbn          = "978-3-030-00671-6",
+  doi = "10.1007/978-3-030-00671-6_7"
 }
 @inproceedings{el_differences_for_qa_2022,
   author        = "Wang, Meiling and Li, Min and Sun, Kewei and Hou, Zhirong",
@@ -2487,7 +2628,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   publisher     = "Springer International Publishing",
   address       = "Cham",
   pages         = "221--233",
-  isbn          = "978-3-031-17120-8"
+  isbn          = "978-3-031-17120-8",
+  doi="10.1007/978-3-031-17120-8_18"
 }
 @inproceedings{el_in_queries_2015,
   author        = {Hasibi, Faegheh and Balog, Krisztian and Bratsberg, Svein Erik},
@@ -2583,12 +2725,19 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   author        = {Johannes Hoffart and Fabian M. Suchanek and Klaus Berberich and Gerhard Weikum},
   keywords      = {Ontologies, Knowledge bases, Spatio-temporal facts, Information extraction}
 }
+
 @inproceedings{mahdisoltani2013yago3,
-  title         = {Yago3: A knowledge base from multilingual wikipedias},
-  author        = {Mahdisoltani, Farzaneh and Biega, Joanna and Suchanek, Fabian M},
-  booktitle     = {CIDR},
-  year          = {2013}
+  author       = {Farzaneh Mahdisoltani and
+                  Joanna Biega and
+                  Fabian M. Suchanek},
+  title        = {{YAGO3:} {A} Knowledge Base from Multilingual Wikipedias},
+  booktitle    = {Seventh Biennial Conference on Innovative Data Systems Research, {CIDR}
+                  2015, Asilomar, CA, USA, January 4-7, 2015, Online Proceedings},
+  publisher    = {www.cidrdb.org},
+  year         = {2015},
+  url          = {http://cidrdb.org/cidr2015/Papers/CIDR15\_Paper1.pdf},
 }
+
 @inproceedings{yago_core_2007,
   author        = {Suchanek, Fabian M. and Kasneci, Gjergji and Weikum, Gerhard},
   title         = {Yago: a core of semantic knowledge},
@@ -2615,7 +2764,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   address       = "Cham",
   pages         = "583--596",
   abstract      = "YAGO is one of the large knowledge bases in the Linked Open Data cloud. In this resource paper, we present its latest version, YAGO 4, which reconciles the rigorous typing and constraints of schema.org with the rich instance data of Wikidata. The resulting resource contains 2 billion type-consistent triples for 64 Million entities, and has a consistent ontology that allows semantic reasoning with OWL~2 description logics.",
-  isbn          = "978-3-030-49461-2"
+  isbn          = "978-3-030-49461-2",
+  doi="10.1007/978-3-030-49461-2_34"
 }
 @inproceedings{logeswaran-etal-2019-zero,
   title         = "Zero-Shot Entity Linking by Reading Entity Descriptions",
@@ -2637,7 +2787,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   booktitle     = {Proceedings of the AAAI Conference on Artificial Intelligence},
   volume        = {32},
   number        = {1},
-  year          = {2018}
+  year          = {2018},
+  doi={10.1609/aaai.v32i1.12066}
 }
 @inproceedings{gupta-etal-2017-entity,
   title         = "Entity Linking via Joint Encoding of Types, Descriptions, and Context",
@@ -2731,7 +2882,8 @@ keywords = {Annotation schemes, Named entity recognition, Natural language proce
   pages         = {1333–1339},
   numpages      = {7},
   location      = {Buenos Aires, Argentina},
-  series        = {IJCAI'15}
+  series        = {IJCAI'15},
+  url = {https://www.ijcai.org/Proceedings/15/Papers/192.pdf}
 }
 @inproceedings{ganea-hofmann-2017-deep,
   title         = "Deep Joint Entity Disambiguation with Local Neural Attention",
@@ -2963,12 +3115,26 @@ numpages = {13}
 }
 
 @incollection{moller2024entity,
-  title={Entity Linking with Out-of-Knowledge-Graph Entity Detection and Clustering Using Only Knowledge Graphs},
-  author={M{\"o}ller, Cedric and Usbeck, Ricardo},
-  booktitle={Knowledge Graphs in the Age of Language Models and Neuro-Symbolic AI},
-  pages={88--105},
-  year={2024},
-  publisher={IOS Press}
+  author       = {Cedric M{\"{o}}ller and
+                  Ricardo Usbeck},
+  ekditor       = {Angelo A. Salatino and
+                  Mehwish Alam and
+                  Femke Ongenae and
+                  Sahar Vahdati and
+                  Anna Lisa Gentile and
+                  Tassilo Pellegrini and
+                  Shufan Jiang},
+  title        = {Entity Linking with Out-of-Knowledge-Graph Entity Detection and Clustering
+                  Using Only Knowledge Graphs},
+  booktitle    = {Knowledge Graphs in the Age of Language Models and Neuro-Symbolic
+                  {AI} - Proceedings of the 20th International Conference on Semantic
+                  Systems, 17-19 September 2024, Amsterdam, The Netherlands},
+  series       = {Studies on the Semantic Web},
+  volume       = {60},
+  pages        = {88--105},
+  publisher    = {{IOS} Press},
+  year         = {2024},
+  doi          = {10.3233/SSW240009},
 }
 
 @inproceedings{barba-etal-2022-extend,
@@ -3305,7 +3471,8 @@ series = {WWW '16 Companion}
   volume={3},
   number={2},
   pages={3--3},
-  year={2010}
+  year={2010},
+  url={https://blender.cs.illinois.edu/paper/kbp2010overview.pdf}
 }
 
 @inproceedings{Zhang2012TheNE,
@@ -3401,7 +3568,8 @@ and Hartig, Olaf},
   publisher = {Springer International Publishing},
   address   = {Cham},
   abstract  = {The correct identification of the link between an entity mention in a text and a known entity in a large knowledge base is important in information retrieval or information extraction. The general approach for this task is to generate, for a given mention, a set of candidate entities from the base and, in a second step, determine which is the best one. This paper proposes a novel method for the second step which is based on the joint learning of embeddings for the words in the text and the entities in the knowledge base. By learning these embeddings in the same space we arrive at a more conceptually grounded model that can be used for candidate selection based on the surrounding context. The relative improvement of this approach is experimentally validated on a recent benchmark corpus from the TAC-EDL 2015 evaluation campaign.},
-  isbn      = {978-3-319-58068-5}
+  isbn      = {978-3-319-58068-5},
+  doi = {10.1007/978-3-319-58068-5_21}
 }
 
 @article{Broscheit_2019,
@@ -3463,7 +3631,8 @@ and Hartig, Olaf},
   author = {Tan, Yongmei and Zheng, Di and Li, Maolin and Wang, Xiaojie},
   year   = {2015},
   month  = {11},
-  title  = {BUPTTeam Participation at TAC 2015 Knowledge Base Population}
+  title  = {BUPTTeam Participation at TAC 2015 Knowledge Base Population},
+  url = {https://tac.nist.gov/publications/2015/participant.papers/TAC2015.BUPTTeam.proceedings.pdf}
 }
 
 @inproceedings{Paikens-EtAl:2017:TAC-KBP,
@@ -3794,7 +3963,8 @@ url          = {https://staff.fnwi.uva.nl/m.derijke/wp-content/papercite-data/pd
   number={5},
   pages={667--700},
   year={2017},
-  publisher={SAGE Publications Sage UK: London, England}
+  publisher={SAGE Publications Sage UK: London, England},
+  doi={10.3233/SW-170276}
 }
 
 @inproceedings{nilk_dataset_2022,
@@ -4168,7 +4338,8 @@ publisher="Springer International Publishing",
 address="Cham",
 pages="255--265",
 abstract="Natural Language Processing (NLP) is important and interesting area in computer science affecting also other spheres of science; \eg geographical processing, social statistics, molecular biology. A large amount of textual data is continuously produced in media around us and therefore there is a need of processing it in order to extract required information. One of the most important processing steps in NLP is Named Entity Recognition (NER), which recognizes occurrence of known entities in input texts. Recently, we have already presented our approach for linear NER using gazetteers, namely Hash-map Multi-way Tree (HMT) and first-Child next-Sibling binary Tree (CST) with their strong and weak sides. In this paper, we present Patricia Hash-map Tree (PHT) character gazetteer approach, which shows as the best compromise between the both previous versions according to matching time and memory consumption.",
-isbn="978-3-319-06569-4"
+isbn="978-3-319-06569-4",
+doi="10.1007/978-3-319-06569-4_19"
 }
 
 @online{ethicalcharter2018,
@@ -4506,7 +4677,8 @@ year="2017",
 publisher="Springer International Publishing",
 address="Cham",
 pages="247--262",
-isbn="978-3-319-68204-4"
+isbn="978-3-319-68204-4",
+doi="10.1007/978-3-319-68204-4_25"
 }
 
 @INPROCEEDINGS{hoppe_2021_legalqa_german,
@@ -4624,7 +4796,8 @@ isbn="978-3-319-68204-4"
   number={1},
   pages={29--57},
   year={2001},
-  publisher={Springer}
+  publisher={Springer},
+  doi={10.1023/A:1011297104922}
 }
 
 @article{breuker2004legal,
@@ -4719,7 +4892,8 @@ url="http://www.ncbi.nlm.nih.gov/pubmed/38015588"
   number={10},
   pages={487--497},
   year={2024},
-  publisher={Springer Nature Singapore Singapore}
+  publisher={Springer Nature Singapore Singapore},
+  doi={10.1038/s10038-024-01231-y}
 }
 
 @article{bellandi2025streamlining,
@@ -5621,16 +5795,24 @@ url={https://openreview.net/forum?id=WX0Y0rBsqo}
       Wang, Haifeng",
     booktitle = "Proceedings of Machine Translation Summit XV: Papers",
     year = "2015",
-    kaddress = "Miami, USA",
-    kurl = "https://aclanthology.org/2015.mtsummit-papers.23/"
+    address = "Miami, USA",
+    url = "https://aclanthology.org/2015.mtsummit-papers.23/"
 }
 
+
 @book{cormen2022introduction,
-  title={Introduction to algorithms},
-  author={Cormen, Thomas H and Leiserson, Charles E and Rivest, Ronald L and Stein, Clifford},
-  year={2022},
-  publisher={MIT press}
+  author       = {Thomas H. Cormen and
+                  Charles E. Leiserson and
+                  Ronald L. Rivest and
+                  Clifford Stein},
+  title        = {Introduction to Algorithms, 3rd Edition},
+  publisher    = {{MIT} Press},
+  year         = {2009},
+  url          = {http://mitpress.mit.edu/books/introduction-algorithms},
+  isbn         = {978-0-262-03384-8},
 }
+
+
 
 @misc{qwen2025qwen25technicalreport,
       title={Qwen2.5 Technical Report}, 
@@ -5668,7 +5850,7 @@ url={https://openreview.net/forum?id=WX0Y0rBsqo}
     year = "2022",
     kaddress = "Gyeongju, Republic of Korea",
     publisher = "International Committee on Computational Linguistics",
-    kurl = "https://aclanthology.org/2022.coling-1.138",
+    url = "https://aclanthology.org/2022.coling-1.138",
     pages = "1604--1619"
 }
 
@@ -5718,7 +5900,7 @@ url={https://openreview.net/forum?id=WX0Y0rBsqo}
  pages = {46595--46623},
  publisher = {Curran Associates, Inc.},
  title = {Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena},
- kurl = {https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf},
  volume = {36},
  year = {2023}
 }
@@ -6039,7 +6221,8 @@ abstract = {Lots of learning tasks require dealing with graph data which contain
   title     = {Mention Memory: incorporating textual knowledge into Transformers through entity mention attention},
   author    = {de Jong, Michiel and Zemlyanskiy, Yury and FitzGerald, Nicholas and Sha, Fei and Cohen, William W.},
   booktitle = {Proceedings of the International Conference on Learning Representations (ICLR)},
-  year      = {2022}, % add if you have the openreview link
+  year      = {2022},
+  url = {https://openreview.net/pdf?id=OY1A8ejQgEX}
 }
 
 
@@ -6140,14 +6323,15 @@ and Graziano, Mariangela
 and Ammendolia, Rosario
 and Lupi, Pietro",
 ekditor ="Barolli, Leonard",
-title="Semantic Based Knowledge Management in e-Government Document Workflows: A Case Study for Judiciary Domain in Road Accident Trials",
+title="Semantic Based Knowledge Management in e-Government Document Workflows: A Case Study for Judiciary Domain in Road Accident Trials",
 booktitle="Complex, Intelligent and Software Intensive Systems",
 year="2022",
 publisher="Springer International Publishing",
 address="Cham",
 pages="435--445",
 abstract="Many of the activities carried out by Judges and Chancellors in Civil Trials consist in organizing the documentation attached to each Trial which they follow in order also to decide if the conditions for proposability of the application proposed in court exist, where the law lays down the requisites in this regard. With the advent of the Telematic Civil Process, all documentation is received digitally and therefore could be automatically organized and analyzed in order to facilitate the work of Judges and Chancellors. However, there is still no automatic method of organizing documents in the Italian Ministry of Justice systems and, although supported by a document organization software, Judges and registrars still have to search by reading the necessary information within the documents cataloged in such a way, not always presented uniformly by lawyers. In this paper a feasibility study for the creation of a prototype expert system has been carried out, with the objective to analyse the documentation relative to a specific category of Civil Trials, that is Road Accidents, to organize it according to a predefined document categorization, and to automatically determine the proposability of the instances presented to Courts. Natural Language Processing algorithms have been applied in order to examine the documentation, and logical rules have been designed, according to the current Italian legislation, to determine the admissibility of instances.",
-isbn="978-3-031-08812-4"
+isbn="978-3-031-08812-4",
+doi="10.1007/978-3-031-08812-4_42"
 }
 
 

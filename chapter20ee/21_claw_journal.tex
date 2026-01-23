@@ -81,7 +81,7 @@ The resulting corpus counts 16,634 annotations ($\approx$114 annotations per doc
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.8]{images/ICCJ146-EE_entity_type_distribution.png}
+    \includegraphics[width=0.9\linewidth]{images/ICCJ146-EE_entity_type_distribution.png}
     \caption{Distribution of \ac{ner} types in the ICCJ146-EE dataset (with NIL counts).
     % *\textit{location} implicitly includes \textit{addresses} since nested annotations are not taken into account in this work; **miscellaneous annotations are mostly referred to \textit{law articles}, thus there is no distinction in the count.
     }
@@ -129,7 +129,7 @@ Partial-typed                       & 90.6           \\\midrule
 $\text{Scott's~}\pi \approx \text{Cohen's~}\kappa \approx \text{Fleiss'~}\kappa \approx \text{Krippendorff's~}\alpha$
  & 66.2           \\\bottomrule
 \end{tabular}
-\caption{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in \Cref{sec:metrics}. *based on strong-typed match.}
+\caption[Inter-annotator agreement for \ac{ner} on ICCJ146-EE]{Inter-annotator agreement for \ac{ner} computed on a subset of 30 documents from ICCJ146-EE. The description of each F$_1$ score-based metric can be found in \Cref{sec:metrics}. *based on strong-typed match.}
 \label{tab:iaa}
 \end{table}
 
@@ -180,7 +180,7 @@ For \ac{ner} we combine different methods to extract all the types annotated in 
             % + Law article   & RAE    & -         & -         & -             & -           & Normattiva  & Implicit          & Implicit  \\
         \end{tabular}
         % }
-    \caption{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type \texttt{Person} and \texttt{Organization}, since its \ac{kr} (derived from documents metadata) of reference is limited to these two types.}
+    \caption[Types supported by the Italian \ac{inel} pipeline.]{Types supported by the \ac{ner}, \ac{nel}, NIL prediction, and NIL Clustering algorithms. *Note that the Trie\ac{ner} relies on a gazetteer and it is potentially capable of extracting any entity regardless of its type as long as a pattern is provided. In our experiments, Trie\ac{ner} extracts entities of type \texttt{Person} and \texttt{Organization}, since its \ac{kr} (derived from documents metadata) of reference is limited to these two types.}
     % (``Implicit'' derives from RAE, since rule-based additional extractors perform recognition and linking as a whole)
     \label{tab:algotypes}
 \end{table}
@@ -447,7 +447,7 @@ The hyperparameters for the combination rules were set prioritizing Trie\ac{ner}
         Tint & I-CAB~\cite{magnini-etal-2006-cab} & 84.4 & 80.0 & 82.1 \\
         \bottomrule
     \end{tabular}
-    \caption{Results obtained by our algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers \texttt{Miscellaneous}.}
+    \caption[\ac{ner} comparison on Italian benchmark datasets.]{Results obtained by our \ac{ner} algorithms (\spacy and Tint) on Italian benchmark datasets compared with recent competitive approaches. I-CAB~\cite{magnini-etal-2006-cab} contains the types \texttt{Person}, \texttt{Location}, and \texttt{Organization}. WikiNER~\cite{NOTHMAN2013151} additionally considers \texttt{Miscellaneous}.}
     \label{tab:sotaner}
 \end{table}
 
@@ -468,7 +468,7 @@ First, \Cref{tab:sotaner} reports a comparison between two of our \ac{ner} algor
         Partial             & 87.4 &	68.6 &	76.9 & 64.9 &	53.3 &	58.6 \\ 
         \bottomrule
     \end{tabular}
-    \caption{\textit{Atomic} \ac{ner} evaluation (precision, recall, F$_1$ score) with different matching criteria (rows), typed and untyped. These results are obtained using the combination of the \ac{ner} algorithms and considering all the evaluated types.}
+    \caption[\textit{Atomic} \ac{ner} evaluation on ICCJ146-EE.]{\textit{Atomic} \ac{ner} evaluation on ICCJ146-EE, with different matching criteria (rows), typed and untyped. These results are obtained using the combination of the \ac{ner} algorithms and considering all the evaluated types.}
     \label{tab:nereval:bymetric}
 \end{table}
 
@@ -527,7 +527,7 @@ In \Cref{tab:nereval:bytype}, we provide a per-type comparison of the \textit{at
         % WikiNER~\cite{NOTHMAN2013151} & \spacy & .919 & .919 & .919 \\ % per org loc misc
         % I-CAB~\cite{magnini-etal-2006-cab} & Tint & .844 & .800 & .821 \\ % per org loc
     \end{tabular}
-    \caption[\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}.]{\textit{Atomic} \ac{ner} evaluation by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the \acl{kr} used by Trie\ac{ner}, thus only a few entities of this type (\ie $\approx$10) have been predicted.}
+    \caption[\textit{Atomic} \ac{ner} evaluation on ICCJ146-EE by type and algorithm using \textit{approximate-typed match}.]{\textit{Atomic} \ac{ner} evaluation on ICCJ146-EE by type and algorithm using \textit{approximate-typed match}. *\texttt{Miscellanea} mentions are excluded from the overall calculation. **Note that the type Organization is underrepresented in the \acl{kr} used by Trie\ac{ner}, thus only a few entities of this type (\ie $\approx$10) have been predicted.}
     \label{tab:nereval:bytype}
 \end{table}
 
@@ -600,7 +600,7 @@ When jointly evaluating \ac{nel} and NIL prediction (disregarding \ac{ner} error
         & Accuracy & 46.8 & 91.9 & 79.1 \\
         \bottomrule
     \end{tabular}
-    \caption{\textit{Atomic} evaluation of the knowledge consolidation tasks and joint evaluation of \ac{nel} and NIL prediction.}
+    \caption{\textit{Atomic} evaluation of the knowledge consolidation tasks and joint evaluation of \ac{nel} and NIL prediction on ICCJ30-\acs{inel}.}
     \label{tab:nereval:atomic}
 \end{table}
 
@@ -615,7 +615,7 @@ When jointly evaluating \ac{nel} and NIL prediction (disregarding \ac{ner} error
         \textbf{Recall@100} & 96.8 & 91.5 & - \\
         \bottomrule
     \end{tabular}
-    \caption{\ac{nel} results on benchmark datasets: strict (s-) and relaxed (r-) version of Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT@Evalita 2016~\cite{basile2016neelit}. for NEEL-IT, Twitter profile tags (@username) and hashtags (\#tag) were filtered out.}
+    \caption[\ac{nel} results on benchmark datasets.]{\ac{nel} results on benchmark datasets: strict (s-) and relaxed (r-) version of Italian VoxEL~\cite{rosales2018voxel} and NEEL-IT@Evalita 2016~\cite{basile2016neelit}. for NEEL-IT, Twitter profile tags (@username) and hashtags (\#tag) were filtered out.}
     \label{tab:nelsota}
 \end{table}
 

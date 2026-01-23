@@ -49,7 +49,7 @@ In practice, since at implementation level the models use log-probabilities, we 
 \begin{figure}[H]
     \centering
     \fbox{%
-    \parbox{\textwidth}{%
+    \parbox{.95\textwidth}{%
     \begin{tabular}{ll}
         \multicolumn{2}{l}{\textbf{When was Danny Boyle born?}} \\
         \textcolor{red}{Normal:} & \textcolor{red}{<Danny Boyle> <born> <1960-09-15> .} \\
@@ -57,10 +57,10 @@ In practice, since at implementation level the models use log-probabilities, we 
     \end{tabular}
     \vspace{1em}
     \centering
-    \includegraphics[width=\textwidth]{images/constrain_generation.drawio.pdf}
+    \includegraphics[width=.95\textwidth]{images/constrain_generation.drawio.pdf}
     }
     }
-    \caption{Constrained decoding steers the \ac{llm} toward the correct fact.
+    \caption[Constrained decoding steers the \ac{llm} toward the correct fact.]{Constrained decoding steers the \ac{llm} toward the correct fact.
 At each step, the constrained decoding mechanism chooses the highest-probability token that still completes a Wikidata fact, avoiding invalid branches and yielding \textit{``<Danny Boyle> <date of birth> <1956-10-20> .''}.}
     \label{fig:constrained_generation}
     % \vspace{2em}
@@ -113,7 +113,7 @@ Additionally, while creating the tree, we calculate the number of reachable leav
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/trie_example.drawio.pdf}
-    \caption{Generating facts from the fact tree. Token IDs are surrounded by rounded rectangles. The arrows $X \xrightarrow{n} v_k$ represent the selection of the next token $v_k$ from the current sequence $X=x_{<i}$ and $n$ is the number of leaves reachable from $X$.}
+    \caption[Generating facts from the fact tree.]{Generating facts from the fact tree. Token IDs are surrounded by rounded rectangles. The arrows $X \xrightarrow{n} v_k$ represent the selection of the next token $v_k$ from the current sequence $X=x_{<i}$ and $n$ is the number of leaves reachable from $X$.}
     % \vspace{2em}
     \label{fig:trie_example}
 \end{figure}
@@ -132,7 +132,7 @@ List items are saved as PostgreSQL arrays, while Pickle data is saved in \texttt
 
 \begin{table}[H]
     \centering
-    \caption{PostgreSQL table content. \textit{\#Lv.} represent the number of leaves, reachable from that prefix.}
+    \caption[PostgreSQL table content.]{PostgreSQL table content. \textit{\#Lv.} represent the number of leaves, reachable from that prefix.}
     % \small % shrink text a bit to fit
     \begin{tabular}{l|l|l|l|l}
     \toprule
@@ -245,7 +245,7 @@ You must always follow these instructions precisely and ensure your responses ad
 
 
  \end{tcolorbox}
-\caption{System prompt for the Wikidata \ac{kb}. The prompt instructs the \ac{llm} to reason step-by-step, issue \emph{Fact} calls to access facts from the Wikidata fact tree, and deliver an answer only after evidence is gathered, or otherwise respond ``I don't know.''}
+\caption[\refactx system prompt for the Wikidata \ac{kb}.]{\refactx system prompt for the Wikidata \ac{kb}. The prompt instructs the \ac{llm} to reason step-by-step, issue \emph{Fact} calls to access facts from the Wikidata fact tree, and deliver an answer only after evidence is gathered, or otherwise respond ``I don't know.''}
 \label{fig:prompt}
  
  \end{figure}
@@ -411,7 +411,7 @@ The models selected for the evaluation are the following:
 \end{tikzpicture}
 \end{minipage}
 
-\caption{Question and answer type distribution across the four evaluation datasets.
+\caption[Question and answer type distribution across the four evaluation datasets.]{Question and answer type distribution across the four evaluation datasets.
 Stacked bars show how each benchmark (Bank, Mintaka, 2WikiMH, WebQSP) varies in its mix of question categories (generic, comparative, multi-hop, and others) and answer forms (generic, yes/no, enumeration).}\label{fig:dataset_distribution}
 \end{figure}
 
@@ -524,7 +524,7 @@ In the experiments, beam search~\cite{hu-etal-2015-improved} is used with $\text
 \label{sec:exp_overhead}
 \begin{figure}[htbp]
     \includegraphics[width=\linewidth]{images/token_generation_time_vs_context_length.pdf}
-    \caption{Per-token generation time (seconds) of constrained decoding with \refactx versus unconstrained generation over 4{,}000 tokens. We apply a moving average with a 10-tokens window to reduce noise.}
+    \caption[Generation-time comparison of \refactx vs unconstrained.]{Per-token generation time (seconds) of constrained decoding with \refactx versus unconstrained generation over 4{,}000 tokens. We apply a moving average with a 10-tokens window to reduce noise.}
     % \vspace{2em}
     \label{fig:generation_time}
 \end{figure}
@@ -545,7 +545,7 @@ We compare \refactx's \ac{kb}-guided constrained generation time with normal \te
 \label{sec:performance}
 
 \begin{table}[htbp]
-\caption{Comparison with \textit{exact match} between \refactx and \textit{\ac{llm}-only} on four datasets, with four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\caption[Comparison with \textit{exact match} between \refactx and \textit{\ac{llm}-only}.]{Comparison with \textit{exact match} between \refactx and \textit{\ac{llm}-only} on four datasets, with four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
 \label{tab:em_results_memorization}
 \centering
 \begin{tabular}{lll|ll|ll|ll}
@@ -570,7 +570,7 @@ $\text{Qwen}^{2.5}_{7B}$ & 21.7 & 18.0 & 45.3 & 41.0 & 21.6 & 18.0 & 10.9 & 10.5
 \end{table}
 
 \begin{table}[htbp]
-\caption{Comparison with \textit{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only} on four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
+\caption[Comparison with \textit{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only}.]{Comparison with \textit{\ac{llm}-as-a-judge} between \refactx and \textit{\ac{llm}-only} on four datasets, considering four different \acp{llm} (details in \Cref{sec:exp_qa}). We report Precision (P) and Accuracy (A). }
 \label{tab:judge_results_memorization}
 \centering
 \begin{tabular}{lll|ll|ll|ll}
@@ -621,7 +621,7 @@ On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and
 On WebQSP, enumeration answers prove particularly difficult in terms of precision for \refactx with both Llama3.3-70B and Qwen2.5-72B, while when using Phi-4 it maintains consistent precision across all answer types.
 
 \begin{table}[h!]
-    \caption{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
+    \caption[Insights from comparison of \refactx with related work.]{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
     \label{tab:res-comparison-rw}
     \centering
 \begin{tabular}{l|cc|cc|cc}
