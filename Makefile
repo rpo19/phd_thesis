@@ -8,7 +8,7 @@ LATEX_FLAGS = -interaction=nonstopmode -halt-on-error
 # Biber command
 BIBER = biber
 
-all: pdf biber finalpdf
+all: pdf biber secondpdf finalpdf
 
 .PHONY: pdf finalpdf biber
 
@@ -17,6 +17,9 @@ pdf:
 
 biber:
 	$(BIBER) $(MAIN)
+
+secondpdf:
+	$(LATEX) $(LATEX_FLAGS) $(MAIN).tex
 
 finalpdf:
 	$(LATEX) $(LATEX_FLAGS) $(MAIN).tex
