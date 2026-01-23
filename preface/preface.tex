@@ -22,7 +22,7 @@ In recent years, \ac{nlp}, the field studying automatic processing and understan
     \label{fig:actor-search}
 \end{figure}
 
-Later, transformer-based \acp{lm} have been scaled to billions of parameters, demonstrating impressive performance even without fine-tuning~\cite{gpt_lm_few_shot_learners_2020}. For example, GPT3, which has been released in 2020, counted 175 billion parameters. The real revolution, however, came in 2022 with \emph{instruction tuning}~\cite{instruct_gpt_2022} that allowed the alignment of \acfp{llm} to users' intent, improving their capability of following instructions while remaining truthful and minimizing bias, toxicity, or other harmful behaviors~\cite{instruct_gpt_2022}. In the same year, OpenAI released ChatGPT~\cite{openai2025chatgpt}, bringing the advances of \acp{llm} to the general public through a chat-based \acf{ui}, and providing \acp{api} that enabled researchers, practitioners, and businesses to study the capabilities of instruction-tuned models, and integrate them into applications. Since its launch, ChatGPT's user base has grown rapidly, reaching 800 million users per week, approximately 10\% of the world's population~\cite{Sor2025chatgpt}.
+Later, transformer-based \acp{lm} have been scaled to billions of parameters, demonstrating impressive performance even without fine-tuning~\cite{gpt_lm_few_shot_learners_2020}. For example, GPT3, which has been released in 2020, counted 175 billion parameters. The real revolution, however, came in 2022 with \emph{instruction tuning}~\cite{instruct_gpt_2022} that allowed the alignment of \acfp{llm} to users' intent, improving their capability of following instructions, reducing undesired behaviors, including bias, toxicity, and other harmful outputs~\cite{instruct_gpt_2022}. In the same year, OpenAI released ChatGPT~\cite{openai2025chatgpt}, bringing the advances of \acp{llm} to the general public through a chat-based \acf{ui}, and providing \acp{api} that enabled researchers, practitioners, and businesses to study the capabilities of instruction-tuned models, and integrate them into applications. Since its launch, ChatGPT's user base has grown rapidly, reaching 800 million users per week, approximately 10\% of the world's population~\cite{Sor2025chatgpt}.
 %
 Today, even popular search engines, such as Google Search\footnote{\url{https://www.google.com/}} have integrated \acp{llm} to provide quick answers or overviews of the search results~\cite{Google2024generative_search}, as visible in \Cref{fig:actor-search}.
 
@@ -47,7 +47,7 @@ Indeed, state-of-the-art \acp{llm} count hundreds of billions of parameters---fo
 
 %%%%%%%%%
 
-Also, in sensitive domains such as law or healthcare, documents often contain personal data that cannot be transferred to external servers. Using API-based \acp{llm} raises compliance issues under the European \emph{General Data Protection Regulation (GDPR, Regulation (EU) 2016/679)}~\cite{gdpr2016} and \emph{Artificial Intelligence Act (Regulation (EU) 2024/1689)}~\cite{ai_act}. The GDPR~\cite{gdpr2016} imposes strict requirements on lawful and transparent data processing, while the \ac{ai} Act~\cite{ai_act} classifies legal and law enforcement applications as high-risk, requiring traceability, security, and human oversight. These obligations are difficult to meet when processing occurs on third-party infrastructures. Conversely, local deployment allows institutions to retain control of the data, simplifying compliance and safeguarding confidentiality.
+Also, in sensitive domains such as law or healthcare, documents often contain personal data that cannot be transferred to external servers. Using API-based \acp{llm} raises compliance issues under the European \emph{General Data Protection Regulation (GDPR, Regulation (EU) 2016/679)}~\cite{gdpr2016} and \emph{Artificial Intelligence Act (Regulation (EU) 2024/1689)}~\cite{ai_act}. The GDPR~\cite{gdpr2016} imposes strict requirements on lawful and transparent data processing, while the AI Act~\cite{ai_act} classifies legal and law enforcement applications as high-risk, requiring traceability, security, and human oversight. These obligations are difficult to meet when processing occurs on third-party infrastructures. Conversely, local deployment allows institutions to retain control of the data, simplifying compliance and safeguarding confidentiality.
 
 % Also, in sensitive domains such as legal or healthcare, where documents often contain personal data, \ac{api}-based models cannot always be used, since they typically require transferring data to external servers operated by third-party providers. This can conflict with the principles of data protection and confidentiality established by the European legal framework. Under the \emph{General Data Protection Regulation (GDPR, Regulation (EU) 2016/679)}~\cite{gdpr2016}, personal data must be processed lawfully, fairly, and transparently~\cite[Art.~5]{gdpr2016}, and the controller---that is, the entity determining the purposes and means of processing~\cite[Art.~4.7]{gdpr2016}---must ensure that data are not transferred outside the European Economic Area unless an adequate level of protection is guaranteed~\cite[Art.~44--49]{gdpr2016}.
 % The use of external \acp{api} may therefore compromise compliance with data minimization and purpose limitation principles~\cite[Art.~5.1.c--b]{gdpr2016}, as data are sent to infrastructures beyond the deployer's control.
@@ -92,7 +92,7 @@ Other challenges include compliance with regulations, as described above, as wel
 
 \medskip
 \noindent
-Despite these challenges, advances in \ac{ai} and \ac{nlp} have greatly expanded the potential for content analysis. Yet, in professional and institutional contexts, the ultimate goal is not analysis itself, but the ability to find, interpret, and use information to support decision-making. In such domains, \ac{ai} technologies are most valuable when they enhance users’ \emph{information access}~\cite{human-ai-system-legal-precedent-search-china}, understood here as the ability to effectively identify, retrieve, and utilize information. Over time, information access has evolved from keyword-based search and faceted navigation to more interactive paradigms, such as conversational systems and \acp{llm} that assist users in exploring and reasoning over complex data.
+Despite these challenges, advances in \acf{ai} and \acf{nlp} have greatly expanded the potential for content analysis. Yet, in professional and institutional contexts, the ultimate goal is not analysis itself, but the ability to find, interpret, and use information to support decision-making. In such domains, \ac{ai} technologies are most valuable when they enhance users’ \emph{information access}~\cite{human-ai-system-legal-precedent-search-china}, understood here as the ability to effectively identify, retrieve, and utilize information. Over time, information access has evolved from keyword-based search to more interactive paradigms, such as conversational systems and \acp{llm} that assist users in exploring and reasoning over complex data.
 
 Considering the challenges discussed above, it becomes essential to examine how professionals in the legal and investigative domains actually access and use information in their daily work.
 To illustrate these needs, we identify a set of representative use cases of \acf{ia}, which highlight typical queries, document navigation, and analytical activities.
@@ -110,8 +110,7 @@ heterogeneous corpora, leading to time-consuming~\cite{pirzada2024framework}
 and often manual workflows~\cite{buey2016}, which slows down legal and
 investigative analysis. There is therefore a strong motivation to design \acl{ia}
 methods and infrastructures that can accelerate these tasks---\eg through
-faceted navigation, entity-based retrieval, question answering, and statistical
-exploration.
+entity-based faceted search, semantic document exploration, or question answering.
 
 
 
@@ -146,7 +145,7 @@ Several systems have been proposed to support legal professionals~\cite{amato200
 
 On the investigative side, prior work has targeted illicit web data~\cite{kejriwal2017searchengine,kejriwal2018} by building \acp{kg} from domain ontologies and exposing faceted and map-based \acp{ui}. \textcite{P_rez_2021} proposed a modular microservices architecture for heterogeneous investigative data, integrating components such as speech-to-text and keyword extraction to populate a \ac{kb}. Other work addressed \acl{ima} data~\cite{kaushik2022forensic,pirzada2024framework,subbulakshmi2024forensic,Sonakshi_whatsapp_group_2025}, mainly focusing on extraction pipelines and visual analytics (e.g.\ communication graphs, statistical dashboards, and maps), with occasional use of \ac{ner}~\cite{subbulakshmi2024forensic}.
 
-However, most investigative systems do not perform \ac{kc} task, for example, to understand which mentions of type \texttt{Person} refer to the same individual, or whether a mention refers to an entity already recorded in an external knowledge repository (\acl{nel}), such as Wikipedia~\cite{wikipedia}. As a result, information remains fragmented across documents, limiting cross-document integration; for example, it becomes impossible to automatically identify other documents that mention the same person, thereby reducing the potential gains in terms of manual effort reduction.
+However, most investigative systems do not perform \acl{kc} tasks, for example, determining which mentions of type \texttt{Person} refer to the same individual, or linking mentions to the corresponding entities in a \acl{kr} (\acl{nel}), such as Wikipedia~\cite{wikipedia}. As a result, information remains fragmented across documents, limiting cross-document integration; for example, consolidated knowledge, leveraging mention--entity links, allows users to identify other documents that mention the same person, thereby reducing manual effort.
 
 
 
@@ -167,7 +166,7 @@ The main challenges motivating this thesis can be summarized as follows:
     \item \label{ch:heterogeneity} \emph{Heterogeneity.} The data vary widely in format and structure---from judgments and contracts to chat logs and structured evidence---which demands for flexible representations capable of integrating diverse sources within a unified framework.
     \item \label{ch:traceability} \emph{Traceability and verifiability.} The outputs of \ac{ai}-driven systems must remain interpretable and auditable: each extracted or inferred element should be traceable back to its source document, supporting transparency and human oversight~\cite[Art.~14--15]{ai_act}.
     \item \label{ch:nilintegration} \emph{Integration of novel entities.}
-    Legal and investigative documents---as well as those from other sensitive domains such as healthcare---often mention entities that are not publicly known or documented in existing \acl{kr} (\eg Wikipedia or Wikidata). Handling such \emph{novel} (or \emph{NIL}) entities is therefore a key challenge, as it requires extending the knowledge representation to include new individuals emerging from the data, while maintaining consistency and interoperability with existing resources.
+    Legal and investigative documents---as well as those from other sensitive domains such as healthcare---often mention entities that are not publicly known or documented in existing \acl{kr} (\eg Wikipedia or Wikidata). Handling such \emph{novel} (or \emph{NIL}) entities is therefore a key challenge, as it requires extending the repository to include new individuals emerging from the data, while maintaining consistency and interoperability with existing resources.
 \end{enumerate}
 
 These challenges highlight the need for architectural solutions that can organize, connect, and make sense of heterogeneous data while preserving interpretability and compliance.
@@ -177,24 +176,21 @@ These challenges highlight the need for architectural solutions that can organiz
 
 
 
-Across the diverse approaches for integrating legal data, reviewed in \Cref{sec:sota:arch}, a common principle emerges: the design of an intermediate architecture that mediates between users and the underlying sources of information. Such architectures may take the form of search engines indexing documents for efficient retrieval; visualization systems that highlight relevant elements in user interfaces~\cite{pirzada2024framework,P_rez_2021,kejriwal2018,swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}; or data infrastructures such as knowledge graphs and databases~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst,bellandi2025streamlining}. These systems share the goal of organizing and presenting information in a form that is meaningful to users and suited to their analytical tasks.
+Across the diverse approaches for integrating legal data, reviewed in \Cref{sec:sota:arch}, a common principle emerges: the design of an intermediate architecture that mediates between users and the underlying sources of information. Such architectures may take the form of search engines indexing documents for efficient retrieval; visualization systems that highlight relevant elements in user interfaces~\cite{pirzada2024framework,P_rez_2021,kejriwal2018,swoopes2025interfacedesignsupportlegal,ziwei_abstractexplorer_2025,raymond_skimming_sci_2023}; or data infrastructures such as knowledge graphs and databases~\cite{kejriwal2017searchengine,kejriwal2018,szekely2015building,amato2008,HAN2024121052legalasst,bellandi2025streamlining}. These systems share the goal of organizing and presenting information in a form that is meaningful to users and suited to their analytical tasks, acting as a bridge between information extraction and access and enabling the transition from unstructured data to semantically organized, queryable knowledge, as illustrated in \Cref{fig:overview}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{images/overview_thesis.pdf}
-    \caption{Overview of the proposed architecture, which bridges information extraction and information access.}
+    \caption{High-level overview of the architecture designed in this thesis (\ref{ob:architecture}) for bridging information extraction and information access.}
     \label{fig:overview}
 \end{figure}
-
-As illustrated in \Cref{fig:overview}, the architecture proposed in this thesis serves as a bridge between extraction and access, enabling the transition from unstructured data to semantically organized, queryable knowledge. It supports both formal legal documents (such as judgments and acts) and heterogeneous data produced in investigative contexts, providing the foundation for the use cases discussed above.
-
 
 
 Building on this idea, this thesis is grounded on the hypothesis that \emph{an entity-centric architecture can effectively integrate heterogeneous legal and investigative data, enabling advanced forms of information access and analysis while preserving scalability and traceability}. In particular, such an architecture would support the identified use cases in the legal and investigative domains. For instance, users may perform faceted search to filter relevant documents or messages based on entities such as persons, locations, or dates, ask questions in natural language to retrieve precise information, and even combine these capabilities---for example, applying question answering over a subset of documents filtered with faceted search.
 
 
 
-Entities serve as conceptual anchors that connect information within and across documents, enabling cross-references and semantic aggregation. They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance. As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---and support aggregation, such as computing counts or groupings over certain entities or entity types, as well as faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
+Entities, especially after \acl{kc}, serve as conceptual anchors that connect information both within individual documents and across multiple documents, enabling cross-references and semantic aggregation. They also enhance generalizability, as entities are common across domains: examples include persons, judges, and legal acts in law; patients, diseases, and treatments in healthcare; or companies, investors, and assets in finance. As illustrated in \Cref{fig:entities_central}, entities act as the connective tissue linking diverse data types---ranging from structured bank transfers to unstructured reports, voice messages, and chat transcripts---and support aggregation, such as computing counts or groupings over certain entities or entity types, as well as faceting, that is, organizing retrieved items along multiple dimensions to support interactive filtering and exploration~\cite{ARMENTANO2014_nlp_faceted,hearst_2006_faceted}.
 
 
 
@@ -217,24 +213,29 @@ These strategies are articulated through the following objectives:
     \item \label{ob:extraction_assessment} \textbf{Assessment of existing \acl{ie} technologies considering legal domain challenges.}  
     The first objective is to empirically evaluate the adaptability of existing \acl{ie} components---including \acl{ner}, \acl{nel}, and NIL prediction---to legal and investigative data, accounting for domain-specific constraints, linguistic heterogeneity, and the occurrence of novel entities (also called NIL entities).
 
-    This assessment provided quantitative evidence on domain adaptation needs and showed that handling NIL entities is prone to error propagation, with NIL prediction being a major source of errors. Existing \acl{ee} models can be applied to legal documents and investigative chats, but achieving satisfactory quality often requires in-domain fine-tuning or \acl{hitl} correction.
+    This assessment provides quantitative evidence on domain adaptation needs and shows that handling NIL entities is prone to error propagation, with NIL prediction being a major source of errors. Existing \acl{ee} models can be applied to legal documents and investigative chats, but achieving satisfactory quality often requires in-domain fine-tuning or \acl{hitl} correction.
 
 
     \item \label{ob:architecture} \textbf{Design of an entity-centric architecture for data integration and \acl{ia}.}
-    The second objective is the definition of an architecture that organizes heterogeneous and unstructured information around entities (\eg persons, locations, organizations, or laws), bridging information extraction and access.
+    The second objective is the design of an architecture that organizes heterogeneous and unstructured information around entities (\eg persons, locations, organizations, or laws), bridging information extraction and access.
     
-    The designed architecture enables the development of applications for advanced use cases---such as those considered in this thesis---and supports their eventual combination, for example by performing question answering after faceted search.
+    This architecture is designed to enable the development of applications for advanced use cases, such as those considered in this thesis. It also supports the combination of these capabilities---for example, performing question answering over a subset of documents filtered via faceted search.
 
     \item \label{ob:refactx} \textbf{Development of an efficient and scalable \acl{qa} system grounded in external knowledge.}  
-    The third objective is to design a \acl{qa} system capable of producing answers that are explicitly supported by evidence from the knowledge base, thus enabling verification and mitigating hallucination risks.  
+    The third objective is to design a \acl{qa} system capable of producing answers explicitly supported by a \acl{kb}, thereby enabling traceability and verifiability and mitigating hallucination risks. 
     The system should scale to large collections and operate efficiently in local environments, in compliance with regulatory and confidentiality constraints.  
 
-    To achieve these goals, the thesis introduces \refactx, a constrained-generation approach that efficiently guides an \ac{llm} through a disk-backed prefix tree to produce valid facts directly from large \acp{kb}, without the need for retrievers, complex pipelines, or architectural modifications to the underlying \ac{llm}.
+    To achieve these goals, the thesis introduces \refactx, a constrained-generation approach that efficiently guides an \ac{llm} through a disk-backed prefix tree to produce valid facts directly from a large \acl{kb}, without the need for retrievers, complex pipelines, or architectural modifications to the underlying \ac{llm}.
 
 
 \end{enumerate}
 
-This \phd thesis is organized as follows. \Cref{chap:background} presents the background concepts required for this work, including \aclp{llm} and an overview of the Italian legal system. \Cref{chap:sota} reviews the state of the art relevant to the three research objectives: information extraction (including \acl{ner}, \acl{nel}, and novel entities), data-integration architectures for knowledge-intensive domains, and \acl{qa}. \Cref{chap:extraction} addresses \ref{ob:extraction_assessment}, \Cref{chap:architecture} addresses \ref{ob:architecture}, and \Cref{chap:refactx} addresses \ref{ob:refactx}. Finally, \Cref{chap:conclusion} concludes the thesis.
+This \phd thesis is organized as follows. 
+\Cref{chap:background} introduces key concepts, including \aclp{llm} and the Italian legal system. 
+\Cref{chap:sota} reviews the related literature on information extraction, data-integration architectures for knowledge-intensive domains, and \acl{qa}. 
+\Cref{chap:extraction}, \Cref{chap:architecture}, and \Cref{chap:refactx} address the three research objectives, focusing respectively on entity extraction in the legal domain (\ref{ob:extraction_assessment}), the design of an entity-centric data integration architecture (\ref{ob:architecture}), and the development of a scalable and evidence-grounded question answering system (\ref{ob:refactx}). 
+\Cref{chap:conclusion} concludes the thesis and outlines directions for future work.
+
 
 
 

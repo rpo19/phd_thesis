@@ -1,6 +1,5 @@
-\chapter*{Thesis Conclusion}
+\chapter{Thesis Conclusion}
 \label{chap:conclusion}
-\addcontentsline{toc}{chapter}{Thesis Conclusion}
 
 
 % \paragraph{Objectives revisited.}
@@ -37,8 +36,7 @@ Second, the architectural design could be implemented and evaluated. This includ
 Third, richer \acl{hitl} feedback loops could be explored, in which user corrections are not only recorded but also incorporated to update models or constraints, thereby reducing recurrent errors.
 Finally, methods for extracting facts from unstructured text while preserving traceability could be investigated. This would facilitate the integration of \refactx into the \acl{dia} in scenarios where data are predominantly unstructured.
 
-\section*{Ethical and regulatory considerations}
-\addcontentsline{toc}{section}{Ethical and regulatory considerations}
+\section{Ethical and regulatory considerations}
 The design choices of this thesis align with the constraints governing the use of \acf{ai} in sensitive domains. In legal and investigative contexts, data often contain personal or confidential information and cannot be transferred to third-party \ac{api}-based services without risking non-compliance with the GDPR (Regulation (EU) 2016/679)~\cite{gdpr2016}. The GDPR requires lawful and controlled processing~\cite[Art.~5]{gdpr2016} and restricts international data transfers~\cite[Art.~44--49]{gdpr2016}.
 The AI Act (Regulation (EU) 2024/1689)~\cite{ai_act} further classifies \ac{ai} systems used in law enforcement and justice as high-risk~\cite[Annex~III]{ai_act}. As a consequence, it mandates risk management, data governance, logging, and traceability~\cite[Art.~9--12]{ai_act}.
 Using \acp{llm} through external \acp{api} introduces additional compliance complexities. For example, a data processing agreement must be established between the controller and the processor~\cite[Art.~28(3)]{gdpr2016}.
