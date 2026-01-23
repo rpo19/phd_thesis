@@ -451,7 +451,7 @@ The choice of public benchmark datasets reflects two main considerations. First,
 
 
 \subsection{Metrics}
-\label{sec:metrics}
+\label{sec:refactx:metrics}
 %
 We evaluate on \textit{Accuracy} (A) and \textit{Precision} (P), to study, respectively, the overall correctness of our approach and its reliability when it provides an answer.
 
@@ -621,7 +621,7 @@ On comparative and multi-hop questions, instead, Qwen2.5-72B achieves 52.4\% and
 On WebQSP, enumeration answers prove particularly difficult in terms of precision for \refactx with both Llama3.3-70B and Qwen2.5-72B, while when using Phi-4 it maintains consistent precision across all answer types.
 
 \begin{table}[h!]
-    \caption[Insights from comparison of \refactx with related work.]{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:metrics}).}
+    \caption[Insights from comparison of \refactx with related work.]{Insights from comparison with related work on Precision (P) and Accuracy (A). Results for related work are taken from their papers. \refactx is evaluated using \ac{llm}-as-a-judge$^\dagger$, HQA via manual annotation$^\ddagger$. DoG and GCR use exact match$^*$. GCR results are calculated with different metrics$^{\S}$ (see \Cref{sec:refactx:metrics}).}
     \label{tab:res-comparison-rw}
     \centering
 \begin{tabular}{l|cc|cc|cc}
