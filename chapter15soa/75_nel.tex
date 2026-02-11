@@ -9,42 +9,41 @@
 \centering
 \begin{minipage}[t]{0.48\linewidth}
 \small
+\raggedright
 \NELPerson{Giovanni Bianchi}{}{\NIL}
-, residing in \NELLocation{Bologna}{https://en.wikipedia.org/wiki/Bologna}{\WikiIcon Bologna} \texttt{[...]} -- plaintiff\\
-and\\
+, residente in \NELLocation{Bologna}{https://en.wikipedia.org/wiki/Bologna}{\WikiIcon Bologna} \texttt{[...]} -- attore\\
+e\\
 \NELPerson{Davide Ricci}{}{\NIL}
-, residing in \NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- defendant\\
-\textbf{FACTS}\\
-The plaintiff summoned the defendant to court, alleging that on \NELDate{April 3, 2022} he lent him the sum of \MONEY{EUR 10,000}, as evidenced by a private written agreement signed by both parties, with the obligation to repay by \NELDate{December 31, 2022}, pursuant to \NELLaw{Article 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Article 1813 c.c.} \texttt{[...]}
-\subcaption{\ac{nel} on a judgment.}
+, residente in \NELLocation{Milano}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan} \texttt{[...]} -- convenuto\\
+\textbf{FATTI}\\
+L'attore ha citato in giudizio il convenuto, deducendo che in data \NELDate{3 aprile 2022} gli aveva prestato la somma di \MONEY{EUR 10.000}, come da scrittura privata sottoscritta da entrambe le parti, con obbligo di restituzione entro il \NELDate{31 dicembre 2022}, ai sensi dell'\NELLaw{Articolo 1813 c.c.}{https://www.normattiva.it/atto/caricaDettaglioAtto?atto.dataPubblicazioneGazzetta=1942-04-04&atto.codiceRedazionale=042U0262&tipoDettaglio=multivigenza&qId=&classica=true&dataVigenza=&generaTabId=true&bloccoAggiornamentoBreadCrumb=true&title=lbl.dettaglioAtto&tabID=}{\NormattivaIcon Articolo 1813 c.c.} \texttt{[...]}
+\subcaption{\ac{nel} su una sentenza.}
 \label{fig:extract-nel-judgment}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\linewidth}
 \small
+\raggedright
 \NELDate{[25/04/22 -- 11:45]}%
-\NELPerson{G. Bianchi}{}{\NIL}:%
-Meet me \NELDate{Friday, 19:00}, at %
-\NELLocation{Bar Centrale}{}{\NIL}. Bring the papers.\\
-
-\NELDate{[2025/04/22 -- 11:46]}%
-\NELPerson{Davide Ricci}{}{\NIL}: Fine.\\
-
+\NELPerson{G. Bianchi}{}{\NIL}:\\
+\quad Incontriamoci \NELDate{venerdi, 19:00}, al\\
+\quad \NELLocation{Bar Centrale}{}{\NIL}. Porta i documenti.\\[0.5em]
+\NELDate{[2025/04/22 -- 11:46]} \NELPerson{Davide Ricci}{}{\NIL}:\\
+\quad Va bene.\\[0.5em]
 \NELDate{[2025/04/22 -- 18:51]}%
-\NELPerson{G. Bianchi}{}{\NIL}: \textit{[Voice message -- 2 min 58 sec]}\\
-\quad \textit{Transcription:}\\
-\quad \texttt{[...]} You spent my money on that weekend in %
-\NELLocation{Milan}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan}, %
-dinner at %
-\NELLocation{Grand Hotel et de Milan}{https://en.wikipedia.org/wiki/Grand_Hotel_et_de_Milan}{\WikiIcon Grand Hotel et de Milan} %
-and even those tickets for the race at the %
-\NELLocation{Monza Circuit}{https://en.wikipedia.org/wiki/Monza_Circuit}{\WikiIcon Monza Circuit}. \texttt{[...]}\\
-\subcaption{\ac{nel} on chat logs.}
+\NELPerson{G. Bianchi}{}{\NIL}: \textit{[Messaggio vocale -- 2 min 58 sec]} \textit{Trascrizione:}\\
+\quad \texttt{[...]} Hai speso i miei soldi per quel fine\\
+\quad settimana a \NELLocation{Milano}{https://en.wikipedia.org/wiki/Milan}{\WikiIcon Milan}, cena al \\
+\quad \NELLocation{Grand Hotel Milan}{https://en.wikipedia.org/wiki/Grand_Hotel_et_de_Milan}{\WikiIcon Grand Hotel et de Milan}\\
+\quad e perfino quei biglietti per la gara al\\
+\quad \NELLocation{Circuito di Monza}{https://en.wikipedia.org/wiki/Monza_Circuit}{\WikiIcon Monza Circuit}. \texttt{[...]}\\
+\subcaption{\ac{nel} su chat.}
 \label{fig:extract-nel-chat-logs}
 \end{minipage}
-\caption{\Ac{nel} application for \acl{sta} with clickable links.}
+\caption{\Ac{nel} applicato alla \acl{sta} con link cliccabili.}
 \label{fig:extracts-nel-new}
 \end{figure}
+
 
 An example of \ac{nel} applied the illustrative legal judgment and chat is available in \Cref{fig:extracts-nel-new}. 
 
